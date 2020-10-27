@@ -7,6 +7,12 @@
     "no-console": "warn",
     "no-var": "warn",
     "arrow-body-style": ["error", "as-needed"],
-    "quotes": "warn"
+    "quotes": "warn",
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all"
+      }
+    ]
   }
 }
