@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+# Một vài lưu ý khi code:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Sau khi clone prj về, chạy lệnh: _yarn_ để cài đặt package
+2. Khi muốn cài thư viện mới, dùng lệnh: _yarn add_ để thêm package, không dùng _npm install_
 
-## Available Scripts
+# Cấu trúc của prj:
 
-In the project directory, you can run:
+_Mọi code mới đều sẽ được thêm vào folder `src`_: mọi file js đều chứa trong 1 folder cùng tên để quản lý source cùng với các file css (nếu có)
 
-### `yarn start`
+- folder `components`: chứa các component nhỏ sẽ được sử dụng trong prj: _datepicker, header, footer, input, ..._,
+- folder `layouts`: 1 trang web thường có nhiều trang web giống nhau ở nhiều thành phần như header, footer, sidebar, ... Các thành phần đó sẽ được code chung thành 1 layout thay vì mỗi trang web lại phải copy lại đoạn code đó. Hiện tại đang có 3 layout:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. CandidateLayout: Layout cho trang ứng viên
+2. HRLayout: Layout cho trang nhà tuyển dụng
+3. EmptyLayout: 1 vài trang web sẽ có cấu trúc riêng như trang đăng nhập, trang 404, ...
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- folder `pages`: chứa các component của từng trang trong hệ thống, folder được chia thành 2 phần **Candidate** và **HR**, trong mỗi phần thì từng trang web sẽ có 1 folder riêng, đặt tên như sau: _Candidate/HR + tên trang_, trong folder sẽ chứa code js, css cho trang đó
+- folder `routes`: chứa file `routes.js`, nơi khai báo các url của web và các component của pages tương ứng với url đó
+- folder `services`: chứa các đoạn code axios, tương tác với api
+- folder `state`: chứa code quản lý state, có 2 folder con: reducers (chứa các reducer) và sagas (chứa các saga)
+- folder `utils`: chứa các function được sử dụng nhiều lần trong prj, và có thể được sử dụng ở nhiều component
 
-### `yarn test`
+# Quy trình thêm 1 trang mới:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Tạo 1 folder con ở `pages`, đặt vào đúng sub folder (admin | client), đặt tên như quy tắc ở trên
+2. Cài đặt code cho component
+3. Để có thể truy cập vào url mong muốn, vào file `routes.js`, thêm 1 <Route /> vào layout mong muốn, sau đó thêm path vào list path ở component <Route> cha để có thể truy cập vào path đó
 
-### `yarn build`
+# Semantic Commit Messages
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+See how a minor change to your commit message style can make you a better programmer.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Format: `<type>(<scope>): <subject>`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`<scope>` is optional
 
-### `yarn eject`
+## Example
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+feat: add hat wobble
+^--^  ^------------^
+|     |
+|     +-> Summary in present tense.
+|
++-------> Type: chore, docs, feat, fix, refactor, style, or test.
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+More Examples:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `feat`: (new feature for the user, not a new feature for build script)
+- `fix`: (bug fix for the user, not a fix to a build script)
+- `docs`: (changes to the documentation)
+- `style`: (formatting, missing semi colons, etc; no production code change)
+- `refactor`: (refactoring production code, eg. renaming a variable)
+- `test`: (adding missing tests, refactoring tests; no production code change)
+- `chore`: (updating grunt tasks etc; no production code change)
