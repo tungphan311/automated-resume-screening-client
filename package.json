@@ -78,6 +78,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "lint": "eslint \"{,!(node_modules)/**/}*.js\" --fix",
     "format": "prettier --write \"src/**/*.js\""
   },
   "eslintConfig": {
@@ -156,6 +157,19 @@
     ]
   },
   "devDependencies": {
+    "husky": "^4.3.0",
     "lint-staged": "^10.5.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn lint",
+      "yarn format",
+      "git add ."
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
