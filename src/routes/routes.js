@@ -25,11 +25,7 @@ export const AuthorizedRoute = ({
   />
 );
 
-export const UnauthorizedRoute = ({
-  component: Component,
-  redirect,
-  ...rest
-}) => (
+export const UnauthorizedRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => <Component {...props} {...rest} />} />
 );
 
