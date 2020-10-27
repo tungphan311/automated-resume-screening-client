@@ -13,6 +13,7 @@
       {
         "vars": "all"
       }
-    ]
+    ],
+    "semi": ["error", "always"]
   }
 }
