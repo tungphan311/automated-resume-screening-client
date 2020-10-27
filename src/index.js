@@ -6,16 +6,20 @@ import reportWebVitals from "./reportWebVitals";
 import { Route, Router, Switch } from "react-router-dom";
 import Routes from "routes/routes";
 import history from "state/history";
+import { Provider } from "react-redux";
+import store from "state/store";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App>
+    <Provider store={store}>
       <Router history={history}>
-        <Switch>
-          <Route path="/" component={Routes} />
-        </Switch>
+        <App>
+          <Switch>
+            <Route path="/" component={Routes} />
+          </Switch>
+        </App>
       </Router>
-    </App>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
