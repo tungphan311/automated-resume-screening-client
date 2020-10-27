@@ -1,0 +1,19 @@
+  
+{
+  "extends": ["react-app", "prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"],
+    "no-console": "warn",
+    "no-var": "warn",
+    "arrow-body-style": ["error", "as-needed"],
+    "quotes": "warn",
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all"
+      }
+    ],
+    "semi": ["error", "always"]
+  }
+}
