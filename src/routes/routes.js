@@ -1,6 +1,7 @@
+import CandidateLayout from "layouts/CandidateLayout/CandidateLayout";
 import CandidateHome from "pages/Candidate/Home/Home";
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 // component for admin site to determine user is logined or not
 export const AuthorizedRoute = ({
@@ -33,7 +34,9 @@ function Routes() {
   return (
     <Switch>
       <Route exact path={["/"]}>
-        <UnauthorizedRoute exact path="/" component={CandidateHome} />
+        <CandidateLayout>
+          <UnauthorizedRoute exact path="/" component={CandidateHome} />
+        </CandidateLayout>
       </Route>
     </Switch>
   );

@@ -1,0 +1,35 @@
+.nav-link {
+  font-size: 0.875rem !important;
+  letter-spacing: 0 !important;
+  font-weight: 400 !important;
+  line-height: 1.43 !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 !important;
+
+  &.with-border {
+    border-bottom: 0.125rem solid transparent !important;
+  }
+}
+
+.navbar-nav .nav-link {
+  margin-right: 1.5rem;
+  flex: 1 1 auto;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.nav-link__text {
+  color: #2d2c2d;
+}
+
+@media (min-width: 992px) {
+  .navbar-expand-lg .header__navbar-nav {
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: auto;
+  }
+}
