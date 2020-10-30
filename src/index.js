@@ -7,8 +7,8 @@ import { Route, Router, Switch } from "react-router-dom";
 import Routes from "routes/routes";
 import history from "state/history";
 import store from "state/store";
+import "styles/index.scss";
 import App from "./App";
-import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
