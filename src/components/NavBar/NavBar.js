@@ -1,3 +1,5 @@
+import { Button } from "antd";
+import { NAVIGATIONS } from "constants/index";
 import React from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.scss";
@@ -8,18 +10,32 @@ function NavBar() {
       id="navBar"
       className="collapse navbar-collapse header__navbar-collapse py-0"
     >
-      <div className="navbar-nav header__navbar-nav">
-        <NavItem title="Tìm việc" />
-        <NavItem title="Đánh giá công ty" />
-      </div>
+      <ul className="navbar-nav header__navbar-nav">
+        {NAVIGATIONS.map(({ title, url, link, button }) => (
+          <NavItem {...{ title, url, link, button }} />
+        ))}
+        <span class="nav-separator nav-separator--grey"></span>
+        <Button type="primary" size="large">
+          Nhà tuyển dụng
+        </Button>
+      </ul>
     </div>
   );
 }
 
 export default NavBar;
 
-const NavItem = ({ title }) => (
-  <Link to="#" className="nav-link with-border">
-    <span className="nav-link__text">{title}</span>
-  </Link>
+const NavItem = ({ title, url, link = false, button = false }) => (
+  <li className="nav-item header__nav-item">
+    {link && (
+      <Link to={url} className="nav-link header__nav-link">
+        {title}
+      </Link>
+    )}
+    {button && (
+      <Link to={url} className="nav-link header__nav-button">
+        {title}
+      </Link>
+    )}
+  </li>
 );
