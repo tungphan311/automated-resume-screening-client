@@ -1,11 +1,13 @@
+import "antd/dist/antd.css";
+import "bootstrap/dist/css/bootstrap.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import { Provider } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
 import Routes from "routes/routes";
 import history from "state/history";
-import { Provider } from "react-redux";
 import store from "state/store";
+import "styles/index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
