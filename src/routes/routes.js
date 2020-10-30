@@ -18,7 +18,7 @@ export const AuthorizedRoute = ({
       ) : (
         <Redirect
           to={{
-            pathname: redirect,
+            pathname: redirect
           }}
         />
       )

@@ -12,9 +12,9 @@ function NavBar() {
     >
       <ul className="navbar-nav header__navbar-nav">
         {NAVIGATIONS.map(({ title, url, link, button }) => (
-          <NavItem {...{ title, url, link, button }} />
+          <NavItem key={title} {...{ title, url, link, button }} />
         ))}
-        <span class="nav-separator nav-separator--grey"></span>
+        <span className="nav-separator nav-separator--grey"></span>
         <Button type="primary" size="large">
           Nhà tuyển dụng
         </Button>
