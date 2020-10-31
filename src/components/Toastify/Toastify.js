@@ -8,7 +8,7 @@ class Toastify extends Component {
       <div>
         <ToastContainer
           enableMultiContainer
-          position="top-right"
+          position="bottom-right"
           closeButton={false}
           draggable
           hideProgressBar
