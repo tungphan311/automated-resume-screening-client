@@ -3,6 +3,7 @@ body {
   font-family: "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: $light-grey;
 }
 
 code {
@@ -26,4 +27,8 @@ code {
 
 a:hover {
   text-decoration: none;
+}
+
+svg {
+  vertical-align: unset;
 }
