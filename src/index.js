@@ -5,6 +5,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import Routes from "routes/routes";
 import history from "state/history";
 import store from "state/store";

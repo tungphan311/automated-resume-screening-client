@@ -1,5 +1,6 @@
 import CandidateLayout from "layouts/CandidateLayout/CandidateLayout";
 import CandidateHome from "pages/Candidate/Home/Home";
+import CandidateProfile from "pages/Candidate/Profile/Profile";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
@@ -33,9 +34,10 @@ export const UnauthorizedRoute = ({ component: Component, ...rest }) => (
 function Routes() {
   return (
     <Switch>
-      <Route exact path={["/"]}>
+      <Route exact path={["/", "/profile"]}>
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
+          <AuthorizedRoute exact path="/profile" component={CandidateProfile} />
         </CandidateLayout>
       </Route>
     </Switch>

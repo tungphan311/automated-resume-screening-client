@@ -29,10 +29,10 @@ function CandidateHome() {
       </div>
 
       {/* Popular job section */}
-      <Section title="Vị trí phổ biến" url="#" classNames="gradient-light-v1">
+      <Section title="Vị trí phổ biến" url="#">
         <div className="row">
-          {ROLES.map(({ title, url }) => (
-            <Role {...{ title, url }} />
+          {ROLES.map(({ title, url }, index) => (
+            <Role key={index} {...{ title, url }} />
           ))}
         </div>
       </Section>
