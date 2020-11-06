@@ -8,17 +8,23 @@
     background: $c-white;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row-reverse;
 
-    &__right {
+    &__left {
       background-color: $c-alabaster;
-      padding: 60px 55px 0 55px;
+      padding: 0 80px;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
       width: 40vw;
       min-height: 100vh;
+      position: relative;
 
       &__logo {
         width: 7.375rem;
-        margin-bottom: 50px;
+        position: absolute;
+        top: 30px;
+        left: 30px;
       }
 
       &__link {
@@ -35,19 +41,19 @@
         }
       }
 
+      &__title {
+        display: block;
+        font-size: 28px;
+        color: $c-royal-blue;
+        line-height: 1.2;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
       &__form {
+        width: 100%;
         display: flex;
         flex-direction: column;
-
-        &__title {
-          width: 100%;
-          display: block;
-          font-size: 28px;
-          color: #5468d9;
-          line-height: 1.2;
-          text-align: center;
-          margin-bottom: 20px;
-        }
 
         &__label {
           margin-bottom: 5px;
@@ -90,7 +96,7 @@
             position: absolute;
             width: 60%;
             height: 1px;
-            background: #626fb0;
+            background: $c-scampi;
             top: 50%;
             right: 110%;
           }
@@ -100,7 +106,7 @@
             position: absolute;
             width: 60%;
             height: 1px;
-            background: #626fb0;
+            background: $c-scampi;
             top: 50%;
             left: 110%;
           }
@@ -123,10 +129,8 @@
 [ Responsive ]*/
 
 @media (min-width: 1441px) {
-  .hr-login__container__right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  .hr-login__container__left {
+    padding: 80px 120px 0 120px;
   }
 }
 
@@ -135,14 +139,23 @@
     display: none;
   }
 
-  .hr-login__container__right {
+  .hr-login__container__left__form {
+    margin: 0 auto;
+  }
+
+  .hr-login__container__left {
     width: 100vw;
-    padding: 60px 80px 55px 80px;
+    padding: 80px 20% 0 20%;
   }
 }
 
 @media (max-width: 576px) {
-  .hr-login__container__right {
-    padding: 60px 20px 55px 20px;
+  .hr-login__container__left {
+    justify-content: initial;
+    padding: 120px 30px 0 30px;
+  }
+
+  .hr-login__container__left__form__title {
+    font-size: 22px;
   }
 }

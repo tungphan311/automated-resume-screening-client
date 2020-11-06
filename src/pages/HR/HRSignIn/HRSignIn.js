@@ -17,9 +17,9 @@ function HRSignIn() {
     <div className="hr-login">
       <div className="hr-login__container">
         {/* Login Form  */}
-        <div className="hr-login__container__right">
-          <div className="hr-login__container__right__logo">
-            <Link to="/" className="hr-login__container__right__logo__wrapper">
+        <div className="hr-login__container__left">
+          <div className="hr-login__container__left__logo">
+            <Link to="/" className="hr-login__container__left__logo__wrapper">
               <img
                 src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
                 alt="logo"
@@ -27,16 +27,16 @@ function HRSignIn() {
             </Link>
           </div>
 
+          <span className="hr-login__container__left__title">
+            Nhà&nbsp;tuyển&nbsp;dụng&nbsp;đăng&nbsp;nhập
+          </span>
+
           <Form
             layout="vertical"
             name="nest-messages"
             validateMessages={validateMessages}
-            className="hr-login__container__right__form"
+            className="hr-login__container__left__form"
           >
-            <span className="hr-login__container__right__form__title">
-              Nhà tuyển dụng đăng nhập
-            </span>
-
             {/* Email */}
             <Form.Item
               label="Tài khoản"
@@ -44,7 +44,7 @@ function HRSignIn() {
               rules={[{ required: true }]}
             >
               <Input
-                className="hr-login__container__right__form__input"
+                className="hr-login__container__left__form__input"
                 placeholder="Nhập tên tài khoản"
               />
             </Form.Item>
@@ -56,7 +56,7 @@ function HRSignIn() {
               rules={[{ required: true }]}
             >
               <Input.Password
-                className="hr-login__container__right__form__input"
+                className="hr-login__container__left__form__input"
                 placeholder="Nhập mật khẩu"
               />
             </Form.Item>
@@ -66,14 +66,14 @@ function HRSignIn() {
             {/* Button Login  */}
             <button
               htmlType="submit"
-              className="hr-login__container__right__form__btn"
+              className="hr-login__container__left__form__btn"
             >
               Đăng nhập
             </button>
           </Form>
 
-          <div className="hr-login__container__right__link">
-            <p className="hr-login__container__right__link__text">
+          <div className="hr-login__container__left__link">
+            <p className="hr-login__container__left__link__text">
               Người tìm việc <Link to="/sign-in/candidate">đăng nhập</Link>
             </p>
           </div>
