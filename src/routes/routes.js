@@ -44,18 +44,13 @@ function Routes() {
         </CandidateLayout>
       </Route>
 
-      <Route exact path={["/sign-in/candidate"]}>
+      <Route exact path={["/sign-in/candidate", "/sign-in/hr"]}>
         <EmptyLayout>
           <UnauthorizedRoute
             exact
             path="/sign-in/candidate"
             component={CandidateSignIn}
           />
-        </EmptyLayout>
-      </Route>
-
-      <Route exact path={["/sign-in/hr"]}>
-        <EmptyLayout>
           <UnauthorizedRoute exact path="/sign-in/hr" component={HRSignIn} />
         </EmptyLayout>
       </Route>
