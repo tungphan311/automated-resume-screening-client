@@ -34,7 +34,7 @@ function HRSignIn() {
             className="hr-login__container__right__form"
           >
             <span className="hr-login__container__right__form__title">
-              Người tìm việc đăng nhập
+              Nhà tuyển dụng đăng nhập
             </span>
 
             {/* Email */}
