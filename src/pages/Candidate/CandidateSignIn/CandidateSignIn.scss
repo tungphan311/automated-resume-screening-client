@@ -9,36 +9,24 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: row-reverse;
-    font-family: Poppins-Regular;
 
     &__right {
       background-color: $c-alabaster;
-      padding: 60px 55px 55px 55px;
+      padding: 30px 55px 0 55px;
       width: 40vw;
       min-height: 100vh;
 
+      &__logo {
+        width: 7.375rem;
+        margin-bottom: 50px;
+      }
+
       &__link {
         display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-        flex-direction: column;
         width: 100%;
-        margin-bottom: 30px;
-
-        &__back {
-          width: 40px;
-          height: 40px;
-          color: $c-wild-sand;
-          background-color: $c-cod-gray;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 20px;
-          font-weight: 300;
-          border-radius: 50%;
-          margin-bottom: 20px;
-          font-family: Arial, sans-serif;
-        }
+        justify-content: flex-end;
+        align-items: flex-end;
+        padding-top: 10px;
 
         &__text {
           font-style: italic;
@@ -48,16 +36,17 @@
       }
 
       &__form {
-        display: block;
+        display: flex;
+        flex-direction: column;
 
         &__title {
           width: 100%;
           display: block;
           font-size: 28px;
-          color: $c-mine-shaft;
+          color: #5468d9;
           line-height: 1.2;
           text-align: center;
-          margin-bottom: 30px;
+          margin-bottom: 20px;
         }
 
         &__label {
@@ -69,39 +58,86 @@
         }
 
         &__btn {
+          max-height: 42px;
           margin: 10px 0;
           font-weight: 500;
           display: flex;
           justify-content: center;
           align-items: center;
           width: 100%;
-          padding: 10px 0;
+          padding: 12px 0;
           border-radius: 10px;
-          background: $primary;
           color: $c-white;
           text-transform: uppercase;
+          background-image: linear-gradient(to right, $primary, #3853de 22%, #9c75e3 50%, #3853de 78%, $primary 100%);
+          transition: all 0.3s ease;
+          background-size: 200% auto;
 
           &:hover {
-            background-color: $c-havelock-blue;
+            background-position: right center;
           }
         }
 
         &__with {
           font-size: 14px;
+          position: relative;
+          width: fit-content;
+          align-self: center;
+          padding: 10px 0;
+
+          &::before {
+            content: "";
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: #626fb0;
+            top: 50%;
+            right: 110%;
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: #626fb0;
+            top: 50%;
+            left: 110%;
+          }
         }
 
         &__social {
+          display: flex;
+          flex-direction: column;
+          padding-top: 10px;
+
           &__item {
-            margin-right: 15px;
+            margin-bottom: 10px;
+            font-weight: 500;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: $c-white;
+            max-height: 42px;
 
             &--fb {
-              color: $c-chambray;
-              font-size: 22px;
+              background-color: $c-chambray;
+
+              &__icon {
+                font-size: 22px;
+                padding-right: 20px;
+              }
             }
 
             &--gmail {
-              font-size: 24px;
-              color: $c-valencia;
+              background-color: $c-valencia;
+
+              &__icon {
+                font-size: 24px;
+                padding-right: 20px;
+              }
             }
           }
         }

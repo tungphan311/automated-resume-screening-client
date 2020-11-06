@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { MailOutlined } from "@ant-design/icons";
+import { GooglePlusOutlined } from "@ant-design/icons";
 import { createFromIconfontCN } from "@ant-design/icons";
-import { Input, Form, Button } from "antd";
+import { Input, Form } from "antd";
 
 import "./CandidateSignIn.scss";
 
@@ -25,16 +25,16 @@ function CandidateSignIn() {
       <div className="candidate-login__container">
         {/* Login Form  */}
         <div className="candidate-login__container__right">
-          <div className="candidate-login__container__right__link">
+          <div className="candidate-login__container__right__logo">
             <Link
               to="/"
-              className="candidate-login__container__right__link__back"
+              className="candidate-login__container__right__logo__wrapper"
             >
-              x
+              <img
+                src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
+                alt="logo"
+              />
             </Link>
-            <p className="candidate-login__container__right__link__text">
-              Nhà tuyển dụng <Link to="/sign-in/hr">đăng nhập</Link>
-            </p>
           </div>
 
           <Form
@@ -74,39 +74,47 @@ function CandidateSignIn() {
             <a href="https://www.google.com.vn/">Quên mật khẩu?</a>
 
             {/* Button Login  */}
-            <Button
-              type="primary"
+            <button
               htmlType="submit"
               className="candidate-login__container__right__form__btn"
             >
               Đăng nhập
-            </Button>
+            </button>
 
             {/* Login with social  */}
-            <div className="candidate-login__container__right__form__with text-center">
-              <span>Hoặc đăng nhập với </span>
-            </div>
+            <span className="candidate-login__container__right__form__with text-center">
+              Hoặc bạn có thể
+            </span>
+
             <div class="candidate-login__container__right__form__social">
               {/* Login with facebook  */}
-              <a
-                href="https://www.facebook.com/"
-                className="candidate-login__container__right__form__social__item "
+              <button
+                htmlType="submit"
+                className="candidate-login__container__right__form__social__item candidate-login__container__right__form__social__item--fb"
               >
                 <IconFont
+                  className="candidate-login__container__right__form__social__item--fb__icon"
                   type="icon-facebook"
-                  className="candidate-login__container__right__form__social__item--fb"
                 />
-              </a>
+                Đăng nhập với Facebook
+              </button>
 
               {/* Login with gmail  */}
-              <a
-                href="https://mail.google.com/"
-                className="candidate-login__container__right__form__social__item"
+              <button
+                htmlType="submit"
+                className="candidate-login__container__right__form__social__item candidate-login__container__right__form__social__item--gmail"
               >
-                <MailOutlined className="candidate-login__container__right__form__social__item--gmail" />
-              </a>
+                <GooglePlusOutlined className="candidate-login__container__right__form__social__item--gmail__icon" />
+                Đăng nhập với Google
+              </button>
             </div>
           </Form>
+
+          <div className="candidate-login__container__right__link">
+            <p className="candidate-login__container__right__link__text">
+              Nhà tuyển dụng <Link to="/sign-in/hr">đăng nhập</Link>
+            </p>
+          </div>
         </div>
 
         {/* Background Image  */}
