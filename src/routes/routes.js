@@ -1,4 +1,7 @@
 import CandidateLayout from "layouts/CandidateLayout/CandidateLayout";
+import EmptyLayout from "layouts/EmptyLayout/EmptyLayout";
+import CandidateSignIn from "pages/Candidate/CandidateSignIn/CandidateSignIn";
+import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
 import CandidateHome from "pages/Candidate/Home/Home";
 import CandidateProfile from "pages/Candidate/Profile/Profile";
 import React from "react";
@@ -39,6 +42,17 @@ function Routes() {
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
           <AuthorizedRoute exact path="/profile" component={CandidateProfile} />
         </CandidateLayout>
+      </Route>
+
+      <Route exact path={["/sign-in/candidate", "/sign-in/hr"]}>
+        <EmptyLayout>
+          <UnauthorizedRoute
+            exact
+            path="/sign-in/candidate"
+            component={CandidateSignIn}
+          />
+          <UnauthorizedRoute exact path="/sign-in/hr" component={HRSignIn} />
+        </EmptyLayout>
       </Route>
     </Switch>
   );

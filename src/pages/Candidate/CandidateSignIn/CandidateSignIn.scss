@@ -1,0 +1,203 @@
+.candidate-login {
+  width: 100%;
+
+  &__container {
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    background: $c-white;
+    display: flex;
+    flex-wrap: wrap;
+
+    &__left {
+      background-color: $c-alabaster;
+      padding: 90px 80px 0 80px;
+      width: 40vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &__logo {
+        width: 7.375rem;
+        position: absolute;
+        top: 30px;
+        left: 30px;
+      }
+
+      &__title {
+        display: block;
+        font-size: 28px;
+        color: $c-royal-blue;;
+        line-height: 1.2;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      &__link {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        align-items: flex-end;
+        padding-top: 10px;
+
+        &__text {
+          font-style: italic;
+          font-size: 13px;
+          color: $c-boulder;
+        }
+      }
+
+      &__form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        &__label {
+          margin-bottom: 5px;
+        }
+
+        &__input {
+          height: 40px;
+        }
+
+        &__btn {
+          max-height: 42px;
+          margin: 10px 0;
+          font-weight: 500;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          padding: 12px 0;
+          border-radius: 10px;
+          color: $c-white;
+          text-transform: uppercase;
+          background-image: linear-gradient(to right, $primary, #3853de 22%, #9c75e3 50%, #3853de 78%, $primary 100%);
+          transition: all 0.3s ease;
+          background-size: 200% auto;
+
+          &:hover {
+            background-position: right center;
+          }
+        }
+
+        &__with {
+          font-size: 14px;
+          position: relative;
+          width: fit-content;
+          align-self: center;
+          padding: 10px 0;
+
+          &::before {
+            content: "";
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: $c-scampi;
+            top: 50%;
+            right: 110%;
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: $c-scampi;
+            top: 50%;
+            left: 110%;
+          }
+        }
+
+        &__social {
+          display: flex;
+          flex-direction: column;
+          padding-top: 10px;
+
+          &__item {
+            margin-bottom: 15px;
+            font-weight: 500;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: $c-white;
+            max-height: 42px;
+
+            &--fb {
+              background-color: $c-chambray;
+
+              &__icon {
+                font-size: 22px;
+                padding-right: 20px;
+              }
+            }
+
+            &--gmail {
+              background-color: $c-valencia;
+
+              &__icon {
+                font-size: 24px;
+                padding-right: 20px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__bg {
+    width: calc(100% - 40vw);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/*------------------------------------------------------------------
+[ Responsive ]*/
+
+@media (min-width: 1441px) {
+  .candidate-login__container__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+
+@media (min-width: 1441px) {
+  .hr-login__container__left {
+    padding: 80px 120px 0 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .candidate-login__bg {
+    display: none;
+  }
+
+  .candidate-login__container__left__form {
+    margin: 0 auto;
+  }
+
+  .candidate-login__container__left {
+    width: 100vw;
+    padding: 80px 20% 0 20%;
+  }
+}
+
+@media (max-width: 576px) {
+  .candidate-login__container__left {
+    padding: 90px 20px 0 20px;
+  }
+
+  .candidate-login__container__left__form__title {
+    font-size: 22px;
+  }
+}

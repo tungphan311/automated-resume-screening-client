@@ -1,0 +1,161 @@
+.hr-login {
+  width: 100%;
+
+  &__container {
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    background: $c-white;
+    display: flex;
+    flex-wrap: wrap;
+
+    &__left {
+      background-color: $c-alabaster;
+      padding: 0 80px;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      width: 40vw;
+      min-height: 100vh;
+      position: relative;
+
+      &__logo {
+        width: 7.375rem;
+        position: absolute;
+        top: 30px;
+        left: 30px;
+      }
+
+      &__link {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        align-items: flex-end;
+        padding-top: 10px;
+
+        &__text {
+          font-style: italic;
+          font-size: 13px;
+          color: $c-boulder;
+        }
+      }
+
+      &__title {
+        display: block;
+        font-size: 28px;
+        color: $c-royal-blue;
+        line-height: 1.2;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      &__form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        &__label {
+          margin-bottom: 5px;
+        }
+
+        &__input {
+          height: 40px;
+        }
+
+        &__btn {
+          max-height: 42px;
+          margin: 10px 0;
+          font-weight: 500;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          padding: 12px 0;
+          border-radius: 10px;
+          color: $c-white;
+          text-transform: uppercase;
+          background-image: linear-gradient(to right, $primary, #3853de 22%, #9c75e3 50%, #3853de 78%, $primary 100%);
+          transition: all 0.3s ease;
+          background-size: 200% auto;
+
+          &:hover {
+            background-position: right center;
+          }
+        }
+
+        &__with {
+          font-size: 14px;
+          position: relative;
+          width: fit-content;
+          align-self: center;
+          padding: 10px 0;
+
+          &::before {
+            content: "";
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: $c-scampi;
+            top: 50%;
+            right: 110%;
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: $c-scampi;
+            top: 50%;
+            left: 110%;
+          }
+        }
+      }
+    }
+  }
+
+  &__bg {
+    width: calc(100% - 40vw);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/*------------------------------------------------------------------
+[ Responsive ]*/
+
+@media (min-width: 1441px) {
+  .hr-login__container__left {
+    padding: 80px 120px 0 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hr-login__bg {
+    display: none;
+  }
+
+  .hr-login__container__left__form {
+    margin: 0 auto;
+  }
+
+  .hr-login__container__left {
+    width: 100vw;
+    padding: 80px 20% 0 20%;
+  }
+}
+
+@media (max-width: 576px) {
+  .hr-login__container__left {
+    justify-content: initial;
+    padding: 120px 30px 0 30px;
+  }
+
+  .hr-login__container__left__form__title {
+    font-size: 22px;
+  }
+}
