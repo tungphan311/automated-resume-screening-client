@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import "./Header.scss";
 
 function Header() {
+  const { pathname } = window.location;
+
   return (
     <header id="header" className="header">
       <div className="header__section">
@@ -12,11 +14,19 @@ function Header() {
             {/* Header section */}
             <div className="header__navbar-brand-wrapper">
               <Link to="/" className="navbar-brand header__navbar-brand">
-                <img
-                  src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
-                  alt="logo"
-                  className="header__navbar-brand-default"
-                />
+                {pathname.startsWith("/recruitment") ? (
+                  <img
+                    src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
+                    alt="logo"
+                    className="header__navbar-brand-default"
+                  />
+                ) : (
+                  <img
+                    src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
+                    alt="logo"
+                    className="header__navbar-brand-default"
+                  />
+                )}
               </Link>
             </div>
 

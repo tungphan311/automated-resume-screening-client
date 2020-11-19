@@ -6,6 +6,8 @@ import CandidateHome from "pages/Candidate/Home/Home";
 import CandidateProfile from "pages/Candidate/Profile/Profile";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import HRHome from "pages/HR/Home/Home";
+import HRPostJob from "pages/HR/PostJob/PostJob";
 
 // component for admin site to determine user is logined or not
 export const AuthorizedRoute = ({
@@ -37,10 +39,19 @@ export const UnauthorizedRoute = ({ component: Component, ...rest }) => (
 function Routes() {
   return (
     <Switch>
-      <Route exact path={["/", "/profile"]}>
+      <Route
+        exact
+        path={["/", "/profile", "/recruitment", "/recruitment/jobs/new-job"]}
+      >
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
+          <UnauthorizedRoute exact path="/recruitment" component={HRHome} />
           <AuthorizedRoute exact path="/profile" component={CandidateProfile} />
+          <AuthorizedRoute
+            exact
+            path="/recruitment/jobs/new-job"
+            component={HRPostJob}
+          />
         </CandidateLayout>
       </Route>
 

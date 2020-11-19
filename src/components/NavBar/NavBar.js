@@ -2,6 +2,7 @@ import { Button } from "antd";
 import { NAVIGATIONS } from "constants/index";
 import React from "react";
 import { Link } from "react-router-dom";
+import history from "state/history";
 import "./NavBar.scss";
 
 function NavBar() {
@@ -15,7 +16,11 @@ function NavBar() {
           <NavItem key={title} {...{ title, url, link, button }} />
         ))}
         <span className="nav-separator nav-separator--grey"></span>
-        <Button type="primary" size="large">
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => history.push("/recruitment")}
+        >
           Nhà tuyển dụng
         </Button>
       </ul>
