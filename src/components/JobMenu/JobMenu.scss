@@ -1,0 +1,142 @@
+.header-sub-menu {
+  background: $c-white;
+  margin: 0 auto 20px;
+
+  .j-navbar-sub-menu {
+    margin-bottom: 0;
+    border: 0;
+    background: $c-white;
+  }
+
+  .j-sub-menu {
+    padding: 0;
+
+    ul li {
+      &.active a {
+        color: $c-mine-shaft;
+        border-bottom: 2px solid $c-valencia;
+        margin-right: 2px;
+        margin-left: 2px;
+      }
+
+      a {
+        padding: 20px;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        font-size: 14px;
+
+        &:hover {
+          border-bottom: 2px solid #d50000;
+        }
+      }
+
+      &:first-child a {
+        padding-left: 0;
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+.j-nav > li > a {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+}
+
+.j-navbar-nav > li > a {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  line-height: 20px;
+}
+
+.j-navbar-default {
+  border-color: #e7e7e7;
+
+  .j-navbar-collapse {
+    border-color: #e7e7e7;
+  }
+
+  .j-navbar-nav > li > a {
+    color: #555;
+    border-top: 3px solid $c-white;
+    padding-top: 12px;
+
+    &:hover {
+      color: $c-valencia;
+    }
+  }
+}
+
+.j-navbar-default .j-navbar-nav > .active > a,
+.j-navbar-default .j-navbar-nav > .active > a:hover,
+.j-navbar-default .j-navbar-nav > .active > a:focus {
+  background-color: $c-white;
+  color: $c-valencia;
+  border-color: $c-valencia;
+}
+
+.j-navbar {
+  position: relative;
+  min-height: 50px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+}
+
+.j-navbar-collapse {
+  padding-right: 15px;
+  padding-left: 15px;
+  overflow-x: visible;
+  border-top: 1px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.j-collapse {
+  display: none;
+}
+
+.j-nav {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+
+  & > li {
+    position: relative;
+    display: block;
+  }
+}
+
+.j-navbar-nav {
+  margin: 7.5px -15px;
+}
+
+.j-nav,
+.j-navbar,
+.j-navbar-collapse {
+  display: table;
+  content: " ";
+}
+
+@media (min-width: 768px) {
+  .j-navbar-collapse {
+    width: auto;
+    border-top: 0;
+    box-shadow: none;
+
+    &.j-collapse {
+      display: block !important;
+      height: auto !important;
+      padding-bottom: 0;
+      overflow: visible !important;
+    }
+  }
+
+  .j-navbar-nav {
+    float: left;
+    margin: 0;
+
+    & > li {
+      float: left;
+    }
+  }
+}
