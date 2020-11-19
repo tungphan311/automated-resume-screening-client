@@ -6,9 +6,10 @@ body {
   background-color: $light-grey;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-}
+// code {
+//   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+//     monospace;
+// }
 
 .z-index-2 {
   z-index: 2;
@@ -27,7 +28,7 @@ code {
 a:hover {
   text-decoration: none;
 }
-  
+
 input {
   outline: none;
   border: none;
