@@ -1,6 +1,7 @@
 import JobMenu from "components/JobMenu/JobMenu";
 import React from "react";
 import "./PostJob.scss";
+import JobPostForm from "components/Forms/JobPost/JobPost";
 
 function HRPostJob() {
   return (
@@ -9,7 +10,7 @@ function HRPostJob() {
       <div className="container">
         <div className="panel post-job-form panel--light">
           <div className="panel-body">
-            <form></form>
+            <JobPostForm />
           </div>
         </div>
       </div>
