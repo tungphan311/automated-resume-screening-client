@@ -1,19 +1,54 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Input, Form } from "antd";
+import { loginUserAction } from "state/actions/authenticationActions";
+import { loginUserService } from "services/authenticationService";
+import { setCookie, checkCookie } from "utils/cookies";
+import { toast } from "utils/index";
 
 import "./HRSignIn.scss";
 
 const validateMessages = {
   required: "Vui lòng nhập ${label}",
   types: {
+    email: "Email không hợp lệ",
     password: "Mật khẩu"
   }
 };
 
 function HRSignIn() {
-  return (
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isLogin = useSelector((state) => state.login.isLogin);
+  const accessToken = useSelector((state) => state.login.token);
+
+  //Handle submit Login
+  const onFinish = (values) => {
+    setIsLoading(true);
+    const data = loginUserService(values.user);
+    data
+      .then((res) => {
+        setIsLoading(false);
+        dispatch(loginUserAction(res.data.access_token));
+      })
+      .catch(() => {
+        setIsLoading(false);
+        toast({ type: "error", message: "Sai tài khoản hoặc email" });
+      });
+  };
+
+  //Handle set cookie after login success
+  if (isLogin) {
+    setCookie("token", accessToken, 1);
+    toast({ type: "success", message: "Đăng nhập thành công" });
+  }
+
+  return checkCookie() ? (
+    <Redirect to="/" />
+  ) : (
     <div className="hr-login">
       <div className="hr-login__container">
         {/* Login Form  */}
@@ -35,17 +70,18 @@ function HRSignIn() {
             layout="vertical"
             name="nest-messages"
             validateMessages={validateMessages}
+            onFinish={onFinish}
             className="hr-login__container__left__form"
           >
             {/* Email */}
             <Form.Item
-              label="Tài khoản"
-              name={["user", "username"]}
-              rules={[{ required: true }]}
+              label="Email"
+              name={["user", "email"]}
+              rules={[{ type: "email", required: true }]}
             >
               <Input
                 className="hr-login__container__left__form__input"
-                placeholder="Nhập tên tài khoản"
+                placeholder="Nhập email"
               />
             </Form.Item>
 
@@ -69,6 +105,7 @@ function HRSignIn() {
               className="hr-login__container__left__form__btn"
             >
               Đăng nhập
+              {isLoading && <div class="dashed-loading"></div>}
             </button>
           </Form>
 

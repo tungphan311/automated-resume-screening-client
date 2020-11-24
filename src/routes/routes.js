@@ -4,20 +4,21 @@ import CandidateSignIn from "pages/Candidate/CandidateSignIn/CandidateSignIn";
 import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
 import CandidateHome from "pages/Candidate/Home/Home";
 import CandidateProfile from "pages/Candidate/Profile/Profile";
+import ConfirmMail from "pages/Empty/ConfirmMail/ConfirmMail";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { checkCookie } from "../utils/cookies";
 
 // component for admin site to determine user is logined or not
 export const AuthorizedRoute = ({
   component: Component,
-  isUser = true,
   redirect,
   ...rest
 }) => (
   <Route
     {...rest}
     render={(props) =>
-      isUser ? (
+      checkCookie() !== null ? (
         <Component {...props} {...rest} />
       ) : (
         <Redirect
@@ -44,7 +45,10 @@ function Routes() {
         </CandidateLayout>
       </Route>
 
-      <Route exact path={["/sign-in/candidate", "/sign-in/hr"]}>
+      <Route
+        exact
+        path={["/sign-in/candidate", "/sign-in/hr", "/confirm-mail"]}
+      >
         <EmptyLayout>
           <UnauthorizedRoute
             exact
@@ -52,6 +56,11 @@ function Routes() {
             component={CandidateSignIn}
           />
           <UnauthorizedRoute exact path="/sign-in/hr" component={HRSignIn} />
+          <UnauthorizedRoute
+            exact
+            path="/confirm-mail"
+            component={ConfirmMail}
+          />
         </EmptyLayout>
       </Route>
     </Switch>

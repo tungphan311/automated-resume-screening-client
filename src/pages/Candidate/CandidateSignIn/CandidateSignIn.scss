@@ -28,7 +28,7 @@
       &__title {
         display: block;
         font-size: 28px;
-        color: $c-royal-blue;;
+        color: $c-royal-blue;
         line-height: 1.2;
         text-align: center;
         margin-bottom: 20px;
@@ -169,7 +169,6 @@
     justify-content: center;
   }
 }
-
 
 @media (min-width: 1441px) {
   .hr-login__container__left {
