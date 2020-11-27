@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-
 import { createFromIconfontCN } from "@ant-design/icons";
 import { Form, Input } from "antd";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
 import { loginAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./CandidateSignIn.scss";

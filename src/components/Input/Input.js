@@ -8,7 +8,7 @@ const Input = ({
   label = "",
   append = "",
   type = "text",
-  required,
+  required = false,
   meta = {}, // redux form
   input // redux form
 }) => {
@@ -21,7 +21,7 @@ const Input = ({
     <div className={`form-group ${formClassName}`}>
       <label className={`${!label ? "d-none" : "input__label"}`}>
         {label}
-        {required && <span class="text-danger"> *</span>}
+        {required && <span className="text-danger"> *</span>}
       </label>
       <div className="input-group mb-3">
         <input

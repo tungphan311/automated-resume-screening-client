@@ -6,6 +6,8 @@
     "@adobe/redux-saga-promise": "^1.1.1",
     "@ant-design/icons": "^4.2.2",
     "@babel/core": "7.12.3",
+    "@ckeditor/ckeditor5-build-classic": "^23.1.0",
+    "@ckeditor/ckeditor5-react": "^3.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.2",
     "@svgr/webpack": "5.4.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -89,7 +91,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "lint": "eslint \"{,!(node_modules)/**/}*.js\" --fix",
+    "lint": "eslint \"src/**/*.js\" --fix",
     "format": "prettier --write \"src/**/*.js\""
   },
   "eslintConfig": {
