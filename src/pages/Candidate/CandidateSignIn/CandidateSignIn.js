@@ -1,10 +1,7 @@
+import { createFromIconfontCN, GooglePlusOutlined } from "@ant-design/icons";
+import { Form, Input } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
-
-import { GooglePlusOutlined } from "@ant-design/icons";
-import { createFromIconfontCN } from "@ant-design/icons";
-import { Input, Form } from "antd";
-
 import "./CandidateSignIn.scss";
 
 const IconFont = createFromIconfontCN({
@@ -86,7 +83,7 @@ function CandidateSignIn() {
               Hoặc bạn có thể
             </span>
 
-            <div class="candidate-login__container__left__form__social">
+            <div className="candidate-login__container__left__form__social">
               {/* Login with facebook  */}
               <button
                 htmlType="submit"
