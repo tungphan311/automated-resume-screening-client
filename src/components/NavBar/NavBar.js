@@ -1,17 +1,15 @@
 import { Button } from "antd";
 import { NAVIGATIONS } from "constants/index";
-
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { setCookie, checkCookie } from "utils/cookies";
 import { logoutUserAction } from "state/actions/authenticationActions";
-
+import { checkCookie, setCookie } from "utils/cookies";
 import "./NavBar.scss";
 
 function NavBar() {
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.login.token);
+  const accessToken = useSelector((state) => state.auth.token);
 
   //Handle logout
   const logOut = () => {

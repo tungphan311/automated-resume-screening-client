@@ -1,13 +1,11 @@
+import { Form, Input } from "antd";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-
-import { Input, Form } from "antd";
-import { loginUserAction } from "state/actions/authenticationActions";
 import { loginUserService } from "services/authenticationService";
-import { setCookie, checkCookie } from "utils/cookies";
+import { loginUserAction } from "state/actions/authenticationActions";
+import { checkCookie } from "utils/cookies";
 import { toast } from "utils/index";
-
 import "./HRSignIn.scss";
 
 const validateMessages = {
@@ -22,8 +20,8 @@ function HRSignIn() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const isLogin = useSelector((state) => state.login.isLogin);
-  const accessToken = useSelector((state) => state.login.token);
+  // const isLogin = useSelector((state) => state.login.isLogin);
+  // const accessToken = useSelector((state) => state.login.token);
 
   //Handle submit Login
   const onFinish = (values) => {
@@ -41,10 +39,10 @@ function HRSignIn() {
   };
 
   //Handle set cookie after login success
-  if (isLogin) {
-    setCookie("token", accessToken, 1);
-    toast({ type: "success", message: "Đăng nhập thành công" });
-  }
+  // if (isLogin) {
+  //   setCookie("token", accessToken, 1);
+  //   toast({ type: "success", message: "Đăng nhập thành công" });
+  // }
 
   return checkCookie() ? (
     <Redirect to="/" />

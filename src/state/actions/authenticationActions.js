@@ -11,5 +11,5 @@ export const loginUserAction = (user) => ({
 });
 
 export const logoutUserAction = () => ({
-  type: types.LOGIN_USER
+  type: types.LOGOUT
 });

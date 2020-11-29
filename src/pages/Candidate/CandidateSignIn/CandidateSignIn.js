@@ -1,16 +1,10 @@
+import { createFromIconfontCN, GooglePlusOutlined } from "@ant-design/icons";
+import { Form, Input } from "antd";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-
-import { GooglePlusOutlined } from "@ant-design/icons";
-import { createFromIconfontCN } from "@ant-design/icons";
-import { Input, Form } from "antd";
-
 import { loginUserAction } from "state/actions/authenticationActions";
-import { loginUserService } from "services/authenticationService";
-import { setCookie, checkCookie } from "utils/cookies";
-import { toast } from "utils/index";
-
+import { checkCookie } from "utils/cookies";
 import "./CandidateSignIn.scss";
 
 const IconFont = createFromIconfontCN({
@@ -29,29 +23,15 @@ function CandidateSignIn() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const isLogin = useSelector((state) => state.login.isLogin);
-  const accessToken = useSelector((state) => state.login.token);
+  // const isLogin = useSelector((state) => state.login.isLogin);
+  // const accessToken = useSelector((state) => state.login.token);
 
   //Handle submit Login
   const onFinish = (values) => {
     setIsLoading(true);
-    const data = loginUserService(values.user);
-    data
-      .then((res) => {
-        setIsLoading(false);
-        dispatch(loginUserAction(res.data.access_token));
-      })
-      .catch(() => {
-        setIsLoading(false);
-        toast({ type: "error", message: "Sai tài khoản hoặc email" });
-      });
-  };
 
-  //Handle set cookie after login success
-  if (isLogin) {
-    setCookie("token", accessToken, 1);
-    toast({ type: "success", message: "Đăng nhập thành công" });
-  }
+    dispatch(loginUserAction(values.user));
+  };
 
   return checkCookie() ? (
     <Redirect to="/" />
@@ -115,7 +95,7 @@ function CandidateSignIn() {
               className="candidate-login__container__left__form__btn"
             >
               Đăng nhập
-              {isLoading && <div class="dashed-loading"></div>}
+              {isLoading && <div className="dashed-loading"></div>}
             </button>
 
             {/* Login with social  */}
@@ -123,7 +103,7 @@ function CandidateSignIn() {
               Hoặc bạn có thể
             </span>
 
-            <div class="candidate-login__container__left__form__social">
+            <div className="candidate-login__container__left__form__social">
               {/* Login with facebook  */}
               <button
                 htmlType="submit"
