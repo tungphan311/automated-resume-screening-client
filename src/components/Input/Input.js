@@ -6,6 +6,7 @@ const Input = ({
   className = "",
   formClassName = "",
   label = "",
+  subLabel = "",
   append = "",
   type = "text",
   required = false,
@@ -23,6 +24,9 @@ const Input = ({
         {label}
         {required && <span className="text-danger"> *</span>}
       </label>
+      <div className={subLabel ? "help-block text-italic" : "d-none"}>
+        {subLabel}
+      </div>
       <div className="input-group mb-3">
         <input
           {...input}
@@ -40,7 +44,7 @@ const Input = ({
         {showError && (
           <span
             className="error"
-            style={{ position: "absolute", color: "#f25961", top: "38px" }}
+            style={{ position: "absolute", color: "#f25961", top: "40px" }}
           >
             {errCode}
           </span>

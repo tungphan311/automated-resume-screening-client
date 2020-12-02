@@ -7,14 +7,13 @@ function Editor({
   label,
   required,
   meta = {}, // redux form
-  input // redux form
+  input: { value, onChange } // redux form
 }) {
-  const { touched, error } = meta;
+  const { error, touched } = meta;
 
   const showError = touched && error;
   const { errCode } = error || {};
 
-  console.log({ ...input });
   return (
     <div className={`form-group ${formClassName}`}>
       <label className={`${label ? "" : "d-none"}`}>
@@ -22,30 +21,21 @@ function Editor({
       </label>
       <CKEditor
         editor={ClassicEditor}
-        data=""
-        onReady={(editor) => {
-          // You can store the "editor" and use when it is needed.
-          console.log("Editor is ready to use!", editor);
-        }}
+        data={value}
         onChange={(event, editor) => {
           const data = editor.getData();
-          console.log({ event, editor, data });
-        }}
-        onBlur={(event, editor) => {
-          console.log("Blur.", editor);
-        }}
-        onFocus={(event, editor) => {
-          console.log("Focus.", editor);
+          onChange(data);
         }}
       />
       {showError && (
         <span
           className="error"
-          style={{ position: "absolute", color: "#f25961", top: "38px" }}
+          style={{ position: "absolute", color: "#f25961", bottom: "0px" }}
         >
           {errCode}
         </span>
       )}
+      <br style={{ marginTop: "1rem" }} />
     </div>
   );
 }
