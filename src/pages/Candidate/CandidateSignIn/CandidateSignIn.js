@@ -3,7 +3,7 @@ import { Form, Input } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { loginUserAction } from "state/actions/authenticationActions";
+import { loginAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./CandidateSignIn.scss";
 
@@ -30,7 +30,10 @@ function CandidateSignIn() {
   const onFinish = (values) => {
     setIsLoading(true);
 
-    dispatch(loginUserAction(values.user));
+    // dispatch(loginUserAction(values.user));
+    dispatch(loginAction({ user: values.user })).catch(() => {
+      setIsLoading(false);
+    });
   };
 
   return checkCookie() ? (
