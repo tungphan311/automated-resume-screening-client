@@ -2,10 +2,8 @@ import { Form, Input } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { loginUserService } from "services/authenticationService";
 import { loginUserAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
-import { toast } from "utils/index";
 import "./HRSignIn.scss";
 
 const validateMessages = {
@@ -26,23 +24,8 @@ function HRSignIn() {
   //Handle submit Login
   const onFinish = (values) => {
     setIsLoading(true);
-    const data = loginUserService(values.user);
-    data
-      .then((res) => {
-        setIsLoading(false);
-        dispatch(loginUserAction(res.data.access_token));
-      })
-      .catch(() => {
-        setIsLoading(false);
-        toast({ type: "error", message: "Sai tài khoản hoặc email" });
-      });
+    dispatch(loginUserAction(values.user));
   };
-
-  //Handle set cookie after login success
-  // if (isLogin) {
-  //   setCookie("token", accessToken, 1);
-  //   toast({ type: "success", message: "Đăng nhập thành công" });
-  // }
 
   return checkCookie() ? (
     <Redirect to="/" />
@@ -103,7 +86,7 @@ function HRSignIn() {
               className="hr-login__container__left__form__btn"
             >
               Đăng nhập
-              {isLoading && <div class="dashed-loading"></div>}
+              {isLoading && <div className="dashed-loading"></div>}
             </button>
           </Form>
 

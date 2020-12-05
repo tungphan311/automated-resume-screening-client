@@ -29,7 +29,6 @@ function CandidateSignIn() {
   //Handle submit Login
   const onFinish = (values) => {
     setIsLoading(true);
-
     dispatch(loginUserAction(values.user));
   };
 
