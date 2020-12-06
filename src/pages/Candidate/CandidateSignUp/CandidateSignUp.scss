@@ -1,0 +1,159 @@
+.candidate-register {
+  background: url("/assets/img/map.webp") no-repeat, #edf0ff;
+  background-size: 100%;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+
+  &__container {
+    margin: 3% auto;
+    position: relative;
+    max-width: 420px;
+    width: 60%;
+
+    &__logo {
+      width: 40%;
+      margin: 0 auto;
+      padding-bottom: 30px;
+    }
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+
+      &__title {
+        display: block;
+        font-size: 28px;
+        color: $c-royal-blue;
+        line-height: 1.2;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      &__link {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        align-items: flex-end;
+        padding-top: 10px;
+
+        &__text {
+          font-style: italic;
+          font-size: 13px;
+          color: $c-boulder;
+        }
+      }
+
+      &__confirm {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        &__label {
+          margin-bottom: 5px;
+        }
+
+        &__group {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        &__input {
+          height: 40px;
+        }
+
+        &__btn {
+          max-height: 42px;
+          margin: 10px 0;
+          font-weight: 500;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          padding: 12px 0;
+          border-radius: 10px;
+          color: $c-white;
+          text-transform: uppercase;
+          background-image: linear-gradient(to right, $primary, #3853de 22%, #9c75e3 50%, #3853de 78%, $primary 100%);
+          transition: all 0.3s ease;
+          background-size: 200% auto;
+
+          &:hover {
+            background-position: right center;
+          }
+        }
+
+        &__text {
+          font-size: 13px;
+          color: #757575;
+        }
+      }
+    }
+    // h2 {
+    //   background: linear-gradient(to right, #4e6afb, #3844be 29%, #5468d9 61%, #9060e7);
+    //   -webkit-background-clip: text;
+    //   -webkit-text-fill-color: transparent;
+    // }
+  }
+
+  .ant-form-item-label {
+    display: none;
+  }
+}
+
+/*------------------------------------------------------------------
+[ Responsive ]*/
+
+@media (min-width: 1441px) {
+  .candidate-login__container__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1441px) {
+  .hr-login__container__left {
+    padding: 80px 120px 0 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .candidate-login__bg {
+    display: none;
+  }
+
+  .candidate-login__container__left__form {
+    margin: 0 auto;
+  }
+
+  .candidate-login__container__left {
+    width: 100vw;
+    padding: 80px 20% 0 20%;
+  }
+}
+
+@media (max-width: 576px) {
+  .candidate-login__container__left {
+    padding: 90px 20px 0 20px;
+  }
+
+  .candidate-login__container__left__form__title {
+    font-size: 22px;
+  }
+}

@@ -1,8 +1,9 @@
-import { Form, Input } from "antd";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { loginUserAction } from "state/actions/authenticationActions";
+
+import { Form, Input } from "antd";
+import { useDispatch } from "react-redux";
+import { loginAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./HRSignIn.scss";
 
@@ -24,7 +25,9 @@ function HRSignIn() {
   //Handle submit Login
   const onFinish = (values) => {
     setIsLoading(true);
-    dispatch(loginUserAction(values.user));
+    dispatch(loginAction({ user: values.user })).catch(() => {
+      setIsLoading(false);
+    });
   };
 
   return checkCookie() ? (
@@ -78,7 +81,7 @@ function HRSignIn() {
               />
             </Form.Item>
 
-            <a href="https://www.google.com.vn/">Quên mật khẩu?</a>
+            <Link to="/sign-up/hr">Đăng kí tài khoản</Link>
 
             {/* Button Login  */}
             <button

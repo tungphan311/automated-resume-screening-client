@@ -1,6 +1,8 @@
 import CandidateLayout from "layouts/CandidateLayout/CandidateLayout";
 import EmptyLayout from "layouts/EmptyLayout/EmptyLayout";
 import CandidateSignIn from "pages/Candidate/CandidateSignIn/CandidateSignIn";
+import CandidateSignUp from "pages/Candidate/CandidateSignUp/CandidateSignUp";
+import HRSignUp from "pages/HR/HRSignUp/HRSignUp";
 import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
 import CandidateHome from "pages/Candidate/Home/Home";
 import CandidateProfile from "pages/Candidate/Profile/Profile";
@@ -47,7 +49,13 @@ function Routes() {
 
       <Route
         exact
-        path={["/sign-in/candidate", "/sign-in/hr", "/confirm-mail"]}
+        path={[
+          "/sign-in/candidate",
+          "/sign-in/hr",
+          "/confirm-mail",
+          "/sign-up/candidate",
+          "/sign-up/hr"
+        ]}
       >
         <EmptyLayout>
           <UnauthorizedRoute
@@ -61,6 +69,12 @@ function Routes() {
             path="/confirm-mail"
             component={ConfirmMail}
           />
+          <UnauthorizedRoute
+            exact
+            path="/sign-up/candidate"
+            component={CandidateSignUp}
+          />
+          <UnauthorizedRoute exact path="/sign-up/hr" component={HRSignUp} />
         </EmptyLayout>
       </Route>
     </Switch>
