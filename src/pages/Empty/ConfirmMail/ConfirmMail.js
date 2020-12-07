@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
+import { verifyUserAction } from "state/actions/authenticationActions";
 import "./ConfirmMail.scss";
 
-function ConfirmMail() {
+const ConfirmMail = (props) => {
+  const dispatch = useDispatch();
+  const emailVerify = useSelector((state) => state.register.email);
+
+  let token = props.match.params.token;
+
+  useEffect(() => {
+    token && dispatch(verifyUserAction(token));
+  });
+
   return (
     <div className="confirm">
       <div className="blank-pages"></div>
@@ -33,27 +44,33 @@ function ConfirmMail() {
               alt="img"
               className="thumb-lg m-t-20 center-block"
             />
-            <p className="text-muted font-13 m-t-20">
-              A email has been send to <strong>youremail@domain.com</strong>.
-              Please check for an email from us and click on the included link
-              to verify your account.
-            </p>
+            {!token ? (
+              <p className="text-muted font-13 m-t-20">
+                A email has been send to <strong>{emailVerify}</strong>. Please
+                check for an email from us and click on the included link to
+                verify your account.
+              </p>
+            ) : (
+              <p>Email has been verify. Please login to join with us</p>
+            )}
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-sm-12 text-center">
-            <p className="text-muted">
-              Return to{" "}
-              <Link to="/" className="text-primary m-l-5">
-                <strong>Sign in</strong>
-              </Link>
-            </p>
+        {token && (
+          <div className="row">
+            <div className="col-sm-12 text-center">
+              <p className="text-muted">
+                Return to{" "}
+                <Link to="/sign-in/candidate" className="text-primary m-l-5">
+                  <strong>Sign in</strong>
+                </Link>
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default ConfirmMail;

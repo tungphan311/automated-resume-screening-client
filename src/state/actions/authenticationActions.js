@@ -3,7 +3,7 @@ import * as types from "./index";
 
 export const registerUserAction = (user) => ({
   type: types.REGISTER_USER,
-  user
+  payload: user
 });
 
 export const loginUserAction = (user) => ({
@@ -11,7 +11,14 @@ export const loginUserAction = (user) => ({
   payload: user
 });
 
+export const verifyUserAction = (token) => ({
+  type: types.VERIFY_USER,
+  payload: token
+});
+
 export const loginAction = createPromiseAction("LOGIN");
+export const registerAction = createPromiseAction("REGISTER");
+export const verifyAction = createPromiseAction("VERIFY");
 
 export const logoutUserAction = () => ({
   type: types.LOGOUT

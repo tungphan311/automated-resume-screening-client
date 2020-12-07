@@ -6,4 +6,7 @@ export const LOGIN_USER = "LOGIN_USER";
 export const LOGIN_USER_SUCCESS = "LOGIN_USER_SUCCESS";
 export const LOGIN_USER_ERROR = "LOGIN_USER_ERROR";
 
+export const VERIFY_USER = "VERIFY_USER";
+export const VERIFY_USER_SUCCESS = "VERIFY_USER_SUCCESS";
+
 export const LOGOUT = "LOGOUT";

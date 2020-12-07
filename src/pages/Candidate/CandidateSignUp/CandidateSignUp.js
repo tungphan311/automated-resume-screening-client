@@ -2,6 +2,9 @@
 import { Form, Input, Radio, DatePicker } from "antd";
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { registerUserAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./CandidateSignUp.scss";
 
@@ -20,10 +23,13 @@ const validateMessages = {
 };
 
 function CandidateSignUp() {
+  const dispatch = useDispatch();
+
   //Handle submit Login
   const onFinish = (fieldsValue) => {
     const values = {
       ...fieldsValue,
+      isCandidate: true,
       candidate: {
         dateOfBirth: fieldsValue["dateOfBirth"].format("YYYY-MM-DD")
       }
@@ -36,6 +42,7 @@ function CandidateSignUp() {
     // const user = { full_name, type: true, ...otherProps };
 
     console.log(values);
+    dispatch(registerUserAction(values));
   };
 
   return checkCookie() ? (
