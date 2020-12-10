@@ -1,14 +1,19 @@
 import Editor from "components/Editor/Editor";
+import CustomInput from "components/Input/CustomInput";
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
 import { EXPERIENCES, JOB_TYPES, SALARY } from "constants/index";
 import React from "react";
 import { connect } from "react-redux";
-import { Field, isDirty, reduxForm } from "redux-form";
+import { Field, formValueSelector, isDirty, reduxForm } from "redux-form";
 import { FORM_KEY_JOB_POST } from "state/reducers/formReducer";
 import { requireField } from "utils/formValidate";
+import { allowNumberOnly } from "utils/input";
 
-function JobPostForm({ handleSubmit }) {
+const MIN_SALARY = ["from", "between"];
+const MAX_SALARY = ["upto", "between"];
+
+function JobPostForm({ handleSubmit, salary }) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="row">
@@ -66,6 +71,41 @@ function JobPostForm({ handleSubmit }) {
           formClassName="col-md-6"
           options={SALARY}
         />
+        <div
+          className={`col-md-6 form-group ${salary !== "deal" ? "" : "d-none"}`}
+        >
+          <label>(Đơn vị VNĐ)</label>
+          <br />
+          <div className="d-flex align-center">
+            <Field
+              component={CustomInput}
+              name="minSalary"
+              required
+              formClassName={`w-47 ${
+                MIN_SALARY.includes(salary) ? "" : "d-none"
+              }`}
+              className="text-right"
+              append="₫"
+              onKeyPress={allowNumberOnly}
+            />
+            <span
+              id="salary-separator"
+              className={`${salary === "between" ? "d-inline" : "d-none"}`}
+            >
+              -
+            </span>
+            <Field
+              component={CustomInput}
+              name="maxSalary"
+              required
+              formClassName={`w-47 ${
+                MAX_SALARY.includes(salary) ? "" : "d-none"
+              }`}
+              className="text-right"
+              append="₫"
+            />
+          </div>
+        </div>
         <div className="col-12">
           <hr style={{ marginTop: 0 }} />
         </div>
@@ -108,8 +148,11 @@ JobPostForm = reduxForm({
   touchOnChange: true
 })(JobPostForm);
 
+const selector = formValueSelector(FORM_KEY_JOB_POST);
+
 JobPostForm = connect((state) => ({
-  shouldValidate: () => isDirty(FORM_KEY_JOB_POST)(state)
+  shouldValidate: () => isDirty(FORM_KEY_JOB_POST)(state),
+  salary: selector(state, "salary")
 }))(JobPostForm);
 
 export default JobPostForm;
