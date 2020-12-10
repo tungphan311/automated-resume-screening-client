@@ -1,17 +1,12 @@
 import Editor from "components/Editor/Editor";
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
+import { EXPERIENCES, JOB_TYPES, SALARY } from "constants/index";
 import React from "react";
 import { connect } from "react-redux";
 import { Field, isDirty, reduxForm } from "redux-form";
 import { FORM_KEY_JOB_POST } from "state/reducers/formReducer";
 import { requireField } from "utils/formValidate";
-
-const JOB_TYPES = [
-  { value: "fulltime", label: "Toàn thời gian" },
-  { value: "parttime", label: "Bán thời gian" },
-  { value: "intern", label: "Thực tập" }
-];
 
 function JobPostForm({ handleSubmit }) {
   return (
@@ -52,6 +47,36 @@ function JobPostForm({ handleSubmit }) {
           formClassName="col-md-6"
           placeholder="Chọn loại hình làm việc"
           options={JOB_TYPES}
+        />
+        <Field
+          label="Kinh nghiệm"
+          component={Select}
+          name="experiences"
+          required
+          defaultValue={EXPERIENCES[0].value}
+          formClassName="col-md-6"
+          options={EXPERIENCES}
+        />
+        <Field
+          label="Lương"
+          component={Select}
+          name="salary"
+          required
+          defaultValue={SALARY[0].value}
+          formClassName="col-md-6"
+          options={SALARY}
+        />
+        <div className="col-12">
+          <hr style={{ marginTop: 0 }} />
+        </div>
+        <Field
+          label="Tiêu đề"
+          component={Input}
+          name="title"
+          required
+          formClassName="col-md-12"
+          placeholder="VD: Frontend Developer"
+          validate={[requireField]}
         />
         <div className="col-12">
           <hr style={{ marginTop: 0 }} />
