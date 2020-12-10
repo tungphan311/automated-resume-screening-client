@@ -110,11 +110,42 @@ function JobPostForm({ handleSubmit, salary }) {
           <hr style={{ marginTop: 0 }} />
         </div>
         <Field
-          label="Tiêu đề"
+          label="Hạn chót nộp hồ sơ"
+          subLabel="Sau ngày này, tin tuyển dụng sẽ không còn được hiển thị"
           component={Input}
-          name="title"
+          name="endDate"
           required
-          formClassName="col-md-12"
+          formClassName="col-md-6"
+          placeholder="VD: Frontend Developer"
+          validate={[requireField]}
+        />
+        <Field
+          label="Tên người nhận hồ sơ"
+          subLabel="Tên người nhận hồ sơ ứng tuyển để ứng viên tiện xưng hô"
+          component={Input}
+          name="hrName"
+          required
+          formClassName="col-md-6"
+          placeholder="VD: Frontend Developer"
+          validate={[requireField]}
+        />
+        <Field
+          label="Email nhận thông báo"
+          subLabel="Các thông báo về tin tuyển dụng sẽ được gửi đến email này"
+          component={Input}
+          name="hrEmail"
+          required
+          formClassName="col-md-6"
+          placeholder="VD: Frontend Developer"
+          validate={[requireField]}
+        />
+        <Field
+          label="Số điện thoại"
+          subLabel="Số điện thoại nhà tuyển dụng để ứng viên liên hệ khi cần thiết"
+          component={Input}
+          name="hrPhone"
+          required
+          formClassName="col-md-6"
           placeholder="VD: Frontend Developer"
           validate={[requireField]}
         />
@@ -137,6 +168,19 @@ function JobPostForm({ handleSubmit, salary }) {
           formClassName="col-md-12"
           validate={[requireField]}
         />
+        <Field
+          label="Quyền lợi ứng viên"
+          component={Editor}
+          name="benefit"
+          required
+          formClassName="col-md-12"
+          validate={[requireField]}
+        />
+        <div className="form-group col-md-12 text-center">
+          <button type="submit" className="btn btn-primary">
+            Đăng tin
+          </button>
+        </div>
       </div>
     </form>
   );
