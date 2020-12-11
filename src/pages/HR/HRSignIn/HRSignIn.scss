@@ -111,6 +111,43 @@
             left: 110%;
           }
         }
+
+         &__social {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          padding-top: 10px;
+
+          &__item {
+            margin-bottom: 15px;
+            font-weight: 500;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: $c-white;
+            max-height: 42px;
+
+            a{
+              color: $c-white;
+            }
+
+            &--register {
+              position: relative;
+              color: $c-white;
+              background-color: $c-valencia;
+              display: flex;
+              justify-content: center;
+              margin-top: 20px;
+
+              &__icon {
+                font-size: 24px;
+                padding-right: 20px;
+              }
+            }
+          }
+        }
       }
     }
   }

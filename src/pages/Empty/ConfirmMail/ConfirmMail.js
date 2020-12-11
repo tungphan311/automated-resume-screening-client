@@ -7,7 +7,7 @@ import "./ConfirmMail.scss";
 
 const ConfirmMail = (props) => {
   const dispatch = useDispatch();
-  const emailVerify = useSelector((state) => state.register.email);
+  const emailVerify = useSelector((state) => state.auth.email);
 
   let token = props.match.params.token;
 

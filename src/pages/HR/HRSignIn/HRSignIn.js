@@ -81,7 +81,7 @@ function HRSignIn() {
               />
             </Form.Item>
 
-            <Link to="/sign-up/hr">Đăng kí tài khoản</Link>
+            {/* <Link to="/sign-up/hr">Đăng kí tài khoản</Link> */}
 
             {/* Button Login  */}
             <button
@@ -92,6 +92,12 @@ function HRSignIn() {
               {isLoading && <div className="dashed-loading"></div>}
             </button>
           </Form>
+
+          <button className="hr-login__container__left__form__social__item hr-login__container__left__form__social__item--register">
+            <Link to="/sign-up/hr">
+              <span> Đăng ký tài khoản mới</span>
+            </Link>
+          </button>
 
           <div className="hr-login__container__left__link">
             <p className="hr-login__container__left__link__text">

@@ -1,39 +1,29 @@
 .candidate-register {
-  background: url("/assets/img/map.webp") no-repeat, #edf0ff;
-  background-size: 100%;
-  background-position: center;
   width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
 
   &__container {
-    margin: 3% auto;
-    position: relative;
-    max-width: 420px;
-    width: 60%;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    background: $c-white;
+    display: flex;
+    flex-wrap: wrap;
 
-    &__logo {
-      width: 40%;
-      margin: 0 auto;
-      padding-bottom: 30px;
-    }
-
-    &__form {
+    &__left {
+      background-color: $c-alabaster;
+      padding: 90px 80px 0 80px;
+      width: 40vw;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding: 30px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-      background-color: #ffffff;
-      box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+      align-items: center;
+
+      &__logo {
+        width: 7.375rem;
+        position: absolute;
+        top: 30px;
+        left: 30px;
+      }
 
       &__title {
         display: block;
@@ -41,7 +31,7 @@
         color: $c-royal-blue;
         line-height: 1.2;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
       }
 
       &__link {
@@ -58,7 +48,7 @@
         }
       }
 
-      &__confirm {
+      &__form {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -67,14 +57,14 @@
           margin-bottom: 5px;
         }
 
+        &__input {
+          height: 40px;
+        }
+
         &__group {
           display: flex;
           justify-content: space-between;
           align-items: center;
-        }
-
-        &__input {
-          height: 40px;
         }
 
         &__btn {
@@ -98,21 +88,102 @@
           }
         }
 
-        &__text {
-          font-size: 13px;
-          color: #757575;
+        &__with {
+          font-size: 14px;
+          position: relative;
+          width: fit-content;
+          align-self: center;
+          padding: 10px 0;
+
+          &::before {
+            content: "";
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: $c-scampi;
+            top: 50%;
+            right: 110%;
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: $c-scampi;
+            top: 50%;
+            left: 110%;
+          }
+        }
+
+        &__social {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          padding-top: 10px;
+
+          &__item {
+            margin-bottom: 15px;
+            font-weight: 500;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: $c-white;
+            max-height: 42px;
+
+            &--fb {
+              background-color: $c-chambray;
+              display: flex;
+              justify-content: center;
+
+              &__icon {
+                font-size: 22px;
+                padding-right: 20px;
+              }
+            }
+
+            &--register {
+              position: relative;
+              background-color: $c-valencia;
+              display: flex;
+              justify-content: center;
+              margin-top: 20px;
+
+              &__icon {
+                font-size: 24px;
+                padding-right: 20px;
+              }
+            }
+          }
+        }
+
+        .ant-form-item-label {
+          display: none;
         }
       }
     }
-    // h2 {
-    //   background: linear-gradient(to right, #4e6afb, #3844be 29%, #5468d9 61%, #9060e7);
-    //   -webkit-background-clip: text;
-    //   -webkit-text-fill-color: transparent;
-    // }
   }
 
-  .ant-form-item-label {
-    display: none;
+  &__bg {
+    width: calc(100% - 40vw);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
   }
 }
 

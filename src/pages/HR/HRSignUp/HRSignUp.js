@@ -2,6 +2,9 @@
 import { Form, Input, Radio } from "antd";
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { registerUserAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./HRSignUp.scss";
 
@@ -17,12 +20,18 @@ const validateMessages = {
   }
 };
 
-const { TextArea } = Input;
+function HRSignUp() {
+  const dispatch = useDispatch();
 
-function CandidateSignUp() {
   //Handle submit Login
-  const onFinish = (values) => {
-    console.log(values);
+  const onFinish = (fieldsValue) => {
+    const values = {
+      ...fieldsValue,
+      isCandidate: false
+    };
+
+    dispatch(registerUserAction(values));
+    console.log("values", values);
   };
 
   return checkCookie() ? (
@@ -44,10 +53,10 @@ function CandidateSignUp() {
           <span className="hr-register__container__form__title">
             Nhà tuyển dụng đăng&nbsp;ký
           </span>
-
+          {/* 
           <p className="hr-register__container__form__bigLabel">
             Thông tin đăng nhập
-          </p>
+          </p> */}
 
           <Form
             layout="vertical"
@@ -59,7 +68,7 @@ function CandidateSignUp() {
             {/* Fullname */}
             <Form.Item
               label="Họ và tên"
-              name="fullname"
+              name="fullName"
               rules={[{ required: true }]}
             >
               <Input
@@ -124,7 +133,13 @@ function CandidateSignUp() {
             <Form.Item
               label="Số điện thoại"
               name="phone"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true },
+                {
+                  pattern: /^[\d]{0,10}$/,
+                  message: "Số điện thoại tối đa 10 chữ số"
+                }
+              ]}
             >
               <Input
                 className="hr-register__container__form__confirm__input"
@@ -139,84 +154,6 @@ function CandidateSignUp() {
                 <Radio value={true}>Nam</Radio>
                 <Radio value={false}>Nữ</Radio>
               </Radio.Group>
-            </Form.Item>
-            <p className="hr-register__container__form__bigLabel">
-              Thông tin công ty
-            </p>
-            {/* Company name  */}
-            <Form.Item
-              label="Tên công ty"
-              name="companyName"
-              rules={[{ required: true }]}
-            >
-              <Input
-                className="hr-register__container__form__confirm__input"
-                placeholder="Tên công ty"
-              />
-            </Form.Item>
-            {/* Address  */}
-            <Form.Item
-              label="Địa chỉ"
-              name="companyAddress"
-              rules={[{ required: true }]}
-            >
-              <Input
-                className="hr-register__container__form__confirm__input"
-                placeholder="Địa chỉ"
-              />
-            </Form.Item>
-
-            {/* Company Email  */}
-            <Form.Item
-              label="Email liên hệ"
-              name="companyMail"
-              rules={[{ required: true }]}
-            >
-              <Input
-                className="hr-register__container__form__confirm__input"
-                placeholder="Email liên hệ"
-              />
-            </Form.Item>
-
-            {/* Company Address */}
-            <Form.Item
-              label="Số điện thoại liên hệ"
-              name="companyPhone"
-              rules={[{ required: true }]}
-            >
-              <Input
-                className="hr-register__container__form__confirm__input"
-                placeholder="Số điện thoại liên hệ"
-              />
-            </Form.Item>
-
-            {/* Company Logo  */}
-            <Form.Item
-              label="Logo"
-              name="companyLogo"
-              rules={[{ required: true }]}
-            >
-              <Input
-                className="hr-register__container__form__confirm__input"
-                placeholder="Logo"
-              />
-            </Form.Item>
-
-            {/* Company website */}
-            <Form.Item label="Website" name="companyWebsite">
-              <Input
-                className="hr-register__container__form__confirm__input"
-                placeholder="Website"
-              />
-            </Form.Item>
-
-            {/* Description  */}
-            <Form.Item label="Description" name="companyDescription">
-              <TextArea
-                rows={4}
-                className="hr-register__container__form__confirm__input"
-                placeholder="Mô tả"
-              />
             </Form.Item>
 
             <p className="hr-register__container__form__confirm__text">
@@ -246,4 +183,4 @@ function CandidateSignUp() {
   );
 }
 
-export default CandidateSignUp;
+export default HRSignUp;

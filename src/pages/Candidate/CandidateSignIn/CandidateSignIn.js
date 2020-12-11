@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 
-import { createFromIconfontCN, GooglePlusOutlined } from "@ant-design/icons";
+import { createFromIconfontCN } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useDispatch } from "react-redux";
 import { loginAction } from "state/actions/authenticationActions";
@@ -90,8 +90,6 @@ function CandidateSignIn() {
               />
             </Form.Item>
 
-            <Link to="/sign-up/candidate">Đăng kí tài khoản</Link>
-
             {/* Button Login  */}
             <button
               htmlType="submit"
@@ -105,30 +103,25 @@ function CandidateSignIn() {
             <span className="candidate-login__container__left__form__with text-center">
               Hoặc bạn có thể
             </span>
-
-            <div className="candidate-login__container__left__form__social">
-              {/* Login with facebook  */}
-              <button
-                htmlType="submit"
-                className="candidate-login__container__left__form__social__item candidate-login__container__left__form__social__item--fb"
-              >
-                <IconFont
-                  className="candidate-login__container__left__form__social__item--fb__icon"
-                  type="icon-facebook"
-                />
-                Đăng nhập với Facebook
-              </button>
-
-              {/* Login with gmail  */}
-              <button
-                htmlType="submit"
-                className="candidate-login__container__left__form__social__item candidate-login__container__left__form__social__item--gmail"
-              >
-                <GooglePlusOutlined className="candidate-login__container__left__form__social__item--gmail__icon" />
-                Đăng nhập với Google
-              </button>
-            </div>
           </Form>
+
+          <div className="candidate-login__container__left__form__social">
+            {/* Login with facebook  */}
+            <button className="candidate-login__container__left__form__social__item candidate-login__container__left__form__social__item--fb">
+              <IconFont
+                className="candidate-login__container__left__form__social__item--fb__icon"
+                type="icon-facebook"
+              />
+              Đăng nhập với Facebook
+            </button>
+
+            {/* Login with gmail  */}
+            <Link to="/sign-up/candidate">
+              <button className="candidate-login__container__left__form__social__item candidate-login__container__left__form__social__item--register">
+                <span> Đăng ký tài khoản mới</span>
+              </button>
+            </Link>
+          </div>
 
           <div className="candidate-login__container__left__link">
             <p className="candidate-login__container__left__link__text">

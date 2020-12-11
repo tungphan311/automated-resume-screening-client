@@ -113,6 +113,7 @@
         &__social {
           display: flex;
           flex-direction: column;
+          width: 100%;
           padding-top: 10px;
 
           &__item {
@@ -128,15 +129,21 @@
 
             &--fb {
               background-color: $c-chambray;
-
+              display: flex;
+              justify-content: center;
+              
               &__icon {
                 font-size: 22px;
                 padding-right: 20px;
               }
             }
 
-            &--gmail {
+            &--register {
+              position: relative;
               background-color: $c-valencia;
+              display: flex;
+              justify-content: center;
+              margin-top: 20px;
 
               &__icon {
                 font-size: 24px;

@@ -16,10 +16,10 @@ export const verifyUserAction = (token) => ({
   payload: token
 });
 
-export const loginAction = createPromiseAction("LOGIN");
-export const registerAction = createPromiseAction("REGISTER");
-export const verifyAction = createPromiseAction("VERIFY");
-
 export const logoutUserAction = () => ({
   type: types.LOGOUT
 });
+
+export const loginAction = createPromiseAction("LOGIN");
+export const registerAction = createPromiseAction("REGISTER");
+export const verifyAction = createPromiseAction("VERIFY");

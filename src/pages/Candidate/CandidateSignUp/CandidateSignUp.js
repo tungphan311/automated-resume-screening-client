@@ -25,6 +25,19 @@ const validateMessages = {
 function CandidateSignUp() {
   const dispatch = useDispatch();
 
+  // const onChange = (e) => {
+  //   const { value } = e.target;
+  //   console.log("chay");
+  //   const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
+  //   if (
+  //     (!Number.isNaN(value) && reg.test(value)) ||
+  //     value === "" ||
+  //     value === "-"
+  //   ) {
+  //     props.onChange(value);
+  //   }
+  // };
+
   //Handle submit Login
   const onFinish = (fieldsValue) => {
     const values = {
@@ -50,19 +63,22 @@ function CandidateSignUp() {
   ) : (
     <div className="candidate-register">
       <div className="candidate-register__container">
-        <div className="candidate-register__container__logo">
-          <Link to="/" className="candidate-register__container__logo__wrapper">
-            <img
-              src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
-              alt="logo"
-            />
-          </Link>
-        </div>
+        {/* Login Form  */}
+        <div className="candidate-register__container__left">
+          <div className="candidate-register__container__left__logo">
+            <Link
+              to="/"
+              className="candidate-register__container__left__logo__wrapper"
+            >
+              <img
+                src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
+                alt="logo"
+              />
+            </Link>
+          </div>
 
-        {/* Content  */}
-        <div className="candidate-register__container__form">
-          <span className="candidate-register__container__form__title">
-            Người tìm việc đăng&nbsp;ký
+          <span className="candidate-register__container__left__title">
+            Người&nbsp;tìm&nbsp;việc&nbsp;đăng&nbsp;ký
           </span>
 
           <Form
@@ -70,7 +86,7 @@ function CandidateSignUp() {
             name="nest-messages"
             validateMessages={validateMessages}
             onFinish={onFinish}
-            className="candidate-register__container__form__confirm"
+            className="candidate-register__container__left__form"
           >
             {/* Fullname */}
             <Form.Item
@@ -79,7 +95,7 @@ function CandidateSignUp() {
               rules={[{ required: true }]}
             >
               <Input
-                className="candidate-register__container__form__confirm__input"
+                className="candidate-register__container__left__form__input"
                 placeholder="Họ và tên"
               />
             </Form.Item>
@@ -91,7 +107,7 @@ function CandidateSignUp() {
               rules={[{ type: "email", required: true }]}
             >
               <Input
-                className="candidate-register__container__form__confirm__input"
+                className="candidate-register__container__left__form__input"
                 placeholder="Email"
               />
             </Form.Item>
@@ -108,7 +124,7 @@ function CandidateSignUp() {
               hasFeedback
             >
               <Input.Password
-                className="candidate-register__container__form__confirm__input"
+                className="candidate-register__container__left__form__input"
                 placeholder="Mật khẩu"
               />
             </Form.Item>
@@ -137,16 +153,16 @@ function CandidateSignUp() {
             >
               <Input.Password
                 placeholder="Xác nhận mật khẩu"
-                className="candidate-register__container__form__confirm__input"
+                className="candidate-register__container__left__form__input"
               />
             </Form.Item>
 
-            <div className="candidate-register__container__form__confirm__group">
+            <div className="candidate-register__container__left__form__group">
               {/* Date of birth */}
               <Form.Item name="dateOfBirth" label="Ngày sinh" {...config}>
                 <DatePicker
                   placeholder="Ngày sinh"
-                  className="candidate-register__container__form__confirm__input"
+                  className="candidate-register__container__left__form__input"
                 />
               </Form.Item>
 
@@ -167,11 +183,19 @@ function CandidateSignUp() {
             <Form.Item
               label="Số điện thoại"
               name="phone"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true },
+                {
+                  pattern: /^[\d]{0,10}$/,
+                  message: "Số điện thoại tối đa 10 chữ số"
+                }
+              ]}
             >
               <Input
-                className="candidate-register__container__form__confirm__input"
+                className="candidate-register__container__left__form__input"
                 placeholder="Số điện thoại"
+                type="number"
+                // onChange={onChange}
               />
             </Form.Item>
 
@@ -185,19 +209,27 @@ function CandidateSignUp() {
             {/* Button Login  */}
             <button
               htmlType="submit"
-              className="candidate-register__container__form__confirm__btn"
+              className="candidate-register__container__left__form__btn"
             >
               Đăng ký
               {/* {isLoading && <div className="dashed-loading"></div>} */}
             </button>
           </Form>
 
-          <div className="candidate-register__container__form__link">
-            <p className="candidate-register__container__form__link__text">
-              Nhà tuyển dụng <Link to="/sign-up/hr">đăng kí tài khoản</Link>
+          <div className="candidate-register__container__left__link">
+            <p className="candidate-register__container__left__link__text">
+              Nhà tuyển dụng <Link to="/sign-up/hr">đăng ký</Link>
             </p>
           </div>
         </div>
+
+        {/* Background Image  */}
+        <div
+          className="candidate-register__bg"
+          style={{
+            backgroundImage: "url('/assets/img/login-candidate-bg.jpg')"
+          }}
+        ></div>
       </div>
     </div>
   );
