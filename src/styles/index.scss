@@ -27,7 +27,7 @@ code {
 a:hover {
   text-decoration: none;
 }
-  
+
 input {
   outline: none;
   border: none;
@@ -45,4 +45,45 @@ button:hover {
 
 svg {
   vertical-align: unset;
+}
+
+.dashed-loading {
+  position: relative;
+  height: 25px;
+  margin-left: 10px;
+}
+
+.dashed-loading:after,
+.dashed-loading:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}
+
+.dashed-loading:before {
+  z-index: 5;
+  border: 3px dashed #13d2b8;
+  border-left: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  -webkit-animation: dashed 1s linear infinite;
+  animation: dashed 1s linear infinite;
+}
+
+.dashed-loading:after {
+  z-index: 10;
+  border: 3px solid #13d2b8;
+  border-left: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  -webkit-animation: dashed 1s ease infinite;
+  animation: dashed 1s ease infinite;
+}
+
+@keyframes dashed {
+  to {
+    transform: rotate(360deg);
+  }
 }

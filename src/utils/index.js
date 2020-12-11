@@ -7,11 +7,11 @@ export function toast({ type = "success", message = "" }) {
 }
 
 export function toastErr(error) {
-  let {
+  const {
     response: { data }
   } = error;
 
-  let errMsg = data.msg || null;
+  let errMsg = data.message || null;
 
   if (!errMsg) {
     errMsg = "Có lỗi xảy ra";

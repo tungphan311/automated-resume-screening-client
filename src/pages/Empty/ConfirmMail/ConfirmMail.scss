@@ -1,0 +1,102 @@
+/* =============
+   Accounts pages
+============= */
+.blank-pages {
+  background: url("/assets/img/bg1.jpg") center;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  width: 100%;
+  background-size: cover;
+}
+
+.confirm {
+  &__page {
+    margin: 4% auto;
+    position: relative;
+    width: 420px;
+
+    &__logo {
+      img {
+        width: 50%;
+      }
+    }
+
+    &__text {
+      padding: 20px 0;
+    }
+  }
+}
+
+.wrapper-page .card-box {
+  -webkit-box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+  box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+}
+
+.wrapper-page .logo {
+  font-size: 42px;
+}
+
+.panel-pages {
+  border-radius: 6px;
+}
+
+.panel-pages .panel-body {
+  padding: 30px;
+}
+
+.panel-pages .panel-heading {
+  border-radius: 6px 6px 0px 0px;
+  padding: 40px 20px;
+  position: relative;
+}
+
+.panel-pages .panel-heading h3 {
+  position: relative;
+  z-index: 999;
+}
+
+/* Card Box */
+.card-box {
+  padding: 20px;
+  -webkit-box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+  box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+}
+
+.card-box .card-drop {
+  color: #98a6ad;
+  font-size: 20px;
+  height: 20px;
+  line-height: 1px;
+  display: inline-block;
+}
+
+.logo {
+  color: #188ae2 !important;
+  font-size: 32px;
+  font-family: "Rancho", cursive;
+}
+
+.logo i {
+  display: none;
+}
+
+.logo span span {
+  color: #10c469;
+}
+
+.thumb-lg {
+  height: 88px;
+  width: 88px;
+}
+
+.confirm {
+  &__title {
+    line-height: 22px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+}

@@ -1,7 +1,8 @@
 import { all, call } from "redux-saga/effects";
+import authSaga from "state/sagas/authSaga";
 
 export default function* rootSaga() {
-  yield all([]);
+  yield all([authSaga()]);
 }
 
 export function* callAndCache(...args) {
