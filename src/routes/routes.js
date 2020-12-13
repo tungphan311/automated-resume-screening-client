@@ -50,7 +50,7 @@ function Routes() {
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
           <UnauthorizedRoute exact path="/recruitment" component={HRHome} />
           <AuthorizedRoute exact path="/profile" component={CandidateProfile} />
-          <AuthorizedRoute
+          <UnauthorizedRoute
             exact
             path="/recruitment/jobs/new-job"
             component={HRPostJob}

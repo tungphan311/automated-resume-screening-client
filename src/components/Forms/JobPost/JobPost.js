@@ -1,3 +1,4 @@
+import DateTimePicker from "components/DateTimePicker/DateTimePicker";
 import Editor from "components/Editor/Editor";
 import CustomInput from "components/Input/CustomInput";
 import Input from "components/Input/Input";
@@ -27,11 +28,32 @@ function JobPostForm({ handleSubmit, salary }) {
           validate={[requireField]}
         />
         <Field
+          label="Ngành"
+          component={Input}
+          name="domain"
+          subLabel="Lựa chọn ngành nghề liên quan đến vị trí này"
+          required
+          formClassName="col-md-12"
+          placeholder="VD: Frontend Developer"
+          validate={[requireField]}
+        />
+        <Field
           label="Địa điểm làm việc"
           component={Input}
           name="location"
           formClassName="col-md-12"
           placeholder="VD: KP6, P. Linh Trung, Q. Thủ Đức, HCM"
+        />
+        <Field
+          label="Hạn chót nộp hồ sơ"
+          subLabel="Sau thời gian này, tin tuyển dụng sẽ không còn được hiển thị"
+          component={DateTimePicker}
+          showTime={{ format: "HH:mm" }}
+          name="deadline"
+          required
+          formClassName="col-md-6"
+          placeholder="VD: Frontend Developer"
+          validate={[requireField]}
         />
         <Field
           label="Số lượng cần tuyển"
@@ -62,6 +84,7 @@ function JobPostForm({ handleSubmit, salary }) {
           formClassName="col-md-6"
           options={EXPERIENCES}
         />
+
         <Field
           label="Lương"
           component={Select}
@@ -106,49 +129,6 @@ function JobPostForm({ handleSubmit, salary }) {
             />
           </div>
         </div>
-        <div className="col-12">
-          <hr style={{ marginTop: 0 }} />
-        </div>
-        <Field
-          label="Hạn chót nộp hồ sơ"
-          subLabel="Sau ngày này, tin tuyển dụng sẽ không còn được hiển thị"
-          component={Input}
-          name="endDate"
-          required
-          formClassName="col-md-6"
-          placeholder="VD: Frontend Developer"
-          validate={[requireField]}
-        />
-        <Field
-          label="Tên người nhận hồ sơ"
-          subLabel="Tên người nhận hồ sơ ứng tuyển để ứng viên tiện xưng hô"
-          component={Input}
-          name="hrName"
-          required
-          formClassName="col-md-6"
-          placeholder="VD: Frontend Developer"
-          validate={[requireField]}
-        />
-        <Field
-          label="Email nhận thông báo"
-          subLabel="Các thông báo về tin tuyển dụng sẽ được gửi đến email này"
-          component={Input}
-          name="hrEmail"
-          required
-          formClassName="col-md-6"
-          placeholder="VD: Frontend Developer"
-          validate={[requireField]}
-        />
-        <Field
-          label="Số điện thoại"
-          subLabel="Số điện thoại nhà tuyển dụng để ứng viên liên hệ khi cần thiết"
-          component={Input}
-          name="hrPhone"
-          required
-          formClassName="col-md-6"
-          placeholder="VD: Frontend Developer"
-          validate={[requireField]}
-        />
         <div className="col-12">
           <hr style={{ marginTop: 0 }} />
         </div>

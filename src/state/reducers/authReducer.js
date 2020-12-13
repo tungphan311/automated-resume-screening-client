@@ -8,9 +8,6 @@ const initialState = {
 export default function authReducer(state = initialState, action = {}) {
   const newState = { ...state };
 
-  console.log(action);
-  console.log(action.payload);
-
   switch (action.type) {
     case types.LOGIN_USER_SUCCESS:
       const { access_token } = action;
