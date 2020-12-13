@@ -121,6 +121,22 @@ li a.active .jobs-number-label {
   .dropdown-menu {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   }
+
+  .ant-pagination-prev,
+  .ant-pagination-jump-prev,
+  .ant-pagination-jump-next,
+  .ant-pagination-item {
+    margin-right: 0;
+  }
+
+  .ant-pagination {
+    padding-right: 16px;
+  }
+
+  .detect-outside-click {
+    width: fit-content;
+    float: right;
+  }
 }
 
 .job-item-title-wrapper {
