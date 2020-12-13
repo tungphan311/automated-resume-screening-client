@@ -1,0 +1,55 @@
+#job-tabs {
+  background: #fff;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+
+  ul {
+    li {
+      display: inline-block;
+
+      a {
+        display: inline-block;
+        font-weight: 700;
+        color: #555;
+        text-decoration: none;
+        padding: 20px;
+
+        &.active {
+          color: $primary;
+        }
+
+        span {
+          cursor: pointer;
+        }
+      }
+
+      .job-showing-tab {
+        padding-left: 0;
+      }
+    }
+  }
+}
+
+li a:hover .jobs-number-label,
+li a.active .jobs-number-label {
+  color: $primary;
+  border: 2px solid $primary;
+}
+
+.jobs-number-label {
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
+  border: 2px solid;
+  margin-left: 10px;
+}
+
+#box-jobs .jobs {
+  background: #fff;
+}
