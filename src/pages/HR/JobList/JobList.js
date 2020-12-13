@@ -1,13 +1,126 @@
+import { EditFilled, FileTextOutlined, DeleteFilled } from "@ant-design/icons";
+import { Table } from "antd";
 import JobMenu from "components/JobMenu/JobMenu";
-import React from "react";
+import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import history from "state/history";
 import "./JobList.scss";
 
-const POSTS = [];
+const POSTS = [
+  {
+    id: 1,
+    position: {
+      id: 1,
+      title: "Senior Python Developer",
+      salary: "Thoả thuận"
+    },
+    postedDate: "13/12/2020",
+    deadline: "31/12/2020",
+    totalApply: 10,
+    newApply: 2,
+    viewed: 100,
+    action: {
+      id: 1
+    }
+  }
+];
 
 function HRJobList() {
   const { search } = history.location;
+  const [dropdown, toggleDropdown] = useState(false);
+
+  const closeDropdown = () => toggleDropdown(false);
+
+  const columns = [
+    {
+      title: "Vị trí tuyển dụng",
+      dataIndex: "position",
+      render: ({ id, title, salary }) => (
+        <>
+          <div className="job-item-title-wrapper">
+            <p>
+              <Link to="#" target="_blank" className="job-item-title">
+                <strong>{title}</strong>
+              </Link>
+            </p>
+            <p>Mức lương: {salary}</p>
+            <p>Mức TTD: {id}</p>
+          </div>
+        </>
+      )
+    },
+    {
+      title: "Ngày đăng tin",
+      dataIndex: "postedDate",
+      align: "center"
+    },
+    {
+      title: "Hạn nhận hồ sơ",
+      dataIndex: "deadline",
+      align: "center"
+    },
+    {
+      title: "Tổng CV apply",
+      dataIndex: "totalApply",
+      align: "center"
+    },
+    {
+      title: "CV apply mới",
+      dataIndex: "newApply",
+      align: "center"
+    },
+    {
+      title: "Lượt xem",
+      dataIndex: "viewed",
+      align: "center"
+    },
+    {
+      title: "",
+      dataIndex: "action",
+      render: () => (
+        <OutsideClickWrapper
+          isShowing={dropdown}
+          onClickOutside={closeDropdown}
+        >
+          <div
+            className={`btn-group btn-group-action ${dropdown ? "open" : ""}`}
+          >
+            <button
+              className="btn btn-sm btn-default dropdown-toggle btn-action outline btn-hover-no-effect"
+              onClick={() => toggleDropdown(!dropdown)}
+            >
+              <strong>Thao tác &nbsp;</strong>
+              <span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu dropdown-menu-right" role="menu">
+              <li>
+                <Link to="#">
+                  <FileTextOutlined />
+                  {" Xem CV ứng tuyển"}
+                </Link>
+              </li>
+              <li>
+                <Link to="#">
+                  <EditFilled />
+                  {" Chỉnh sửa tin"}
+                </Link>
+              </li>
+              <li>
+                <Link to="#">
+                  <span className="text-danger">
+                    <DeleteFilled />
+                    {" Xoá"}
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </OutsideClickWrapper>
+      ),
+      align: "center"
+    }
+  ];
 
   return (
     <>
@@ -32,7 +145,13 @@ function HRJobList() {
             </ul>
           </div>
           <div id="box-jobs">
-            <div className="jobs">{!POSTS.length && <EmptyJob />}</div>
+            <div className="jobs">
+              {!POSTS.length ? (
+                <EmptyJob />
+              ) : (
+                <Table dataSource={POSTS} columns={columns} />
+              )}
+            </div>
           </div>
         </div>
       </div>
