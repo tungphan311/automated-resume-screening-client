@@ -48,7 +48,8 @@ function HRJobList() {
             <p>Mã TTD: #{id}</p>
           </div>
         </>
-      )
+      ),
+      width: "30%"
     },
     {
       title: "Ngày đăng tin",
