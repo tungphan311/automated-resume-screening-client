@@ -1,3 +1,6 @@
+@import "./text.scss";
+@import "./display.scss";
+
 body {
   margin: 0;
   font-family: "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
@@ -6,9 +9,10 @@ body {
   background-color: $light-grey;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-}
+// code {
+//   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+//     monospace;
+// }
 
 .z-index-2 {
   z-index: 2;

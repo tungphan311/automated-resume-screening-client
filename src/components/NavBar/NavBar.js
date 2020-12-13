@@ -4,6 +4,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUserAction } from "state/actions/authenticationActions";
+import history from "state/history";
 import { checkCookie, setCookie } from "utils/cookies";
 import "./NavBar.scss";
 
@@ -41,7 +42,11 @@ function NavBar() {
           />
         )}
         <span className="nav-separator nav-separator--grey"></span>
-        <Button type="primary" size="large">
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => history.push("/recruitment")}
+        >
           Nhà tuyển dụng
         </Button>
       </ul>
