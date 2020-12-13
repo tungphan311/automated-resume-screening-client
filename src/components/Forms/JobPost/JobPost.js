@@ -40,8 +40,7 @@ function JobPostForm({ handleSubmit, salary }) {
           name="amount"
           required
           formClassName="col-md-6"
-          subLabel="Nếu không giới hạn số lượng tuyển, đặt giá trị bằng 0"
-          placeholder="0"
+          placeholder="Nếu không giới hạn số lượng tuyển, đặt giá trị bằng 0"
         />
         <Field
           label="Loại hình làm việc"
@@ -54,15 +53,6 @@ function JobPostForm({ handleSubmit, salary }) {
           options={JOB_TYPES}
         />
         <Field
-          label="Kinh nghiệm"
-          component={Select}
-          name="experiences"
-          required
-          defaultValue={EXPERIENCES[0].value}
-          formClassName="col-md-6"
-          options={EXPERIENCES}
-        />
-        <Field
           label="Lương"
           component={Select}
           name="salary"
@@ -70,6 +60,15 @@ function JobPostForm({ handleSubmit, salary }) {
           defaultValue={SALARY[0].value}
           formClassName="col-md-6"
           options={SALARY}
+        />
+        <Field
+          label="Kinh nghiệm"
+          component={Select}
+          name="experiences"
+          required
+          defaultValue={EXPERIENCES[0].value}
+          formClassName="col-md-6"
+          options={EXPERIENCES}
         />
         <div
           className={`col-md-6 form-group ${salary !== "deal" ? "" : "d-none"}`}
