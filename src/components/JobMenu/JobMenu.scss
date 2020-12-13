@@ -14,7 +14,7 @@
     ul li {
       &.active a {
         color: $c-mine-shaft;
-        border-bottom: 2px solid $c-valencia;
+        border-bottom: 2px solid $primary;
         margin-right: 2px;
         margin-left: 2px;
       }
@@ -26,7 +26,7 @@
         font-size: 14px;
 
         &:hover {
-          border-bottom: 2px solid #d50000;
+          border-bottom: 2px solid $primary;
         }
       }
 
@@ -63,7 +63,7 @@
     padding-top: 12px;
 
     &:hover {
-      color: $c-valencia;
+      color: $primary;
     }
   }
 }
@@ -72,8 +72,8 @@
 .j-navbar-default .j-navbar-nav > .active > a:hover,
 .j-navbar-default .j-navbar-nav > .active > a:focus {
   background-color: $c-white;
-  color: $c-valencia;
-  border-color: $c-valencia;
+  color: $primary;
+  border-color: $primary;
 }
 
 .j-navbar {

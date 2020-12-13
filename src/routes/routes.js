@@ -9,6 +9,7 @@ import ConfirmMail from "pages/Empty/ConfirmMail/ConfirmMail";
 import HRHome from "pages/HR/Home/Home";
 import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
 import HRSignUp from "pages/HR/HRSignUp/HRSignUp";
+import HRJobList from "pages/HR/JobList/JobList";
 import HRPostJob from "pages/HR/PostJob/PostJob";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -50,7 +51,8 @@ function Routes() {
           "/profile",
           "/recruitment",
           "/recruitment/jobs/new-job",
-          "/profile/review"
+          "/profile/review",
+          "/recruitment/jobs"
         ]}
       >
         <CandidateLayout>
@@ -66,6 +68,11 @@ function Routes() {
             exact
             path="/recruitment/jobs/new-job"
             component={HRPostJob}
+          />
+          <UnauthorizedRoute
+            exact
+            path="/recruitment/jobs"
+            component={HRJobList}
           />
         </CandidateLayout>
       </Route>
