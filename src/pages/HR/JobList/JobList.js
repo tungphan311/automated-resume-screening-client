@@ -45,7 +45,7 @@ function HRJobList() {
               </Link>
             </p>
             <p>Mức lương: {salary}</p>
-            <p>Mức TTD: {id}</p>
+            <p>Mã TTD: #{id}</p>
           </div>
         </>
       )
