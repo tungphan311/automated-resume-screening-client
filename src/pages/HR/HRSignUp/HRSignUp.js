@@ -1,16 +1,11 @@
-// import { createFromIconfontCN, GooglePlusOutlined } from "@ant-design/icons";
 import { Form, Input, Radio } from "antd";
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { registerUserAction } from "state/actions/authenticationActions";
+import { registerHrAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./HRSignUp.scss";
-
-// const IconFont = createFromIconfontCN({
-//   scriptUrl: "//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js"
-// });
 
 const validateMessages = {
   required: "Vui lòng nhập ${label}!",
@@ -24,14 +19,8 @@ function HRSignUp() {
   const dispatch = useDispatch();
 
   //Handle submit Login
-  const onFinish = (fieldsValue) => {
-    const values = {
-      ...fieldsValue,
-      isCandidate: false
-    };
-
-    dispatch(registerUserAction(values));
-    console.log("values", values);
+  const onFinish = (value) => {
+    dispatch(registerHrAction(value));
   };
 
   return checkCookie() ? (
@@ -136,14 +125,16 @@ function HRSignUp() {
               rules={[
                 { required: true },
                 {
-                  pattern: /^[\d]{0,10}$/,
-                  message: "Số điện thoại tối đa 10 chữ số"
-                }
+                  pattern: /^[\d]{0,11}$/,
+                  message: "Số điện thoại tối đa 11 số"
+                },
+                { min: 10, message: "Số điện thoại phải từ 10-11 số" }
               ]}
             >
               <Input
                 className="hr-register__container__form__confirm__input"
                 placeholder="Số điện thoại"
+                type="number"
               />
             </Form.Item>
             <Form.Item

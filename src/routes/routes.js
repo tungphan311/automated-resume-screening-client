@@ -64,7 +64,7 @@ function Routes() {
           "/sign-in/candidate",
           "/sign-in/hr",
           "/confirm-mail/",
-          "/confirm-mail/:token",
+          "/confirm-mail/?token=:token&type=:type",
           "/sign-up/candidate",
           "/sign-up/hr"
         ]}
@@ -83,7 +83,7 @@ function Routes() {
           />
           <UnauthorizedRoute
             exact
-            path="/confirm-mail/:token"
+            path="/confirm-mail/?token=:token&type=:type"
             component={ConfirmMail}
           />
           <UnauthorizedRoute

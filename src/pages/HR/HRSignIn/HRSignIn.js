@@ -3,7 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 
 import { Form, Input } from "antd";
 import { useDispatch } from "react-redux";
-import { loginAction } from "state/actions/authenticationActions";
+import { loginHrProAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./HRSignIn.scss";
 
@@ -25,7 +25,7 @@ function HRSignIn() {
   //Handle submit Login
   const onFinish = (values) => {
     setIsLoading(true);
-    dispatch(loginAction({ user: values.user })).catch(() => {
+    dispatch(loginHrProAction({ user: values.user })).catch(() => {
       setIsLoading(false);
     });
   };

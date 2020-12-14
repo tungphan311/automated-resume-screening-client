@@ -1,10 +1,19 @@
 import API from "utils/axios";
 
-export const loginUserService = async (account) =>
-  await API.post("/user/login", account);
+export const loginCandidateService = async (account) =>
+  await API.post("/user/candidate/login", account);
 
-export const registerUserService = async (account) =>
-  await API.post("/user/register", account);
+export const loginHrService = async (account) =>
+  await API.post("/user/recruiter/login", account);
 
-export const verifyUserService = async (token) =>
-  await API.get(`/user/confirm/${token}`);
+export const registerCandidateService = async (account) =>
+  await API.post("/user/candidate/register", account);
+
+export const registerHrService = async (account) =>
+  await API.post("/user/recruiter/register", account);
+
+export const verifyCandidateService = async (token) =>
+  await API.get(`/user/candidate/confirm/${token}`);
+
+export const verifyHrService = async (token) =>
+  await API.get(`/user/recruiter/confirm/${token}`);
