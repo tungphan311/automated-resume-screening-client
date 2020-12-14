@@ -14,7 +14,8 @@ export default function authReducer(state = initialState, action = {}) {
       newState.token = access_token;
       return newState;
 
-    case types.REGISTER_USER:
+    case types.REGISTER_CANDIDATE:
+    case types.REGISTER_HR:
       newState.email = action.payload.email;
       return newState;
 

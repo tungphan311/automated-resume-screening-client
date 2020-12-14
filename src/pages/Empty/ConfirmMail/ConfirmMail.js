@@ -2,17 +2,28 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { verifyUserAction } from "state/actions/authenticationActions";
+import {
+  verifyCandidateAction,
+  verifyHrAction
+} from "state/actions/authenticationActions";
 import "./ConfirmMail.scss";
 
 const ConfirmMail = (props) => {
   const dispatch = useDispatch();
   const emailVerify = useSelector((state) => state.auth.email);
 
-  let token = props.match.params.token;
+  const query = new URLSearchParams(props.location.search);
+  const token = query.get("token");
+  const type = query.get("type");
 
   useEffect(() => {
-    token && dispatch(verifyUserAction(token));
+    token &&
+      type &&
+      dispatch(
+        type === "candidate"
+          ? verifyCandidateAction(token)
+          : verifyHrAction(token)
+      );
   });
 
   return (

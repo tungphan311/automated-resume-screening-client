@@ -4,7 +4,7 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { registerUserAction } from "state/actions/authenticationActions";
+import { registerCandidateAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./CandidateSignUp.scss";
 
@@ -25,37 +25,16 @@ const validateMessages = {
 function CandidateSignUp() {
   const dispatch = useDispatch();
 
-  // const onChange = (e) => {
-  //   const { value } = e.target;
-  //   console.log("chay");
-  //   const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
-  //   if (
-  //     (!Number.isNaN(value) && reg.test(value)) ||
-  //     value === "" ||
-  //     value === "-"
-  //   ) {
-  //     props.onChange(value);
-  //   }
-  // };
-
   //Handle submit Login
   const onFinish = (fieldsValue) => {
     const values = {
       ...fieldsValue,
-      isCandidate: true,
-      candidate: {
-        dateOfBirth: fieldsValue["dateOfBirth"].format("YYYY-MM-DD")
-      }
+      dateOfBirth: fieldsValue["dateOfBirth"].format("YYYY-MM-DD")
     };
 
     delete values.confirm;
-    delete values.dateOfBirth;
 
-    // const { fullName: full_name, ...otherProps } = values;
-    // const user = { full_name, type: true, ...otherProps };
-
-    console.log(values);
-    dispatch(registerUserAction(values));
+    dispatch(registerCandidateAction(values));
   };
 
   return checkCookie() ? (
@@ -186,16 +165,16 @@ function CandidateSignUp() {
               rules={[
                 { required: true },
                 {
-                  pattern: /^[\d]{0,10}$/,
-                  message: "Số điện thoại tối đa 10 chữ số"
-                }
+                  pattern: /^[\d]{0,11}$/,
+                  message: "Số điện thoại tối đa 11 số"
+                },
+                { min: 10, message: "Số điện thoại phải từ 10-11 số" }
               ]}
             >
               <Input
                 className="candidate-register__container__left__form__input"
                 placeholder="Số điện thoại"
                 type="number"
-                // onChange={onChange}
               />
             </Form.Item>
 
