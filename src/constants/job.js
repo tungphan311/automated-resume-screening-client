@@ -1,7 +1,7 @@
 export const JOB_TYPES = [
-  { value: "fulltime", label: "Toàn thời gian" },
-  { value: "parttime", label: "Bán thời gian" },
-  { value: "intern", label: "Thực tập" }
+  { value: 0, label: "Toàn thời gian" },
+  { value: 1, label: "Bán thời gian" },
+  { value: 2, label: "Thực tập" }
 ];
 
 export const SALARY = [
@@ -21,3 +21,6 @@ export const EXPERIENCES = [
   { value: "5", label: "5 năm" },
   { value: "more than 5 years", label: "Trên 5 năm" }
 ];
+
+export const MIN_SALARY = ["from", "between"];
+export const MAX_SALARY = ["upto", "between"];

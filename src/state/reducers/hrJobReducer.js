@@ -1,5 +1,3 @@
-export const HR_POST_JOB = "HR/POST_JOB";
-
 const initialState = {};
 
 export default function hrJobReducer(state = initialState, action = {}) {

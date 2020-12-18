@@ -1,24 +1,34 @@
 import JobPostForm from "components/Forms/JobPost/JobPost";
 import JobMenu from "components/JobMenu/JobMenu";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { HR_POST_JOB } from "state/reducers/hrJobReducer";
 import "./PostJob.scss";
+import { Spin } from "antd";
+import { hrPostJobAction } from "state/actions/hrJobAction";
 
 function HRPostJob() {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch({ type: HR_POST_JOB });
+    setLoading(true);
+    dispatch(hrPostJobAction()).catch(() => setLoading(false));
   };
   return (
     <>
       <JobMenu />
       <div className="container">
         <div className="panel post-job-form panel--light">
-          <div className="panel-body">
-            <JobPostForm onSubmit={handleSubmit} />
-          </div>
+          <Spin
+            tip="Đang tải lên ..."
+            size="large"
+            spinning={loading}
+            delay={200}
+          >
+            <div className="panel-body">
+              <JobPostForm onSubmit={handleSubmit} />
+            </div>
+          </Spin>
         </div>
       </div>
     </>

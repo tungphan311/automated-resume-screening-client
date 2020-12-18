@@ -3,17 +3,18 @@ import Editor from "components/Editor/Editor";
 import CustomInput from "components/Input/CustomInput";
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
-import { JOB_TYPES, SALARY } from "constants/index";
+import { JOB_TYPES, MAX_SALARY, MIN_SALARY, SALARY } from "constants/index";
 import React, { useEffect, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Field, formValueSelector, isDirty, reduxForm } from "redux-form";
 import { FORM_KEY_JOB_POST } from "state/reducers/formReducer";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
-import { requireField } from "utils/formValidate";
+import {
+  requiredMaxSalary,
+  requiredMinSalary,
+  requireField
+} from "utils/formValidate";
 import { allowNumberOnly } from "utils/input";
-
-const MIN_SALARY = ["from", "between"];
-const MAX_SALARY = ["upto", "between"];
 
 function JobPostForm({ handleSubmit, salary }) {
   const [state, setState] = useState({
@@ -100,9 +101,8 @@ function JobPostForm({ handleSubmit, salary }) {
           component={Input}
           type="number"
           name="amount"
-          required
           formClassName="col-md-6"
-          subLabel="Nếu không giới hạn số lượng tuyển, đặt giá trị bằng 0"
+          subLabel="Để trống mục này nếu không giới hạn số lượng cần tuyển"
           placeholder="0"
         />
         {/* <Field
@@ -140,6 +140,7 @@ function JobPostForm({ handleSubmit, salary }) {
               className="text-right"
               append="₫"
               onKeyPress={allowNumberOnly}
+              validate={[requiredMinSalary]}
             />
             <span
               id="salary-separator"
@@ -156,6 +157,7 @@ function JobPostForm({ handleSubmit, salary }) {
               }`}
               className="text-right"
               append="₫"
+              validate={[requiredMaxSalary]}
             />
           </div>
         </div>
