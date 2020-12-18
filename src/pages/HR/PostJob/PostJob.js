@@ -1,10 +1,16 @@
 import JobPostForm from "components/Forms/JobPost/JobPost";
 import JobMenu from "components/JobMenu/JobMenu";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { HR_POST_JOB } from "state/reducers/hrJobReducer";
 import "./PostJob.scss";
 
 function HRPostJob() {
-  const handleSubmit = () => {};
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
+    dispatch({ type: HR_POST_JOB });
+  };
   return (
     <>
       <JobMenu />

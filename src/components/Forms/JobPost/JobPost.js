@@ -3,11 +3,12 @@ import Editor from "components/Editor/Editor";
 import CustomInput from "components/Input/CustomInput";
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
-import { EXPERIENCES, JOB_TYPES, SALARY } from "constants/index";
-import React from "react";
-import { connect } from "react-redux";
+import { JOB_TYPES, SALARY } from "constants/index";
+import React, { useEffect, useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { Field, formValueSelector, isDirty, reduxForm } from "redux-form";
 import { FORM_KEY_JOB_POST } from "state/reducers/formReducer";
+import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import { requireField } from "utils/formValidate";
 import { allowNumberOnly } from "utils/input";
 
@@ -15,13 +16,47 @@ const MIN_SALARY = ["from", "between"];
 const MAX_SALARY = ["upto", "between"];
 
 function JobPostForm({ handleSubmit, salary }) {
+  const [state, setState] = useState({
+    loading: false,
+    fetch: false,
+    jobDomains: []
+  });
+
+  const { loading, fetch, jobDomains } = state;
+
+  const dispatch = useDispatch();
+  const domains = useSelector((state) => state.jobDomain.domains);
+
+  useEffect(() => {
+    if (!domains.length) {
+      dispatch({ type: GET_JOB_DOMAIN });
+      setState((curState) => ({ ...curState, loading: true }));
+    } else {
+      setState((curState) => ({
+        ...curState,
+        jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
+      }));
+    }
+  }, []);
+
+  if (!fetch) {
+    if (domains.length && loading) {
+      setState((curState) => ({
+        ...curState,
+        loading: false,
+        fetch: true,
+        jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
+      }));
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="row">
         <Field
           label="Tiêu đề"
           component={Input}
-          name="title"
+          name="job_title"
           required
           formClassName="col-md-12"
           placeholder="VD: Frontend Developer"
@@ -29,20 +64,25 @@ function JobPostForm({ handleSubmit, salary }) {
         />
         <Field
           label="Ngành"
-          component={Input}
-          name="domain"
+          component={Select}
+          loading={loading}
+          name="job_domain_id"
           subLabel="Lựa chọn ngành nghề liên quan đến vị trí này"
           required
-          formClassName="col-md-12"
+          options={jobDomains}
+          formClassName="col-md-6"
           placeholder="VD: Frontend Developer"
           validate={[requireField]}
         />
         <Field
-          label="Địa điểm làm việc"
-          component={Input}
-          name="location"
-          formClassName="col-md-12"
-          placeholder="VD: KP6, P. Linh Trung, Q. Thủ Đức, HCM"
+          label="Loại hình làm việc"
+          component={Select}
+          name="contract_type"
+          required
+          defaultValue={JOB_TYPES[0].value}
+          formClassName="col-md-6"
+          placeholder="Chọn loại hình làm việc"
+          options={JOB_TYPES}
         />
         <Field
           label="Hạn chót nộp hồ sơ"
@@ -65,17 +105,7 @@ function JobPostForm({ handleSubmit, salary }) {
           subLabel="Nếu không giới hạn số lượng tuyển, đặt giá trị bằng 0"
           placeholder="0"
         />
-        <Field
-          label="Loại hình làm việc"
-          component={Select}
-          name="jobType"
-          required
-          defaultValue={JOB_TYPES[0].value}
-          formClassName="col-md-6"
-          placeholder="Chọn loại hình làm việc"
-          options={JOB_TYPES}
-        />
-        <Field
+        {/* <Field
           label="Kinh nghiệm"
           component={Select}
           name="experiences"
@@ -83,7 +113,7 @@ function JobPostForm({ handleSubmit, salary }) {
           defaultValue={EXPERIENCES[0].value}
           formClassName="col-md-6"
           options={EXPERIENCES}
-        />
+        /> */}
 
         <Field
           label="Lương"
@@ -102,7 +132,7 @@ function JobPostForm({ handleSubmit, salary }) {
           <div className="d-flex align-center">
             <Field
               component={CustomInput}
-              name="minSalary"
+              name="min_salary"
               required
               formClassName={`w-47 ${
                 MIN_SALARY.includes(salary) ? "" : "d-none"
@@ -119,7 +149,7 @@ function JobPostForm({ handleSubmit, salary }) {
             </span>
             <Field
               component={CustomInput}
-              name="maxSalary"
+              name="max_salary"
               required
               formClassName={`w-47 ${
                 MAX_SALARY.includes(salary) ? "" : "d-none"
@@ -135,7 +165,7 @@ function JobPostForm({ handleSubmit, salary }) {
         <Field
           label="Mô tả công việc"
           component={Editor}
-          name="description"
+          name="description_text"
           required
           formClassName="col-md-12"
           validate={[requireField]}
@@ -143,7 +173,7 @@ function JobPostForm({ handleSubmit, salary }) {
         <Field
           label="Yêu cầu ứng viên"
           component={Editor}
-          name="requiredSkill"
+          name="requirement_text"
           required
           formClassName="col-md-12"
           validate={[requireField]}
@@ -151,7 +181,7 @@ function JobPostForm({ handleSubmit, salary }) {
         <Field
           label="Quyền lợi ứng viên"
           component={Editor}
-          name="benefit"
+          name="benefit_text"
           required
           formClassName="col-md-12"
           validate={[requireField]}
@@ -168,8 +198,7 @@ function JobPostForm({ handleSubmit, salary }) {
 
 JobPostForm = reduxForm({
   form: FORM_KEY_JOB_POST,
-  touchOnBlur: false,
-  touchOnChange: true
+  touchOnBlur: false
 })(JobPostForm);
 
 const selector = formValueSelector(FORM_KEY_JOB_POST);

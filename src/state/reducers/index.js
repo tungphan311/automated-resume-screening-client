@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
-import authReducer from "state/reducers/authReducer";
 import { formReducer } from "state/reducers/formReducer";
+import authReducer from "state/reducers/authReducer";
+import jobDomainReducer from "state/reducers/jobDomainReducer";
 
 export default combineReducers({
   auth: authReducer,
-  form: formReducer
+  form: formReducer,
+  jobDomain: jobDomainReducer
 });
