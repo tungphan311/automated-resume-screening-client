@@ -4,6 +4,7 @@ import "./Select.scss";
 
 function Select({
   options,
+  loading = false,
   showSearch = false,
   formClassName = "",
   label = "",
@@ -14,7 +15,9 @@ function Select({
   meta = {}, // redux form
   input: { value, onChange } // redux form
 }) {
-  const { error } = meta;
+  const { touched, error } = meta;
+
+  const showError = touched && error;
   const { errCode } = error || {};
 
   useEffect(() => {
@@ -26,6 +29,7 @@ function Select({
   const { Option } = AntSelect;
   const props = {
     showSearch,
+    loading,
     value,
     placeholder,
     size,
@@ -45,12 +49,14 @@ function Select({
           </Option>
         ))}
       </AntSelect>
-      <span
-        className="error"
-        style={{ position: "absolute", color: "#f25961", bottom: "-20px" }}
-      >
-        {errCode}
-      </span>
+      {showError && (
+        <span
+          className="error"
+          style={{ position: "absolute", color: "#f25961", bottom: "0px" }}
+        >
+          {errCode}
+        </span>
+      )}
       <br className="mb-3" />
     </div>
   );

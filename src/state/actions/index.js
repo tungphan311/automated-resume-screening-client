@@ -13,3 +13,6 @@ export const VERIFY_HR = "VERIFY_HR";
 export const VERIFY_USER_SUCCESS = "VERIFY_USER_SUCCESS";
 
 export const LOGOUT = "LOGOUT";
+
+export const INIT_DATA = "INIT_DATA";
+export const RESIGN_TOKEN = "RESIGN_TOKEN";

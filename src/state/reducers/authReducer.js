@@ -22,6 +22,13 @@ export default function authReducer(state = initialState, action = {}) {
     case types.VERIFY_USER_SUCCESS:
       return newState;
 
+    case types.RESIGN_TOKEN:
+      const { token, email } = action;
+
+      newState.email = email;
+      newState.token = token;
+      return newState;
+
     default:
       return newState;
   }
