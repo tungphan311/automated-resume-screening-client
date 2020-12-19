@@ -10,6 +10,7 @@ const Input = ({
   append = "",
   type = "text",
   required = false,
+  children,
   meta = {}, // redux form
   input // redux form
 }) => {
@@ -28,6 +29,7 @@ const Input = ({
         {subLabel}
       </div>
       <div className="input-group mb-3">
+        {children}
         <input
           {...input}
           placeholder={placeholder}
