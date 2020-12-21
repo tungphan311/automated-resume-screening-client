@@ -67,7 +67,7 @@ function HRJobList() {
       align: "center"
     },
     {
-      title: "CV apply mới",
+      title: "Tổng lượt lưu",
       dataIndex: "newApply",
       align: "center"
     },
