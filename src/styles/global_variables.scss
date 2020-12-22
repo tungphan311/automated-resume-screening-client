@@ -1,15 +1,20 @@
-$primary:                #1890ff;
+$primary: #1890ff;
 
-$c-white:                #ffffff;
-$c-concrete:             #f2f2f2;
-$c-wild-sand:            #f6f6f6;
-$c-alabaster:            #f7f7f7;
-$c-cod-gray:             #1a1a1a;
-$c-boulder:              #757575;
-$c-mine-shaft:           #333333;
-$c-havelock-blue:        #6675DF;
-$c-chambray:             #3B5998;
-$c-valencia:             #D42E29;
-$light-grey:             #f0f0f0;
-$c-royal-blue:           #5468d9;
-$c-scampi:               #626FB0;
+$c-white: #ffffff;
+// color variable
+$c-concrete: #f2f2f2;
+$c-wild-sand: #f6f6f6;
+$c-alabaster: #f7f7f7;
+$c-cod-gray: #1a1a1a;
+$c-boulder: #757575;
+$c-mine-shaft: #333333;
+$c-havelock-blue: #6675df;
+$c-chambray: #3b5998;
+$c-valencia: #d42e29;
+$light-grey: #f0f0f0;
+$c-royal-blue: #5468d9;
+$c-scampi: #626fb0;
+
+// animation variable
+$transition-dur: 0.5s;
+$transition-fun: ease-out;
