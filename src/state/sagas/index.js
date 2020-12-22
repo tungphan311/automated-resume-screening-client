@@ -1,11 +1,12 @@
 import { all, call } from "redux-saga/effects";
 import authSaga from "state/sagas/authSaga";
+import cvSaga from "state/sagas/cvSaga";
 import hrJobSaga from "state/sagas/hrJobSaga";
 import { initSaga } from "state/sagas/initSaga";
 import jobDomainSaga from "state/sagas/jobDomainSaga";
 
 export default function* rootSaga() {
-  yield all([authSaga(), hrJobSaga(), jobDomainSaga(), initSaga()]);
+  yield all([authSaga(), hrJobSaga(), jobDomainSaga(), initSaga(), cvSaga()]);
 }
 
 export function* callAndCache(...args) {

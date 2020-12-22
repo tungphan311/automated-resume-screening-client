@@ -1,6 +1,6 @@
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.css";
-import firebase from "firebase";
+// import firebase from "firebase";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -13,19 +13,19 @@ import "styles/index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-let firebaseConfig = {
-  apiKey: "AIzaSyB4gngEoIkWnnqCyc7i6xu-v_fj_G6U1Ts",
-  authDomain: "automated-resume-screeni-b6254.firebaseapp.com",
-  databaseURL: "https://automated-resume-screeni-b6254.firebaseio.com",
-  projectId: "automated-resume-screeni-b6254",
-  storageBucket: "automated-resume-screeni-b6254.appspot.com",
-  messagingSenderId: "934049368221",
-  appId: "1:934049368221:web:e18d63bb8535d6f44f6c74",
-  measurementId: "G-321Q382W61"
-};
+// let firebaseConfig = {
+//   apiKey: "AIzaSyB4gngEoIkWnnqCyc7i6xu-v_fj_G6U1Ts",
+//   authDomain: "automated-resume-screeni-b6254.firebaseapp.com",
+//   databaseURL: "https://automated-resume-screeni-b6254.firebaseio.com",
+//   projectId: "automated-resume-screeni-b6254",
+//   storageBucket: "automated-resume-screeni-b6254.appspot.com",
+//   messagingSenderId: "934049368221",
+//   appId: "1:934049368221:web:e18d63bb8535d6f44f6c74",
+//   measurementId: "G-321Q382W61"
+// };
 
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+// firebase.initializeApp(firebaseConfig);
+// firebase.analytics();
 
 ReactDOM.render(
   <React.StrictMode>
