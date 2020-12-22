@@ -2,21 +2,13 @@ import React, { useState } from "react";
 import "./ProgressBar.scss";
 import { Checked } from "constants/svg";
 
-function ProgressBar() {
+function ProgressBar({ steps }) {
   const [curStep, setCurStep] = useState(1);
   const [progress, setProgress] = useState(0);
 
-  const STEPS = [
-    { step: 1, label: "Thông tin liên lạc" },
-    { step: 2, label: "Học vấn" },
-    { step: 3, label: "Kinh nghiệm" },
-    { step: 4, label: "Kỹ năng" },
-    { step: 5, label: "Giải thưởng" }
-  ];
-
   const onClick = (label) => {
     setCurStep(label);
-    setProgress((label - 1) * 25);
+    setProgress(((label - 1) * 100) / (steps.length - 1));
   };
 
   return (
@@ -30,15 +22,15 @@ function ProgressBar() {
             ></div>
           </div>
           <div className="barInnerDots">
-            {[1, 2, 3, 4, 5].map((s) => (
-              <Dot label={s} curStep={curStep} onClick={onClick} />
+            {steps.map(({ step }) => (
+              <Dot label={step} curStep={curStep} onClick={onClick} />
             ))}
           </div>
         </div>
       </div>
       <div className="barLabel">
-        {STEPS.map(({ s, label }) => (
-          <Label step={s} curStep={curStep} label={label} />
+        {steps.map(({ step, label }) => (
+          <Label step={step} curStep={curStep} label={label} />
         ))}
       </div>
     </>
