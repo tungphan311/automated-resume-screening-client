@@ -1,16 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ProgressBar.scss";
 import { Checked } from "constants/svg";
 
-function ProgressBar({ steps }) {
-  const [curStep, setCurStep] = useState(1);
-  const [progress, setProgress] = useState(0);
-
-  const onClick = (label) => {
-    setCurStep(label);
-    setProgress(((label - 1) * 100) / (steps.length - 1));
-  };
-
+function ProgressBar({ steps, curStep = 1, handleChangeStep, progress }) {
   return (
     <>
       <div className="barPadding">
@@ -23,14 +15,19 @@ function ProgressBar({ steps }) {
           </div>
           <div className="barInnerDots">
             {steps.map(({ step }) => (
-              <Dot label={step} curStep={curStep} onClick={onClick} />
+              <Dot
+                key={step}
+                label={step}
+                curStep={curStep}
+                onClick={handleChangeStep}
+              />
             ))}
           </div>
         </div>
       </div>
       <div className="barLabel">
         {steps.map(({ step, label }) => (
-          <Label step={step} curStep={curStep} label={label} />
+          <Label key={step} step={step} curStep={curStep} label={label} />
         ))}
       </div>
     </>
