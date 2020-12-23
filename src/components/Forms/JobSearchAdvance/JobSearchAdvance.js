@@ -6,36 +6,40 @@ import "./JobSearchAdvance.scss";
 import { SearchOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import SelectWithSearch from "components/SelectWithSearch/SelectWithSearch";
+import { useSelector } from "react-redux";
 
 function JobSearchAdvance({ handleSubmit }) {
+  const provinces = useSelector((state) => state.cv.provinces);
+  const options = provinces.map(({ province_id, province_name }) => ({
+    value: province_id,
+    label: province_name
+  }));
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="row">
-        <div className="col-sm-8">
+        <div className="col-sm-10">
           <Field
             component={IconInput}
             name="job_title"
             icon={<SearchOutlined style={{ color: "#555" }} />}
-            formClassName="col-sm-8 pr-10"
+            formClassName="col-sm-6 pr-10"
           />
           <Field
-            component={IconInput}
+            component={CustomSelect}
             name="location"
-            formClassName="col-sm-4"
+            className="col-sm-6"
+            placeholder="Địa điểm làm việc"
+            options={options}
             icon={<FontAwesomeIcon icon={faMapMarkerAlt} color="#555" />}
           />
         </div>
-        <div className="col-sm-4">
-          <div className="col-sm-5">
-            <button type="submit" className="btn btn-primary btn-full-width">
-              Tìm kiếm
-            </button>
-          </div>
-          <div className="col-sm-7">
-            <div>
-              <a href="#">Tìm kiếm nâng cao</a>
-            </div>
-          </div>
+        <div className="col-sm-2">
+          <button type="submit" className="btn btn-primary btn-full-width">
+            <SearchOutlined style={{ marginRight: "10px" }} />
+            Tìm kiếm
+          </button>
         </div>
       </div>
     </form>
@@ -48,3 +52,7 @@ JobSearchAdvance = reduxForm({
 })(JobSearchAdvance);
 
 export default JobSearchAdvance;
+
+const CustomSelect = ({ input, ...props }) => (
+  <SelectWithSearch value={input.value} onChange={input.onChange} {...props} />
+);
