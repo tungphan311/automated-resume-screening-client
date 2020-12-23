@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { Button } from "antd";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { UPDATE_CV_VALUES } from "state/reducers/cvReducer";
 
 function EducationForm({ curStep, handleChangeStep }) {
   const education = useSelector((state) => state.cv.education, shallowEqual);
+  const dispatch = useDispatch();
 
   const [html, setHtml] = useState(education);
 
   const handleChange = (evt) => {
     setHtml(evt.target.value);
+  };
+
+  const handleSubmit = () => {
+    dispatch({ type: UPDATE_CV_VALUES, key: "education", value: html });
+    handleChangeStep(curStep + 1);
   };
 
   return (
@@ -18,9 +25,7 @@ function EducationForm({ curStep, handleChangeStep }) {
         <div className="panel-body">
           <div className="rv-content">
             <div className="container-fluid">
-              <div className="title sg-heading3 page-title pull-left">
-                Học vấn
-              </div>
+              <div className="heading-margin sg-heading3 title">Học vấn</div>
             </div>
             <div className="wizard-page-children container-fluid">
               <ContentEditable
@@ -33,7 +38,7 @@ function EducationForm({ curStep, handleChangeStep }) {
         </div>
       </div>
       <div>
-        <Button type="primary" onClick={() => handleChangeStep(curStep + 1)}>
+        <Button type="primary" onClick={handleSubmit}>
           Tới trang sau
         </Button>
         {curStep > 1 && (

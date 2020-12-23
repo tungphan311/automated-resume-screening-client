@@ -1,15 +1,58 @@
 import React, { useState } from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import { Button, Input } from "antd";
+import { PlusOutlined, DeleteFilled } from "@ant-design/icons";
 import ContentEditable from "react-contenteditable";
-import { Button } from "antd";
+import { useDispatch } from "react-redux";
+import { UPDATE_CV_VALUES } from "state/reducers/cvReducer";
 
 function SkillForm({ curStep, handleChangeStep }) {
-  const skill = useSelector((state) => state.cv.skill, shallowEqual);
+  // const skill = useSelector((state) => state.cv.skill, shallowEqual);
+  const dispatch = useDispatch();
 
-  const [html, setHtml] = useState(skill);
+  const SKILLS = ["Reactjs", "Javascript", "OOP"];
+  const getIndexArray = (arr) => {
+    let newArr = [];
+    for (let i = 0; i < arr.length; i++) {
+      newArr.push({ key: i, value: arr[i] });
+    }
 
-  const handleChange = (evt) => {
-    setHtml(evt.target.value);
+    return newArr;
+  };
+
+  const [skills, setSkills] = useState(getIndexArray(SKILLS));
+  const [value, setValue] = useState("");
+
+  const onChange = (key, value) => {
+    const skill = skills.find((ele) => ele.key === key);
+    let newSkills = skills.filter((ele) => ele.key !== key);
+    const newSkill = { ...skill, value };
+    newSkills.push(newSkill);
+    newSkills.sort((a, b) => a.key - b.key);
+
+    setSkills(newSkills);
+  };
+
+  const onDelete = (key) => {
+    const newSkills = skills.filter((ele) => ele.key !== key);
+    setSkills(newSkills);
+  };
+
+  const onAddSkill = () => {
+    const key = skills[skills.length - 1].key + 1;
+    const newSkills = [...skills, { key, value }];
+    setSkills(newSkills);
+    setValue("");
+  };
+
+  const handleInputChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    const values = skills.map((ele) => ele.value);
+    dispatch({ type: UPDATE_CV_VALUES, key: "skill", value: values });
+
+    handleChangeStep(curStep + 1);
   };
 
   return (
@@ -18,22 +61,56 @@ function SkillForm({ curStep, handleChangeStep }) {
         <div className="panel-body">
           <div className="rv-content">
             <div className="container-fluid">
-              <div className="title sg-heading3 page-title pull-left">
-                Kỹ năng
-              </div>
+              <div className="heading-margin sg-heading3 title">Kỹ năng</div>
             </div>
-            <div className="wizard-page-children container-fluid">
-              <ContentEditable
-                html={html} // innerHTML of the editable div
-                disabled={false} // use true to disable edition
-                onChange={handleChange} // handle innerHTML change
-              />
+            <div
+              className="wizard-page-children container-fluid"
+              spellCheck="false"
+            >
+              <div className="inline-skill-container is-compact">
+                <div className="inline-skill-input">
+                  <div>
+                    <div className="TextInput-labelWrapper">
+                      <label className="TextInput-label">Thêm kỹ năng</label>
+                      <p className="TextInput-helpText">vd: Javascript</p>
+                    </div>
+                    <div className="TextInput-wrapper">
+                      <Input
+                        size="large"
+                        value={value}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="inline-skill-button">
+                  <Button
+                    type="primary"
+                    size="large"
+                    icon={<PlusOutlined />}
+                    onClick={onAddSkill}
+                  >
+                    Thêm
+                  </Button>
+                </div>
+              </div>
+              <div style={{ marginTop: "20px" }}>
+                {skills.map(({ key, value }) => (
+                  <Skill
+                    skill={value}
+                    key={key}
+                    id={key}
+                    onChange={onChange}
+                    onDelete={onDelete}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div>
-        <Button type="primary" onClick={() => handleChangeStep(curStep + 1)}>
+        <Button type="primary" onClick={handleSubmit}>
           Tới trang sau
         </Button>
         {curStep > 1 && (
@@ -50,3 +127,36 @@ function SkillForm({ curStep, handleChangeStep }) {
 }
 
 export default SkillForm;
+
+const Skill = ({ id, skill, onChange, onDelete }) => {
+  const handleChange = (evt) => {
+    const value = evt.target.value;
+
+    onChange(id, value);
+  };
+
+  return (
+    <div>
+      <div className="hr-wizard"></div>
+      <div className="saved-item saved-item-new container-fluid">
+        <div className="row">
+          <div className="clearfix col-xs-12">
+            <div className="float-right edit-option">
+              <button className="buttonAsLink delete-button">
+                <DeleteFilled onClick={() => onDelete(id)} />
+              </button>
+            </div>
+            <div className="skill-editable">
+              <ContentEditable
+                className="content-editable"
+                html={skill} // innerHTML of the editable div
+                disabled={false} // use true to disable edition
+                onChange={handleChange} // handle innerHTML change
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
