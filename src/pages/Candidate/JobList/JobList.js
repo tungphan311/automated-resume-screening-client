@@ -1,9 +1,12 @@
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import JobItem from "components/JobItem/JobItem";
-import React from "react";
+import React, { useState } from "react";
 import "./JobList.scss";
 
 function CandidateJobList() {
+  const [curSelect, setCurSelect] = useState(null);
+
+  const onChangeSelect = (jobId) => setCurSelect(jobId);
   return (
     <>
       <div id="search-jobs-wrapper">
@@ -13,6 +16,10 @@ function CandidateJobList() {
         >
           <div className="container">
             <JobSearchAdvance />
+          </div>
+        </div>
+        <div>
+          <div className="container">
             <table id="searchContent" className="serpContainerMinHeight">
               <tbody>
                 <tr role="main" style={{ verticalAlign: "top" }}>
@@ -25,8 +32,16 @@ function CandidateJobList() {
                         </div>
                       </div>
                     </div>
-                    <JobItem />
-                    <JobItem />
+                    <JobItem
+                      jobId={1}
+                      curSelect={curSelect}
+                      onChangeSelect={onChangeSelect}
+                    />
+                    <JobItem
+                      jobId={2}
+                      curSelect={curSelect}
+                      onChangeSelect={onChangeSelect}
+                    />
                   </td>
                   <td role="region" id="auxColl"></td>
                   <td id="applyCol"></td>
