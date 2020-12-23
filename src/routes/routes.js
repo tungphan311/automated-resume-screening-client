@@ -71,6 +71,11 @@ function Routes() {
           />
           <UnauthorizedRoute
             exact
+            path="/find-jobs"
+            component={CandidateJobList}
+          />
+          <UnauthorizedRoute
+            exact
             path="/recruitment/jobs/new-job"
             component={HRPostJob}
           />
