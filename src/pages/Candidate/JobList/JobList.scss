@@ -8,3 +8,51 @@
     border-radius: 0;
   }
 }
+
+#searchContent {
+  padding: 0;
+  border-spacing: 0;
+  border: 0;
+  width: 100%;
+  display: block;
+  max-width: 100%;
+}
+
+table#searchContent.serpContainerMinHeight {
+  min-height: 1400px;
+}
+
+#resultCol {
+  border-right: 0 !important;
+  padding-bottom: 0 !important;
+  position: relative;
+  margin-top: 8px;
+  padding-right: 0;
+  width: 410px;
+  min-width: 410px;
+  padding: 0 28px 9px 0 !important;
+  max-width: 648px;
+
+  .resultsTop {
+    margin-top: 0.75rem;
+    padding: 8px 16px;
+    margin-bottom: 0;
+    display: block;
+
+    .secondRow {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.searchCountContainer {
+  display: inline-block;
+  position: relative;
+}
+
+#searchCountPages {
+  color: #767676 !important;
+  font-size: 12px;
+}

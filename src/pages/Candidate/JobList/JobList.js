@@ -1,4 +1,5 @@
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
+import JobItem from "components/JobItem/JobItem";
 import React from "react";
 import "./JobList.scss";
 
@@ -12,6 +13,26 @@ function CandidateJobList() {
         >
           <div className="container">
             <JobSearchAdvance />
+            <table id="searchContent" className="serpContainerMinHeight">
+              <tbody>
+                <tr role="main" style={{ verticalAlign: "top" }}>
+                  <td id="resultCol">
+                    <div style={{ paddingTop: "6px" }}></div>
+                    <div className="resultsTop">
+                      <div className="secondRow">
+                        <div className="searchCountContainer">
+                          <div id="searchCountPages">Page 1 of 101 jobs</div>
+                        </div>
+                      </div>
+                    </div>
+                    <JobItem />
+                    <JobItem />
+                  </td>
+                  <td role="region" id="auxColl"></td>
+                  <td id="applyCol"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
