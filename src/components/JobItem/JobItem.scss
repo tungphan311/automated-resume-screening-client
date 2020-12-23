@@ -24,6 +24,10 @@
       }
     }
 
+    .vjs-highlight {
+      border: 0.0625rem solid #2557a7 !important;
+    }
+
     .row.unifiedRow {
       font-size: 14px;
       color: #4b4b4b !important;
@@ -43,6 +47,7 @@
 
     .jobsearch-SerpJobCard {
       width: 100%;
+      background-color: #fff;
     }
 
     .row {
@@ -188,4 +193,8 @@
 
 .no-wrap {
   white-space: nowrap;
+}
+
+.clickcard {
+  cursor: pointer;
 }
