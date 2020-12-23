@@ -4,6 +4,7 @@ import CandidateSignIn from "pages/Candidate/CandidateSignIn/CandidateSignIn";
 import CandidateSignUp from "pages/Candidate/CandidateSignUp/CandidateSignUp";
 import CandidateHome from "pages/Candidate/Home/Home";
 import CandidateProfile from "pages/Candidate/Profile/Profile";
+import CandidateReviewCV from "pages/Candidate/ReviewCV/ReviewCV";
 import ConfirmMail from "pages/Empty/ConfirmMail/ConfirmMail";
 import HRHome from "pages/HR/Home/Home";
 import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
@@ -44,12 +45,23 @@ function Routes() {
     <Switch>
       <Route
         exact
-        path={["/", "/profile", "/recruitment", "/recruitment/jobs/new-job"]}
+        path={[
+          "/",
+          "/profile",
+          "/recruitment",
+          "/recruitment/jobs/new-job",
+          "/profile/review"
+        ]}
       >
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
           <UnauthorizedRoute exact path="/recruitment" component={HRHome} />
           <AuthorizedRoute exact path="/profile" component={CandidateProfile} />
+          <AuthorizedRoute
+            exact
+            path="/profile/review"
+            component={CandidateReviewCV}
+          />
           <UnauthorizedRoute
             exact
             path="/recruitment/jobs/new-job"

@@ -1,0 +1,178 @@
+.wizard-page-children {
+  display: flex;
+  flex-direction: column;
+
+  .container-fluid {
+    width: auto;
+  }
+
+  .saved-item {
+    margin: 0px 15px;
+  }
+}
+
+.container-fluid {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  &::before,
+  &::after {
+    content: " ";
+    display: table;
+  }
+}
+
+.wizard-page-children {
+  margin-top: 13px;
+}
+
+.form-field {
+  margin-bottom: 12px;
+}
+
+.heading3,
+.sg-heading3 {
+  font-size: 1.125rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+}
+
+.title {
+  color: #000;
+  font-weight: 700;
+}
+
+.heading-margin {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.rv-content {
+  margin-bottom: 0;
+  padding: 1rem 0 0;
+}
+
+div[contenteditable="true"] {
+  font-family: sans-serif;
+  min-height: 50px;
+  border: 1px dashed #aaa;
+  padding: 5px;
+  padding: 10px 15px;
+}
+
+.inline-skill-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
+  &.is-compact {
+    padding-top: 0;
+  }
+}
+
+.inline-skill-input {
+  flex: 1 1 auto;
+}
+
+.TextInput-labelWrapper {
+  margin-bottom: 0.5rem;
+}
+
+.TextInput-label {
+  color: #4b4b4b;
+  font-family: Helvetica Neue, Helvetica, Arial, Liberation Sans, Roboto, Noto,
+    sans-serif;
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  font-weight: 700;
+  line-height: 1.43;
+  display: block;
+  margin-bottom: 0;
+}
+
+.TextInput-helpText {
+  color: #6f6f6f;
+  font-weight: 400;
+  display: inline-block;
+  font-family: Helvetica Neue, Helvetica, Arial, Liberation Sans, Roboto, Noto,
+    sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  line-height: 1.67;
+  margin-bottom: 0;
+}
+
+.TextInput-wrapper {
+  position: relative;
+}
+
+.inline-skill-button {
+  flex: 0 1 auto;
+  align-self: flex-end;
+  padding-left: 10px;
+}
+
+.saved-item {
+  background-color: #fff;
+  margin-bottom: 5px;
+  padding: 10px 15px;
+  word-wrap: break-word;
+}
+
+.saved-item-new {
+  padding: 14px 0;
+
+  &:hover {
+    background-color: #f7f7f7;
+
+    .edit-option {
+      opacity: 1;
+    }
+  }
+
+  &:focus-within {
+    background-color: #fcf8e1;
+
+    .edit-option {
+      opacity: 1;
+      z-index: 10;
+    }
+  }
+}
+
+.col-xs-12 {
+  float: left;
+  width: 100%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.edit-option {
+  margin-left: 10px;
+  text-align: right;
+  opacity: 0;
+
+  transition: opacity 0.5s ease-in-out;
+}
+
+.skill-editable {
+  div[contenteditable="true"] {
+    padding: 0;
+    border: none;
+    min-height: auto;
+  }
+}
+
+.content-editable:focus {
+  outline: 0;
+}
+
+.hr-wizard {
+  display: block;
+  border-bottom: 1px solid #ccc;
+  margin: 0 15px;
+}

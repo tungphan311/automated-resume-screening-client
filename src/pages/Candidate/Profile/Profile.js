@@ -1,9 +1,13 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Card, Progress } from "antd";
-import firebase from "firebase";
+import { Button, Card } from "antd";
+// import firebase from "firebase";
 import React, { useRef, useState } from "react";
+// import { uploadFile } from "services/uploadServices";
 import { toast } from "utils/index";
 import "./Profile.scss";
+import FormData from "form-data";
+import { useDispatch } from "react-redux";
+import { uploadCVAction } from "state/actions/index";
 
 const ACCEPTS = [
   "application/msword",
@@ -13,18 +17,18 @@ const ACCEPTS = [
 
 function CandidateProfile() {
   // state
-  const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
 
   // ref
   const inputRef = useRef();
-  const storageRef = firebase.storage().ref();
+
+  const dispatch = useDispatch();
 
   const handleSelectFile = () => {
     inputRef.current.click();
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
     const file = e.target.files[0];
 
     if (!ACCEPTS.includes(file.type)) {
@@ -32,38 +36,29 @@ function CandidateProfile() {
     } else {
       setLoading(true);
 
-      const metadata = {
-        contentType: file.type
-      };
+      const formData = new FormData();
+      formData.append("file", file);
 
-      const uploadTask = storageRef
-        .child("resumes/" + file.name)
-        .put(file, metadata);
+      dispatch(uploadCVAction(formData));
 
-      uploadTask.on(
-        firebase.storage.TaskEvent.STATE_CHANGED,
-        function (snapshot) {
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          let p = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-          setProgress(p);
-        },
-        function (error) {
-          // Handle unsuccessful uploads
-          console.log(error);
-        },
-        function () {
-          // Upload completed successfully, now we can get the download URL
-          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-            console.log("File available at", downloadURL);
-          });
-        }
-      );
+      // await uploadFile(formData);
     }
   };
 
   return (
     <div className="container profile__wrapper" style={{ marginTop: "20px" }}>
+      <div className={`seeking-loading ${loading ? "" : "d-none"}`}>
+        <lottie-player
+          src="https://assets7.lottiefiles.com/packages/lf20_h59xofz0.json"
+          mode="bounce"
+          background="rgba(0, 0, 0, 0)"
+          speed="0.9"
+          style={{ width: "500px", height: "500px" }}
+          loop
+          autoplay
+        ></lottie-player>
+        <span>Đang tải lên, vui lòng chờ trong giây lát ...</span>
+      </div>
       <div className="row">
         <div className="col-sm-8">
           <Card title="Tải lên CV của bạn">
@@ -86,17 +81,6 @@ function CandidateProfile() {
           </Card>
         </div>
         <div className="col-sm-4"></div>
-      </div>
-      <div className={`${loading ? "" : "d-none"} loading-cv`}>
-        <Progress
-          type="circle"
-          strokeColor={{
-            "0%": "#108ee9",
-            "100%": "#87d068"
-          }}
-          percent={progress}
-        />
-        <p style={{ marginTop: "20px  " }}>Đang tải lên ...</p>
       </div>
     </div>
   );

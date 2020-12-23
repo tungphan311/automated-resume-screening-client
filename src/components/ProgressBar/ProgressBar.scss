@@ -1,0 +1,147 @@
+.barPadding {
+  padding: 0 calc(10% - 8px);
+}
+
+.barContainer {
+  position: relative;
+  width: 100%;
+}
+
+.barProgress {
+  position: absolute;
+  width: 100%;
+  background: #ccc;
+  height: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.barProgressFill {
+  height: 100%;
+  background: #085ff7;
+  transition: width $transition-dur $transition-fun;
+}
+
+.barInnerDots {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.step-dot {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 100%;
+  border: 2px solid #ccc;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-dur $transition-fun;
+  position: relative;
+}
+
+.dotInner {
+  font-size: 13px;
+  color: #141411;
+  transition: all $transition-dur $transition-fun;
+}
+
+.curDot {
+  color: #085ff7;
+}
+
+.cur-step {
+  border-color: #085ff7;
+}
+
+.buttonAsLink {
+  text-align: left;
+  align-items: normal;
+  background-color: transparent;
+  border-style: none;
+  box-sizing: content-box;
+  color: #085ff7;
+  cursor: pointer;
+  display: inline;
+  font: inherit;
+  height: auto;
+  padding: 0;
+  perspective-origin: 0 0;
+  transform-origin: 0 0;
+  width: auto;
+  outline: none;
+  text-decoration: none;
+}
+
+.dotLink {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 77px;
+  height: 64px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.step-dash {
+  flex-grow: 1;
+  height: 2px;
+  background: transparent;
+}
+
+.dotChecked {
+  background-color: #085ff7;
+  border-color: #085ff7;
+}
+
+.barProgress-checked {
+  width: 24px;
+  height: 22px;
+  display: block;
+  stroke-width: 4;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  margin: -5px auto;
+
+  path {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: microcontent-success-stroke 1s ease 0.2s forwards;
+  }
+}
+
+@keyframes microcontent-success-stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.barLabel {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.label-text {
+  padding: 0 4px;
+  text-align: center;
+  flex-basis: 0;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: normal;
+  color: #6f6f6f;
+  transition: color $transition-dur $transition-fun;
+  margin-top: 7px;
+  font-size: 0.875rem;
+}
+
+.labelActive {
+  font-weight: bold;
+  color: #000;
+}

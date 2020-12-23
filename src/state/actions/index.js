@@ -1,3 +1,5 @@
+import { createPromiseAction } from "@adobe/redux-saga-promise";
+
 export const REGISTER_CANDIDATE = "REGISTER_CANDIDATE";
 export const REGISTER_HR = "REGISTER_HR";
 export const REGISTER_USER_SUCCESS = "REGISTER_USER_SUCCESS";
@@ -16,3 +18,5 @@ export const LOGOUT = "LOGOUT";
 
 export const INIT_DATA = "INIT_DATA";
 export const RESIGN_TOKEN = "RESIGN_TOKEN";
+
+export const uploadCVAction = createPromiseAction("UPLOAD_CV");
