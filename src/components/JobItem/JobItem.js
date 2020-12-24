@@ -59,7 +59,9 @@ function JobItem({ jobId, curSelect, onChangeSelect, top }) {
           </div>
         </div>
       </div>
-      {jobId === curSelect && <JobDetail top={top} />}
+      {jobId === curSelect && (
+        <JobDetail top={top} onChangeSelect={onChangeSelect} />
+      )}
     </>
   );
 }
