@@ -10,6 +10,7 @@ import ConfirmMail from "pages/Empty/ConfirmMail/ConfirmMail";
 import HRHome from "pages/HR/Home/Home";
 import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
 import HRSignUp from "pages/HR/HRSignUp/HRSignUp";
+import HRJobDetail from "pages/HR/JobDetail/JobDetail";
 import HRJobList from "pages/HR/JobList/JobList";
 import HRPostJob from "pages/HR/PostJob/PostJob";
 import React from "react";
@@ -54,7 +55,8 @@ function Routes() {
           "/recruiter/jobs/new-job",
           "/profile/review",
           "/recruiter/jobs",
-          "/find-jobs"
+          "/find-jobs",
+          "/recruiter/jobs/:id"
         ]}
       >
         <CandidateLayout>
@@ -80,6 +82,11 @@ function Routes() {
             exact
             path="/recruiter/jobs"
             component={HRJobList}
+          />
+          <UnauthorizedRoute
+            exact
+            path="/recruiter/jobs/:id"
+            component={HRJobDetail}
           />
         </CandidateLayout>
       </Route>

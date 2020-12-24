@@ -1,0 +1,29 @@
+.jb-detail {
+  width: 100%;
+  border-radius: 4px;
+}
+
+td {
+  border: 1px solid #e3e6f0;
+}
+
+.jp-label {
+  text-align: right;
+  padding: 10px;
+  width: 25%;
+}
+
+.jp-value {
+  width: 75%;
+  padding: 10px;
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.jp-summary {
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
