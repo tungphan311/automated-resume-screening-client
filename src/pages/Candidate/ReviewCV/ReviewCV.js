@@ -25,7 +25,7 @@ function CandidateReviewCV() {
   };
 
   useEffect(() => {
-    // setVisible(true);
+    setVisible(true);
   }, []);
 
   const toggleModal = () => setVisible(false);
@@ -74,7 +74,11 @@ function CandidateReviewCV() {
 
       {renderContent()}
 
-      <ConfirmModal visible={visible} toggleModal={toggleModal} />
+      <ConfirmModal
+        visible={visible}
+        onCancel={toggleModal}
+        onOk={toggleModal}
+      />
     </div>
   );
 }
