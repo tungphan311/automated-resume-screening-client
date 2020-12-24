@@ -37,9 +37,64 @@ function JobDetail({ top, onChangeSelect }) {
                 <span>$48,500 - $96,000 a year</span>
               </div>
             </div>
+            <div id="jobDescriptionTitle">Thông tin chi tiết</div>
+            <div id="jobDescriptionText">
+              <p>
+                <b>Mô tả công việc: </b>
+              </p>
+              <ul>
+                <li>
+                  Design and develop front end solutions for client-facing
+                  applications
+                </li>
+                <li>
+                  Support application customization, developing best-practices
+                  from both a process and technology standpoint
+                </li>
+              </ul>
+              <p></p>
+              <br />
+
+              <p>
+                <b>Yêu cầu ứng viên: </b>
+              </p>
+              <ul>
+                <li>
+                  5+ years of experience in software engineering with a focus on
+                  front-end development
+                </li>
+                <li> Expert level experience with CSS, HTML, and JavaScript</li>
+                <li>
+                  Experience with view layout and rendering technologies (e.g.,
+                  responsiveness, progressive enhancement, browser/device
+                  support)
+                </li>
+                <li> Experience in using JQuery and JavaScript libraries</li>
+                <li> Web development experience in ASP.NET MVC/ C#</li>
+                <li>
+                  Bachelor’s Degree in Computer Science, Interactive Design, or
+                  Graphic/Web Design related field
+                </li>
+              </ul>
+              <p></p>
+              <br />
+              <p>
+                <b>Quyền lợi ứng viên: </b>
+              </p>
+              <ul>
+                <li> $125,000-$135,000</li>
+                <li>
+                  Comprehensive benefit package; Medical, Dental, Vision, 401k,
+                  and Paid Time Off
+                </li>
+              </ul>
+              <p></p>
+              <br />
+            </div>
           </div>
         </div>
       </div>
+      <div className="vjs-content-padding-bottom"></div>
     </div>
   );
 }

@@ -14,7 +14,7 @@ function SelectWithSearch({
   icon = ""
 }) {
   return (
-    <div className={`dropdown ${className}`}>
+    <div className={`dropdown ${className}`} style={{ zIndex: 999 }}>
       {label && <label>{label}</label>}
       <Select
         name={name}

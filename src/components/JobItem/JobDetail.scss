@@ -150,8 +150,19 @@
   overflow-y: auto;
   background-color: #fff;
   color: #2d2d2d !important;
-  // flex: 1 1;
-  // width: 100%;
+  height: 100%;
+
+  #jobDescriptionTitle {
+    margin: 16px 0;
+    font-size: 18px;
+    letter-spacing: 0.06rem;
+    font-weight: 700;
+    line-height: 1.34;
+  }
+
+  #jobDescriptionText {
+    font-size: 14px;
+  }
 }
 
 .job-detail-section-container {
@@ -178,4 +189,9 @@
 
 .job-detail-section-itemKey {
   margin-bottom: 4px;
+}
+
+.vjs-content-padding-bottom {
+  padding-top: 12px;
+  background-color: #fff;
 }
