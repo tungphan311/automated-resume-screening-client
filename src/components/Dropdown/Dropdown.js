@@ -3,7 +3,7 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import "./Dropdown.scss";
 import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
 
-function Dropdown({ title = "Ngày đăng", options }) {
+function Dropdown({ title, options }) {
   const [isShowing, setShowing] = useState(false);
   const [value, setValue] = useState(null);
 
@@ -16,7 +16,7 @@ function Dropdown({ title = "Ngày đăng", options }) {
   };
   return (
     <div className="dd-wrapper">
-      {!value ? (
+      {value === null ? (
         <>
           <button className="dd-button" onClick={openDropdown}>
             <span>

@@ -30,3 +30,9 @@ export const DATES = [
   { value: 3, label: "3 ngày qua" },
   { value: 7, label: "7 ngày qua" }
 ];
+
+export const CONTACTS = [
+  { value: 0, label: "Toàn thời gian" },
+  { value: 1, label: "Bán thời gian" },
+  { value: 2, label: "Thực tập" }
+];

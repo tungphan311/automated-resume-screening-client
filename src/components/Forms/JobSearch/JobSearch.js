@@ -1,9 +1,5 @@
-import {
-  CheckOutlined,
-  CloseOutlined,
-  SearchOutlined
-} from "@ant-design/icons";
-import { Checkbox, Switch } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Checkbox } from "antd";
 import React, { useState } from "react";
 import "./JobSearch.scss";
 
@@ -45,19 +41,6 @@ function JobSearch() {
                 defaultValue={jobTypeChecked}
                 onChange={onChange}
               />
-            </div>
-            <div className="custom-control custom-switch">
-              <Switch
-                checkedChildren={<CheckOutlined />}
-                unCheckedChildren={<CloseOutlined />}
-                defaultChecked={false}
-              />
-              <label
-                className="ml-3 font-weight-bold text-primary"
-                htmlFor="remote"
-              >
-                Remote
-              </label>
             </div>
           </div>
         </div>

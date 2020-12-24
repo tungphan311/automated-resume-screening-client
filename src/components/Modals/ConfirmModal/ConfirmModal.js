@@ -2,13 +2,19 @@ import React from "react";
 import { Modal } from "antd";
 import "./ConfirmModal.scss";
 
-function ConfirmModal({ visible, toggleModal }) {
+function ConfirmModal({ visible, onCancel }) {
   return (
-    <Modal title="Review CV" centered visible={visible} footer={null}>
+    <Modal
+      title="Review CV"
+      centered
+      onCancel={onCancel}
+      visible={visible}
+      footer={null}
+    >
       <div className="review-cv--layout review-cv--vertical">
         <button
           className="rv-button rv-button--primary rv-button--lg rv-button--block"
-          onClick={() => toggleModal()}
+          onClick={onCancel}
         >
           Review
         </button>
