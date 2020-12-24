@@ -45,7 +45,7 @@ function NavBar() {
         <Button
           type="primary"
           size="large"
-          onClick={() => history.push("/recruitment")}
+          onClick={() => history.push("/recruiter")}
         >
           Nhà tuyển dụng
         </Button>

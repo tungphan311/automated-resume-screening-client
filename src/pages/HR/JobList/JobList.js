@@ -132,14 +132,14 @@ function HRJobList() {
             <ul>
               <Tab
                 label="Tin đang hiển thị"
-                href="/recruitment/jobs?status=showing"
+                href="/recruiter/jobs?status=showing"
                 amount={1}
                 active={search === "" || search === "?status=showing"}
                 className="job-showing-tab"
               />
               <Tab
                 label="Tin hết hạn/ đã đóng"
-                href="/recruitment/jobs?status=closed"
+                href="/recruiter/jobs?status=closed"
                 amount={1}
                 active={search === "?status=closed"}
               />
@@ -176,7 +176,7 @@ const EmptyJob = () => (
     <div className="text-center">
       <p style={{ padding: "20px", fontWeight: "bold", color: "#555" }}>
         {"Vui lòng "}
-        <Link to="/recruitment/jobs/new-job" className="text-primary">
+        <Link to="/recruiter/jobs/new-job" className="text-primary">
           Đăng tin tuyển dụng
         </Link>
         {" mới hoặc xem tin đã đăng tại mục "}

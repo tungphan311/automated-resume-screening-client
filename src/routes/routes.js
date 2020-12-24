@@ -51,17 +51,18 @@ function Routes() {
         path={[
           "/",
           "/profile",
-          "/recruitment",
-          "/recruitment/jobs/new-job",
+          "/recruiter",
+          "/recruiter/jobs/new-job",
           "/profile/review",
-          "/recruitment/jobs",
           "/find-jobs",
-          "/recruiter/company/update"
+          "/recruiter/company/update",
+          "/recruiter/jobs",
+          "/find-jobs"
         ]}
       >
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
-          <UnauthorizedRoute exact path="/recruitment" component={HRHome} />
+          <UnauthorizedRoute exact path="/recruiter" component={HRHome} />
           <AuthorizedRoute exact path="/profile" component={CandidateProfile} />
           <AuthorizedRoute
             exact
@@ -75,12 +76,12 @@ function Routes() {
           />
           <UnauthorizedRoute
             exact
-            path="/recruitment/jobs/new-job"
+            path="/recruiter/jobs/new-job"
             component={HRPostJob}
           />
           <UnauthorizedRoute
             exact
-            path="/recruitment/jobs"
+            path="/recruiter/jobs"
             component={HRJobList}
           />
           <AuthorizedRoute
