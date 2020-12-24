@@ -10,7 +10,7 @@ import ConfirmMail from "pages/Empty/ConfirmMail/ConfirmMail";
 import HRHome from "pages/HR/Home/Home";
 import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
 import HRSignUp from "pages/HR/HRSignUp/HRSignUp";
-import HRJobDetail from "pages/HR/JobDetail/JobDetail";
+import HRJobManage from "pages/HR/JobDetail/JobManage";
 import HRJobList from "pages/HR/JobList/JobList";
 import HRPostJob from "pages/HR/PostJob/PostJob";
 import HRUpdateCompany from "pages/HR/UpdateCompany/UpdateCompany";
@@ -94,7 +94,7 @@ function Routes() {
           <UnauthorizedRoute
             exact
             path="/recruiter/jobs/:id"
-            component={HRJobDetail}
+            component={HRJobManage}
           />
         </CandidateLayout>
       </Route>

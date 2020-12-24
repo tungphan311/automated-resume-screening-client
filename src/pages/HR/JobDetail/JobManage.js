@@ -7,9 +7,9 @@ import {
   FileExcelOutlined
 } from "@ant-design/icons";
 import JobDetailMenu from "components/JobDetailMenu/JobDetailMenu";
-import "./JobDetail.scss";
+import "./JobManage.scss";
 
-function HRJobDetail() {
+function HRJobManage() {
   return (
     <>
       <JobDetailMenu />
@@ -56,7 +56,7 @@ function HRJobDetail() {
   );
 }
 
-export default HRJobDetail;
+export default HRJobManage;
 
 const Detail = () => (
   <table className="jb-detail">
