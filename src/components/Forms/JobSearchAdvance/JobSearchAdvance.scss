@@ -1,0 +1,32 @@
+#search-jobs {
+  .form-group,
+  .col-sm-6 {
+    display: inline-block !important;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 0;
+  }
+
+  .col-sm-10 {
+    padding-right: 0;
+  }
+}
+
+.btn-primary {
+  background-color: $primary;
+  border-color: transparent;
+}
+
+.btn-full-width {
+  width: 100%;
+}
+
+.select__control,
+.icon-select__control {
+  border-radius: 4px !important;
+  min-height: 40px !important;
+}
+
+.icon-select__value-container {
+  padding-left: 35px !important;
+}

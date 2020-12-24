@@ -92,3 +92,15 @@ svg {
     transform: rotate(360deg);
   }
 }
+
+.ant-btn-primary {
+  background-color: $primary;
+  border-color: transparent;
+  border-radius: 4px;
+
+  &:hover,
+  &:focus {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+}

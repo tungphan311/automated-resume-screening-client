@@ -1,0 +1,126 @@
+.dd-wrapper {
+  display: flex;
+  margin-top: 8px;
+  position: relative;
+}
+
+.filters {
+  .dd-button {
+    border-radius: 4px;
+    background-color: #e4e2e0;
+    border-color: transparent;
+    color: #2d2d2d;
+    height: 40px;
+    min-width: 100px;
+    text-align: center;
+    padding: 6px 12px 6px 16px;
+
+    &:hover {
+      background: #e3e3e3;
+      box-shadow: inset 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.1);
+    }
+
+    &:not(.blue):hover {
+      border: 0;
+      padding-left: 1.125rem;
+      padding-right: 0.875rem;
+    }
+
+    &:focus {
+      box-shadow: inset 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.1),
+        0 0 0 0.125rem #fff, 0 0 0 0.1875rem #2557a7 !important;
+    }
+
+    &.blue {
+      background-color: #595959 !important;
+      border: 0.125rem solid #595959;
+      color: #fff;
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      white-space: nowrap;
+      line-height: 1rem;
+    }
+  }
+
+  button {
+    margin-right: 8px;
+    font-weight: 400;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: none;
+    box-shadow: none;
+    cursor: pointer;
+    border: 2px solid;
+  }
+
+  .dd-menu {
+    left: 0;
+    right: 0;
+    font-weight: normal;
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+    margin: -1px 0 0;
+    border-radius: 4px;
+  }
+
+  .dropdown-content {
+    &.dd-menu {
+      margin-top: 48px;
+      position: absolute;
+      width: 241px;
+      background-color: #fff;
+      border: 1px solid #ececec;
+      box-sizing: border-box;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+      z-index: 1000;
+    }
+
+    .dd-menu-option {
+      left: 0;
+      text-align: left;
+      width: 240px;
+      cursor: pointer;
+      background-color: #fff;
+      line-height: 1.75rem;
+      border: none;
+      padding: 0;
+
+      &:hover {
+        background-color: #eef1fe;
+      }
+
+      div {
+        display: block;
+        padding: 8px 16px;
+      }
+    }
+  }
+
+  .dd-hidden {
+    display: none;
+  }
+
+  .filters-close {
+    margin-left: 12px;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cmask id='a' maskUnits='userSpaceOnUse' x='3' y='3' width='10' height='10'%3E%3Cpath d='M13 3.958L12.042 3 8 7.042 3.958 3 3 3.958 7.042 8 3 12.042l.958.958L8 8.958 12.042 13l.958-.958L8.958 8 13 3.958z' fill='%23fff'/%3E%3C/mask%3E%3Cg mask='url(%23a)'%3E%3Cpath d='M16 0H0v16h16V0z' fill='%23FFFFFF'/%3E%3C/g%3E%3C/svg%3E");
+      width: 1rem;
+      height: 1rem;
+      vertical-align: bottom;
+    }
+
+    img {
+      display: none;
+    }
+  }
+}
