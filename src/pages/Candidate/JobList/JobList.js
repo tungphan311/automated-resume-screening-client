@@ -63,10 +63,12 @@ function CandidateJobList() {
                       top={top}
                     />
                   </td>
-                  <td role="region" id="auxCol">
-                    <JobAlert />
-                    <div className="recentsearches"></div>
-                  </td>
+                  {curSelect === null && (
+                    <td role="region" id="auxCol">
+                      <JobAlert />
+                      <div className="recentsearches"></div>
+                    </td>
+                  )}
                   <td id="applyCol"></td>
                 </tr>
               </tbody>
