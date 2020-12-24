@@ -1,11 +1,22 @@
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import JobItem from "components/JobItem/JobItem";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./JobList.scss";
 
 function CandidateJobList() {
   const [curSelect, setCurSelect] = useState(null);
   const [top, setTop] = useState(0);
+
+  useEffect(() => {
+    function getScroll() {
+      const scrollY = window.scrollY;
+      setTop(top - scrollY);
+    }
+
+    window.addEventListener("scroll", getScroll);
+
+    return () => window.removeEventListener("scroll", getScroll);
+  }, []);
 
   const onChangeSelect = (jobId) => setCurSelect(jobId);
   return (
@@ -23,7 +34,7 @@ function CandidateJobList() {
           ref={(el) => {
             if (!el) return;
 
-            setTop(el.getBoundingClientRect().top);
+            setTop(el.getBoundingClientRect().y);
           }}
         >
           <div className="container">
@@ -49,6 +60,7 @@ function CandidateJobList() {
                       jobId={2}
                       curSelect={curSelect}
                       onChangeSelect={onChangeSelect}
+                      top={top}
                     />
                   </td>
                   <td role="region" id="auxCol">
