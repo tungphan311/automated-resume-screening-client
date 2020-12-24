@@ -1,7 +1,7 @@
 import Dropdown from "components/Dropdown/Dropdown";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import JobItem from "components/JobItem/JobItem";
-import { DATES, PAGE_SIZES } from "constants/index";
+import { CONTACTS, DATES, PAGE_SIZES } from "constants/index";
 import React, { useEffect, useState } from "react";
 import "./JobList.scss";
 import { Pagination, Select } from "antd";
@@ -34,7 +34,8 @@ function CandidateJobList() {
             <JobSearchAdvance />
 
             <div className="filters">
-              <Dropdown options={DATES} />
+              <Dropdown title="Ngày đăng" options={DATES} />
+              <Dropdown title="Loại hợp đồng" options={CONTACTS} />
             </div>
           </div>
         </div>
