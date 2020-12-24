@@ -7,6 +7,16 @@
     margin-bottom: 1rem;
     border-radius: 0;
   }
+
+  .filters {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 1 100%;
+    justify-content: flex-start;
+    margin-left: 0;
+    padding-bottom: 12px;
+  }
 }
 
 #searchContent {

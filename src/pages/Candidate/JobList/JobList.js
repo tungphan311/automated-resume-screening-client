@@ -1,5 +1,7 @@
+import Dropdown from "components/Dropdown/Dropdown";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import JobItem from "components/JobItem/JobItem";
+import { DATES } from "constants/index";
 import React, { useEffect, useState } from "react";
 import "./JobList.scss";
 
@@ -28,6 +30,10 @@ function CandidateJobList() {
         >
           <div className="container">
             <JobSearchAdvance />
+
+            <div className="filters">
+              <Dropdown options={DATES} />
+            </div>
           </div>
         </div>
         <div

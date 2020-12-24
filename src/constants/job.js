@@ -24,3 +24,9 @@ export const EXPERIENCES = [
 
 export const MIN_SALARY = ["from", "between"];
 export const MAX_SALARY = ["upto", "between"];
+
+export const DATES = [
+  { value: 1, label: "24 giờ qua" },
+  { value: 3, label: "3 ngày qua" },
+  { value: 7, label: "7 ngày qua" }
+];
