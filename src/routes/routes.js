@@ -59,7 +59,8 @@ function Routes() {
           "/recruiter/company/update",
           "/recruiter/jobs",
           "/find-jobs",
-          "/recruiter/jobs/:id"
+          "/recruiter/jobs/:id",
+          "/recruiter/jobs/:id/candidates"
         ]}
       >
         <CandidateLayout>
@@ -94,6 +95,11 @@ function Routes() {
           <UnauthorizedRoute
             exact
             path="/recruiter/jobs/:id"
+            component={HRJobManage}
+          />
+          <UnauthorizedRoute
+            exact
+            path="/recruiter/jobs/:id/candidates"
             component={HRJobManage}
           />
         </CandidateLayout>
