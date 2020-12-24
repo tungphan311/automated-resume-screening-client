@@ -1,7 +1,8 @@
 import React from "react";
 import { useWindowSize } from "utils/window";
 import "./JobDetail.scss";
-import { CloseOutlined, HeartOutlined } from "@ant-design/icons";
+import { HeartOutlined } from "@ant-design/icons";
+import { Close } from "constants/svg";
 
 function JobDetail({ top, onChangeSelect }) {
   const size = useWindowSize();
@@ -126,6 +127,7 @@ const Header = ({ onChangeSelect }) => (
             <span> - </span>Thành phố Hồ Chí Minh
           </span>
         </div>
+        <div>Hạn nộp hồ sơ: </div>
       </div>
     </div>
     <div id="vjs-x">
@@ -133,7 +135,7 @@ const Header = ({ onChangeSelect }) => (
         className="CloseButton vjs-x-button-close"
         onClick={() => onChangeSelect(null)}
       >
-        <CloseOutlined />
+        {Close}
       </button>
     </div>
     <div id="apply-button-container">

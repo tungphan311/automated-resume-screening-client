@@ -138,6 +138,17 @@
   background: none;
   border: none;
   float: right;
+
+  .vjs-Icon {
+    fill: #2d2d2d;
+    display: inline-block;
+    vertical-align: middle;
+
+    &--md {
+      height: 24px;
+      width: 24px;
+    }
+  }
 }
 
 #state-picker-container.dd-wrapper {
