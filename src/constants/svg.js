@@ -4,7 +4,7 @@ export const Checked = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 48 48"
-    class="barProgress-checked"
+    className="barProgress-checked"
     style={{
       strokeWidth: "6",
       transform: "translate(-0.5px, -0.5px) scale(1)"
