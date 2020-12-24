@@ -1,0 +1,157 @@
+#job-tabs {
+  background: #fff;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+
+  ul {
+    li {
+      display: inline-block;
+
+      a {
+        display: inline-block;
+        font-weight: 700;
+        color: #555;
+        text-decoration: none;
+        padding: 20px;
+
+        &.active {
+          color: $primary;
+        }
+
+        span {
+          cursor: pointer;
+        }
+      }
+
+      .job-showing-tab {
+        padding-left: 0;
+      }
+    }
+  }
+}
+
+li a:hover .jobs-number-label,
+li a.active .jobs-number-label {
+  color: $primary;
+  border: 2px solid $primary;
+}
+
+.jobs-number-label {
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
+  border: 2px solid;
+  margin-left: 10px;
+}
+
+#box-jobs .jobs {
+  background: #fff;
+
+  .ant-table-container table > thead > tr:first-child th:first-child {
+    padding-left: 40px;
+  }
+
+  .btn-default.outline.btn-hover-no-effect {
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .btn-default.outline {
+    border: 1px solid #ddd;
+  }
+
+  .btn-action {
+    height: 30px;
+  }
+
+  .btn-sm {
+    padding: 4px 14px;
+    font-size: 12px;
+    border-radius: 2px;
+    line-height: 1.5;
+  }
+
+  .btn-default.active,
+  .btn-default.focus,
+  .btn-default:active,
+  .btn-default:focus,
+  .btn-default:hover,
+  .open > .dropdown-toggle.btn-default {
+    color: #333;
+    border-color: #adadad;
+  }
+
+  .open > .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown-menu > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+  }
+
+  .dropdown-menu li > a:hover {
+    background-color: #edf1f5;
+    border-color: #edf1f5;
+  }
+
+  .btn-group-action .dropdown-menu li a {
+    font-weight: 300;
+    color: #555;
+    font-size: 12px;
+    padding: 10px 15px;
+    line-height: initial;
+  }
+
+  .btn-group-action .dropdown-menu li a span {
+    margin-right: 5px;
+  }
+
+  .dropdown-menu {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  }
+
+  .ant-pagination-prev,
+  .ant-pagination-jump-prev,
+  .ant-pagination-jump-next,
+  .ant-pagination-item {
+    margin-right: 0;
+  }
+
+  .ant-pagination {
+    padding-right: 16px;
+  }
+
+  .detect-outside-click {
+    width: fit-content;
+    float: right;
+  }
+}
+
+.job-item-title-wrapper {
+  padding-left: 24px;
+
+  a {
+    color: #000;
+  }
+
+  p {
+    margin-bottom: 5px;
+  }
+}
+
+.job-item-title {
+  text-decoration: none;
+  white-space: normal;
+}
