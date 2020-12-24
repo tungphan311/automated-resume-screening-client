@@ -1,0 +1,13 @@
+#vjs-container {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 684px;
+  max-width: 684px;
+  box-shadow: none;
+  border: 0.0625rem solid #d4d2d0 !important;
+  border-radius: 0.5rem;
+  margin: 1rem 0 1.5rem -0.5rem;
+  position: fixed;
+  transition: opacity 150ms ease-in-out;
+  z-index: 1;
+}

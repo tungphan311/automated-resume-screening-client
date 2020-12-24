@@ -5,7 +5,7 @@ import { HeartOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import JobDetail from "components/JobItem/JobDetail";
 
-function JobItem({ jobId, curSelect, onChangeSelect }) {
+function JobItem({ jobId, curSelect, onChangeSelect, top }) {
   return (
     <>
       <div
@@ -32,9 +32,9 @@ function JobItem({ jobId, curSelect, onChangeSelect }) {
           </div>
         </div>
         <div className="salarySnippet holisticSalary">
-          <span class="salary no-wrap">
+          <span className="salary no-wrap">
             <span>Lương: </span>
-            <span class="salaryText">10 - 20 triệu</span>
+            <span className="salaryText">10 - 20 triệu</span>
           </span>
         </div>
         <div className="summary">
@@ -59,7 +59,7 @@ function JobItem({ jobId, curSelect, onChangeSelect }) {
           </div>
         </div>
       </div>
-      <JobDetail />
+      {jobId === curSelect && <JobDetail top={top} />}
     </>
   );
 }
