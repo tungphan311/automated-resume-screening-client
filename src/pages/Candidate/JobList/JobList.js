@@ -1,13 +1,15 @@
 import Dropdown from "components/Dropdown/Dropdown";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import JobItem from "components/JobItem/JobItem";
-import { DATES } from "constants/index";
+import { DATES, PAGE_SIZES } from "constants/index";
 import React, { useEffect, useState } from "react";
 import "./JobList.scss";
+import { Pagination, Select } from "antd";
 
 function CandidateJobList() {
   const [curSelect, setCurSelect] = useState(null);
   const [top, setTop] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
     function getScroll() {
@@ -51,6 +53,17 @@ function CandidateJobList() {
                     <div style={{ paddingTop: "6px" }}></div>
                     <div className="resultsTop">
                       <div className="secondRow">
+                        <div>
+                          Hiển thị:{" "}
+                          <span style={{ display: "inline-block" }}>
+                            <Select
+                              style={{ width: 140 }}
+                              options={PAGE_SIZES}
+                              defaultValue={pageSize}
+                              onChange={(value) => setPageSize(value)}
+                            />
+                          </span>
+                        </div>
                         <div className="searchCountContainer">
                           <div id="searchCountPages">Page 1 of 101 jobs</div>
                         </div>
@@ -68,6 +81,16 @@ function CandidateJobList() {
                       onChangeSelect={onChangeSelect}
                       top={top}
                     />
+                    <nav>
+                      <div className="vjs-pagination">
+                        <Pagination
+                          total={100}
+                          showSizeChanger={false}
+                          showLessItems
+                          pageSize={pageSize}
+                        />
+                      </div>
+                    </nav>
                   </td>
                   {curSelect === null && (
                     <td role="region" id="auxCol">
