@@ -29,6 +29,11 @@ export default function authReducer(state = initialState, action = {}) {
       newState.token = token;
       return newState;
 
+    case types.UPDATE_TOKEN:
+      const { payload } = action;
+      newState.token = payload;
+      return newState;
+
     default:
       return newState;
   }

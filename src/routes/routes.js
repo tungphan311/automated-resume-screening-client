@@ -12,6 +12,7 @@ import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
 import HRSignUp from "pages/HR/HRSignUp/HRSignUp";
 import HRJobList from "pages/HR/JobList/JobList";
 import HRPostJob from "pages/HR/PostJob/PostJob";
+import HRUpdateCompany from "pages/HR/UpdateCompany/UpdateCompany";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { checkCookie } from "../utils/cookies";
@@ -54,7 +55,8 @@ function Routes() {
           "/recruitment/jobs/new-job",
           "/profile/review",
           "/recruitment/jobs",
-          "/find-jobs"
+          "/find-jobs",
+          "/recruiter/company/update"
         ]}
       >
         <CandidateLayout>
@@ -80,6 +82,11 @@ function Routes() {
             exact
             path="/recruitment/jobs"
             component={HRJobList}
+          />
+          <AuthorizedRoute
+            exact
+            path="/recruiter/company/update"
+            component={HRUpdateCompany}
           />
         </CandidateLayout>
       </Route>

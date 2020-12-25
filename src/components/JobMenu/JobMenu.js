@@ -1,12 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { FileTextOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import "./JobMenu.scss";
+import { useSelector } from "react-redux";
+import jwt_decode from "jwt-decode";
 
 function JobMenu() {
   const { pathname } = window.location;
 
   const isPostingJob = pathname.startsWith("/recruitment/jobs/new-job");
+
+  const token = useSelector((state) => state.auth.token);
+
+  const {
+    identity: { company_id: companyId }
+  } = jwt_decode(token);
+
+  if (companyId === null) {
+    return <Redirect to="/recruiter/company/update" />;
+  }
 
   return (
     <div className="header-sub-menu">
