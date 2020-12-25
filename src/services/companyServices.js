@@ -11,3 +11,8 @@ export const updateCompany = async (id, token) =>
       headers: { Authorization: `Bearer ${token}` }
     }
   );
+
+export const addCompany = async (formData, token) =>
+  await API.post("/company", formData, {
+    headers: { Authorization: `Bearer ${token}` }
+  });

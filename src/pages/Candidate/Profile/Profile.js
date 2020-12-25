@@ -1,8 +1,6 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Card } from "antd";
-// import firebase from "firebase";
 import React, { useRef, useState } from "react";
-// import { uploadFile } from "services/uploadServices";
 import { toast } from "utils/index";
 import "./Profile.scss";
 import FormData from "form-data";

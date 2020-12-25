@@ -1,11 +1,14 @@
 import NotifyModal from "components/Modals/NotifyModal/NotifyModal";
 import React, { useEffect, useState } from "react";
 import "./UpdateCompany.scss";
-import { Form, Input, Button } from "antd";
+import { Form, Input } from "antd";
 import { searchCompany } from "services/companyServices";
-import { toastErr } from "utils/index";
+import { toast, toastErr } from "utils/index";
 import { useDispatch } from "react-redux";
-import { UPDATE_HR_COMPANY } from "state/actions/index";
+import FormData from "form-data";
+import { addCompanyAction, updateHRCompanyAction } from "state/actions/index";
+
+const ACCEPTS = ["image/jpeg", "image/jpg", "image/png"];
 
 function HRUpdateCompany() {
   const [showing, setShowing] = useState(false);
@@ -20,6 +23,11 @@ function HRUpdateCompany() {
   const [companies, setCompanies] = useState([]);
   const [selected, setSelected] = useState(null);
 
+  const [files, setFiles] = useState({ logo: {}, background: {} });
+
+  const [loading, setLoading] = useState(false);
+
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
 
   const layout = {
@@ -29,10 +37,6 @@ function HRUpdateCompany() {
     wrapperCol: {
       span: 18
     }
-  };
-
-  const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 }
   };
 
   useEffect(() => {
@@ -101,14 +105,58 @@ function HRUpdateCompany() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (isSelect) {
-      dispatch({ type: UPDATE_HR_COMPANY, id: selected.id });
+      dispatch(updateHRCompanyAction(selected.id)).catch(() =>
+        setLoading(false)
+      );
     }
+
+    form.submit();
+  };
+
+  const onFinish = (values) => {
+    const { description, email, location, name, phone, website } = values;
+    const { logo, background } = files;
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("location", location);
+    formData.append("phone", phone);
+    formData.append("email", email);
+    formData.append("logo", logo);
+    formData.append("website", website);
+    formData.append("background", background);
+    formData.append("description", description);
+
+    dispatch(addCompanyAction(formData)).catch(() => setLoading(false));
+  };
+
+  const handleInputChange = (e) => {
+    const name = e.target.name;
+    const file = e.target.files[0];
+
+    if (!ACCEPTS.includes(file.type)) {
+      toast({ type: "error", message: "Định dạng tệp không hợp lệ" });
+    }
+
+    setFiles({ ...files, [name]: file });
   };
 
   return (
     <div className="container" style={{ marginTop: 20 }}>
+      <div className={`seeking-loading ${loading ? "" : "d-none"}`}>
+        <lottie-player
+          src="https://assets3.lottiefiles.com/datafiles/nT4vnUFY9yay7QI/data.json"
+          mode="bounce"
+          background="rgba(0, 0, 0, 0)"
+          speed="1"
+          style={{ width: "500px", height: "500px" }}
+          loop
+          autoplay
+        ></lottie-player>
+      </div>
       <div className="row">
         <div className="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-1">
           <form>
@@ -222,7 +270,8 @@ function HRUpdateCompany() {
                     </p>
                     <Form
                       {...layout}
-                      //   onFinish={onFinish}
+                      onFinish={onFinish}
+                      form={form}
                       validateMessages={validateMessages}
                     >
                       <Form.Item
@@ -254,10 +303,20 @@ function HRUpdateCompany() {
                         <Input placeholder="email@company.com" />
                       </Form.Item>
                       <Form.Item name="logo" label="Logo công ty">
-                        <input type="file" name="logo" accept="image/*" />
+                        <input
+                          type="file"
+                          name="logo"
+                          accept="image/*"
+                          onChange={handleInputChange}
+                        />
                       </Form.Item>
                       <Form.Item name="background" label="Background công ty">
-                        <input type="file" name="background" accept="image/*" />
+                        <input
+                          type="file"
+                          name="background"
+                          accept="image/*"
+                          onChange={handleInputChange}
+                        />
                       </Form.Item>
                       <Form.Item
                         name="website"
@@ -268,12 +327,6 @@ function HRUpdateCompany() {
                       </Form.Item>
                       <Form.Item name="description" label="Mô tả công ty">
                         <TextArea rows={4} />
-                      </Form.Item>
-
-                      <Form.Item {...tailLayout}>
-                        <Button type="primary" htmlType="submit">
-                          Hoàn tất
-                        </Button>
                       </Form.Item>
                     </Form>
                   </div>
