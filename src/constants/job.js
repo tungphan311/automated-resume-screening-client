@@ -36,3 +36,9 @@ export const CONTACTS = [
   { value: 1, label: "Bán thời gian" },
   { value: 2, label: "Thực tập" }
 ];
+
+export const SORTS = [
+  { value: 0, label: "Điểm trung bình" },
+  { value: 1, label: "Điểm kỹ năng" },
+  { value: 2, label: "Điểm học vấn" }
+];

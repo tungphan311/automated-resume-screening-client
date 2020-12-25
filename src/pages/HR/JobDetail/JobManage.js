@@ -2,14 +2,20 @@ import React from "react";
 import JobDetailMenu from "components/JobDetailMenu/JobDetailMenu";
 import "./JobManage.scss";
 import HRJobDetail from "./JobDetail";
+import HRJobPostCandidates from "pages/HR/JobDetail/Candidates";
 
-function HRJobManage({ match, location }) {
-  console.log(match, location);
+function HRJobManage({ match }) {
+  const {
+    params: { id },
+    url
+  } = match;
+
+  const isCandidates = url.startsWith(`/recruiter/jobs/${id}/candidates`);
 
   return (
     <>
-      <JobDetailMenu />
-      <HRJobDetail />
+      <JobDetailMenu isCandidates={isCandidates} />
+      {!isCandidates ? <HRJobDetail /> : <HRJobPostCandidates />}
     </>
   );
 }
