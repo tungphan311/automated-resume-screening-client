@@ -20,3 +20,6 @@ export const INIT_DATA = "INIT_DATA";
 export const RESIGN_TOKEN = "RESIGN_TOKEN";
 
 export const uploadCVAction = createPromiseAction("UPLOAD_CV");
+
+export const UPDATE_HR_COMPANY = "UPDATE_HR_COMPANY";
+export const UPDATE_TOKEN = "UPDATE_TOKEN";
