@@ -2,33 +2,22 @@ import { EditFilled, FileTextOutlined, DeleteFilled } from "@ant-design/icons";
 import { Table } from "antd";
 import JobMenu from "components/JobMenu/JobMenu";
 import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { hrGetJobs } from "services/hrJobServices";
 import history from "state/history";
+import { toastErr } from "utils/index";
 import "./JobList.scss";
-
-const POSTS = [
-  {
-    id: 1,
-    position: {
-      id: 1,
-      title: "Senior Python Developer",
-      salary: "Thoả thuận"
-    },
-    postedDate: "13/12/2020",
-    deadline: "31/12/2020",
-    totalApply: 10,
-    newApply: 2,
-    viewed: 100,
-    action: {
-      id: 1
-    }
-  }
-];
 
 function HRJobList() {
   const { search } = history.location;
   const [dropdown, toggleDropdown] = useState(false);
+
+  // redux
+  const { token } = useSelector((state) => state.auth);
+
+  const [posts, setPosts] = useState([]);
 
   const closeDropdown = () => toggleDropdown(false);
 
@@ -54,27 +43,32 @@ function HRJobList() {
     {
       title: "Ngày đăng tin",
       dataIndex: "postedDate",
-      align: "center"
+      align: "center",
+      sorter: (a, b) => a - b
     },
     {
       title: "Hạn nhận hồ sơ",
       dataIndex: "deadline",
-      align: "center"
+      align: "center",
+      sorter: (a, b) => a - b
     },
     {
       title: "Tổng CV apply",
       dataIndex: "totalApply",
-      align: "center"
+      align: "center",
+      sorter: (a, b) => a - b
     },
     {
       title: "Tổng lượt lưu",
-      dataIndex: "newApply",
-      align: "center"
+      dataIndex: "totalSave",
+      align: "center",
+      sorter: (a, b) => a - b
     },
     {
       title: "Lượt xem",
       dataIndex: "viewed",
-      align: "center"
+      align: "center",
+      sorter: (a, b) => a - b
     },
     {
       title: "",
@@ -123,6 +117,47 @@ function HRJobList() {
     }
   ];
 
+  const mapResponseToPost = (jobs) =>
+    jobs.map(
+      ({
+        id,
+        job_title,
+        salary,
+        posted_in,
+        deadline,
+        total_view,
+        total_save,
+        total_apply
+      }) => ({
+        id,
+        position: { id, title: job_title, salary },
+        postedDate: posted_in,
+        deadline,
+        totalApply: total_apply,
+        totalSave: total_save,
+        viewed: total_view,
+        action: { id }
+      })
+    );
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      let jobs = [];
+      await hrGetJobs({}, token)
+        .then((result) => {
+          jobs = result.data.data;
+        })
+        .catch((err) => {
+          toastErr(err);
+        });
+
+      jobs = mapResponseToPost(jobs);
+      setPosts(jobs);
+    };
+
+    fetchJobs();
+  }, []);
+
   return (
     <>
       <JobMenu />
@@ -147,10 +182,10 @@ function HRJobList() {
           </div>
           <div id="box-jobs">
             <div className="jobs">
-              {!POSTS.length ? (
+              {!posts.length ? (
                 <EmptyJob />
               ) : (
-                <Table dataSource={POSTS} columns={columns} />
+                <Table dataSource={posts} columns={columns} />
               )}
             </div>
           </div>

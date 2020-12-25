@@ -39,6 +39,7 @@ function Dropdown({ title, options }) {
             >
               {options.map(({ value, label }) => (
                 <Option
+                  key={value}
                   value={value}
                   label={label}
                   handleSelect={handleSelect}
