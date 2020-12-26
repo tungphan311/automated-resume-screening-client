@@ -136,7 +136,7 @@ export function* loginHrPromiseSaga(action) {
 
     yield call(resolvePromiseAction, action);
 
-    yield history.push("/");
+    yield history.push("/recruiter");
   } catch (err) {
     yield toastErr(err);
     yield call(rejectPromiseAction, action);

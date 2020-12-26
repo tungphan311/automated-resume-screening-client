@@ -50,7 +50,7 @@ export const CandidateRoute = ({
 
 export const RecruiterRoute = ({
   token_key = "recruiter_token",
-  redirect = "/sign-in",
+  redirect = "/recruiter/sign-in",
   ...rest
 }) => <AuthorizedRoute token_key={token_key} redirect={redirect} {...rest} />;
 
@@ -61,13 +61,10 @@ export const UnauthorizedRoute = ({ component: Component, ...rest }) => (
 function Routes() {
   return (
     <Switch>
-      <Route
-        exact
-        path={["/", "/profile", "/recruiter", "/profile/review", "/find-jobs"]}
-      >
+      <Route exact path={["/", "/profile", "/profile/review", "/find-jobs"]}>
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
-          <UnauthorizedRoute exact path="/recruiter" component={HRHome} />
+
           <CandidateRoute exact path="/profile" component={CandidateProfile} />
           <CandidateRoute
             exact
@@ -130,6 +127,7 @@ function Routes() {
       <Route
         exact
         path={[
+          "/recruiter",
           "/recruiter/jobs/:id",
           "/recruiter/jobs/:id/candidates",
           "/recruiter/company/update",
@@ -138,6 +136,7 @@ function Routes() {
         ]}
       >
         <RecruiterLayout>
+          <UnauthorizedRoute exact path="/recruiter" component={HRHome} />
           <RecruiterRoute
             exact
             path="/recruiter/new-job"

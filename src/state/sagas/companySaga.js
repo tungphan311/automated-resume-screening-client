@@ -17,7 +17,7 @@ export function* updateHRSaga(action) {
   try {
     const id = action.payload;
 
-    const { token } = yield select((state) => state.auth);
+    const { token } = yield select((state) => state.auth.recruiter);
 
     const result = yield call(updateCompany, id, token);
 
@@ -40,7 +40,7 @@ export function* addCompanySaga(action) {
   try {
     const formData = action.payload;
 
-    const { token } = yield select((state) => state.auth);
+    const { token } = yield select((state) => state.auth.recruiter);
 
     const result = yield call(addCompany, formData, token);
 

@@ -1,10 +1,13 @@
 import NavBar from "components/NavBar/NavBar";
+import RecruiterNavBar from "components/NavBar/RecruiterNavbar";
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Header.scss";
 
 function Header() {
   const { pathname } = window.location;
+
+  const recruiter = pathname.startsWith("/recruiter");
 
   return (
     <header id="header" className="header">
@@ -14,10 +17,10 @@ function Header() {
             {/* Header section */}
             <div className="header__navbar-brand-wrapper">
               <Link
-                to={`${pathname.startsWith("/recruiter") ? "/recruiter" : "/"}`}
+                to={`${recruiter ? "/recruiter" : "/"}`}
                 className="navbar-brand header__navbar-brand"
               >
-                {pathname.startsWith("/recruiter") ? (
+                {recruiter ? (
                   <img
                     src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
                     alt="logo"
@@ -34,7 +37,7 @@ function Header() {
             </div>
 
             {/* Navbar section */}
-            <NavBar />
+            {recruiter ? <RecruiterNavBar /> : <NavBar />}
           </nav>
         </div>
       </div>

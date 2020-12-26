@@ -10,7 +10,7 @@ function JobMenu() {
 
   const isPostingJob = pathname.startsWith("/recruiter/new-job");
 
-  const token = useSelector((state) => state.auth.token);
+  const token = useSelector((state) => state.auth.recruiter.token);
 
   const {
     identity: { company_id: companyId }

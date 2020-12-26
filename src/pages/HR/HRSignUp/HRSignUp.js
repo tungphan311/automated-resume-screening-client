@@ -23,7 +23,7 @@ function HRSignUp() {
     dispatch(registerHrAction(value));
   };
 
-  return checkCookie() ? (
+  return checkCookie("recruiter_token") ? (
     <Redirect to="/" />
   ) : (
     <div className="hr-register">

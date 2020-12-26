@@ -42,7 +42,7 @@ function CandidateSignUp() {
     });
   };
 
-  return checkCookie() ? (
+  return checkCookie("candidate_token") ? (
     <Redirect to="/" />
   ) : (
     <div className="candidate-register">

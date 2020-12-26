@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { loginHrProAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./HRSignIn.scss";
+import history from "state/history";
 
 const validateMessages = {
   required: "Vui lòng nhập ${label}",
@@ -30,7 +31,7 @@ function HRSignIn() {
     });
   };
 
-  return checkCookie() ? (
+  return checkCookie("recruiter_token") ? (
     <Redirect to="/" />
   ) : (
     <div className="hr-login">
@@ -96,10 +97,11 @@ function HRSignIn() {
             </button>
           </Form>
 
-          <button className="hr-login__container__left__form__social__item hr-login__container__left__form__social__item--register">
-            <Link to="/recruiter/sign-up">
-              <span> Đăng ký tài khoản mới</span>
-            </Link>
+          <button
+            className="hr-login__container__left__form__social__item hr-login__container__left__form__social__item--register"
+            onClick={() => history.push("/recruiter/sign-up")}
+          >
+            <span> Đăng ký tài khoản mới</span>
           </button>
         </div>
 
