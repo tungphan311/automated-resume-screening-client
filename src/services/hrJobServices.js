@@ -42,3 +42,8 @@ export const hrGetJobCount = async (token) =>
   await API.get("/job-posts/count", {
     headers: { Authorization: `Bearer ${token}` }
   });
+
+export const hrGetJobDetail = async (id, token) =>
+  await API.get(`/job-posts/${id}?is_hr=true`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
