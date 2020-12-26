@@ -14,7 +14,7 @@ function Header() {
             {/* Header section */}
             <div className="header__navbar-brand-wrapper">
               <Link to="/" className="navbar-brand header__navbar-brand">
-                {pathname.startsWith("/recruitment") ? (
+                {pathname.startsWith("/recruiter") ? (
                   <img
                     src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
                     alt="logo"

@@ -2,35 +2,28 @@ import { EditFilled, FileTextOutlined, DeleteFilled } from "@ant-design/icons";
 import { Table } from "antd";
 import JobMenu from "components/JobMenu/JobMenu";
 import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
+import { hrGetJobCount, hrGetJobs } from "services/hrJobServices";
 import history from "state/history";
+import { toastErr } from "utils/index";
 import "./JobList.scss";
-
-const POSTS = [
-  {
-    id: 1,
-    position: {
-      id: 1,
-      title: "Senior Python Developer",
-      salary: "Thoả thuận"
-    },
-    postedDate: "13/12/2020",
-    deadline: "31/12/2020",
-    totalApply: 10,
-    newApply: 2,
-    viewed: 100,
-    action: {
-      id: 1
-    }
-  }
-];
+import qs from "query-string";
 
 function HRJobList() {
   const { search } = history.location;
-  const [dropdown, toggleDropdown] = useState(false);
+  const [dropdown, toggleDropdown] = useState(undefined);
+  const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState({ is_showing: 0, is_closed: 0 });
+  const [is_showing, setIsShowing] = useState(true);
 
-  const closeDropdown = () => toggleDropdown(false);
+  // redux
+  const { token } = useSelector((state) => state.auth);
+
+  const [posts, setPosts] = useState([]);
+
+  const closeDropdown = () => toggleDropdown(undefined);
 
   const columns = [
     {
@@ -53,43 +46,54 @@ function HRJobList() {
     },
     {
       title: "Ngày đăng tin",
-      dataIndex: "postedDate",
-      align: "center"
+      dataIndex: "posted_in",
+      align: "center",
+      sorter: true,
+      render: (posted_in) => posted_in.toLocaleDateString()
     },
     {
       title: "Hạn nhận hồ sơ",
       dataIndex: "deadline",
-      align: "center"
+      align: "center",
+      sorter: true,
+      render: (deadline) => deadline.toLocaleDateString()
     },
     {
       title: "Tổng CV apply",
-      dataIndex: "totalApply",
-      align: "center"
+      dataIndex: "apply",
+      align: "center",
+      sorter: true
     },
     {
       title: "Tổng lượt lưu",
-      dataIndex: "newApply",
-      align: "center"
+      dataIndex: "save",
+      align: "center",
+      sorter: true
     },
     {
       title: "Lượt xem",
-      dataIndex: "viewed",
-      align: "center"
+      dataIndex: "view",
+      align: "center",
+      sorter: true
     },
     {
       title: "",
       dataIndex: "action",
-      render: () => (
+      render: ({ id }) => (
         <OutsideClickWrapper
           isShowing={dropdown}
           onClickOutside={closeDropdown}
         >
           <div
-            className={`btn-group btn-group-action ${dropdown ? "open" : ""}`}
+            className={`btn-group btn-group-action ${
+              dropdown === id ? "open" : ""
+            }`}
           >
             <button
               className="btn btn-sm btn-default dropdown-toggle btn-action outline btn-hover-no-effect"
-              onClick={() => toggleDropdown(!dropdown)}
+              onClick={() =>
+                dropdown === id ? toggleDropdown(undefined) : toggleDropdown(id)
+              }
             >
               <strong>Thao tác &nbsp;</strong>
               <span className="caret"></span>
@@ -123,6 +127,94 @@ function HRJobList() {
     }
   ];
 
+  const { status } = qs.parse(search.substring(1));
+
+  const mapResponseToPost = (jobs) =>
+    jobs.map(
+      ({
+        id,
+        job_title,
+        salary,
+        posted_in,
+        deadline,
+        total_view,
+        total_save,
+        total_apply
+      }) => ({
+        id,
+        position: { id, title: job_title, salary },
+        posted_in: new Date(posted_in.substring(1, posted_in.length - 1)),
+        deadline: new Date(deadline.substring(1, deadline.length - 1)),
+        apply: total_apply,
+        save: total_save,
+        view: total_view,
+        action: { id }
+      })
+    );
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      let jobs = [];
+      setLoading(true);
+      await hrGetJobs({}, is_showing, token)
+        .then((result) => {
+          jobs = result.data.data;
+        })
+        .catch((err) => {
+          toastErr(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      await hrGetJobCount(token)
+        .then((res) => {
+          const { data } = res.data;
+
+          setAmount(data);
+        })
+        .catch((err) => {
+          toastErr(err);
+        });
+
+      jobs = mapResponseToPost(jobs);
+      setPosts(jobs);
+    };
+
+    fetchJobs();
+  }, [is_showing]);
+
+  if (status && !["showing", "closed"].includes(status))
+    return <Redirect to="/404" />;
+
+  if (status === "closed" && is_showing) {
+    setIsShowing(false);
+  }
+
+  if (status === "showing" && !is_showing) {
+    setIsShowing(true);
+  }
+
+  const handleTableChange = async (pagination, filters, sorter) => {
+    setLoading(true);
+    const order = sorter.order === "ascend" ? 1 : -1;
+    const sort = { [sorter.field]: order, page: pagination.current };
+
+    await hrGetJobs(sort, is_showing, token)
+      .then((result) => {
+        let jobs = result.data.data;
+
+        jobs = mapResponseToPost(jobs);
+        setPosts(jobs);
+      })
+      .catch((err) => {
+        toastErr(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <>
       <JobMenu />
@@ -132,25 +224,32 @@ function HRJobList() {
             <ul>
               <Tab
                 label="Tin đang hiển thị"
-                href="/recruitment/jobs?status=showing"
-                amount={1}
-                active={search === "" || search === "?status=showing"}
+                href="/recruiter/jobs?status=showing"
+                amount={amount.is_showing}
+                active={!status || status === "showing"}
                 className="job-showing-tab"
               />
               <Tab
                 label="Tin hết hạn/ đã đóng"
-                href="/recruitment/jobs?status=closed"
-                amount={1}
-                active={search === "?status=closed"}
+                href="/recruiter/jobs?status=closed"
+                amount={amount.is_closed}
+                active={status === "closed"}
               />
             </ul>
           </div>
           <div id="box-jobs">
             <div className="jobs">
-              {!POSTS.length ? (
+              {!posts.length ? (
                 <EmptyJob />
               ) : (
-                <Table dataSource={POSTS} columns={columns} />
+                <Table
+                  rowKey={(record) => record.id}
+                  dataSource={posts}
+                  columns={columns}
+                  loading={loading}
+                  onChange={handleTableChange}
+                  showSorterTooltip={false}
+                />
               )}
             </div>
           </div>
@@ -176,11 +275,11 @@ const EmptyJob = () => (
     <div className="text-center">
       <p style={{ padding: "20px", fontWeight: "bold", color: "#555" }}>
         {"Vui lòng "}
-        <Link to="/recruitment/jobs/new-job" className="text-primary">
+        <Link to="/recruiter/jobs/new-job" className="text-primary">
           Đăng tin tuyển dụng
         </Link>
         {" mới hoặc xem tin đã đăng tại mục "}
-        <Link>Tin hết hạn/ đã đóng</Link>
+        <Link to="/recruiter/jobs?status=closed">Tin hết hạn/ đã đóng</Link>
         {"."}
       </p>
     </div>

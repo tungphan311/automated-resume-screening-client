@@ -1,0 +1,135 @@
+.jb-detail {
+  width: 100%;
+  border-radius: 4px;
+
+  td {
+    border: 1px solid #e3e6f0;
+  }
+}
+
+.jp-label {
+  text-align: right;
+  padding: 10px;
+  width: 25%;
+}
+
+.jp-value {
+  width: 75%;
+  padding: 10px;
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.jp-summary {
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.search-result {
+  position: relative;
+  min-height: 200px;
+
+  .panel-body {
+    padding: 0 !important;
+  }
+
+  .results-stats {
+    padding: 10px 20px;
+    border-bottom: 1px solid #e4e4e4;
+  }
+
+  .candidate {
+    min-height: 160px;
+    border-bottom: 1px solid #e4e4e4;
+    padding: 20px;
+    line-height: 1.7em;
+    position: relative;
+    padding-left: 140px;
+    cursor: pointer;
+  }
+
+  .avatar {
+    display: block;
+    overflow: hidden;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .name {
+    font-size: 24px;
+    color: #000;
+    text-decoration: none;
+  }
+
+  .experience i,
+  .education i {
+    text-align: center;
+    display: inline-block;
+    width: 18px;
+    margin-right: 5px;
+  }
+
+  .ant-pagination {
+    margin: 20px;
+  }
+}
+
+.panel-default {
+  border-color: #e4e4e4;
+}
+
+.candidate-action-menu {
+  position: absolute;
+  right: 35px;
+  top: 35px;
+  padding: 8px 0;
+  border: 1px solid #ececec;
+  background: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-flow: column;
+  min-width: 250px;
+  z-index: 3;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.candidate-action-btn {
+  padding: 10px 20px;
+
+  &:focus {
+    outline: auto 1px !important;
+    outline-color: #2557a7 !important;
+  }
+}
+
+.candidate-action-item {
+  padding: 8px 0 8px 16px;
+  text-decoration: none;
+  color: #2d2d2d;
+  display: flex;
+  align-items: center;
+  max-height: 44px;
+  border: none;
+  background: #fff;
+
+  &:hover {
+    background-color: #eef1fe;
+  }
+
+  .candidate-action-item-text {
+    margin-left: 10px;
+    padding: 8px 0;
+  }
+}

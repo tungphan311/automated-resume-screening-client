@@ -10,6 +10,7 @@ import ConfirmMail from "pages/Empty/ConfirmMail/ConfirmMail";
 import HRHome from "pages/HR/Home/Home";
 import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
 import HRSignUp from "pages/HR/HRSignUp/HRSignUp";
+import HRJobManage from "pages/HR/JobDetail/JobManage";
 import HRJobList from "pages/HR/JobList/JobList";
 import HRPostJob from "pages/HR/PostJob/PostJob";
 import HRUpdateCompany from "pages/HR/UpdateCompany/UpdateCompany";
@@ -51,17 +52,20 @@ function Routes() {
         path={[
           "/",
           "/profile",
-          "/recruitment",
-          "/recruitment/jobs/new-job",
+          "/recruiter",
+          "/recruiter/new-job",
           "/profile/review",
-          "/recruitment/jobs",
           "/find-jobs",
-          "/recruiter/company/update"
+          "/recruiter/company/update",
+          "/recruiter/jobs",
+          "/find-jobs",
+          "/recruiter/jobs/:id",
+          "/recruiter/jobs/:id/candidates"
         ]}
       >
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
-          <UnauthorizedRoute exact path="/recruitment" component={HRHome} />
+          <UnauthorizedRoute exact path="/recruiter" component={HRHome} />
           <AuthorizedRoute exact path="/profile" component={CandidateProfile} />
           <AuthorizedRoute
             exact
@@ -75,18 +79,33 @@ function Routes() {
           />
           <UnauthorizedRoute
             exact
-            path="/recruitment/jobs/new-job"
+            path="/recruiter/new-job"
             component={HRPostJob}
           />
           <UnauthorizedRoute
             exact
-            path="/recruitment/jobs"
+            path="/recruiter/jobs"
             component={HRJobList}
           />
           <AuthorizedRoute
             exact
             path="/recruiter/company/update"
             component={HRUpdateCompany}
+          />
+          <UnauthorizedRoute
+            exact
+            path="/recruiter/jobs?status:status"
+            component={HRJobList}
+          />
+          <UnauthorizedRoute
+            exact
+            path="/recruiter/jobs/:id"
+            component={HRJobManage}
+          />
+          <UnauthorizedRoute
+            exact
+            path="/recruiter/jobs/:id/candidates"
+            component={HRJobManage}
           />
         </CandidateLayout>
       </Route>

@@ -8,7 +8,7 @@ import jwt_decode from "jwt-decode";
 function JobMenu() {
   const { pathname } = window.location;
 
-  const isPostingJob = pathname.startsWith("/recruitment/jobs/new-job");
+  const isPostingJob = pathname.startsWith("/recruiter/new-job");
 
   const token = useSelector((state) => state.auth.token);
 
@@ -27,13 +27,13 @@ function JobMenu() {
           <div className="j-collapse j-navbar-collapse j-sub-menu">
             <ul className="j-nav j-navbar-nav">
               <Item
-                href="/recruitment/jobs"
+                href="/recruiter/jobs"
                 icon={<FileTextOutlined />}
                 label="Danh sách tin tuyển dụng"
                 active={!isPostingJob}
               />
               <Item
-                href="/recruitment/jobs/new-job"
+                href="/recruiter/new-job"
                 icon={<PlusSquareOutlined />}
                 label="Đăng tin tuyển dụng mới"
                 active={isPostingJob}
