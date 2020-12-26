@@ -61,10 +61,7 @@ const Candidate = () => {
   return (
     <div className="candidate">
       <div className="avatar">
-        <img
-          src="https://tuyendung.topcv.vn/images/noavatar.jpg"
-          alt="candidate avatar"
-        />
+        <img src="/assets/img/noavatar.png" alt="candidate avatar" />
       </div>
       <div className="row">
         <div className="col-md-10">
