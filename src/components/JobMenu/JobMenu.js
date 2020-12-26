@@ -8,7 +8,7 @@ import jwt_decode from "jwt-decode";
 function JobMenu() {
   const { pathname } = window.location;
 
-  const isPostingJob = pathname.startsWith("/recruiter/jobs/new-job");
+  const isPostingJob = pathname.startsWith("/recruiter/new-job");
 
   const token = useSelector((state) => state.auth.token);
 
@@ -33,7 +33,7 @@ function JobMenu() {
                 active={!isPostingJob}
               />
               <Item
-                href="/recruiter/jobs/new-job"
+                href="/recruiter/new-job"
                 icon={<PlusSquareOutlined />}
                 label="Đăng tin tuyển dụng mới"
                 active={isPostingJob}

@@ -42,12 +42,12 @@ export function* postJobSaga(action) {
     };
 
     const result = yield call(addNewJob, formValue, token);
-    const message = result.data;
+    const { message } = result.data;
 
     yield toast({ message });
     yield call(resolvePromiseAction, action);
 
-    yield history.push("/jobs");
+    yield history.push("/recruiter/jobs");
   } catch (err) {
     yield toastErr(err);
     yield call(rejectPromiseAction, action);

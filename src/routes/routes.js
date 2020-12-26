@@ -53,7 +53,7 @@ function Routes() {
           "/",
           "/profile",
           "/recruiter",
-          "/recruiter/jobs/new-job",
+          "/recruiter/new-job",
           "/profile/review",
           "/find-jobs",
           "/recruiter/company/update",
@@ -79,7 +79,7 @@ function Routes() {
           />
           <UnauthorizedRoute
             exact
-            path="/recruiter/jobs/new-job"
+            path="/recruiter/new-job"
             component={HRPostJob}
           />
           <UnauthorizedRoute
