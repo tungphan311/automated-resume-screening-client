@@ -4,16 +4,19 @@ import JobMenu from "components/JobMenu/JobMenu";
 import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { hrGetJobs } from "services/hrJobServices";
+import { Link, Redirect } from "react-router-dom";
+import { hrGetJobCount, hrGetJobs } from "services/hrJobServices";
 import history from "state/history";
 import { toastErr } from "utils/index";
 import "./JobList.scss";
+import qs from "query-string";
 
 function HRJobList() {
   const { search } = history.location;
   const [dropdown, toggleDropdown] = useState(undefined);
   const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState({ is_showing: 0, is_closed: 0 });
+  const [is_showing, setIsShowing] = useState(true);
 
   // redux
   const { token } = useSelector((state) => state.auth);
@@ -124,6 +127,8 @@ function HRJobList() {
     }
   ];
 
+  const { status } = qs.parse(search.substring(1));
+
   const mapResponseToPost = (jobs) =>
     jobs.map(
       ({
@@ -151,7 +156,7 @@ function HRJobList() {
     const fetchJobs = async () => {
       let jobs = [];
       setLoading(true);
-      await hrGetJobs({}, token)
+      await hrGetJobs({}, is_showing, token)
         .then((result) => {
           jobs = result.data.data;
         })
@@ -162,19 +167,40 @@ function HRJobList() {
           setLoading(false);
         });
 
+      await hrGetJobCount(token)
+        .then((res) => {
+          const { data } = res.data;
+
+          setAmount(data);
+        })
+        .catch((err) => {
+          toastErr(err);
+        });
+
       jobs = mapResponseToPost(jobs);
       setPosts(jobs);
     };
 
     fetchJobs();
-  }, []);
+  }, [is_showing]);
+
+  if (status && !["showing", "closed"].includes(status))
+    return <Redirect to="/404" />;
+
+  if (status === "closed" && is_showing) {
+    setIsShowing(false);
+  }
+
+  if (status === "showing" && !is_showing) {
+    setIsShowing(true);
+  }
 
   const handleTableChange = async (pagination, filters, sorter) => {
     setLoading(true);
     const order = sorter.order === "ascend" ? 1 : -1;
     const sort = { [sorter.field]: order, page: pagination.current };
 
-    await hrGetJobs(sort, token)
+    await hrGetJobs(sort, is_showing, token)
       .then((result) => {
         let jobs = result.data.data;
 
@@ -199,15 +225,15 @@ function HRJobList() {
               <Tab
                 label="Tin đang hiển thị"
                 href="/recruiter/jobs?status=showing"
-                amount={1}
-                active={search === "" || search === "?status=showing"}
+                amount={amount.is_showing}
+                active={!status || status === "showing"}
                 className="job-showing-tab"
               />
               <Tab
                 label="Tin hết hạn/ đã đóng"
                 href="/recruiter/jobs?status=closed"
-                amount={1}
-                active={search === "?status=closed"}
+                amount={amount.is_closed}
+                active={status === "closed"}
               />
             </ul>
           </div>
