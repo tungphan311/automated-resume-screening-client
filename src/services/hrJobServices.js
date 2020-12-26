@@ -17,6 +17,7 @@ export const hrGetJobs = async (
     apply = undefined,
     save = undefined
   },
+  is_showing,
   token
 ) => {
   const filter = qs.stringify(
@@ -26,7 +27,8 @@ export const hrGetJobs = async (
       deadline,
       view,
       apply,
-      save
+      save,
+      is_showing
     },
     { skipNull: true }
   );
@@ -35,3 +37,8 @@ export const hrGetJobs = async (
     headers: { Authorization: `Bearer ${token}` }
   });
 };
+
+export const hrGetJobCount = async (token) =>
+  await API.get("/job-posts/count", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
