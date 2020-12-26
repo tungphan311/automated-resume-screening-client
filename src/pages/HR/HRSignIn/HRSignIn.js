@@ -38,7 +38,10 @@ function HRSignIn() {
         {/* Login Form  */}
         <div className="hr-login__container__left">
           <div className="hr-login__container__left__logo">
-            <Link to="/" className="hr-login__container__left__logo__wrapper">
+            <Link
+              to="/recruiter"
+              className="hr-login__container__left__logo__wrapper"
+            >
               <img
                 src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
                 alt="logo"
@@ -94,16 +97,10 @@ function HRSignIn() {
           </Form>
 
           <button className="hr-login__container__left__form__social__item hr-login__container__left__form__social__item--register">
-            <Link to="/sign-up/hr">
+            <Link to="/recruiter/sign-up">
               <span> Đăng ký tài khoản mới</span>
             </Link>
           </button>
-
-          <div className="hr-login__container__left__link">
-            <p className="hr-login__container__left__link__text">
-              Người tìm việc <Link to="/sign-in/candidate">đăng nhập</Link>
-            </p>
-          </div>
         </div>
 
         {/* Background Image  */}

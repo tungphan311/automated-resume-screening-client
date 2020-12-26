@@ -16,8 +16,6 @@ import {
   loginHrProAction
 } from "state/actions/authenticationActions";
 import {
-  LOGIN_CANDIDATE,
-  LOGIN_HR,
   LOGIN_USER_SUCCESS,
   REGISTER_CANDIDATE,
   REGISTER_HR,
@@ -29,6 +27,7 @@ import {
 import history from "state/history";
 import { setCookie } from "utils/cookies";
 import { toast, toastErr } from "utils/index";
+import jwt_decode from "jwt-decode";
 
 export function* registerCandidateSaga({ payload }) {
   try {
@@ -86,46 +85,23 @@ export function* verifyHrSaga({ payload }) {
   }
 }
 
-export function* loginCandidateSaga({ payload }) {
-  try {
-    const result = yield call(loginCandidateService, payload);
-    const { access_token, message } = result.data;
-
-    yield setCookie("token", access_token, 1);
-    yield put({ type: LOGIN_USER_SUCCESS, access_token });
-
-    yield toast({ message });
-
-    yield history.push("/");
-  } catch (err) {
-    yield toastErr(err);
-  }
-}
-
-export function* loginHrSaga({ payload }) {
-  try {
-    const result = yield call(loginHrService, payload);
-    const { access_token, message } = result.data;
-
-    yield setCookie("token", access_token, 1);
-    yield put({ type: LOGIN_USER_SUCCESS, access_token });
-
-    yield toast({ message });
-
-    yield history.push("/");
-  } catch (err) {
-    yield toastErr(err);
-  }
-}
-
 export function* loginCandidatePromiseSaga(action) {
   try {
     const { user } = action.payload;
     const result = yield call(loginCandidateService, user);
     const { access_token, message } = result.data;
 
-    yield setCookie("token", access_token, 1);
-    yield put({ type: LOGIN_USER_SUCCESS, access_token });
+    const {
+      identity: { email }
+    } = jwt_decode(access_token);
+
+    yield setCookie("candidate_token", access_token, 1);
+    yield put({
+      type: LOGIN_USER_SUCCESS,
+      key: "candidate",
+      token: access_token,
+      email
+    });
 
     yield toast({ message });
 
@@ -144,8 +120,17 @@ export function* loginHrPromiseSaga(action) {
     const result = yield call(loginHrService, user);
     const { access_token, message } = result.data;
 
-    yield setCookie("token", access_token, 1);
-    yield put({ type: LOGIN_USER_SUCCESS, access_token });
+    const {
+      identity: { email }
+    } = jwt_decode(access_token);
+
+    yield setCookie("recruiter_token", access_token, 1);
+    yield put({
+      type: LOGIN_USER_SUCCESS,
+      key: "recruiter",
+      token: access_token,
+      email
+    });
 
     yield toast({ message });
 
@@ -164,8 +149,6 @@ export default function* authSaga() {
   yield takeEvery(VERIFY_CANDIDATE, verifyCandidateSaga);
   yield takeEvery(VERIFY_HR, verifyHrSaga);
 
-  yield takeEvery(LOGIN_CANDIDATE, loginCandidateSaga);
-  yield takeEvery(LOGIN_HR, loginHrSaga);
   yield takeEvery(loginCandidateProAction, loginCandidatePromiseSaga);
   yield takeEvery(loginHrProAction, loginHrPromiseSaga);
 }

@@ -1,6 +1,6 @@
 // import { createFromIconfontCN, GooglePlusOutlined } from "@ant-design/icons";
 import { Form, Input, Radio, DatePicker } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -24,6 +24,7 @@ const validateMessages = {
 
 function CandidateSignUp() {
   const dispatch = useDispatch();
+  const [isLoading, setLoading] = useState(false);
 
   //Handle submit Login
   const onFinish = (fieldsValue) => {
@@ -34,7 +35,11 @@ function CandidateSignUp() {
 
     delete values.confirm;
 
-    dispatch(registerCandidateAction(values));
+    setLoading(true);
+
+    dispatch(registerCandidateAction(values)).catch(() => {
+      setLoading(false);
+    });
   };
 
   return checkCookie() ? (
@@ -180,7 +185,7 @@ function CandidateSignUp() {
 
             <p className="candidate-register__container__form__confirm__text">
               Đã có tài khoản?{" "}
-              <Link to="/sign-in/candidate">
+              <Link to="/sign-in">
                 <strong>Đăng nhập ngay</strong>
               </Link>
             </p>
@@ -191,15 +196,15 @@ function CandidateSignUp() {
               className="candidate-register__container__left__form__btn"
             >
               Đăng ký
-              {/* {isLoading && <div className="dashed-loading"></div>} */}
+              {isLoading && <div className="dashed-loading"></div>}
             </button>
           </Form>
-
+          {/* 
           <div className="candidate-register__container__left__link">
             <p className="candidate-register__container__left__link__text">
               Nhà tuyển dụng <Link to="/sign-up/hr">đăng ký</Link>
             </p>
-          </div>
+          </div> */}
         </div>
 
         {/* Background Image  */}

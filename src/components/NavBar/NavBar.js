@@ -36,7 +36,7 @@ function NavBar() {
           <NavItem
             {...{
               title: "Đăng nhập",
-              url: "/sign-in/candidate",
+              url: "/sign-in",
               button: true
             }}
           />

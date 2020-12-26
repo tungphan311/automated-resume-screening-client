@@ -29,7 +29,10 @@ function HRSignUp() {
     <div className="hr-register">
       <div className="hr-register__container">
         <div className="hr-register__container__logo">
-          <Link to="/" className="hr-register__container__logo__wrapper">
+          <Link
+            to="/recruiter"
+            className="hr-register__container__logo__wrapper"
+          >
             <img
               src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
               alt="logo"
@@ -149,7 +152,7 @@ function HRSignUp() {
 
             <p className="hr-register__container__form__confirm__text">
               Đã có tài khoản?{" "}
-              <Link to="/sign-in/hr">
+              <Link to="/recruiter/sign-in">
                 <strong>Đăng nhập ngay</strong>
               </Link>
             </p>
@@ -162,12 +165,6 @@ function HRSignUp() {
               {/* {isLoading && <div className="dashed-loading"></div>} */}
             </button>
           </Form>
-          <div className="hr-register__container__form__link">
-            <p className="hr-register__container__form__link__text">
-              Người tìm việc{" "}
-              <Link to="/sign-up/candidate">đăng kí tài khoản</Link>
-            </p>
-          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import CandidateLayout from "layouts/CandidateLayout/CandidateLayout";
+import RecruiterLayout from "layouts/RecruiterLayout/RecruiterLayout";
 import EmptyLayout from "layouts/EmptyLayout/EmptyLayout";
 import CandidateSignIn from "pages/Candidate/CandidateSignIn/CandidateSignIn";
 import CandidateSignUp from "pages/Candidate/CandidateSignUp/CandidateSignUp";
@@ -22,12 +23,13 @@ import { checkCookie } from "../utils/cookies";
 export const AuthorizedRoute = ({
   component: Component,
   redirect,
+  token_key,
   ...rest
 }) => (
   <Route
     {...rest}
     render={(props) =>
-      checkCookie() !== null ? (
+      checkCookie(token_key) !== null ? (
         <Component {...props} {...rest} />
       ) : (
         <Redirect
@@ -40,6 +42,18 @@ export const AuthorizedRoute = ({
   />
 );
 
+export const CandidateRoute = ({
+  token_key = "candidate_token",
+  redirect = "/sign-in",
+  ...rest
+}) => <AuthorizedRoute token_key={token_key} redirect={redirect} {...rest} />;
+
+export const RecruiterRoute = ({
+  token_key = "recruiter_token",
+  redirect = "/sign-in",
+  ...rest
+}) => <AuthorizedRoute token_key={token_key} redirect={redirect} {...rest} />;
+
 export const UnauthorizedRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => <Component {...props} {...rest} />} />
 );
@@ -49,25 +63,13 @@ function Routes() {
     <Switch>
       <Route
         exact
-        path={[
-          "/",
-          "/profile",
-          "/recruiter",
-          "/recruiter/new-job",
-          "/profile/review",
-          "/find-jobs",
-          "/recruiter/company/update",
-          "/recruiter/jobs",
-          "/find-jobs",
-          "/recruiter/jobs/:id",
-          "/recruiter/jobs/:id/candidates"
-        ]}
+        path={["/", "/profile", "/recruiter", "/profile/review", "/find-jobs"]}
       >
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
           <UnauthorizedRoute exact path="/recruiter" component={HRHome} />
-          <AuthorizedRoute exact path="/profile" component={CandidateProfile} />
-          <AuthorizedRoute
+          <CandidateRoute exact path="/profile" component={CandidateProfile} />
+          <CandidateRoute
             exact
             path="/profile/review"
             component={CandidateReviewCV}
@@ -77,57 +79,31 @@ function Routes() {
             path="/find-jobs"
             component={CandidateJobList}
           />
-          <UnauthorizedRoute
-            exact
-            path="/recruiter/new-job"
-            component={HRPostJob}
-          />
-          <UnauthorizedRoute
-            exact
-            path="/recruiter/jobs"
-            component={HRJobList}
-          />
-          <AuthorizedRoute
-            exact
-            path="/recruiter/company/update"
-            component={HRUpdateCompany}
-          />
-          <UnauthorizedRoute
-            exact
-            path="/recruiter/jobs?status:status"
-            component={HRJobList}
-          />
-          <UnauthorizedRoute
-            exact
-            path="/recruiter/jobs/:id"
-            component={HRJobManage}
-          />
-          <UnauthorizedRoute
-            exact
-            path="/recruiter/jobs/:id/candidates"
-            component={HRJobManage}
-          />
         </CandidateLayout>
       </Route>
 
       <Route
         exact
         path={[
-          "/sign-in/candidate",
-          "/sign-in/hr",
+          "/sign-in",
+          "/recruiter/sign-in",
           "/confirm-mail/",
           "/confirm-mail/?token=:token&type=:type",
-          "/sign-up/candidate",
-          "/sign-up/hr"
+          "/sign-up",
+          "/recruiter/sign-up"
         ]}
       >
         <EmptyLayout>
           <UnauthorizedRoute
             exact
-            path="/sign-in/candidate"
+            path="/sign-in"
             component={CandidateSignIn}
           />
-          <UnauthorizedRoute exact path="/sign-in/hr" component={HRSignIn} />
+          <UnauthorizedRoute
+            exact
+            path="/recruiter/sign-in"
+            component={HRSignIn}
+          />
           <UnauthorizedRoute
             exact
             path="/confirm-mail/"
@@ -140,11 +116,55 @@ function Routes() {
           />
           <UnauthorizedRoute
             exact
-            path="/sign-up/candidate"
+            path="/sign-up"
             component={CandidateSignUp}
           />
-          <UnauthorizedRoute exact path="/sign-up/hr" component={HRSignUp} />
+          <UnauthorizedRoute
+            exact
+            path="/recruiter/sign-up"
+            component={HRSignUp}
+          />
         </EmptyLayout>
+      </Route>
+
+      <Route
+        exact
+        path={[
+          "/recruiter/jobs/:id",
+          "/recruiter/jobs/:id/candidates",
+          "/recruiter/company/update",
+          "/recruiter/jobs",
+          "/recruiter/new-job"
+        ]}
+      >
+        <RecruiterLayout>
+          <RecruiterRoute
+            exact
+            path="/recruiter/new-job"
+            component={HRPostJob}
+          />
+          <RecruiterRoute exact path="/recruiter/jobs" component={HRJobList} />
+          <RecruiterRoute
+            exact
+            path="/recruiter/company/update"
+            component={HRUpdateCompany}
+          />
+          <RecruiterRoute
+            exact
+            path="/recruiter/jobs?status:status"
+            component={HRJobList}
+          />
+          <RecruiterRoute
+            exact
+            path="/recruiter/jobs/:id"
+            component={HRJobManage}
+          />
+          <RecruiterRoute
+            exact
+            path="/recruiter/jobs/:id/candidates"
+            component={HRJobManage}
+          />
+        </RecruiterLayout>
       </Route>
     </Switch>
   );

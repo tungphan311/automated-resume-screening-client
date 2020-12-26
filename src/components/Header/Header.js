@@ -13,7 +13,10 @@ function Header() {
           <nav className="navbar navbar-expand-lg header__navbar">
             {/* Header section */}
             <div className="header__navbar-brand-wrapper">
-              <Link to="/" className="navbar-brand header__navbar-brand">
+              <Link
+                to={`${pathname.startsWith("/recruiter") ? "/recruiter" : "/"}`}
+                className="navbar-brand header__navbar-brand"
+              >
                 {pathname.startsWith("/recruiter") ? (
                   <img
                     src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
