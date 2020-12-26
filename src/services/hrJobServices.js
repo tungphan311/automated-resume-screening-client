@@ -8,8 +8,28 @@ export const addNewJob = async (job, token) =>
 
 export const getJobDomain = async () => await API.get("/job-domains");
 
-export const hrGetJobs = async ({ is_hr = true }, token) => {
-  const filter = qs.stringify({ is_hr });
+export const hrGetJobs = async (
+  {
+    is_hr = true,
+    posted_in = undefined,
+    deadline = undefined,
+    view = undefined,
+    apply = undefined,
+    save = undefined
+  },
+  token
+) => {
+  const filter = qs.stringify(
+    {
+      is_hr,
+      posted_in,
+      deadline,
+      view,
+      apply,
+      save
+    },
+    { skipNull: true }
+  );
 
   return await API.get(`/job-posts?${filter}`, {
     headers: { Authorization: `Bearer ${token}` }
