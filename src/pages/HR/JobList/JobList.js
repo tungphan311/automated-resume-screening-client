@@ -13,6 +13,7 @@ import "./JobList.scss";
 function HRJobList() {
   const { search } = history.location;
   const [dropdown, toggleDropdown] = useState(undefined);
+  const [loading, setLoading] = useState(false);
 
   // redux
   const { token } = useSelector((state) => state.auth);
@@ -42,35 +43,35 @@ function HRJobList() {
     },
     {
       title: "Ngày đăng tin",
-      dataIndex: "postedDate",
+      dataIndex: "posted_in",
       align: "center",
-      sorter: (a, b) => a - b,
-      render: (postedDate) => <>{postedDate.toLocaleDateString()}</>
+      sorter: true,
+      render: (posted_in) => posted_in.toLocaleDateString()
     },
     {
       title: "Hạn nhận hồ sơ",
       dataIndex: "deadline",
       align: "center",
-      sorter: (a, b) => a - b,
-      render: (deadline) => <>{deadline.toLocaleDateString()}</>
+      sorter: true,
+      render: (deadline) => deadline.toLocaleDateString()
     },
     {
       title: "Tổng CV apply",
-      dataIndex: "totalApply",
+      dataIndex: "apply",
       align: "center",
-      sorter: (a, b) => a - b
+      sorter: true
     },
     {
       title: "Tổng lượt lưu",
-      dataIndex: "totalSave",
+      dataIndex: "save",
       align: "center",
-      sorter: (a, b) => a - b
+      sorter: true
     },
     {
       title: "Lượt xem",
-      dataIndex: "viewed",
+      dataIndex: "view",
       align: "center",
-      sorter: (a, b) => a - b
+      sorter: true
     },
     {
       title: "",
@@ -137,11 +138,11 @@ function HRJobList() {
       }) => ({
         id,
         position: { id, title: job_title, salary },
-        postedDate: new Date(posted_in.substring(1, posted_in.length - 1)),
+        posted_in: new Date(posted_in.substring(1, posted_in.length - 1)),
         deadline: new Date(deadline.substring(1, deadline.length - 1)),
-        totalApply: total_apply,
-        totalSave: total_save,
-        viewed: total_view,
+        apply: total_apply,
+        save: total_save,
+        view: total_view,
         action: { id }
       })
     );
@@ -149,12 +150,16 @@ function HRJobList() {
   useEffect(() => {
     const fetchJobs = async () => {
       let jobs = [];
+      setLoading(true);
       await hrGetJobs({}, token)
         .then((result) => {
           jobs = result.data.data;
         })
         .catch((err) => {
           toastErr(err);
+        })
+        .finally(() => {
+          setLoading(false);
         });
 
       jobs = mapResponseToPost(jobs);
@@ -163,6 +168,26 @@ function HRJobList() {
 
     fetchJobs();
   }, []);
+
+  const handleTableChange = async (pagination, filters, sorter) => {
+    setLoading(true);
+    const order = sorter.order === "ascend" ? 1 : -1;
+    const sort = { [sorter.field]: order, page: pagination.current };
+
+    await hrGetJobs(sort, token)
+      .then((result) => {
+        let jobs = result.data.data;
+
+        jobs = mapResponseToPost(jobs);
+        setPosts(jobs);
+      })
+      .catch((err) => {
+        toastErr(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <>
@@ -195,6 +220,9 @@ function HRJobList() {
                   rowKey={(record) => record.id}
                   dataSource={posts}
                   columns={columns}
+                  loading={loading}
+                  onChange={handleTableChange}
+                  showSorterTooltip={false}
                 />
               )}
             </div>
