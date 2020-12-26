@@ -72,7 +72,12 @@ const ConfirmMail = (props) => {
             <div className="col-sm-12 text-center">
               <p className="text-muted">
                 Return to{" "}
-                <Link to="/sign-in/candidate" className="text-primary m-l-5">
+                <Link
+                  to={`${
+                    type === "candidate" ? "/sign-in" : "/recruiter/sign-in"
+                  }`}
+                  className="text-primary m-l-5"
+                >
                   <strong>Sign in</strong>
                 </Link>
               </p>

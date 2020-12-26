@@ -15,7 +15,7 @@ function HRJobDetail({ id }) {
   const [post, setPost] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth.recruiter);
 
   useEffect(() => {
     setLoading(true);

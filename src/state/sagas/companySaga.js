@@ -17,7 +17,7 @@ export function* updateHRSaga(action) {
   try {
     const id = action.payload;
 
-    const { token } = yield select((state) => state.auth);
+    const { token } = yield select((state) => state.auth.recruiter);
 
     const result = yield call(updateCompany, id, token);
 
@@ -25,7 +25,7 @@ export function* updateHRSaga(action) {
 
     yield put({ type: UPDATE_TOKEN, payload: newToken });
 
-    yield setCookie("token", newToken, 1);
+    yield setCookie("recruiter_token", newToken, 1);
 
     yield history.push("/recruitment/jobs");
 
@@ -40,7 +40,7 @@ export function* addCompanySaga(action) {
   try {
     const formData = action.payload;
 
-    const { token } = yield select((state) => state.auth);
+    const { token } = yield select((state) => state.auth.recruiter);
 
     const result = yield call(addCompany, formData, token);
 
@@ -48,7 +48,7 @@ export function* addCompanySaga(action) {
 
     yield put({ type: UPDATE_TOKEN, payload: newToken });
 
-    yield setCookie("token", newToken, 1);
+    yield setCookie("recruiter_token", newToken, 1);
 
     yield history.push("/recruitment/jobs");
 

@@ -8,14 +8,33 @@ import { GET_PROVINCES_SUCCESS } from "state/reducers/cvReducer";
 
 export function* initSaga() {
   try {
-    const token = yield getCookie("token");
+    const recruiter_token = yield getCookie("recruiter_token");
+    const candidate_token = yield getCookie("candidate_token");
 
-    if (token) {
+    if (recruiter_token) {
       const {
         identity: { email }
-      } = jwt_decode(token);
+      } = jwt_decode(recruiter_token);
 
-      yield put({ type: RESIGN_TOKEN, token, email });
+      yield put({
+        type: RESIGN_TOKEN,
+        key: "recruiter",
+        token: recruiter_token,
+        email
+      });
+    }
+
+    if (candidate_token) {
+      const {
+        identity: { email }
+      } = jwt_decode(candidate_token);
+
+      yield put({
+        type: RESIGN_TOKEN,
+        key: "candidate",
+        token: candidate_token,
+        email
+      });
     }
 
     const result = yield call(getProvinces);

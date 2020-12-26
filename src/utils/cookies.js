@@ -22,8 +22,8 @@ export function getCookie(cname) {
   return "";
 }
 
-export function checkCookie() {
-  let user = getCookie("token");
+export function checkCookie(key) {
+  let user = getCookie(key);
   if (user !== "") {
     return user;
   } else {

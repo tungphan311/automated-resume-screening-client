@@ -25,7 +25,7 @@ export function* postJobSaga(action) {
       max_salary
     } = yield select((state) => getFormValues(FORM_KEY_JOB_POST)(state));
 
-    const { token, email } = yield select((state) => state.auth);
+    const { token, email } = yield select((state) => state.auth.recruiter);
 
     const formValue = {
       benefit_text,

@@ -19,7 +19,7 @@ function HRJobList() {
   const [is_showing, setIsShowing] = useState(true);
 
   // redux
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth.recruiter);
 
   const [posts, setPosts] = useState([]);
 

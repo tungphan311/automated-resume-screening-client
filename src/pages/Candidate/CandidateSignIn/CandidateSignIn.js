@@ -35,7 +35,7 @@ function CandidateSignIn() {
     });
   };
 
-  return checkCookie() ? (
+  return checkCookie("candidate_token") ? (
     <Redirect to="/" />
   ) : (
     <div className="candidate-login">
@@ -115,18 +115,18 @@ function CandidateSignIn() {
             </button>
 
             {/* Login with gmail  */}
-            <Link to="/sign-up/candidate">
+            <Link to="/sign-up">
               <button className="candidate-login__container__left__form__social__item candidate-login__container__left__form__social__item--register">
                 <span> Đăng ký tài khoản mới</span>
               </button>
             </Link>
           </div>
 
-          <div className="candidate-login__container__left__link">
+          {/* <div className="candidate-login__container__left__link">
             <p className="candidate-login__container__left__link__text">
-              Nhà tuyển dụng <Link to="/sign-in/hr">đăng nhập</Link>
+              Nhà tuyển dụng <Link to="/recruiter/sign-in">đăng nhập</Link>
             </p>
-          </div>
+          </div> */}
         </div>
 
         {/* Background Image  */}

@@ -1,20 +1,20 @@
-import { Button } from "antd";
-import { NAVIGATIONS } from "constants/index";
+// import { Button } from "antd";
+import { RECRUITER_NAV } from "constants/index";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUserAction } from "state/actions/authenticationActions";
-import history from "state/history";
+// import history from "state/history";
 import { checkCookie, setCookie } from "utils/cookies";
 import "./NavBar.scss";
 
-function NavBar() {
+function RecruiterNavBar() {
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.auth.candidate.token);
+  const accessToken = useSelector((state) => state.auth.recruiter.token);
 
   //Handle logout
   const logOut = () => {
-    setCookie("candidate_token", accessToken, 0);
+    setCookie("recruiter_token", accessToken, 0);
     dispatch(logoutUserAction());
   };
 
@@ -24,37 +24,37 @@ function NavBar() {
       className="collapse navbar-collapse header__navbar-collapse py-0"
     >
       <ul className="navbar-nav header__navbar-nav">
-        {NAVIGATIONS.map(({ title, url, link, button }) => (
+        {RECRUITER_NAV.map(({ title, url, link, button }) => (
           <NavItem key={title} {...{ title, url, link, button }} />
         ))}
-        {checkCookie("candidate_token") ? (
+        {checkCookie("recruiter_token") ? (
           <NavItem
             btnClick={logOut}
-            {...{ title: "Đăng xuất", url: "/", button: true }}
+            {...{ title: "Đăng xuất", url: "/recruiter", button: true }}
           />
         ) : (
           <NavItem
             {...{
               title: "Đăng nhập",
-              url: "/sign-in",
+              url: "/recruiter/sign-in",
               button: true
             }}
           />
         )}
-        <span className="nav-separator nav-separator--grey"></span>
-        <Button
+        {/* <span className="nav-separator nav-separator--grey"></span> */}
+        {/* <Button
           type="primary"
           size="large"
           onClick={() => history.push("/recruiter")}
         >
           Nhà tuyển dụng
-        </Button>
+        </Button> */}
       </ul>
     </div>
   );
 }
 
-export default NavBar;
+export default RecruiterNavBar;
 
 const NavItem = ({ title, url, link = false, button = false, btnClick }) => (
   <li className="nav-item header__nav-item">
