@@ -12,14 +12,14 @@ import "./JobList.scss";
 
 function HRJobList() {
   const { search } = history.location;
-  const [dropdown, toggleDropdown] = useState(false);
+  const [dropdown, toggleDropdown] = useState(undefined);
 
   // redux
   const { token } = useSelector((state) => state.auth);
 
   const [posts, setPosts] = useState([]);
 
-  const closeDropdown = () => toggleDropdown(false);
+  const closeDropdown = () => toggleDropdown(undefined);
 
   const columns = [
     {
@@ -44,13 +44,15 @@ function HRJobList() {
       title: "Ngày đăng tin",
       dataIndex: "postedDate",
       align: "center",
-      sorter: (a, b) => a - b
+      sorter: (a, b) => a - b,
+      render: (postedDate) => <>{postedDate.toLocaleDateString()}</>
     },
     {
       title: "Hạn nhận hồ sơ",
       dataIndex: "deadline",
       align: "center",
-      sorter: (a, b) => a - b
+      sorter: (a, b) => a - b,
+      render: (deadline) => <>{deadline.toLocaleDateString()}</>
     },
     {
       title: "Tổng CV apply",
@@ -73,17 +75,21 @@ function HRJobList() {
     {
       title: "",
       dataIndex: "action",
-      render: () => (
+      render: ({ id }) => (
         <OutsideClickWrapper
           isShowing={dropdown}
           onClickOutside={closeDropdown}
         >
           <div
-            className={`btn-group btn-group-action ${dropdown ? "open" : ""}`}
+            className={`btn-group btn-group-action ${
+              dropdown === id ? "open" : ""
+            }`}
           >
             <button
               className="btn btn-sm btn-default dropdown-toggle btn-action outline btn-hover-no-effect"
-              onClick={() => toggleDropdown(!dropdown)}
+              onClick={() =>
+                dropdown === id ? toggleDropdown(undefined) : toggleDropdown(id)
+              }
             >
               <strong>Thao tác &nbsp;</strong>
               <span className="caret"></span>
@@ -131,8 +137,8 @@ function HRJobList() {
       }) => ({
         id,
         position: { id, title: job_title, salary },
-        postedDate: posted_in,
-        deadline,
+        postedDate: new Date(posted_in.substring(1, posted_in.length - 1)),
+        deadline: new Date(deadline.substring(1, deadline.length - 1)),
         totalApply: total_apply,
         totalSave: total_save,
         viewed: total_view,
@@ -185,7 +191,11 @@ function HRJobList() {
               {!posts.length ? (
                 <EmptyJob />
               ) : (
-                <Table dataSource={posts} columns={columns} />
+                <Table
+                  rowKey={(record) => record.id}
+                  dataSource={posts}
+                  columns={columns}
+                />
               )}
             </div>
           </div>
@@ -215,7 +225,7 @@ const EmptyJob = () => (
           Đăng tin tuyển dụng
         </Link>
         {" mới hoặc xem tin đã đăng tại mục "}
-        <Link>Tin hết hạn/ đã đóng</Link>
+        <Link to="/recruiter/jobs?status=closed">Tin hết hạn/ đã đóng</Link>
         {"."}
       </p>
     </div>
