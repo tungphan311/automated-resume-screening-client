@@ -27,7 +27,7 @@ export function* updateHRSaga(action) {
 
     yield setCookie("recruiter_token", newToken, 1);
 
-    yield history.push("/recruitment/jobs");
+    yield history.push("/recruiter/jobs");
 
     yield resolvePromiseAction(action);
   } catch (err) {
@@ -50,7 +50,7 @@ export function* addCompanySaga(action) {
 
     yield setCookie("recruiter_token", newToken, 1);
 
-    yield history.push("/recruitment/jobs");
+    yield history.push("/recruiter/jobs");
 
     yield resolvePromiseAction(action);
   } catch (err) {
