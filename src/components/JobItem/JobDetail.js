@@ -7,16 +7,30 @@ import ContentLoader from "react-content-loader";
 import ApplyModal from "components/Modals/Apply/ApplyModal";
 import { getJobDetail } from "services/jobServices";
 import { format_date, toastErr } from "utils/index";
+import LoginModal from "components/Modals/LoginModal/LoginModal";
+import { useSelector } from "react-redux";
+
+const DEFAULT = {
+  apply: false,
+  authen: false
+};
 
 function JobDetail({ id, top, onChangeSelect }) {
   const size = useWindowSize();
   const padding = (size.width - 1140) / 2;
-  const [showModal, toggleShowModal] = useState(false);
+  const [showModal, toggleShowModal] = useState(DEFAULT);
   const [job, setJob] = useState({});
   const [loading, setLoading] = useState(false);
+  const { token } = useSelector((state) => state.auth.candidate);
 
-  const toggleModal = () => toggleShowModal(true);
-  const onCancel = () => toggleShowModal(false);
+  const toggleModal = () => {
+    if (!token) {
+      toggleShowModal({ ...DEFAULT, authen: true });
+    } else {
+      toggleShowModal({ ...DEFAULT, apply: true });
+    }
+  };
+  const onCancel = () => toggleShowModal(DEFAULT);
 
   useEffect(() => {
     setLoading(true);
@@ -140,10 +154,12 @@ function JobDetail({ id, top, onChangeSelect }) {
         )}
       </div>
       <ApplyModal
-        visible={showModal}
+        visible={showModal.apply}
         onCancel={onCancel}
         {...{ company_name, job_title }}
       />
+
+      <LoginModal show={showModal.authen} toggleModal={onCancel} />
     </>
   );
 }
