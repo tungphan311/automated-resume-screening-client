@@ -139,7 +139,11 @@ function JobDetail({ id, top, onChangeSelect }) {
           <Loading />
         )}
       </div>
-      <ApplyModal visible={showModal} onCancel={onCancel} />
+      <ApplyModal
+        visible={showModal}
+        onCancel={onCancel}
+        {...{ company_name, job_title }}
+      />
     </>
   );
 }
