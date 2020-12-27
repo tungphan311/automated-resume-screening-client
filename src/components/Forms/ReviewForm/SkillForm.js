@@ -1,15 +1,19 @@
-import React, { useState } from "react";
-import { Button, Input } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Input, Select } from "antd";
 import { PlusOutlined, DeleteFilled } from "@ant-design/icons";
 import ContentEditable from "react-contenteditable";
-import { useDispatch } from "react-redux";
-import { UPDATE_CV_VALUES } from "state/reducers/cvReducer";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { updateCVAction } from "state/actions/index";
+import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 
 function SkillForm({ curStep, handleChangeStep }) {
-  // const skill = useSelector((state) => state.cv.skill, shallowEqual);
-  const dispatch = useDispatch();
+  const [domain, setDomain] = useState(null);
+  const [error, setError] = useState(false);
 
-  const SKILLS = ["Reactjs", "Javascript", "OOP"];
+  const skill = useSelector((state) => state.cv.skill, shallowEqual) || [];
+  const domains = useSelector((state) => state.jobDomain.domains);
+
+  const dispatch = useDispatch();
   const getIndexArray = (arr) => {
     let newArr = [];
     for (let i = 0; i < arr.length; i++) {
@@ -19,7 +23,11 @@ function SkillForm({ curStep, handleChangeStep }) {
     return newArr;
   };
 
-  const [skills, setSkills] = useState(getIndexArray(SKILLS));
+  useEffect(() => {
+    dispatch({ type: GET_JOB_DOMAIN });
+  }, []);
+
+  const [skills, setSkills] = useState(getIndexArray(skill));
   const [value, setValue] = useState("");
 
   const onChange = (key, value) => {
@@ -49,10 +57,17 @@ function SkillForm({ curStep, handleChangeStep }) {
   };
 
   const handleSubmit = () => {
-    const values = skills.map((ele) => ele.value);
-    dispatch({ type: UPDATE_CV_VALUES, key: "skill", value: values });
+    if (!domain) {
+      setError(true);
 
-    handleChangeStep(curStep + 1);
+      return;
+    } else {
+      const values = skills.map((ele) => ele.value);
+
+      dispatch(updateCVAction({ values, domain }));
+      // dispatch({ type: UPDATE_CV_VALUES, key: "skill", value: values });
+      // handleChangeStep(curStep + 1);
+    }
   };
 
   return (
@@ -67,6 +82,36 @@ function SkillForm({ curStep, handleChangeStep }) {
               className="wizard-page-children container-fluid"
               spellCheck="false"
             >
+              <div className="job-domain-wrapper">
+                <div className="TextInput-label">
+                  Chọn loại công việc: <span className="text-danger">*</span>
+                </div>
+                <div className="select--wrapper">
+                  <Select
+                    options={domains.map(({ id, name }) => ({
+                      value: id,
+                      label: name
+                    }))}
+                    value={domain}
+                    onChange={(value) => {
+                      setDomain(value);
+                      setError(false);
+                    }}
+                  />
+                  {error && (
+                    <span
+                      className="error"
+                      style={{
+                        position: "absolute",
+                        color: "#f25961",
+                        top: "33px"
+                      }}
+                    >
+                      Vui lòng không bỏ trống
+                    </span>
+                  )}
+                </div>
+              </div>
               <div className="inline-skill-container is-compact">
                 <div className="inline-skill-input">
                   <div>
@@ -111,7 +156,7 @@ function SkillForm({ curStep, handleChangeStep }) {
       </div>
       <div>
         <Button type="primary" onClick={handleSubmit}>
-          Tới trang sau
+          Hoàn tất
         </Button>
         {curStep > 1 && (
           <Button

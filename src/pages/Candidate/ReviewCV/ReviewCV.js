@@ -1,7 +1,6 @@
 import ConfirmModal from "components/Modals/ConfirmModal/ConfirmModal";
 import React, { useEffect, useState } from "react";
 import ProgressBar from "components/ProgressBar/ProgressBar";
-import BasicForm from "components/Forms/ReviewForm/BasicForm";
 import EducationForm from "components/Forms/ReviewForm/EducationForm";
 import ExperienceForm from "components/Forms/ReviewForm/ExperienceForm";
 import SkillForm from "components/Forms/ReviewForm/SkillForm";
@@ -12,11 +11,9 @@ function CandidateReviewCV() {
   const [progress, setProgress] = useState(0);
 
   const STEPS = [
-    { step: 1, label: "Thông tin liên lạc" },
-    { step: 2, label: "Học vấn" },
-    { step: 3, label: "Kinh nghiệm" },
-    { step: 4, label: "Kỹ năng" },
-    { step: 5, label: "Xác nhận" }
+    { step: 1, label: "Học vấn" },
+    { step: 2, label: "Kinh nghiệm" },
+    { step: 3, label: "Kỹ năng" }
   ];
 
   const handleChangeStep = (step) => {
@@ -34,18 +31,13 @@ function CandidateReviewCV() {
     switch (curStep) {
       case 1:
         return (
-          <BasicForm curStep={curStep} handleChangeStep={handleChangeStep} />
-        );
-
-      case 2:
-        return (
           <EducationForm
             curStep={curStep}
             handleChangeStep={handleChangeStep}
           />
         );
 
-      case 3:
+      case 2:
         return (
           <ExperienceForm
             curStep={curStep}
@@ -53,7 +45,7 @@ function CandidateReviewCV() {
           />
         );
 
-      case 4:
+      case 3:
         return (
           <SkillForm curStep={curStep} handleChangeStep={handleChangeStep} />
         );

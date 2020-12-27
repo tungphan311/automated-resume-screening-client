@@ -1,7 +1,7 @@
 import React from "react";
 import "./ReviewForm.scss";
 import { Form, Input, Select, Button } from "antd";
-import { UserOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import { MailOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { UPDATE_CV_VALUES } from "state/reducers/cvReducer";
 
@@ -36,7 +36,7 @@ function BasicForm({ curStep, handleChangeStep }) {
         <div className="panel-body">
           <div className="container-fluid">
             <div className="heading-margin sg-heading3 title">
-              Thông tin liên lạc
+              Thông tin thêm
             </div>
           </div>
           <div className="wizard-page-children container-fluid">
@@ -49,32 +49,8 @@ function BasicForm({ curStep, handleChangeStep }) {
               initialValues={basic}
             >
               <Form.Item
-                label="Họ tên"
-                name="name"
-                required
-                rules={[{ required: true }]}
-              >
-                <Input
-                  placeholder="Nhập họ và tên"
-                  size="large"
-                  prefix={<UserOutlined />}
-                />
-              </Form.Item>
-              <Form.Item
-                label="Số điện thoại"
-                name="phone"
-                required
-                rules={[{ required: true }]}
-              >
-                <Input
-                  placeholder="Số điện thoại"
-                  size="large"
-                  prefix={<PhoneOutlined />}
-                />
-              </Form.Item>
-              <Form.Item
-                label="Email"
-                name="email"
+                label="Kinh nghiệm thực tế"
+                name="months_of_experience"
                 required
                 rules={[{ required: true }]}
               >

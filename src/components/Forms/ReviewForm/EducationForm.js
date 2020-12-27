@@ -3,6 +3,7 @@ import ContentEditable from "react-contenteditable";
 import { Button } from "antd";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { UPDATE_CV_VALUES } from "state/reducers/cvReducer";
+import "./ReviewForm.scss";
 
 function EducationForm({ curStep, handleChangeStep }) {
   const education = useSelector((state) => state.cv.education, shallowEqual);
