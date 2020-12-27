@@ -56,7 +56,9 @@ function CandidateReviewCV() {
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "35px auto 0" }}>
+    <div
+      style={{ maxWidth: "600px", margin: "35px auto 0", paddingBottom: 60 }}
+    >
       <ProgressBar
         steps={STEPS}
         curStep={curStep}
