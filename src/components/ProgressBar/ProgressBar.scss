@@ -124,13 +124,14 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  padding: 0 calc(7% - 8px);
 }
 
 .label-text {
   padding: 0 4px;
   text-align: center;
-  flex-basis: 0;
-  flex-grow: 1;
+  // flex-basis: 0;
+  // flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;

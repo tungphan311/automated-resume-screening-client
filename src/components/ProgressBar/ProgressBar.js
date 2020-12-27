@@ -20,6 +20,7 @@ function ProgressBar({ steps, curStep = 1, handleChangeStep, progress }) {
                 label={step}
                 curStep={curStep}
                 onClick={handleChangeStep}
+                numsStep={steps.length}
               />
             ))}
           </div>
@@ -36,7 +37,7 @@ function ProgressBar({ steps, curStep = 1, handleChangeStep, progress }) {
 
 export default ProgressBar;
 
-const Dot = ({ label, curStep, onClick }) => (
+const Dot = ({ label, curStep, onClick, numsStep }) => (
   <>
     <div
       className={`step-dot ${curStep > label ? "dotChecked" : ""} ${
@@ -56,7 +57,7 @@ const Dot = ({ label, curStep, onClick }) => (
         role="link"
       ></button>
     </div>
-    {label < 5 && <div className="step-dash"></div>}
+    {label < numsStep && <div className="step-dash"></div>}
   </>
 );
 

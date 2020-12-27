@@ -7,6 +7,7 @@ import { toast, toastErr } from "utils/index";
 import { useDispatch } from "react-redux";
 import FormData from "form-data";
 import { addCompanyAction, updateHRCompanyAction } from "state/actions/index";
+import Loading from "components/Loading/Loading";
 
 const ACCEPTS = ["image/jpeg", "image/jpg", "image/png"];
 
@@ -146,17 +147,7 @@ function HRUpdateCompany() {
 
   return (
     <div className="container" style={{ marginTop: 20 }}>
-      <div className={`seeking-loading ${loading ? "" : "d-none"}`}>
-        <lottie-player
-          src="https://assets3.lottiefiles.com/datafiles/nT4vnUFY9yay7QI/data.json"
-          mode="bounce"
-          background="rgba(0, 0, 0, 0)"
-          speed="1"
-          style={{ width: "500px", height: "500px" }}
-          loop
-          autoplay
-        ></lottie-player>
-      </div>
+      <Loading loading={loading} />
       <div className="row">
         <div className="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-1">
           <form>

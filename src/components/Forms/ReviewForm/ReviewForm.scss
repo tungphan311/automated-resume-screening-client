@@ -17,8 +17,8 @@
   padding-left: 15px;
   padding-right: 15px;
 
-  &::before,
-  &::after {
+  &:not(.custom)::before,
+  &:not(.custom)::after {
     content: " ";
     display: table;
   }
@@ -175,4 +175,18 @@ div[contenteditable="true"] {
   display: block;
   border-bottom: 1px solid #ccc;
   margin: 0 15px;
+}
+
+.job-domain-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.select--wrapper {
+  height: 100%;
+  flex-grow: 1;
+  margin-left: 20px;
+  position: relative;
 }

@@ -5,7 +5,7 @@ export const GET_PROVINCES_SUCCESS = "cv/GET_PROVINCES_SUCCESS";
 export const UPDATE_CV_VALUES = "cv/UPDATE_CV_VALUES";
 
 const initialState = {
-  basic: null,
+  id: null,
   education: null,
   experience: null,
   skill: null,
@@ -17,11 +17,12 @@ export default function authReducer(state = initialState, action = {}) {
 
   switch (action.type) {
     case UPLOAD_CV_SUCCESS: {
-      let { education, experience, skill } = action.response;
+      let { educations, experiences, technical_skills, id } = action.response;
 
-      newState.education = education.replaceAll("\n", "<br/>");
-      newState.experience = experience.replaceAll("\n", "<br/>");
-      newState.skill = skill.replaceAll("\n", "<br/>");
+      newState.education = educations.replaceAll("\n", "<br/>");
+      newState.experience = experiences.replaceAll("\n", "<br/>");
+      newState.skill = technical_skills.split("|");
+      newState.id = id;
 
       return newState;
     }
