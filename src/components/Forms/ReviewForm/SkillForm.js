@@ -5,10 +5,12 @@ import ContentEditable from "react-contenteditable";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { updateCVAction } from "state/actions/index";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
+import Loading from "components/Loading/Loading";
 
 function SkillForm({ curStep, handleChangeStep }) {
   const [domain, setDomain] = useState(null);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const skill = useSelector((state) => state.cv.skill, shallowEqual) || [];
   const domains = useSelector((state) => state.jobDomain.domains);
@@ -62,9 +64,12 @@ function SkillForm({ curStep, handleChangeStep }) {
 
       return;
     } else {
+      setLoading(true);
       const values = skills.map((ele) => ele.value);
 
-      dispatch(updateCVAction({ values, domain }));
+      dispatch(updateCVAction({ values, domain })).catch(() => {
+        setLoading(false);
+      });
       // dispatch({ type: UPDATE_CV_VALUES, key: "skill", value: values });
       // handleChangeStep(curStep + 1);
     }
@@ -72,6 +77,7 @@ function SkillForm({ curStep, handleChangeStep }) {
 
   return (
     <>
+      <Loading loading={loading} />
       <div className="panel panel--light">
         <div className="panel-body">
           <div className="rv-content">

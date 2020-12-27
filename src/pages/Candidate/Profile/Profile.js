@@ -6,6 +6,7 @@ import "./Profile.scss";
 import FormData from "form-data";
 import { useDispatch } from "react-redux";
 import { uploadCVAction } from "state/actions/index";
+import Loading from "components/Loading/Loading";
 
 const ACCEPTS = [
   "application/msword",
@@ -45,18 +46,7 @@ function CandidateProfile() {
 
   return (
     <div className="container profile__wrapper" style={{ marginTop: "20px" }}>
-      <div className={`seeking-loading ${loading ? "" : "d-none"}`}>
-        <lottie-player
-          src="https://assets7.lottiefiles.com/packages/lf20_h59xofz0.json"
-          mode="bounce"
-          background="rgba(0, 0, 0, 0)"
-          speed="0.9"
-          style={{ width: "500px", height: "500px" }}
-          loop
-          autoplay
-        ></lottie-player>
-        <span>Đang tải lên, vui lòng chờ trong giây lát ...</span>
-      </div>
+      <Loading loading={loading} />
       <div className="row">
         <div className="col-sm-8">
           <Card title="Tải lên CV của bạn">
