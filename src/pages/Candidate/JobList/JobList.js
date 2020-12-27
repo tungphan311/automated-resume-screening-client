@@ -7,6 +7,9 @@ import "./JobList.scss";
 import { Pagination, Select } from "antd";
 import { findJobs } from "services/jobServices";
 import { toastErr } from "utils/index";
+import { getFormValues } from "redux-form";
+import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
+import { useSelector } from "react-redux";
 
 function CandidateJobList() {
   const [curSelect, setCurSelect] = useState(null);
@@ -18,6 +21,15 @@ function CandidateJobList() {
     pageSize: 10,
     total: 0
   });
+  const [query, setQuery] = useState({ job_title: null, province_id: null });
+  const [filter, setFilter] = useState({
+    posted_date: null,
+    contract_type: null
+  });
+
+  const formValues = useSelector((state) =>
+    getFormValues(FORM_KEY_JOB_SEARCH)(state)
+  );
 
   const mapResponseToState = (data) =>
     data.map(
@@ -50,10 +62,25 @@ function CandidateJobList() {
 
     const fetchJobs = async () => {
       setLoading(true);
-      await findJobs()
+      const { page, pageSize } = pagination;
+      const { posted_date, contact_type } = filter;
+      const { job_title, province_id } = query;
+
+      await findJobs(
+        page,
+        pageSize,
+        job_title,
+        province_id,
+        posted_date,
+        contact_type
+      )
         .then((res) => {
           setJobs(mapResponseToState(res.data.data));
-          setPagination({ ...pagination, total: res.data.pagination.total });
+          setPagination({
+            page: 1,
+            pageSize,
+            total: res.data.pagination.total
+          });
         })
         .catch((err) => {
           toastErr(err);
@@ -68,16 +95,18 @@ function CandidateJobList() {
     window.addEventListener("scroll", getScroll);
 
     return () => window.removeEventListener("scroll", getScroll);
-  }, []);
+  }, [filter]);
 
-  const fetchJobs = async (page, pageSize) => {
+  const fetchJobs = async (page, pageSize, job_title, province_id) => {
     setLoading(true);
-    return await findJobs(page, pageSize);
+    return await findJobs(page, pageSize, job_title, province_id);
   };
 
   const handleChangePageSize = async (value) => {
     const { page } = pagination;
-    await fetchJobs(page, value)
+    const { job_title, province_id } = query;
+
+    await fetchJobs(page, value, job_title, province_id)
       .then((res) => {
         setJobs(mapResponseToState(res.data.data));
         setPagination({
@@ -96,7 +125,9 @@ function CandidateJobList() {
 
   const handleChangePage = async (page) => {
     const { pageSize } = pagination;
-    await fetchJobs(page, pageSize)
+    const { job_title, province_id } = query;
+
+    await fetchJobs(page, pageSize, job_title, province_id)
       .then((res) => {
         setJobs(mapResponseToState(res.data.data));
         setPagination({
@@ -113,9 +144,37 @@ function CandidateJobList() {
       });
   };
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    const { page, pageSize } = pagination;
+    const { job_title } = formValues;
+
+    const province_id = formValues.location
+      ? formValues.location.value
+      : undefined;
+
+    await fetchJobs(page, pageSize, job_title, province_id)
+      .then((res) => {
+        setJobs(mapResponseToState(res.data.data));
+        setPagination({
+          page: 1,
+          pageSize,
+          total: res.data.pagination.total
+        });
+        setQuery({ job_title, province_id: province_id });
+      })
+      .catch((err) => {
+        toastErr(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   const onChangeSelect = (jobId) => setCurSelect(jobId);
 
   const { page, pageSize, total } = pagination;
+  const { posted_date, contract_type } = filter;
   return (
     <>
       <div id="search-jobs-wrapper">
@@ -124,11 +183,25 @@ function CandidateJobList() {
           className="search-jobs-container search-jobs-widget"
         >
           <div className="container">
-            <JobSearchAdvance />
+            <JobSearchAdvance onSubmit={handleSubmit} />
 
             <div className="filters">
-              <Dropdown title="Ngày đăng" options={DATES} />
-              <Dropdown title="Loại hợp đồng" options={CONTACTS} />
+              <Dropdown
+                title="Ngày đăng"
+                options={DATES}
+                value={posted_date}
+                onChange={(value) =>
+                  setFilter({ ...filter, posted_date: value })
+                }
+              />
+              <Dropdown
+                title="Hình thức làm việc"
+                options={CONTACTS}
+                value={contract_type}
+                onChange={(value) =>
+                  setFilter({ ...filter, contract_type: value })
+                }
+              />
             </div>
           </div>
         </div>
@@ -168,6 +241,7 @@ function CandidateJobList() {
                     {jobs.map((job) => (
                       <JobItem
                         {...job}
+                        key={job.jobId}
                         curSelect={curSelect}
                         onChangeSelect={onChangeSelect}
                         top={top}

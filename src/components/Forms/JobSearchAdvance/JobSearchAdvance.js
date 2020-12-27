@@ -25,6 +25,7 @@ function JobSearchAdvance({ handleSubmit }) {
             name="job_title"
             icon={<SearchOutlined style={{ color: "#555" }} />}
             formClassName="col-sm-6 pr-10"
+            placeholder="Tên công việc bạn muốn ứng tuyển"
           />
           <Field
             component={CustomSelect}
