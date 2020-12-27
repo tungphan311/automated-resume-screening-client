@@ -5,11 +5,42 @@ import { CONTACTS, DATES, PAGE_SIZES } from "constants/index";
 import React, { useEffect, useState } from "react";
 import "./JobList.scss";
 import { Pagination, Select } from "antd";
+import { findJobs } from "services/jobServices";
+import { toastErr } from "utils/index";
 
 function CandidateJobList() {
   const [curSelect, setCurSelect] = useState(null);
   const [top, setTop] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    pageSize: 10,
+    total: 0
+  });
+
+  const mapResponseToState = (data) =>
+    data.map(
+      ({
+        company_name,
+        contact_type,
+        job_description,
+        job_post_id,
+        job_title,
+        last_edit,
+        province_id,
+        salary
+      }) => ({
+        jobId: job_post_id,
+        jobTitle: job_title,
+        company: company_name,
+        salary,
+        contractType: contact_type,
+        jobDescription: job_description,
+        lastEdit: last_edit,
+        provinceId: province_id
+      })
+    );
 
   useEffect(() => {
     function getScroll() {
@@ -17,12 +48,74 @@ function CandidateJobList() {
       setTop(top - scrollY);
     }
 
+    const fetchJobs = async () => {
+      setLoading(true);
+      await findJobs()
+        .then((res) => {
+          setJobs(mapResponseToState(res.data.data));
+          setPagination({ ...pagination, total: res.data.pagination.total });
+        })
+        .catch((err) => {
+          toastErr(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+
+    fetchJobs();
+
     window.addEventListener("scroll", getScroll);
 
     return () => window.removeEventListener("scroll", getScroll);
   }, []);
 
+  const fetchJobs = async (page, pageSize) => {
+    setLoading(true);
+    return await findJobs(page, pageSize);
+  };
+
+  const handleChangePageSize = async (value) => {
+    const { page } = pagination;
+    await fetchJobs(page, value)
+      .then((res) => {
+        setJobs(mapResponseToState(res.data.data));
+        setPagination({
+          page: 1,
+          pageSize: value,
+          total: res.data.pagination.total
+        });
+      })
+      .catch((err) => {
+        toastErr(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleChangePage = async (page) => {
+    const { pageSize } = pagination;
+    await fetchJobs(page, pageSize)
+      .then((res) => {
+        setJobs(mapResponseToState(res.data.data));
+        setPagination({
+          page,
+          pageSize,
+          total: res.data.pagination.total
+        });
+      })
+      .catch((err) => {
+        toastErr(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   const onChangeSelect = (jobId) => setCurSelect(jobId);
+
+  const { page, pageSize, total } = pagination;
   return (
     <>
       <div id="search-jobs-wrapper">
@@ -61,34 +154,34 @@ function CandidateJobList() {
                               style={{ width: 140 }}
                               options={PAGE_SIZES}
                               defaultValue={pageSize}
-                              onChange={(value) => setPageSize(value)}
+                              onChange={(value) => handleChangePageSize(value)}
                             />
                           </span>
                         </div>
                         <div className="searchCountContainer">
-                          <div id="searchCountPages">Page 1 of 101 jobs</div>
+                          {/* <div id="searchCountPages">Page 1 of 101 jobs</div> */}
                         </div>
                       </div>
                     </div>
-                    <JobItem
-                      jobId={1}
-                      curSelect={curSelect}
-                      onChangeSelect={onChangeSelect}
-                      top={top}
-                    />
-                    <JobItem
-                      jobId={2}
-                      curSelect={curSelect}
-                      onChangeSelect={onChangeSelect}
-                      top={top}
-                    />
+                    {loading && <div>Loading ...</div>}
+
+                    {jobs.map((job) => (
+                      <JobItem
+                        {...job}
+                        curSelect={curSelect}
+                        onChangeSelect={onChangeSelect}
+                        top={top}
+                      />
+                    ))}
                     <nav>
                       <div className="vjs-pagination">
                         <Pagination
-                          total={100}
+                          current={page}
+                          total={total}
                           showSizeChanger={false}
                           showLessItems
                           pageSize={pageSize}
+                          onChange={handleChangePage}
                         />
                       </div>
                     </nav>

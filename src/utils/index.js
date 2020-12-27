@@ -19,3 +19,6 @@ export function toastErr(error) {
 
   toast({ type: "error", message: errMsg });
 }
+
+export const format_date = (dateString) =>
+  new Date(dateString).toLocaleDateString();
