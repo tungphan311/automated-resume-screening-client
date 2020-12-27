@@ -46,7 +46,7 @@ export function* addCompanySaga(action) {
 
     const newToken = result.data.data;
 
-    yield put({ type: UPDATE_TOKEN, payload: newToken });
+    yield put({ type: UPDATE_TOKEN, key: "recruiter", token: newToken });
 
     yield setCookie("recruiter_token", newToken, 1);
 

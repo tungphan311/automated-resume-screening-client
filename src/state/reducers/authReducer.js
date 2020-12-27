@@ -24,16 +24,19 @@ export default function authReducer(state = initialState, action = {}) {
       return newState;
 
     case types.LOGIN_USER_SUCCESS:
-    case types.RESIGN_TOKEN:
+    case types.RESIGN_TOKEN: {
       const { key, token, email } = action;
 
       newState[key] = { token, email };
       return newState;
+    }
 
-    case types.UPDATE_TOKEN:
-      const { payload } = action;
-      newState.token = payload;
+    case types.UPDATE_TOKEN: {
+      const { key, token } = action;
+
+      newState[key] = { ...newState[key], token };
       return newState;
+    }
 
     default:
       return newState;
