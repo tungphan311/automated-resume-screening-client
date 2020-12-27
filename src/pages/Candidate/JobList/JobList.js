@@ -10,6 +10,35 @@ import { toastErr } from "utils/index";
 import { getFormValues } from "redux-form";
 import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { useSelector } from "react-redux";
+import ContentLoader from "react-content-loader";
+
+const MyLoader = (props) => (
+  <ContentLoader
+    speed={2}
+    width={410}
+    height={600}
+    viewBox="0 0 410 600"
+    backgroundColor="#b7b3b3"
+    foregroundColor="#ffffff"
+    {...props}
+  >
+    <rect x="0" y="10" rx="0" ry="0" width="400" height="20" />
+    <rect x="0" y="40" rx="0" ry="0" width="300" height="16" />
+    <rect x="0" y="90" rx="0" ry="0" width="150" height="14" />
+    <rect x="0" y="112" rx="0" ry="0" width="400" height="14" />
+    <rect x="0" y="135" rx="0" ry="0" width="400" height="14" />
+    <rect x="0" y="177" rx="0" ry="0" width="400" height="20" />
+    <rect x="0" y="207" rx="0" ry="0" width="300" height="16" />
+    <rect x="0" y="246" rx="0" ry="0" width="150" height="14" />
+    <rect x="0" y="271" rx="0" ry="0" width="400" height="14" />
+    <rect x="0" y="296" rx="0" ry="0" width="400" height="14" />
+    <rect x="0" y="344" rx="0" ry="0" width="400" height="20" />
+    <rect x="0" y="376" rx="0" ry="0" width="300" height="16" />
+    <rect x="0" y="414" rx="0" ry="0" width="150" height="14" />
+    <rect x="0" y="438" rx="0" ry="0" width="400" height="14" />
+    <rect x="0" y="464" rx="0" ry="0" width="400" height="14" />
+  </ContentLoader>
+);
 
 function CandidateJobList() {
   const [curSelect, setCurSelect] = useState(null);
@@ -147,10 +176,14 @@ function CandidateJobList() {
   const handleSubmit = async () => {
     setLoading(true);
     const { page, pageSize } = pagination;
-    const { job_title } = formValues;
 
-    const province_id = formValues.location
-      ? formValues.location.value
+    const job_title = formValues
+      ? formValues.job_title || undefined
+      : undefined;
+    const province_id = formValues
+      ? formValues.location
+        ? formValues.location.value
+        : undefined
       : undefined;
 
     await fetchJobs(page, pageSize, job_title, province_id)
@@ -236,17 +269,20 @@ function CandidateJobList() {
                         </div>
                       </div>
                     </div>
-                    {loading && <div>Loading ...</div>}
+                    {loading ? (
+                      <MyLoader />
+                    ) : (
+                      jobs.map((job) => (
+                        <JobItem
+                          {...job}
+                          key={job.jobId}
+                          curSelect={curSelect}
+                          onChangeSelect={onChangeSelect}
+                          top={top}
+                        />
+                      ))
+                    )}
 
-                    {jobs.map((job) => (
-                      <JobItem
-                        {...job}
-                        key={job.jobId}
-                        curSelect={curSelect}
-                        onChangeSelect={onChangeSelect}
-                        top={top}
-                      />
-                    ))}
                     <nav>
                       <div className="vjs-pagination">
                         <Pagination
