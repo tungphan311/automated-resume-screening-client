@@ -1,5 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Checkbox } from "antd";
+import { Radio } from "antd";
 import React, { useState } from "react";
 import "./JobSearch.scss";
 
@@ -36,7 +36,7 @@ function JobSearch() {
           </div>
           <div className="d-lg-flex justify-content-between px-3 px-lg-4 py-3">
             <div className="md-3 mb-lg-0">
-              <Checkbox.Group
+              <Radio.Group
                 options={OPTIONS}
                 defaultValue={jobTypeChecked}
                 onChange={onChange}

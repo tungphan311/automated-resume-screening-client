@@ -23,3 +23,6 @@ export const findJobs = async (
 
   return await API.post(`/job-posts/cand?${query}`);
 };
+
+export const getJobDetail = async (id) =>
+  await API.get(`/job-posts/${id}/cand`);

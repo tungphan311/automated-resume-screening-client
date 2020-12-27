@@ -73,7 +73,7 @@ function JobItem({
         </div>
       </div>
       {jobId === curSelect && (
-        <JobDetail top={top} onChangeSelect={onChangeSelect} />
+        <JobDetail id={jobId} top={top} onChangeSelect={onChangeSelect} />
       )}
     </>
   );
