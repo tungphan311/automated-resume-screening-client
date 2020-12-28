@@ -1,24 +1,9 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
-import { FileTextOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import "./JobMenu.scss";
-import { useSelector } from "react-redux";
-import jwt_decode from "jwt-decode";
 
-function JobMenu() {
+function JobMenu({ menu }) {
   const { pathname } = window.location;
-
-  const isPostingJob = pathname.startsWith("/recruiter/new-job");
-
-  const token = useSelector((state) => state.auth.recruiter.token);
-
-  const {
-    identity: { company_id: companyId }
-  } = jwt_decode(token);
-
-  if (companyId === null) {
-    return <Redirect to="/recruiter/company/update" />;
-  }
 
   return (
     <div className="header-sub-menu">
@@ -26,18 +11,9 @@ function JobMenu() {
         <nav className="j-navbar j-navbar-default j-navbar-sub-menu">
           <div className="j-collapse j-navbar-collapse j-sub-menu">
             <ul className="j-nav j-navbar-nav">
-              <Item
-                href="/recruiter/jobs"
-                icon={<FileTextOutlined />}
-                label="Danh sách tin tuyển dụng"
-                active={!isPostingJob}
-              />
-              <Item
-                href="/recruiter/new-job"
-                icon={<PlusSquareOutlined />}
-                label="Đăng tin tuyển dụng mới"
-                active={isPostingJob}
-              />
+              {menu.map((m) => (
+                <Item {...m} active={m.href.startsWith(pathname)} />
+              ))}
             </ul>
           </div>
         </nav>

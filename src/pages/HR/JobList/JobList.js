@@ -15,6 +15,8 @@ import { toast, toastErr } from "utils/index";
 import "./JobList.scss";
 import qs from "query-string";
 import swal from "sweetalert";
+import jwt_decode from "jwt-decode";
+import { JOBS_MENU } from "constants/index";
 
 function HRJobList() {
   const { search } = history.location;
@@ -25,11 +27,10 @@ function HRJobList() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [jobChange, setJobChange] = useState(0);
   const [page, setPage] = useState(1);
+  const [posts, setPosts] = useState([]);
 
   // redux
   const { token } = useSelector((state) => state.auth.recruiter);
-
-  const [posts, setPosts] = useState([]);
 
   const closeDropdown = () => toggleDropdown(undefined);
 
@@ -236,6 +237,14 @@ function HRJobList() {
     fetchJobs();
   }, [is_showing, jobChange]);
 
+  const {
+    identity: { company_id: companyId }
+  } = jwt_decode(token);
+
+  if (companyId === null) {
+    return <Redirect to="/recruiter/company/update" />;
+  }
+
   if (status && !["showing", "closed"].includes(status))
     return <Redirect to="/404" />;
 
@@ -281,7 +290,7 @@ function HRJobList() {
 
   return (
     <>
-      <JobMenu />
+      <JobMenu menu={JOBS_MENU} />
       <div id="page-jobs">
         <div className="container">
           <div id="job-tabs">
