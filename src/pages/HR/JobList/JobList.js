@@ -75,7 +75,7 @@ function HRJobList() {
         <>
           <div className="job-item-title-wrapper">
             <p>
-              <Link to="#" target="_blank" className="job-item-title">
+              <Link to={`/recruiter/jobs/${id}`} className="job-item-title">
                 <strong>{title}</strong>
               </Link>
             </p>
