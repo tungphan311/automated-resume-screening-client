@@ -31,8 +31,9 @@ export const verifyHrAction = (token) => ({
   payload: token
 });
 
-export const logoutUserAction = () => ({
-  type: types.LOGOUT
+export const logoutUserAction = (key) => ({
+  type: types.LOGOUT,
+  key
 });
 
 export const loginCandidateProAction = createPromiseAction("LOGIN_CANDIDATE");

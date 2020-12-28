@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { loginCandidateProAction } from "state/actions/authenticationActions";
+import history from "state/history";
 import { checkCookie } from "utils/cookies";
 import "./CandidateSignIn.scss";
 
@@ -30,9 +31,13 @@ function CandidateSignIn() {
   const onFinish = (values) => {
     setIsLoading(true);
 
-    dispatch(loginCandidateProAction({ user: values.user })).catch(() => {
-      setIsLoading(false);
-    });
+    dispatch(loginCandidateProAction({ user: values.user }))
+      .then(() => {
+        history.push("/");
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
   };
 
   return checkCookie("candidate_token") ? (

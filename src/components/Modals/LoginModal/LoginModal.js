@@ -1,8 +1,13 @@
 import { Modal, Tabs, Tab } from "react-bootstrap";
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Radio, DatePicker } from "antd";
 import "./LoginModal.scss";
 import { CloseOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import {
+  loginCandidateProAction,
+  registerCandidateAction
+} from "state/actions/authenticationActions";
 
 const config = {
   rules: [
@@ -19,6 +24,38 @@ const validateMessages = {
 };
 
 function LoginModal({ show, toggleModal }) {
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  //Handle submit Login
+  const onFinish = (values) => {
+    setLoading(true);
+
+    dispatch(loginCandidateProAction({ user: values.user }))
+      .then(() => {
+        toggleModal();
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
+
+  const onSignupFinish = (fieldsValue) => {
+    const values = {
+      ...fieldsValue,
+      dateOfBirth: fieldsValue["dateOfBirth"].format("YYYY-MM-DD")
+    };
+
+    delete values.confirm;
+
+    setLoading(true);
+
+    dispatch(registerCandidateAction(values)).catch(() => {
+      setLoading(false);
+    });
+  };
+
   return (
     <Modal show={show} onHide={toggleModal} dialogClassName="ir-modal">
       <Modal.Body>
@@ -27,17 +64,17 @@ function LoginModal({ show, toggleModal }) {
         </button>
         <div>
           <Tabs defaultActiveKey="login">
-            <Tab eventKey="login" title="Đăng nhập">
+            <Tab eventKey="login" title="Đăng nhập" disable={loading}>
               <div className="text-note text-center text-dark-gray">
                 Đăng nhập hoặc Đăng ký để ứng tuyển công việc này!
               </div>
-              <Login />
+              <Login onFinish={onFinish} loading={loading} />
             </Tab>
-            <Tab eventKey="signup" title="Đăng ký">
+            <Tab eventKey="signup" title="Đăng ký" disable={loading}>
               <div className="text-note text-center text-dark-gray">
                 Đăng nhập hoặc Đăng ký để ứng tuyển công việc này!
               </div>
-              <Signup />
+              <Signup onFinish={onSignupFinish} loading={loading} />
             </Tab>
           </Tabs>
         </div>
@@ -48,12 +85,12 @@ function LoginModal({ show, toggleModal }) {
 
 export default LoginModal;
 
-const Login = () => (
+const Login = ({ onFinish, loading }) => (
   <Form
     layout="vertical"
     name="nest-messages"
     validateMessages={validateMessages}
-    //   onFinish={onFinish}
+    onFinish={onFinish}
     className="hr-login__container__left__form"
   >
     {/* Email */}
@@ -85,17 +122,17 @@ const Login = () => (
     {/* Button Login  */}
     <button htmlType="submit" className="hr-login__container__left__form__btn">
       Đăng nhập
-      {/* {isLoading && <div className="dashed-loading"></div>} */}
+      {loading && <div className="dashed-loading"></div>}
     </button>
   </Form>
 );
 
-const Signup = () => (
+const Signup = ({ onFinish, loading }) => (
   <Form
     layout="vertical"
     name="nest-messages"
     validateMessages={validateMessages}
-    // onFinish={onFinish}
+    onFinish={onFinish}
     className="candidate-register__container__left__form"
   >
     {/* Fullname */}
@@ -209,7 +246,7 @@ const Signup = () => (
       className="candidate-register__container__left__form__btn"
     >
       Đăng ký
-      {/* {isLoading && <div className="dashed-loading"></div>} */}
+      {loading && <div className="dashed-loading"></div>}
     </button>
   </Form>
 );

@@ -15,7 +15,7 @@ function NavBar() {
   //Handle logout
   const logOut = () => {
     setCookie("candidate_token", accessToken, 0);
-    dispatch(logoutUserAction());
+    dispatch(logoutUserAction("candidate"));
   };
 
   return (
