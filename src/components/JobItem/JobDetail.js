@@ -1,18 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useWindowSize } from "utils/window";
 import "./JobDetail.scss";
 import { HeartOutlined } from "@ant-design/icons";
 import { Close } from "constants/svg";
 import ContentLoader from "react-content-loader";
 import ApplyModal from "components/Modals/Apply/ApplyModal";
+import { getJobDetail } from "services/jobServices";
+import { format_date, toastErr } from "utils/index";
+import LoginModal from "components/Modals/LoginModal/LoginModal";
+import { useSelector } from "react-redux";
 
-function JobDetail({ top, onChangeSelect, loading = false }) {
+const DEFAULT = {
+  apply: false,
+  authen: false
+};
+
+function JobDetail({ id, top, onChangeSelect }) {
   const size = useWindowSize();
   const padding = (size.width - 1140) / 2;
-  const [showModal, toggleShowModal] = useState(false);
+  const [showModal, toggleShowModal] = useState(DEFAULT);
+  const [job, setJob] = useState({});
+  const [loading, setLoading] = useState(false);
+  const { token } = useSelector((state) => state.auth.candidate);
 
-  const toggleModal = () => toggleShowModal(true);
-  const onCancel = () => toggleShowModal(false);
+  const toggleModal = () => {
+    if (!token) {
+      toggleShowModal({ ...DEFAULT, authen: true });
+    } else {
+      toggleShowModal({ ...DEFAULT, apply: true });
+    }
+  };
+  const onCancel = () => toggleShowModal(DEFAULT);
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchJob = async () => {
+      await getJobDetail(id)
+        .then((res) => {
+          setJob(res.data.data);
+        })
+        .catch((err) => {
+          toastErr(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+
+    fetchJob();
+  }, []);
+
+  const {
+    job_title,
+    description,
+    benefit,
+    contract_type,
+    deadline,
+    amount,
+    requirement,
+    salary,
+    company_name,
+    company_logo,
+    company_background
+  } = job;
 
   return (
     <>
@@ -21,13 +71,23 @@ function JobDetail({ top, onChangeSelect, loading = false }) {
         tabIndex="-1"
         style={{
           left: `${padding + 441}px`,
-          top: `${top > 0 ? top : 0}px`,
+          top: `${top > -230 ? top : -230}px`,
           bottom: "-1px"
         }}
       >
         {!loading ? (
           <>
-            <Header onChangeSelect={onChangeSelect} toggleModal={toggleModal} />
+            <Header
+              onChangeSelect={onChangeSelect}
+              toggleModal={toggleModal}
+              {...{
+                job_title,
+                deadline,
+                company_name,
+                company_logo,
+                company_background
+              }}
+            />
             <div id="vjs-content">
               <div id="vjs-tab-top">
                 <div className="job-detail-section">
@@ -42,9 +102,21 @@ function JobDetail({ top, onChangeSelect, loading = false }) {
                     </div>
                     <div className="job-detail-section-item">
                       <div className="job-detail-section-itemKey text-bold">
-                        Salary
+                        {"Mức lương: "}
                       </div>
-                      <span>$48,500 - $96,000 a year</span>
+                      <span>{salary}</span>
+                    </div>
+                    <div className="job-detail-section-item">
+                      <div className="job-detail-section-itemKey text-bold">
+                        {"Hình thức làm việc: "}
+                      </div>
+                      <span>{contract_type}</span>
+                    </div>
+                    <div className="job-detail-section-item">
+                      <div className="job-detail-section-itemKey text-bold">
+                        {"Số lượng cần tuyển: "}
+                      </div>
+                      <span>{amount} ứng viên</span>
                     </div>
                   </div>
                   <div id="jobDescriptionTitle">Thông tin chi tiết</div>
@@ -52,59 +124,23 @@ function JobDetail({ top, onChangeSelect, loading = false }) {
                     <p>
                       <b>Mô tả công việc: </b>
                     </p>
-                    <ul>
-                      <li>
-                        Design and develop front end solutions for client-facing
-                        applications
-                      </li>
-                      <li>
-                        Support application customization, developing
-                        best-practices from both a process and technology
-                        standpoint
-                      </li>
-                    </ul>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: description }}
+                    ></div>
                     <p></p>
                     <br />
 
                     <p>
                       <b>Yêu cầu ứng viên: </b>
                     </p>
-                    <ul>
-                      <li>
-                        5+ years of experience in software engineering with a
-                        focus on front-end development
-                      </li>
-                      <li>
-                        {" "}
-                        Expert level experience with CSS, HTML, and JavaScript
-                      </li>
-                      <li>
-                        Experience with view layout and rendering technologies
-                        (e.g., responsiveness, progressive enhancement,
-                        browser/device support)
-                      </li>
-                      <li>
-                        {" "}
-                        Experience in using JQuery and JavaScript libraries
-                      </li>
-                      <li> Web development experience in ASP.NET MVC/ C#</li>
-                      <li>
-                        Bachelor’s Degree in Computer Science, Interactive
-                        Design, or Graphic/Web Design related field
-                      </li>
-                    </ul>
+                    <div dangerouslySetInnerHTML={{ __html: requirement }} />
+
                     <p></p>
                     <br />
                     <p>
                       <b>Quyền lợi ứng viên: </b>
                     </p>
-                    <ul>
-                      <li> $125,000-$135,000</li>
-                      <li>
-                        Comprehensive benefit package; Medical, Dental, Vision,
-                        401k, and Paid Time Off
-                      </li>
-                    </ul>
+                    <div dangerouslySetInnerHTML={{ __html: benefit }} />
                     <p></p>
                     <br />
                   </div>
@@ -117,39 +153,51 @@ function JobDetail({ top, onChangeSelect, loading = false }) {
           <Loading />
         )}
       </div>
-      <ApplyModal visible={showModal} onCancel={onCancel} />
+      <ApplyModal
+        visible={showModal.apply}
+        onCancel={onCancel}
+        {...{ company_name, job_title }}
+      />
+
+      <LoginModal show={showModal.authen} toggleModal={onCancel} />
     </>
   );
 }
 
 export default JobDetail;
 
-const Header = ({ onChangeSelect, toggleModal }) => (
+const Header = ({
+  onChangeSelect,
+  toggleModal,
+  job_title,
+  deadline,
+  company_name,
+  company_logo,
+  company_background
+}) => (
   <div id="vjs-header" className="vjs-header-no-shadow">
     <div id="vjs-image-wrapper">
       <img
-        src="https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/4f7e526ffce014a5ce9c88a348fb9f33"
+        src={company_background || "/assets/img/company-default-bg.jpg"}
         alt="company background"
         className="vjs-header-background"
       />
       <img
-        src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/d09f1a897f4f8d8b56478c6af2e7ddd3"
+        src={company_logo || "/assets/img/company-default-logo.png"}
         alt="company logo"
         className="vjs-header-logo"
       />
     </div>
     <div id="vjs-header-jobinfo">
       <div id="vjs-jobinfo">
-        <div id="vjs-jobtitle">
-          Front End Developer (JavaScript, HTML, CSS) - Good English Skill
-        </div>
+        <div id="vjs-jobtitle">{job_title}</div>
         <div>
-          <span id="vjs-cn">ICONIC Co,.Ltd.</span>
+          <span id="vjs-cn">{company_name}</span>
           <span id="vjs-loc">
             <span> - </span>Thành phố Hồ Chí Minh
           </span>
         </div>
-        <div>Hạn nộp hồ sơ: </div>
+        <div>Hạn nộp hồ sơ: {format_date(deadline)}</div>
       </div>
     </div>
     <div id="vjs-x">

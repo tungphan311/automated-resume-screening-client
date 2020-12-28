@@ -4,8 +4,20 @@ import "./JobItem.scss";
 import { HeartOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import JobDetail from "components/JobItem/JobDetail";
+import { format_date } from "utils/index";
 
-function JobItem({ jobId, curSelect, onChangeSelect, top }) {
+function JobItem({
+  jobId,
+  curSelect,
+  onChangeSelect,
+  top,
+  jobTitle,
+  company,
+  salary,
+  jobDescription,
+  lastEdit,
+  contractType
+}) {
   return (
     <>
       <div
@@ -16,16 +28,16 @@ function JobItem({ jobId, curSelect, onChangeSelect, top }) {
       >
         <h2 className="job-title">
           <Link to="#" className="jobtitle turnstileLink">
-            Junior Frontend Developer
+            {jobTitle}
           </Link>
         </h2>
         <div className="job-detail">
           <div>
             <span className="company-name">
-              <Link to="#">UIT</Link>
+              <Link to="#">{company}</Link>
             </span>
             <span className="remote-bullet">•</span>
-            <span className="contact-type">Remote</span>
+            <span className="contact-type">{contractType}</span>
             <span className="location accessible-contrast-color-location">
               Thành phố Hồ Chí Minh
             </span>
@@ -34,17 +46,18 @@ function JobItem({ jobId, curSelect, onChangeSelect, top }) {
         <div className="salarySnippet holisticSalary">
           <span className="salary no-wrap">
             <span>Lương: </span>
-            <span className="salaryText">10 - 20 triệu</span>
+            <span className="salaryText">{salary}</span>
           </span>
         </div>
-        <div className="summary">
-          The work you do will help shape the development of our products and…
-        </div>
+        <div
+          className="summary show-less"
+          dangerouslySetInnerHTML={{ __html: jobDescription }}
+        ></div>
         <div className="jobsearch-SerpJobCard-footer">
           <div className="jobsearch-SerpJobCard-footerActions">
             <div className="result-link-bar-container">
               <div className="result-link-bar">
-                <span className="date">1 days ago</span>
+                <span className="date">{format_date(lastEdit)}</span>
                 <div className="tt_set">
                   <div className="job-reaction">
                     <Tooltip placement="right" title="Nhấn để lưu tin này">
@@ -60,7 +73,7 @@ function JobItem({ jobId, curSelect, onChangeSelect, top }) {
         </div>
       </div>
       {jobId === curSelect && (
-        <JobDetail top={top} onChangeSelect={onChangeSelect} />
+        <JobDetail id={jobId} top={top} onChangeSelect={onChangeSelect} />
       )}
     </>
   );

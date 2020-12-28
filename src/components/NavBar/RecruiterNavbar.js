@@ -15,7 +15,7 @@ function RecruiterNavBar() {
   //Handle logout
   const logOut = () => {
     setCookie("recruiter_token", accessToken, 0);
-    dispatch(logoutUserAction());
+    dispatch(logoutUserAction("recruiter"));
   };
 
   return (

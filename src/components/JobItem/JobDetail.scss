@@ -46,12 +46,16 @@
       .vjs-header-background {
         border-radius: 0.5rem 0.5rem 0 0;
         width: 100%;
+        max-height: 200px;
+        object-fit: cover;
       }
 
       .vjs-header-logo {
         position: absolute;
         margin: 0;
         width: 3.75rem;
+        height: 3.75rem;
+        object-fit: contain;
         left: 1rem;
         bottom: -5%;
         border: 0.125rem solid #fff;
@@ -196,6 +200,11 @@
 
 .job-detail-section-item {
   margin-bottom: 14px;
+  display: flex;
+
+  span {
+    margin-left: 10px;
+  }
 }
 
 .job-detail-section-itemKey {

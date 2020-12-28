@@ -106,8 +106,6 @@ export function* loginCandidatePromiseSaga(action) {
     yield toast({ message });
 
     yield call(resolvePromiseAction, action);
-
-    yield history.push("/");
   } catch (err) {
     yield toastErr(err);
     yield call(rejectPromiseAction, action);

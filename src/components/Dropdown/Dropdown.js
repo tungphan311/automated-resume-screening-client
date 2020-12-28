@@ -3,15 +3,14 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import "./Dropdown.scss";
 import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
 
-function Dropdown({ title, options }) {
+function Dropdown({ title, options, value, onChange }) {
   const [isShowing, setShowing] = useState(false);
-  const [value, setValue] = useState(null);
 
   const openDropdown = () => setShowing(true);
   const closeDropdown = () => setShowing(false);
 
   const handleSelect = (value) => {
-    setValue(value);
+    onChange(value);
     closeDropdown();
   };
   return (
@@ -52,7 +51,7 @@ function Dropdown({ title, options }) {
         <button className="dd-button dd-target blue">
           <span>
             {options.find((ele) => ele.value === value).label}
-            <div className="filters-close" onClick={() => setValue(null)}>
+            <div className="filters-close" onClick={() => onChange(null)}>
               <img src="/assets/svg/Close.svg" alt="clear filter" />
             </div>
           </span>

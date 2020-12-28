@@ -1,14 +1,13 @@
 import * as types from "../actions";
 
+const DEFAULT = {
+  token: null,
+  email: null
+};
+
 const initialState = {
-  candidate: {
-    token: null,
-    email: null
-  },
-  recruiter: {
-    token: null,
-    email: null
-  }
+  candidate: DEFAULT,
+  recruiter: DEFAULT
 };
 
 export default function authReducer(state = initialState, action = {}) {
@@ -35,6 +34,13 @@ export default function authReducer(state = initialState, action = {}) {
       const { key, token } = action;
 
       newState[key] = { ...newState[key], token };
+      return newState;
+    }
+
+    case types.LOGOUT: {
+      const { key } = action;
+      newState[key] = DEFAULT;
+
       return newState;
     }
 
