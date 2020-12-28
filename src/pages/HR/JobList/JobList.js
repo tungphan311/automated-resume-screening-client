@@ -5,11 +5,16 @@ import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrap
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { hrGetJobCount, hrGetJobs } from "services/hrJobServices";
+import {
+  deleteJobPost,
+  hrGetJobCount,
+  hrGetJobs
+} from "services/hrJobServices";
 import history from "state/history";
-import { toastErr } from "utils/index";
+import { toast, toastErr } from "utils/index";
 import "./JobList.scss";
 import qs from "query-string";
+import swal from "sweetalert";
 
 function HRJobList() {
   const { search } = history.location;
@@ -17,6 +22,9 @@ function HRJobList() {
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState({ is_showing: 0, is_closed: 0 });
   const [is_showing, setIsShowing] = useState(true);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [jobChange, setJobChange] = useState(0);
+  const [page, setPage] = useState(1);
 
   // redux
   const { token } = useSelector((state) => state.auth.recruiter);
@@ -24,6 +32,40 @@ function HRJobList() {
   const [posts, setPosts] = useState([]);
 
   const closeDropdown = () => toggleDropdown(undefined);
+
+  const handleDelete = () => {
+    swal({
+      title: "Bạn có chắc không?",
+      text: "Một khi xoá, bạn không thể khôi phục những dòng đã chọn!",
+      icon: "warning",
+      buttons: ["Huỷ", "Xoá"],
+      dangerMode: true
+    })
+      .then(async (willDelete) => {
+        if (willDelete) {
+          setLoading(true);
+          await deleteJobPost(selectedRowKeys, token)
+            .then((res) => {
+              const { message } = res.data;
+
+              toast({ message });
+              setJobChange(jobChange + 1);
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+          setSelectedRowKeys([]);
+        } else {
+          swal("Chúc mừng dữ liệu của bạn vẫn an toàn!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const columns = [
     {
@@ -33,7 +75,7 @@ function HRJobList() {
         <>
           <div className="job-item-title-wrapper">
             <p>
-              <Link to="#" target="_blank" className="job-item-title">
+              <Link to={`/recruiter/jobs/${id}`} className="job-item-title">
                 <strong>{title}</strong>
               </Link>
             </p>
@@ -77,7 +119,17 @@ function HRJobList() {
       sorter: true
     },
     {
-      title: "",
+      title: (
+        <button
+          className={` ${selectedRowKeys.length ? "" : "d-none"}`}
+          onClick={handleDelete}
+        >
+          <span className="text-danger">
+            <DeleteFilled />
+            {" Xoá"}
+          </span>
+        </button>
+      ),
       dataIndex: "action",
       render: ({ id }) => (
         <OutsideClickWrapper
@@ -182,17 +234,19 @@ function HRJobList() {
     };
 
     fetchJobs();
-  }, [is_showing]);
+  }, [is_showing, jobChange]);
 
   if (status && !["showing", "closed"].includes(status))
     return <Redirect to="/404" />;
 
   if (status === "closed" && is_showing) {
     setIsShowing(false);
+    setPage(1);
   }
 
   if (status === "showing" && !is_showing) {
     setIsShowing(true);
+    setPage(1);
   }
 
   const handleTableChange = async (pagination, filters, sorter) => {
@@ -213,6 +267,16 @@ function HRJobList() {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  const onSelectChange = (selectedRowKeys) => {
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    selection: Table.SELECTION_ALL
   };
 
   return (
@@ -244,11 +308,17 @@ function HRJobList() {
               ) : (
                 <Table
                   rowKey={(record) => record.id}
+                  rowSelection={rowSelection}
                   dataSource={posts}
                   columns={columns}
                   loading={loading}
                   onChange={handleTableChange}
                   showSorterTooltip={false}
+                  pagination={{
+                    page,
+                    pageSize: 10,
+                    total: is_showing ? amount.is_showing : amount.is_closed
+                  }}
                 />
               )}
             </div>
