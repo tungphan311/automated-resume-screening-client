@@ -20,6 +20,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { checkCookie } from "../utils/cookies";
 import HRFilterCandidates from "pages/HR/FindCandidates/FilterCandidates";
 import HRAddFilter from "pages/HR/AddFilter/AddFilter";
+import HRFilterDetail from "pages/HR/FilterDetail/FilterDetail";
 
 // component for admin site to determine user is logined or not
 export const AuthorizedRoute = ({
@@ -136,6 +137,7 @@ function Routes() {
           "/recruiter/jobs",
           "/recruiter/new-job",
           "/recruiter/find-candidates",
+          "/recruiter/find-candidates/:id",
           "/recruiter/new-filter"
         ]}
       >
@@ -171,6 +173,11 @@ function Routes() {
             exact
             path="/recruiter/find-candidates"
             component={HRFilterCandidates}
+          />
+          <UnauthorizedRoute
+            exact
+            path="/recruiter/find-candidates/:id"
+            component={HRFilterDetail}
           />
           <UnauthorizedRoute
             exact
