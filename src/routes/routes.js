@@ -165,7 +165,7 @@ function Routes() {
             path="/recruiter/jobs/:id/candidates"
             component={HRJobManage}
           />
-          <RecruiterRoute
+          <UnauthorizedRoute
             exact
             path="/recruiter/find-candidates"
             component={HRFilterCandidates}

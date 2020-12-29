@@ -51,7 +51,9 @@ function HRFilterCandidates() {
       width: "30%",
       render: (provinces) => {
         const province_names = provinces.map(
-          (p) => province_list.find((el) => el.province_id === p).province_name
+          (p) =>
+            province_list.length &&
+            province_list.find((el) => el.province_id === p).province_name
         );
 
         return (
@@ -101,13 +103,13 @@ function HRFilterCandidates() {
             <li>
               <Link to="#">
                 <FileTextOutlined />
-                {" Xem CV ứng tuyển"}
+                {" Xem danh sách ứng viên"}
               </Link>
             </li>
             <li>
               <Link to="#">
                 <EditFilled />
-                {" Chỉnh sửa tin"}
+                {" Chỉnh sửa bộ lọc"}
               </Link>
             </li>
             <li>

@@ -11,8 +11,8 @@ function JobMenu({ menu }) {
         <nav className="j-navbar j-navbar-default j-navbar-sub-menu">
           <div className="j-collapse j-navbar-collapse j-sub-menu">
             <ul className="j-nav j-navbar-nav">
-              {menu.map((m) => (
-                <Item {...m} active={m.href.startsWith(pathname)} />
+              {menu.map((m, index) => (
+                <Item key={index} {...m} active={m.href.startsWith(pathname)} />
               ))}
             </ul>
           </div>
