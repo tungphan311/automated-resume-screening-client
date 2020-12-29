@@ -1,10 +1,12 @@
 import Tag from "components/TagInput/Tag";
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./TagInput.scss";
 
 function TagInput({ tags = [], name, onChange }) {
   const [value, setValue] = useState("");
+
+  const ref = useRef(false);
 
   const handleInputChange = (e) => {
     const type = e.target.value;
@@ -24,6 +26,26 @@ function TagInput({ tags = [], name, onChange }) {
     } else {
       setValue(type);
     }
+  };
+
+  const handleAddTag = () => {
+    ref.current = true;
+    onChange(name, [
+      ...tags,
+      { text: value, id: tags.length > 0 ? tags[tags.length - 1].id + 1 : 0 }
+    ]);
+
+    setValue("");
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      if (!ref.current) {
+        setValue("");
+      } else {
+        ref.current = false;
+      }
+    }, 100);
   };
 
   const handleRemoveTag = (id) => {
@@ -46,7 +68,7 @@ function TagInput({ tags = [], name, onChange }) {
 
   return (
     <>
-      <div className="tag-input-wrapper">
+      <div className="tag-input-wrapper" tabIndex="-1" onBlur={handleBlur}>
         <div className="tag-input-selections">
           {tags.length > 0 &&
             tags.map(({ text, id }) => (
@@ -60,8 +82,14 @@ function TagInput({ tags = [], name, onChange }) {
             value={value}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
+            placeholder="Nhập từ khoá cách nhau bởi dấu phẩy"
           />
         </div>
+        {value && (
+          <span className="tag-suggestion" onClick={handleAddTag}>
+            {value}
+          </span>
+        )}
       </div>
     </>
   );
