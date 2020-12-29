@@ -6,6 +6,8 @@ import "./FilterDetail.scss";
 import { Select } from "antd";
 import { useSelector } from "react-redux";
 import TagInput from "components/TagInput/TagInput";
+import { Link } from "react-router-dom";
+import { Pagination } from "antd";
 
 const DOMAINS = [
   { value: 1, label: "Frontend" },
@@ -149,6 +151,32 @@ function HRFilterDetail() {
               </div>
             </div>
           </div>
+          <div className="col-md-9">
+            <div className="panel panel-default search-result">
+              <div className="panel-body">
+                <div className="results-stats">
+                  <div>
+                    <strong>Danh sách kết quả tìm kiếm</strong>
+                  </div>
+                </div>
+                <div className="candidate-list">
+                  <Candidate />
+                </div>
+                <nav>
+                  <Pagination
+                    total={100}
+                    showSizeChanger={false}
+                    // pageSize={pageSize}
+                  />
+                </nav>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div className="panel panel-default">
+              <div className="panel-body no-padding"></div>
+            </div>
+          </div>
         </div>
       </div>
     </>
@@ -156,3 +184,63 @@ function HRFilterDetail() {
 }
 
 export default HRFilterDetail;
+
+const Candidate = () => (
+  <div className="candidate">
+    <div className="avatar">
+      <img src="/assets/img/noavatar.png" alt="candidate avatar" />
+    </div>
+    <div className="row">
+      <div className="col-md-9">
+        <Link to="#" className="name">
+          Phan Thanh Tùng
+        </Link>
+        <div>
+          <u>Vị trí ứng tuyển: </u>
+          Frontend Developer
+        </div>
+      </div>
+      <div className="col-md-3 text-right">
+        <div className="time">
+          <i className="fa fa-clock-o"></i> Cập nhật 7 phút trước
+        </div>
+        <div style={{ fontSize: "0.9em", color: "rgb(153, 153, 153)" }}>
+          <span>
+            <span>5</span> người đã xem
+          </span>
+        </div>
+      </div>
+    </div>
+    <div className="row" style={{ marginTop: 10 }}>
+      <div className="col-md-9">
+        <div className="education">
+          <i className="fa fa-graduation-cap mr-5"></i>
+          <span>
+            Viện Khoa Học Xã Hội &amp; Nhân Văn - Đại học Công Nghệ Tp Hồ Chí
+            Minh - Hutech
+          </span>
+        </div>
+      </div>
+    </div>
+    <div className="row" style={{ marginTop: 10 }}>
+      <div className="col-md-10">
+        <div className="location mr-5">
+          <i className="fa fa-map-marker-alt mr-5"></i>
+          Địa điểm: Hồ Chí Minh
+        </div>
+        <div className="location">
+          <i className="fa fa-map-marker-alt mr-5"></i>
+          Thời gian làm việc thực tế: 2 năm
+        </div>
+        <div className="location location-right">
+          <i className="fa fa-star"></i> Mục tiêu: Với kinh nghiệm tích lũy được
+          trong quá trình đi làm ở nhiều nơi em mong bản thân có thể tiếp tục
+          phát huy các thế mạnh đối với bản thân mình ở các mảng sáng tạo nội
+          dung, hiện đại, tinh tế và nắm bắt được các nhu cầu khách hàng. Và mở
+          rộng tệp khách hàng, nâng cao độ nhận diện, nâng cao doanh số cho quí
+          công ty trong tương lai
+        </div>
+      </div>
+    </div>
+  </div>
+);

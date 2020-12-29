@@ -54,3 +54,25 @@
   width: 100%;
   display: block;
 }
+
+.search-result {
+  .time {
+    color: #888;
+    font-size: 0.9em;
+  }
+
+  .location {
+    font-size: 0.85em;
+    color: #666;
+    padding: 3px 8px;
+    border: 1px dashed #b7b7b7;
+    border-radius: 10px;
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .location-right {
+    text-align: left;
+  }
+}

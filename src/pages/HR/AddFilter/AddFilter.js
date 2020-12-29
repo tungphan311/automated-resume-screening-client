@@ -29,8 +29,6 @@ function HRAddFilter() {
     setHeight(divRef.current.clientHeight);
   }, []);
 
-  console.log(height);
-
   return (
     <>
       <JobMenu menu={CANDIDATES_MENU} />
