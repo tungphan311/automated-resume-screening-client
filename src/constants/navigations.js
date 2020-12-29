@@ -36,7 +36,7 @@ export const CANDIDATES_MENU = [
     label: "Bộ lọc ứng viên"
   },
   {
-    href: "/recruiter/new-job",
+    href: "/recruiter/new-filter",
     icon: <PlusSquareOutlined />,
     label: "Tạo bộ lọc mới"
   },
