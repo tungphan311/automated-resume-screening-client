@@ -1,4 +1,61 @@
 .profile__wrapper {
+  &__info {
+    padding: 20px;
+    background-color: $c-white;
+
+    &__general {
+      display: flex;
+
+      &__avatar {
+        padding-right: 20px;
+
+        img {
+          border-radius: 50%;
+          width: 83px;
+          height: 83px;
+          max-width: 150px;
+          border-radius: 50%;
+        }
+
+        &__update {
+          font-size: 11px;
+          padding: 3px 5px;
+          margin: 6px 0px;
+          color: #777;
+          font-style: italic;
+        }
+      }
+
+      &__detail {
+        p {
+          margin: 0;
+        }
+
+        &__name {
+          font-weight: 700;
+          font-size: 20px;
+        }
+
+        &__note {
+          font-size: 13px;
+        }
+      }
+    }
+
+    &__personal {
+      margin-top: 20px;
+
+      &__status {
+        display: flex;
+
+        strong {
+          margin-right: 15px;
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+
   .ant-card-head-title {
     font-weight: 600;
   }
@@ -12,6 +69,10 @@
     padding-top: 10px;
     padding-bottom: 10px;
     height: auto;
+  }
+
+  .ant-collapse-header{
+    display: none;
   }
 }
 
