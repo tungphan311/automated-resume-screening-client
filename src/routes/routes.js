@@ -89,8 +89,12 @@ function Routes() {
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
 
-          <CandidateRoute exact path="/profile" component={CandidateProfile} />
-          <CandidateRoute
+          <UnauthorizedRoute
+            exact
+            path="/profile"
+            component={CandidateProfile}
+          />
+          <UnauthorizedRoute
             exact
             path="/profile/review"
             component={CandidateReviewCV}
