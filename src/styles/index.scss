@@ -108,3 +108,9 @@ svg {
     border-color: #0062cc;
   }
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

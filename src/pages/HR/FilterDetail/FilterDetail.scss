@@ -75,4 +75,33 @@
   .location-right {
     text-align: left;
   }
+
+  .message-no-candidate {
+    padding: 20px;
+
+    img {
+      width: 380px;
+      height: 160px;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.experience-input {
+  text-align: right;
+  padding-right: 55px;
+}
+
+.input-suffix {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.input-prefix {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
