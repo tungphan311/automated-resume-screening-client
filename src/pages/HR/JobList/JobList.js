@@ -1,8 +1,7 @@
 import { EditFilled, FileTextOutlined, DeleteFilled } from "@ant-design/icons";
 import { Table } from "antd";
 import JobMenu from "components/JobMenu/JobMenu";
-import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import {
@@ -29,12 +28,16 @@ function HRJobList() {
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState([]);
 
+  const ref = useRef(false);
+
+  const setRef = (status) => {
+    ref.current = status;
+  };
+
   // redux
   const { token } = useSelector((state) => state.auth.recruiter);
 
-  const closeDropdown = () => toggleDropdown(undefined);
-
-  const handleDelete = () => {
+  const handleDelete = (id = null) => {
     swal({
       title: "Bạn có chắc không?",
       text: "Một khi xoá, bạn không thể khôi phục những dòng đã chọn!",
@@ -44,8 +47,10 @@ function HRJobList() {
     })
       .then(async (willDelete) => {
         if (willDelete) {
+          const ids = id ? [id] : selectedRowKeys;
+
           setLoading(true);
-          await deleteJobPost(selectedRowKeys, token)
+          await deleteJobPost(ids, token)
             .then((res) => {
               const { message } = res.data;
 
@@ -123,7 +128,7 @@ function HRJobList() {
       title: (
         <button
           className={` ${selectedRowKeys.length ? "" : "d-none"}`}
-          onClick={handleDelete}
+          onClick={() => handleDelete()}
         >
           <span className="text-danger">
             <DeleteFilled />
@@ -133,48 +138,49 @@ function HRJobList() {
       ),
       dataIndex: "action",
       render: ({ id }) => (
-        <OutsideClickWrapper
-          isShowing={dropdown}
-          onClickOutside={closeDropdown}
+        <div
+          className={`btn-group btn-group-action ${
+            dropdown === id ? "open" : ""
+          }`}
+          onMouseEnter={() => toggleDropdown(id)}
+          onMouseLeave={() => {
+            setTimeout(() => {
+              if (!ref.current) toggleDropdown(null);
+            }, 200);
+          }}
         >
-          <div
-            className={`btn-group btn-group-action ${
-              dropdown === id ? "open" : ""
-            }`}
+          <button className="btn btn-sm btn-default dropdown-toggle btn-action outline btn-hover-no-effect">
+            <strong>Thao tác &nbsp;</strong>
+            <span className="caret"></span>
+          </button>
+          <ul
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+            onMouseEnter={() => setRef(true)}
+            onMouseLeave={() => setRef(false)}
           >
-            <button
-              className="btn btn-sm btn-default dropdown-toggle btn-action outline btn-hover-no-effect"
-              onClick={() =>
-                dropdown === id ? toggleDropdown(undefined) : toggleDropdown(id)
-              }
-            >
-              <strong>Thao tác &nbsp;</strong>
-              <span className="caret"></span>
-            </button>
-            <ul className="dropdown-menu dropdown-menu-right" role="menu">
-              <li>
-                <Link to="#">
-                  <FileTextOutlined />
-                  {" Xem CV ứng tuyển"}
-                </Link>
-              </li>
-              <li>
-                <Link to="#">
-                  <EditFilled />
-                  {" Chỉnh sửa tin"}
-                </Link>
-              </li>
-              <li>
-                <Link to="#">
-                  <span className="text-danger">
-                    <DeleteFilled />
-                    {" Xoá"}
-                  </span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </OutsideClickWrapper>
+            <li>
+              <Link to={`/recruiter/jobs/${id}/candidates`}>
+                <FileTextOutlined />
+                {" Xem CV ứng tuyển"}
+              </Link>
+            </li>
+            <li>
+              <Link to="#">
+                <EditFilled />
+                {" Chỉnh sửa tin"}
+              </Link>
+            </li>
+            <li>
+              <Link to="#" onClick={() => handleDelete(id)}>
+                <span className="text-danger">
+                  <DeleteFilled />
+                  {" Xoá"}
+                </span>
+              </Link>
+            </li>
+          </ul>
+        </div>
       ),
       align: "center"
     }
