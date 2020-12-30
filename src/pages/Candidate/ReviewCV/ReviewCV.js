@@ -47,7 +47,11 @@ function CandidateReviewCV() {
 
       case 3:
         return (
-          <SkillForm curStep={curStep} handleChangeStep={handleChangeStep} />
+          <SkillForm
+            curStep={curStep}
+            handleChangeStep={handleChangeStep}
+            isEditMode={true}
+          />
         );
 
       default:
