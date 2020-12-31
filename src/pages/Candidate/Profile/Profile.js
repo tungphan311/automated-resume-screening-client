@@ -1,10 +1,11 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Card } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+
 import { toast } from "utils/index";
 import "./Profile.scss";
 import FormData from "form-data";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { uploadCVAction } from "state/actions/index";
 import Loading from "components/Loading/Loading";
 import ProfileCVItem from "components/ProfileCVItem/ProfileCVItem";
@@ -14,6 +15,8 @@ import { Collapse } from "antd";
 import EducationForm from "components/Forms/ReviewForm/EducationForm";
 import ExperienceForm from "components/Forms/ReviewForm/ExperienceForm";
 import SkillForm from "components/Forms/ReviewForm/SkillForm";
+
+import { candidateProfileAction } from "state/actions/profileAction";
 
 const { Panel } = Collapse;
 
@@ -32,6 +35,9 @@ function CandidateProfile() {
   const inputRef = useRef();
 
   const dispatch = useDispatch();
+
+  const token = useSelector((state) => state.auth.candidate.token);
+  const { profile } = useSelector((state) => state.profile?.candidateProfile);
 
   const handleSelectFile = () => {
     inputRef.current.click();
@@ -60,6 +66,10 @@ function CandidateProfile() {
     e.preventDefault();
     setOpen([1]);
   };
+
+  useEffect(() => {
+    dispatch(candidateProfileAction(token));
+  }, []);
 
   const handleInputChange = async (e) => {
     const file = e.target.files[0];
@@ -137,61 +147,66 @@ function CandidateProfile() {
           </div>
         </div>
 
-        <div className="col-sm-4">
-          <div className="profile__wrapper__info">
-            <div className="profile__wrapper__info__general">
-              <div className="profile__wrapper__info__general__avatar">
-                <img
-                  src="https://graph.facebook.com/1057700137763728/picture?type=large"
-                  alt="logo"
-                />
-                <p className="profile__wrapper__info__general__avatar__update">
-                  Cập nhập ảnh
-                </p>
-              </div>
-              <div className="profile__wrapper__info__general__detail">
-                <p>Chào bạn</p>
-                <p className="profile__wrapper__info__general__detail__name">
-                  Lê Nguyễn Hoàng Vũ
-                </p>
-                <p className="profile__wrapper__info__general__detail__note">
-                  Tải khoản ứng viên
-                </p>
-              </div>
-            </div>
-
-            <div className="profile__wrapper__info__personal">
-              <div className="profile__wrapper__info__personal__status">
-                <strong>Trạng thái</strong>
-                <Switch defaultChecked onChange={onChange} />
+        {profile && (
+          <div className="col-sm-4">
+            <div className="profile__wrapper__info">
+              <div className="profile__wrapper__info__general">
+                <div className="profile__wrapper__info__general__avatar">
+                  <img
+                    src="https://graph.facebook.com/1057700137763728/picture?type=large"
+                    alt="logo"
+                  />
+                  <p className="profile__wrapper__info__general__avatar__update">
+                    Cập nhập ảnh
+                  </p>
+                </div>
+                <div className="profile__wrapper__info__general__detail">
+                  <p>Chào bạn</p>
+                  <p className="profile__wrapper__info__general__detail__name">
+                    {profile.fullName}
+                  </p>
+                  <p className="profile__wrapper__info__general__detail__note">
+                    Tải khoản ứng viên
+                  </p>
+                </div>
               </div>
 
-              <p>
-                <strong>Email: </strong>
-                123lnhvu@gmail.com
-              </p>
+              <div className="profile__wrapper__info__personal">
+                <div className="profile__wrapper__info__personal__status">
+                  <strong>Trạng thái</strong>
+                  <Switch
+                    disable={profile.status === "2"}
+                    onChange={onChange}
+                  />
+                </div>
 
-              <p>
-                <strong>Giới tính: </strong>
-                27/03/1999
-              </p>
+                <p>
+                  <strong>Email: </strong>
+                  {profile.email}
+                </p>
 
-              <p>
-                <strong>Ngày sinh: </strong>
-                27/03/1999
-              </p>
+                <p>
+                  <strong>Giới tính: </strong>
+                  {profile.dateOfBirth ? "Nam" : "Nữ"}
+                </p>
 
-              <p>
-                <strong> Địa chỉ:</strong> 181 Hoàng Nhân, ACNCC, Tân Phú, TP
-                HCM
-              </p>
+                <p>
+                  <strong>Ngày sinh: </strong>
+                  {profile.dateOfBirth}
+                </p>
 
-              <p>
-                <strong>SĐT: </strong> 10101010101010
-              </p>
+                <p>
+                  <strong> Địa chỉ:</strong> 181 Hoàng Nhân, ACNCC, Tân Phú, TP
+                  HCM
+                </p>
+
+                <p>
+                  <strong>SĐT: </strong> {profile.phone}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

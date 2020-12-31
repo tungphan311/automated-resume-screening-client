@@ -5,6 +5,7 @@ import hrJobSaga from "state/sagas/hrJobSaga";
 import { initSaga } from "state/sagas/initSaga";
 import jobDomainSaga from "state/sagas/jobDomainSaga";
 import companySaga from "state/sagas/companySaga";
+import profileSaga from "state/sagas/profileSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -13,7 +14,8 @@ export default function* rootSaga() {
     jobDomainSaga(),
     initSaga(),
     cvSaga(),
-    companySaga()
+    companySaga(),
+    profileSaga()
   ]);
 }
 
