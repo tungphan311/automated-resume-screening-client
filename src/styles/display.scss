@@ -30,4 +30,13 @@
     font-size: 18px;
     margin: 10px 0;
   }
+
+  &:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+.mr-5 {
+  margin-right: 5px !important;
 }

@@ -1,0 +1,64 @@
+.btn-search-filter {
+  height: 40px;
+
+  &:focus,
+  &:active {
+    box-shadow: none !important;
+  }
+}
+
+.btn-default.outline {
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.btn-default.outline.btn-hover-no-effect {
+  background: #fff;
+  box-shadow: none;
+}
+
+.btn-group-vertical > .btn,
+.btn-group > .btn {
+  position: relative;
+  float: left;
+}
+
+.btn-group > .btn:first-child {
+  margin-left: 0;
+}
+
+.btn-sm {
+  padding: 4px 14px;
+  font-size: 12px;
+}
+
+.btn .caret {
+  margin-left: 0;
+}
+
+.open > .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: #edf1f5;
+    border-color: #edf1f5;
+  }
+}
+
+.btn-group-action .dropdown-menu li a {
+  font-weight: 300;
+  color: #555;
+  font-size: 12px;
+  padding: 10px 15px;
+  line-height: initial;
+}

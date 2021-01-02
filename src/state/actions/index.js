@@ -26,3 +26,6 @@ export const updateHRCompanyAction = createPromiseAction("UPDATE_HR_COMPANY");
 export const addCompanyAction = createPromiseAction("ADD_COMPANY");
 
 export const UPDATE_TOKEN = "UPDATE_TOKEN";
+
+export const addNewFilterAction = createPromiseAction("ADD_NEW_FILTER");
+export const updateFilterAction = createPromiseAction("UPDATE_FILTER");
