@@ -10,6 +10,7 @@ import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import LoadingContent from "components/Loading/LoadingContent";
 import { getCandidates, getFilterDetail } from "services/filterServices";
 import { range } from "utils/index";
+import { updateFilterAction } from "state/actions/index";
 
 function HRFilterDetail({
   match: {
@@ -177,6 +178,42 @@ function HRFilterDetail({
     if (/\+|-/.test(keyValue)) event.preventDefault();
   };
 
+  const handleUpdateFilter = () => {
+    const {
+      domains,
+      provinces,
+      atleastSkills,
+      requiredSkills,
+      notAllowedSkills,
+      months_of_experience,
+      min_year,
+      max_year,
+      gender
+    } = filter;
+    const values = {
+      name,
+      job_domains: domains.length ? domains.join(",") : null,
+      provinces: provinces.length ? provinces.join(",") : null,
+      atleast_skills: atleastSkills.length
+        ? atleastSkills.map((s) => s.text).join(",")
+        : null,
+      required_skills: requiredSkills.length
+        ? requiredSkills.map((s) => s.text).join(",")
+        : null,
+      not_allowed_skills: notAllowedSkills.length
+        ? notAllowedSkills.map((s) => s.text).join(",")
+        : null,
+      months_of_experience,
+      min_year,
+      max_year,
+      gender
+    };
+
+    dispatch(updateFilterAction({ id, values })).then(() => {
+      setFilterChange(false);
+    });
+  };
+
   return (
     <>
       <JobMenu menu={CANDIDATES_MENU} />
@@ -196,6 +233,7 @@ function HRFilterDetail({
                     <button
                       disabled={!filterChange}
                       className="btn btn-dark btn-save-campaign"
+                      onClick={handleUpdateFilter}
                     >
                       Lưu bộ lọc
                     </button>

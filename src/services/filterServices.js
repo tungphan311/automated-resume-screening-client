@@ -6,6 +6,11 @@ export const addNewFilter = async (values, token) =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
+export const updateFilter = async (id, values, token) =>
+  await API.put(`/filters/${id}`, values, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
 export const getListFilter = async (page, token) =>
   await API.get(`/filters?page=${page}`, {
     headers: { Authorization: `Bearer ${token}` }
@@ -46,8 +51,6 @@ export const getCandidates = async (
     },
     { skipNull: true, arrayFormat: "comma" }
   );
-
-  console.log(gender);
 
   return await API.get(`/filters/candidates?${query}`, {
     headers: { Authorization: `Bearer ${token}` }
