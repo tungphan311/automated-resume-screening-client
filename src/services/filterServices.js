@@ -11,6 +11,14 @@ export const updateFilter = async (id, values, token) =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
+export const deleteFilter = async (ids, token) => {
+  const params = qs.stringify({ ids }, { arrayFormat: "comma" });
+
+  return await API.delete(`/filters?${params}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+};
+
 export const getListFilter = async (page, token) =>
   await API.get(`/filters?page=${page}`, {
     headers: { Authorization: `Bearer ${token}` }

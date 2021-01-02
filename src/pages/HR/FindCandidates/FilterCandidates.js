@@ -5,9 +5,10 @@ import "./FilterCandidates.scss";
 import { Table } from "antd";
 import { Link } from "react-router-dom";
 import { EditFilled, FileTextOutlined, DeleteFilled } from "@ant-design/icons";
-import { format_date } from "utils/index";
+import { format_date, toast } from "utils/index";
 import { useSelector } from "react-redux";
-import { getListFilter } from "services/filterServices";
+import { deleteFilter, getListFilter } from "services/filterServices";
+import swal from "sweetalert";
 
 function HRFilterCandidates() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -15,6 +16,7 @@ function HRFilterCandidates() {
   const [pagination, setPagination] = useState({ page: 1, total: 0 });
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState([]);
+  const [jobChange, setJobChange] = useState(0);
 
   const province_list = useSelector((state) => state.cv.provinces);
   const { token } = useSelector((state) => state.auth.recruiter);
@@ -55,7 +57,43 @@ function HRFilterCandidates() {
     };
 
     fetchFilter();
-  }, [pagination.page]);
+  }, [pagination.page, jobChange]);
+
+  const handleDelete = (id = null) => {
+    swal({
+      title: "Bạn có chắc không?",
+      text: "Một khi xoá, bạn không thể khôi phục những bộ lọc đã chọn!",
+      icon: "warning",
+      buttons: ["Huỷ", "Xoá"],
+      dangerMode: true
+    })
+      .then(async (willDelete) => {
+        if (willDelete) {
+          const ids = id ? [id] : selectedRowKeys;
+
+          setLoading(true);
+          await deleteFilter(ids, token)
+            .then((res) => {
+              const { message } = res.data;
+
+              toast({ message });
+              setJobChange(jobChange + 1);
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+          setSelectedRowKeys([]);
+        } else {
+          swal("Chúc mừng dữ liệu của bạn vẫn an toàn!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const columns = [
     {
@@ -112,7 +150,7 @@ function HRFilterCandidates() {
       title: (
         <button
           className={` ${selectedRowKeys.length ? "" : "d-none"}`}
-          // onClick={handleDelete}
+          onClick={() => handleDelete()}
         >
           <span className="text-danger">
             <DeleteFilled />
@@ -156,7 +194,7 @@ function HRFilterCandidates() {
               </Link>
             </li>
             <li>
-              <Link to="#">
+              <Link to="#" onClick={() => handleDelete(id)}>
                 <span className="text-danger">
                   <DeleteFilled />
                   {" Xoá"}

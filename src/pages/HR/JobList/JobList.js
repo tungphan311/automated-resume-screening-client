@@ -40,7 +40,7 @@ function HRJobList() {
   const handleDelete = (id = null) => {
     swal({
       title: "Bạn có chắc không?",
-      text: "Một khi xoá, bạn không thể khôi phục những dòng đã chọn!",
+      text: "Một khi xoá, bạn không thể khôi phục những tin đã chọn!",
       icon: "warning",
       buttons: ["Huỷ", "Xoá"],
       dangerMode: true
