@@ -21,6 +21,7 @@ import { checkCookie } from "../utils/cookies";
 import HRFilterCandidates from "pages/HR/FindCandidates/FilterCandidates";
 import HRAddFilter from "pages/HR/AddFilter/AddFilter";
 import HRFilterDetail from "pages/HR/FilterDetail/FilterDetail";
+import HRSaveCandidates from "pages/HR/SaveCandidates/SaveCandidates";
 
 // component for admin site to determine user is logined or not
 export const AuthorizedRoute = ({
@@ -138,7 +139,8 @@ function Routes() {
           "/recruiter/new-job",
           "/recruiter/find-candidates",
           "/recruiter/find-candidates/:id",
-          "/recruiter/new-filter"
+          "/recruiter/new-filter",
+          "/recruiter/save-candidates"
         ]}
       >
         <RecruiterLayout>
@@ -183,6 +185,11 @@ function Routes() {
             exact
             path="/recruiter/new-filter"
             component={HRAddFilter}
+          />
+          <RecruiterRoute
+            exact
+            path="/recruiter/save-candidates"
+            component={HRSaveCandidates}
           />
         </RecruiterLayout>
       </Route>
