@@ -11,9 +11,11 @@ import { EditOutlined } from "@ant-design/icons";
 function SkillForm({
   curStep,
   handleChangeStep,
-  hideBtn = false,
+  detailMode = false,
   changeCallback,
-  isEditMode = false
+  isEditMode = false,
+  jobPosition,
+  techSkill
 }) {
   const [domain, setDomain] = useState(null);
   let [editType, setEditType] = useState(isEditMode);
@@ -38,11 +40,12 @@ function SkillForm({
     dispatch({ type: GET_JOB_DOMAIN });
   }, []);
 
-  const [skills, setSkills] = useState(getIndexArray(skill));
+  const [skills, setSkills] = useState(getIndexArray(techSkill || skill));
   const [value, setValue] = useState("");
+  const [displayDomain, setDisplayDomain] = useState();
 
   const onChange = (key, value) => {
-    changeCallback(true, domain);
+    detailMode && changeCallback(true, domain);
 
     const skill = skills.find((ele) => ele.key === key);
     let newSkills = skills.filter((ele) => ele.key !== key);
@@ -59,7 +62,7 @@ function SkillForm({
   };
 
   const onAddSkill = () => {
-    const key = skills[skills.length - 1].key + 1;
+    const key = skills.length && skills[skills.length - 1].key + 1;
     const newSkills = [...skills, { key, value }];
     setSkills(newSkills);
     setValue("");
@@ -67,7 +70,7 @@ function SkillForm({
 
   const handleInputChange = (e) => {
     setValue(e.target.value);
-    changeCallback(true);
+    detailMode && changeCallback(true);
   };
 
   const handleSubmit = () => {
@@ -85,6 +88,17 @@ function SkillForm({
       // dispatch({ type: UPDATE_CV_VALUES, key: "skill", value: values });
       // handleChangeStep(curStep + 1);
     }
+  };
+
+  const changeDomains = (value) => {
+    setDomain(value);
+    console.log(domain);
+    const a = domains.find((item) => item.id === domain);
+    setDisplayDomain(a && a.name);
+
+    setError(false);
+    changeCallback(true, domain);
+    setEditType(false);
   };
 
   const hanldeEdit = () => {
@@ -112,7 +126,11 @@ function SkillForm({
                     Loại công việc: <span className="text-danger">*</span>
                   </div>
                   <div className="display-type__input">
-                    <Input readOnly size="large" value={domain} />
+                    <Input
+                      readOnly
+                      size="large"
+                      value={displayDomain || jobPosition.name}
+                    />
                     <EditOutlined
                       onClick={hanldeEdit}
                       className="display-type__input__icon"
@@ -134,12 +152,7 @@ function SkillForm({
                         label: name
                       }))}
                       value={domain}
-                      onChange={(value) => {
-                        setDomain(value);
-                        setError(false);
-                        changeCallback(true, domain);
-                        setEditType(false);
-                      }}
+                      onChange={changeDomains}
                     />
                     {error && (
                       <span
@@ -174,14 +187,16 @@ function SkillForm({
                   </div>
                 </div>
                 <div className="inline-skill-button">
-                  <Button
-                    type="primary"
-                    size="large"
-                    icon={<PlusOutlined />}
-                    onClick={onAddSkill}
-                  >
-                    Thêm
-                  </Button>
+                  {value && (
+                    <Button
+                      type="primary"
+                      size="large"
+                      icon={<PlusOutlined />}
+                      onClick={onAddSkill}
+                    >
+                      Thêm
+                    </Button>
+                  )}
                 </div>
               </div>
               <div style={{ marginTop: "20px" }}>
@@ -201,7 +216,7 @@ function SkillForm({
       </div>
       <div>
         <Button
-          className={hideBtn && "hide-btn"}
+          className={detailMode && "hide-btn"}
           type="primary"
           onClick={handleSubmit}
         >

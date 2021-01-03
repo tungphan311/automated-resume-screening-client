@@ -8,18 +8,22 @@ import { InputNumber } from "antd";
 function ExperienceForm({
   curStep,
   handleChangeStep,
-  hideBtn = false,
-  changeCallback
+  detailMode = false,
+  changeCallback,
+  onChang,
+  exHtml,
+  exMonth
 }) {
   const experience = useSelector((state) => state.cv.experience, shallowEqual);
   const dispatch = useDispatch();
-  const [month, setMonth] = useState(0);
+  const [month, setMonth] = useState(exMonth || 0);
 
-  const [html, setHtml] = useState(experience);
+  const [html, setHtml] = useState(exHtml || experience);
 
   const handleChange = (evt) => {
     setHtml(evt.target.value);
-    changeCallback(true);
+    detailMode && changeCallback(true);
+    detailMode && onChang(evt.target.value);
   };
 
   const handleSubmit = () => {
@@ -56,7 +60,8 @@ function ExperienceForm({
                   value={month}
                   onChange={(value) => {
                     setMonth(value);
-                    changeCallback(true);
+                    detailMode && changeCallback(true);
+                    detailMode && onChang(value.target.value);
                   }}
                 />
                 <span>
@@ -77,7 +82,7 @@ function ExperienceForm({
       </div>
       <div>
         <Button
-          className={hideBtn && "hide-btn"}
+          className={detailMode && "hide-btn"}
           type="primary"
           onClick={handleSubmit}
         >
