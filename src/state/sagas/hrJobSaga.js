@@ -3,12 +3,16 @@ import { toast, toastErr } from "utils/index";
 import { getFormValues } from "redux-form";
 import { FORM_KEY_JOB_POST } from "state/reducers/formReducer";
 import { addNewJob } from "services/hrJobServices";
-import { hrPostJobAction } from "state/actions/hrJobAction";
+import {
+  candidateApplyAction,
+  hrPostJobAction
+} from "state/actions/hrJobAction";
 import {
   rejectPromiseAction,
   resolvePromiseAction
 } from "@adobe/redux-saga-promise";
 import history from "state/history";
+import { candidateApply } from "services/candidateServices";
 
 export function* postJobSaga(action) {
   try {
@@ -54,6 +58,22 @@ export function* postJobSaga(action) {
   }
 }
 
+export function* candidateApplySaga(action) {
+  try {
+    const { jp_id, resume_id, token } = action.payload;
+
+    const result = yield call(candidateApply, jp_id, resume_id, token);
+    const { message } = result.data;
+
+    yield toast({ message });
+    yield call(resolvePromiseAction, action);
+  } catch (err) {
+    yield toastErr(err);
+    yield call(rejectPromiseAction, action);
+  }
+}
+
 export default function* hrJobSaga() {
   yield takeEvery(hrPostJobAction, postJobSaga);
+  yield takeEvery(candidateApplyAction, candidateApplySaga);
 }

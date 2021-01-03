@@ -156,7 +156,7 @@ function JobDetail({ id, top, onChangeSelect }) {
       <ApplyModal
         visible={showModal.apply}
         onCancel={onCancel}
-        {...{ company_name, job_title }}
+        {...{ company_name, job_title, token, jp_id: id }}
       />
 
       <LoginModal show={showModal.authen} toggleModal={onCancel} />
