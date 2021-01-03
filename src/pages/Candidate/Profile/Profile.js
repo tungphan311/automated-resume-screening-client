@@ -30,14 +30,22 @@ function CandidateProfile() {
   // state
   const [loading, setLoading] = useState(false);
   const [isChange, setIsChange] = useState(true);
-
   // ref
   const inputRef = useRef();
 
   const dispatch = useDispatch();
 
   const token = useSelector((state) => state.auth.candidate.token);
-  const { profile } = useSelector((state) => state.profile?.candidateProfile);
+  const profile = useSelector((state) => state.profile.candidateProfile);
+
+  const resume = profile ? profile.resumes : null;
+  const edu = resume ? resume.educations : null;
+  const ex = resume ? resume.experiences : null;
+  const sk = resume ? resume.technical_skills : null;
+
+  const [education, setEducation] = useState(edu);
+  const [experience, setExperience] = useState(ex);
+  const [skill, setSkill] = useState(sk);
 
   const handleSelectFile = () => {
     inputRef.current.click();
@@ -70,6 +78,7 @@ function CandidateProfile() {
   useEffect(() => {
     dispatch(candidateProfileAction(token));
   }, []);
+  resume && console.log(resume);
 
   const handleInputChange = async (e) => {
     const file = e.target.files[0];
@@ -119,32 +128,57 @@ function CandidateProfile() {
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-sm">
-              <Card title="CV của bạn">
-                <ProfileCVItem
-                  image="https://www.topcv.vn/images/cv/screenshots/thumbs/en/mau-cv-default.png"
-                  name="Profile 12132323232"
-                  date="1212121"
-                  url="http:'aajaahgajdhgajyagdasyjh"
-                  onClick={handleColapse}
-                />
-              </Card>
-              <Collapse activeKey={open} onChange={() => setOpen(() => [1])}>
-                <Panel
-                  onChange={() => setOpen(() => [1])}
-                  showArrow={false}
-                  header="This is panel header with no arrow icon"
-                  key="1"
-                >
-                  <EducationForm changeCallback={callbackEdu} hideBtn={true} />
-                  <ExperienceForm changeCallback={callbackEx} hideBtn={true} />
-                  <SkillForm changeCallback={callbackSk} hideBtn={isChange} />
-                </Panel>
-              </Collapse>
-              ,
+          {resume && (
+            <div className="row">
+              <div className="col-sm">
+                <Card title="CV của bạn">
+                  <ProfileCVItem
+                    image="https://www.topcv.vn/images/cv/screenshots/thumbs/en/mau-cv-default.png"
+                    name={resume.resume_filename}
+                    date="1212121"
+                    url={resume.store_url}
+                    onClick={handleColapse}
+                  />
+                </Card>
+                <Collapse activeKey={open} onChange={() => setOpen(() => [1])}>
+                  <Panel
+                    onChange={() => setOpen(() => [1])}
+                    showArrow={false}
+                    header="This is panel header with no arrow icon"
+                    key="1"
+                  >
+                    <EducationForm
+                      detailMode={true}
+                      eduHtml={education ? education : resume.educations}
+                      onChang={(val) => {
+                        setEducation(val);
+                      }}
+                      changeCallback={callbackEdu}
+                    />
+                    <ExperienceForm
+                      changeCallback={callbackEx}
+                      detailMode={true}
+                      exHtml={experience ? experience : resume.experiences}
+                      exMonth={resume.months_of_experience}
+                      onChang={(val) => {
+                        setExperience(val);
+                      }}
+                    />
+                    <SkillForm
+                      changeCallback={callbackSk}
+                      hideBtn={isChange}
+                      techSkill={skill ? skill : resume.technical_skills}
+                      jobPosition={resume.job_domain}
+                      onChang={(val) => {
+                        setSkill(val);
+                      }}
+                    />
+                  </Panel>
+                </Collapse>
+                ,
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {profile && (
@@ -153,7 +187,7 @@ function CandidateProfile() {
               <div className="profile__wrapper__info__general">
                 <div className="profile__wrapper__info__general__avatar">
                   <img
-                    src="https://graph.facebook.com/1057700137763728/picture?type=large"
+                    src="https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
                     alt="logo"
                   />
                   <p className="profile__wrapper__info__general__avatar__update">
@@ -175,6 +209,7 @@ function CandidateProfile() {
                 <div className="profile__wrapper__info__personal__status">
                   <strong>Trạng thái</strong>
                   <Switch
+                    defaultChecked
                     disable={profile.status === "2"}
                     onChange={onChange}
                   />

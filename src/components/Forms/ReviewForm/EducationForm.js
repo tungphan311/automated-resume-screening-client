@@ -8,17 +8,20 @@ import "./ReviewForm.scss";
 function EducationForm({
   curStep,
   handleChangeStep,
-  hideBtn = false,
-  changeCallback
+  detailMode = false,
+  changeCallback,
+  onChang,
+  eduHtml
 }) {
   const education = useSelector((state) => state.cv.education, shallowEqual);
   const dispatch = useDispatch();
 
-  const [html, setHtml] = useState(education);
+  const [html, setHtml] = useState(eduHtml || education);
 
   const handleChange = (evt) => {
     setHtml(evt.target.value);
-    changeCallback(true);
+    detailMode && changeCallback(true);
+    detailMode && onChang(evt.target.value);
   };
 
   const handleSubmit = () => {
@@ -46,7 +49,7 @@ function EducationForm({
       </div>
       <div>
         <Button
-          className={hideBtn && "hide-btn"}
+          className={detailMode && "hide-btn"}
           type="primary"
           onClick={handleSubmit}
         >
