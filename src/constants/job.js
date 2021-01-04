@@ -11,15 +11,11 @@ export const SALARY = [
   { value: "between", label: "Trong khoảng" }
 ];
 
-export const EXPERIENCES = [
-  { value: "0", label: "Chưa có kinh nghiệm" },
-  { value: "less than 1 year", label: "Dưới 1 năm" },
-  { value: "1", label: "1 năm" },
-  { value: "2", label: "2 năm" },
-  { value: "3", label: "3 năm" },
-  { value: "4", label: "4 năm" },
-  { value: "5", label: "5 năm" },
-  { value: "more than 5 years", label: "Trên 5 năm" }
+export const EDUCATIONS = [
+  { value: 0, label: "Không yêu cầu bằng cấp" },
+  { value: 1, label: "Bằng đại học/ cao đẳng" },
+  { value: 2, label: "Bằng thạc sĩ" },
+  { value: 3, label: "Bằng tiến sĩ" }
 ];
 
 export const MIN_SALARY = ["from", "between"];

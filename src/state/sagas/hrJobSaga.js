@@ -26,7 +26,10 @@ export function* postJobSaga(action) {
       job_title,
       requirement_text,
       min_salary,
-      max_salary
+      max_salary,
+      education_level,
+      majors,
+      provinces
     } = yield select((state) => getFormValues(FORM_KEY_JOB_POST)(state));
 
     const { token, email } = yield select((state) => state.auth.recruiter);
@@ -42,7 +45,10 @@ export function* postJobSaga(action) {
       min_salary: min_salary || null,
       max_salary: max_salary || null,
       recruiter_email: email,
-      amount: amount ? parseInt(amount) : 0
+      amount: amount ? parseInt(amount) : 0,
+      education_level,
+      majors: majors ? majors.join(",") : String(majors),
+      province_id: provinces.join(",")
     };
 
     const result = yield call(addNewJob, formValue, token);

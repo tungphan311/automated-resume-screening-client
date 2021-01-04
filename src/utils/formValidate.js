@@ -1,5 +1,5 @@
 import { MAX_SALARY, MIN_SALARY } from "constants/job";
-import { required } from "utils/validate";
+import { required, requiredMultiple } from "utils/validate";
 
 export function buildErr(errCode, params = {}) {
   return {
@@ -10,6 +10,11 @@ export function buildErr(errCode, params = {}) {
 
 export const requireField = (value) =>
   required(value)
+    ? undefined
+    : buildErr("Đây là trường bắt buộc, vui lòng không bỏ trống");
+
+export const requireSelect = (value) =>
+  requiredMultiple(value)
     ? undefined
     : buildErr("Đây là trường bắt buộc, vui lòng không bỏ trống");
 
