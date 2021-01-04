@@ -97,8 +97,8 @@ function SkillForm({
     setDisplayDomain(a && a.name);
 
     setError(false);
-    changeCallback(true, domain);
-    setEditType(false);
+    detailMode && changeCallback(true, domain);
+    detailMode && setEditType(false);
   };
 
   const hanldeEdit = () => {

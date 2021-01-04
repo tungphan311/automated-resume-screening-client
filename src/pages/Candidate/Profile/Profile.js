@@ -78,7 +78,6 @@ function CandidateProfile() {
   useEffect(() => {
     dispatch(candidateProfileAction(token));
   }, []);
-  resume && console.log(resume);
 
   const handleInputChange = async (e) => {
     const file = e.target.files[0];
