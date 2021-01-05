@@ -168,16 +168,6 @@ function CandidateSignUp() {
                 />
               </Form.Item>
 
-              <div style={{ flexGrow: 1, marginLeft: 20, marginRight: 20 }}>
-                <Form.Item name="province_id" label="Tỉnh/ thành phố">
-                  <Select
-                    placeholder="Chọn tỉnh/thành sinh sống"
-                    options={provinces}
-                    size="large"
-                  />
-                </Form.Item>
-              </div>
-
               {/* Gender  */}
               <Form.Item
                 rules={[
@@ -191,6 +181,14 @@ function CandidateSignUp() {
                 </Radio.Group>
               </Form.Item>
             </div>
+
+            <Form.Item name="province_id" label="Tỉnh/ thành phố">
+              <Select
+                placeholder="Chọn tỉnh/thành sinh sống"
+                options={provinces}
+                size="large"
+              />
+            </Form.Item>
             {/* Phonenumber */}
             <Form.Item
               label="Số điện thoại"

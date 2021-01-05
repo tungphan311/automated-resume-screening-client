@@ -1,4 +1,3 @@
-import { createFromIconfontCN } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -7,10 +6,6 @@ import { loginCandidateProAction } from "state/actions/authenticationActions";
 import history from "state/history";
 import { checkCookie } from "utils/cookies";
 import "./CandidateSignIn.scss";
-
-const IconFont = createFromIconfontCN({
-  scriptUrl: "//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js"
-});
 
 const validateMessages = {
   required: "Vui lòng nhập ${label}",
@@ -104,21 +99,12 @@ function CandidateSignIn() {
             </button>
 
             {/* Login with social  */}
-            <span className="candidate-login__container__left__form__with text-center">
+            {/* <span className="candidate-login__container__left__form__with text-center">
               Hoặc bạn có thể
-            </span>
+            </span> */}
           </Form>
 
           <div className="candidate-login__container__left__form__social">
-            {/* Login with facebook  */}
-            <button className="candidate-login__container__left__form__social__item candidate-login__container__left__form__social__item--fb">
-              <IconFont
-                className="candidate-login__container__left__form__social__item--fb__icon"
-                type="icon-facebook"
-              />
-              Đăng nhập với Facebook
-            </button>
-
             {/* Login with gmail  */}
             <Link to="/sign-up">
               <button className="candidate-login__container__left__form__social__item candidate-login__container__left__form__social__item--register">
@@ -126,12 +112,6 @@ function CandidateSignIn() {
               </button>
             </Link>
           </div>
-
-          {/* <div className="candidate-login__container__left__link">
-            <p className="candidate-login__container__left__link__text">
-              Nhà tuyển dụng <Link to="/recruiter/sign-in">đăng nhập</Link>
-            </p>
-          </div> */}
         </div>
 
         {/* Background Image  */}
