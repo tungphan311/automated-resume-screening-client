@@ -4,7 +4,7 @@ import "./SavedJobs.scss";
 import { DollarCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 
 function CandidateSavedJobs() {
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState([{}]);
 
   console.log(setJobs);
 
@@ -18,14 +18,14 @@ function CandidateSavedJobs() {
         </div>
       </div>
       <div className="row">
-        <div className="col-md-9 col-sm-12">
+        <div className="col-md-12">
           <div className="box box--white" id="box-jobs">
             <div className="job-list search-result">
               {!jobs.length ? <EmptyJob /> : jobs.map(() => <Job />)}
             </div>
           </div>
         </div>
-        <div className="col-md-3 col-sm-12" style={{ paddingLeft: 0 }}>
+        {/* <div className="col-md-3 col-sm-12" style={{ paddingLeft: 0 }}>
           <div className="panel panel-default">
             <div className="panel-heading">Thao tác</div>
             <div
@@ -44,7 +44,7 @@ function CandidateSavedJobs() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -103,7 +103,10 @@ const Job = () => (
           </div>
         </div>
       </div>
-      <div className="col-sm-2">
+      <div className="col-sm-2 job-button-group">
+        <button className="view-apply-button blue-button">
+          Ứng tuyển ngay
+        </button>
         <div className="box-save-job">
           <button className="btn-unsave unsave text-red">
             <i className="fa fa-trash mr-5"></i>
