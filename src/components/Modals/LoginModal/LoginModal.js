@@ -59,7 +59,7 @@ function LoginModal({ show, toggleModal }) {
   return (
     <Modal show={show} onHide={toggleModal} dialogClassName="ir-modal">
       <Modal.Body>
-        <button class="btn-close text-gray" onClick={toggleModal}>
+        <button className="btn-close text-gray" onClick={toggleModal}>
           <CloseOutlined />
         </button>
         <div>

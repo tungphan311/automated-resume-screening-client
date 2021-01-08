@@ -212,10 +212,10 @@ function HRUpdateCompany() {
                       )}
                     </div>
                     {pagination.hasMore && (
-                      <div class="text-center" style={{ marginTop: 30 }}>
+                      <div className="text-center" style={{ marginTop: 30 }}>
                         <button
                           disabled={pagination.isLoading}
-                          class="btn btn-default company-btn"
+                          className="btn btn-default company-btn"
                           onClick={handleLoadMore}
                         >
                           Xem thêm

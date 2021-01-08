@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Radio, DatePicker } from "antd";
 import "./SaveCandidates.scss";
 import { Link } from "react-router-dom";
+import ResumeModal from "components/Modals/Resume/Resume";
 
 function HRSaveCandidates() {
   const [value, setValue] = useState({
@@ -103,55 +104,68 @@ function HRSaveCandidates() {
 
 export default HRSaveCandidates;
 
-const Candidate = () => (
-  <div className="candidate">
-    <div className="avatar">
-      <img src="/assets/img/noavatar.png" alt="candidate avatar" />
-    </div>
-    <div className="row">
-      <div className="col-md-10">
-        <Link to="#" className="name">
-          Phan Thanh Tùng
-        </Link>
-        <div>
-          <u>Ngày theo dõi:</u>
-          <b>{" 30/12/2020"}</b>
+const Candidate = () => {
+  const [show, toggleShow] = useState(false);
+
+  return (
+    <>
+      <div className="candidate" onClick={() => toggleShow(true)}>
+        <div className="avatar">
+          <img src="/assets/img/noavatar.png" alt="candidate avatar" />
+        </div>
+        <div className="row">
+          <div className="col-md-10">
+            <Link to="#" className="name">
+              Phan Thanh Tùng
+            </Link>
+            <div>
+              <u>Ngày theo dõi:</u>
+              <b>{" 30/12/2020"}</b>
+            </div>
+          </div>
+        </div>
+        <div className="row" style={{ marginTop: "10px" }}>
+          <div className="col-md-10">
+            <div className="experience">
+              <i className="fa fa-briefcase"></i>
+              <span>Frontend Developer - Designveloper</span>
+            </div>
+            <div className="education">
+              <i className="fa fa-graduation-cap"></i>
+              <span>University of Information Technology</span>
+            </div>
+          </div>
+        </div>
+        <div className="row" style={{ marginTop: 10 }}>
+          <div className="col-md-10">
+            <div className="location mr-5">
+              <i className="fa fa-map-marker mr-5"></i>
+              Địa điểm: Hồ Chí Minh
+            </div>
+            <div className="location">
+              <i className="fa fa-calendar-check-o mr-5"></i> Thời gian làm việc
+              thực tế: 1 năm 1 tháng
+            </div>
+            <div className="location location-right">
+              <i className="fa fa-star mr-5"></i> Mục tiêu: I've been interested
+              in computer science when i was a child. I am good at imagination.
+              I can read and understand documents quickly, thus i can easily
+              apply what i have learned to solve the problem. With experience
+              and knowledge gained during working for MegaNet (the company that
+              i have been working), now i can build on my own a web-app in small
+              or medium scale(with frameworks and libraries i describe in
+              Experience section). My goal is becoming a Technical Architect in
+              next 3-5 years.
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div className="row" style={{ marginTop: "10px" }}>
-      <div className="col-md-10">
-        <div className="experience">
-          <i className="fa fa-briefcase"></i>
-          <span>Frontend Developer - Designveloper</span>
-        </div>
-        <div className="education">
-          <i className="fa fa-graduation-cap"></i>
-          <span>University of Information Technology</span>
-        </div>
-      </div>
-    </div>
-    <div className="row" style={{ marginTop: 10 }}>
-      <div className="col-md-10">
-        <div className="location mr-5">
-          <i className="fa fa-map-marker mr-5"></i>
-          Địa điểm: Hồ Chí Minh
-        </div>
-        <div className="location">
-          <i className="fa fa-calendar-check-o mr-5"></i> Thời gian làm việc
-          thực tế: 1 năm 1 tháng
-        </div>
-        <div className="location location-right">
-          <i className="fa fa-star mr-5"></i> Mục tiêu: I've been interested in
-          computer science when i was a child. I am good at imagination. I can
-          read and understand documents quickly, thus i can easily apply what i
-          have learned to solve the problem. With experience and knowledge
-          gained during working for MegaNet (the company that i have been
-          working), now i can build on my own a web-app in small or medium
-          scale(with frameworks and libraries i describe in Experience section).
-          My goal is becoming a Technical Architect in next 3-5 years.
-        </div>
-      </div>
-    </div>
-  </div>
-);
+      <ResumeModal
+        show={show}
+        toggleModal={() => {
+          toggleShow(false);
+        }}
+      />
+    </>
+  );
+};

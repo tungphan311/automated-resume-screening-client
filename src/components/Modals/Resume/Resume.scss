@@ -1,0 +1,74 @@
+.resume-modal {
+  max-width: 650px;
+  min-height: 640px;
+  background-color: #fff;
+  margin: 3px auto;
+  border: 1px solid #e4e4e4;
+  padding: 10px 20px;
+  position: relative;
+
+  .modal-content {
+    border: 0;
+  }
+}
+
+#candidate-viewer-cv {
+  width: 650px;
+  float: left;
+  position: relative;
+}
+
+#candidate-viewer-sidebar {
+  float: left;
+  margin: 0 auto;
+  margin-left: 8px;
+  top: 25px;
+  flex-grow: 1;
+}
+
+.page-controls {
+  background: white;
+  transition: opacity ease-in-out 0.2s;
+  box-shadow: 0 30px 40px 0 rgba(16, 36, 94, 0.2);
+  border-radius: 4px;
+  font-size: 16px;
+  width: fit-content;
+
+  &:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  button {
+    width: 44px;
+    height: 44px;
+    background: white;
+    border: 0;
+    font: inherit;
+    border-radius: 4px;
+    font-size: 24px;
+  }
+
+  span {
+    font: inherit;
+    padding: 0 0.5em;
+  }
+}
+
+.action-list {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.btn-border {
+  background-color: transparent;
+  color: #666;
+  border: 1px solid rgb(153, 153, 153);
+  border-radius: 2px;
+}
