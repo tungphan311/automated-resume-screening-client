@@ -121,7 +121,29 @@ const Candidate = () => {
           </div>
         </div>
       </div>
-      <div className="row"></div>
+      <div className="row" style={{ marginTop: 10 }}>
+        <div className="col-md-10">
+          <div className="location mr-5">
+            <i className="fa fa-map-marker mr-5"></i>
+            Địa điểm: Hồ Chí Minh
+          </div>
+          <div className="location">
+            <i className="fa fa-calendar-check-o mr-5"></i> Thời gian làm việc
+            thực tế: 1 năm 1 tháng
+          </div>
+          <div className="location location-right">
+            <i className="fa fa-star mr-5"></i> Mục tiêu: I've been interested
+            in computer science when i was a child. I am good at imagination. I
+            can read and understand documents quickly, thus i can easily apply
+            what i have learned to solve the problem. With experience and
+            knowledge gained during working for MegaNet (the company that i have
+            been working), now i can build on my own a web-app in small or
+            medium scale(with frameworks and libraries i describe in Experience
+            section). My goal is becoming a Technical Architect in next 3-5
+            years.
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

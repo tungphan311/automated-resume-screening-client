@@ -25,26 +25,6 @@ function CandidateSavedJobs() {
             </div>
           </div>
         </div>
-        {/* <div className="col-md-3 col-sm-12" style={{ paddingLeft: 0 }}>
-          <div className="panel panel-default">
-            <div className="panel-heading">Thao tác</div>
-            <div
-              className="panel-body"
-              style={{ padding: 30, textAlign: "center" }}
-            >
-              <div>
-                <button className="btn btn-danger" style={{ fontSize: 14 }}>
-                  <i className="fa fa-times mr-5"></i>
-                  Bỏ lưu tất cả việc làm
-                </button>
-                <p style={{ fontSize: 14, marginTop: 10, color: "red" }}>
-                  * Chú ý: Thao tác này sẽ xoá toàn bộ danh sách theo dõi của
-                  bạn và sẽ không thể hoàn tác. Nên cẩn trọng khi sử dụng!
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

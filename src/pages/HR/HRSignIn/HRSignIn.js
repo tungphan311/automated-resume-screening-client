@@ -26,9 +26,15 @@ function HRSignIn() {
   //Handle submit Login
   const onFinish = (values) => {
     setIsLoading(true);
-    dispatch(loginHrProAction({ user: values.user })).catch(() => {
-      setIsLoading(false);
-    });
+    dispatch(loginHrProAction({ user: values.user }))
+      .then(() => {
+        const location = localStorage.getItem("location");
+        history.push(location);
+        localStorage.removeItem("location");
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
   };
 
   return checkCookie("recruiter_token") ? (

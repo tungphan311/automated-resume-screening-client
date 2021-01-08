@@ -13,7 +13,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Field, formValueSelector, isDirty, reduxForm } from "redux-form";
-import { getMajors } from "services/hrJobServices";
 import { FORM_KEY_JOB_POST } from "state/reducers/formReducer";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import {
@@ -24,12 +23,11 @@ import {
 } from "utils/formValidate";
 import { allowNumberOnly } from "utils/input";
 
-function JobPostForm({ handleSubmit, salary, education }) {
+function JobPostForm({ handleSubmit, salary }) {
   const [state, setState] = useState({
     loading: false,
     fetch: false,
-    jobDomains: [],
-    majors: [{ value: 0, label: "Không yêu cầu chuyên ngành" }]
+    jobDomains: []
   });
 
   const { loading, fetch, jobDomains } = state;
@@ -55,27 +53,6 @@ function JobPostForm({ handleSubmit, salary, education }) {
         jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
       }));
     }
-
-    const fetchMajors = async () => {
-      await getMajors()
-        .then((res) => {
-          setState((curState) => ({
-            ...curState,
-            majors: [
-              ...state.majors,
-              ...res.data.data.map(({ id, name }) => ({
-                value: id,
-                label: name
-              }))
-            ]
-          }));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
-    fetchMajors();
   }, []);
 
   if (!fetch) {
@@ -153,18 +130,6 @@ function JobPostForm({ handleSubmit, salary, education }) {
           defaultValue={EDUCATIONS[0].value}
         />
         <Field
-          label="Chuyên ngành"
-          component={Select}
-          loading={loading}
-          name="majors"
-          mode="multiple"
-          singleCondition={0}
-          disabled={education === 0}
-          options={state.majors}
-          defaultValue={state.majors[0].value}
-          formClassName="col-md-6"
-        />
-        <Field
           label="Nơi làm việc (có thể chọn nhiều hơn 1 tỉnh/thành)"
           component={Select}
           loading={loading}
@@ -183,7 +148,7 @@ function JobPostForm({ handleSubmit, salary, education }) {
           name="salary"
           required
           defaultValue={SALARY[0].value}
-          formClassName="col-md-3"
+          formClassName="col-md-6"
           options={SALARY}
         />
         <div
@@ -269,8 +234,7 @@ const selector = formValueSelector(FORM_KEY_JOB_POST);
 
 JobPostForm = connect((state) => ({
   shouldValidate: () => isDirty(FORM_KEY_JOB_POST)(state),
-  salary: selector(state, "salary"),
-  education: selector(state, "education_level")
+  salary: selector(state, "salary")
 }))(JobPostForm);
 
 export default JobPostForm;

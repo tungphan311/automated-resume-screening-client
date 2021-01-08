@@ -133,8 +133,6 @@ export function* loginHrPromiseSaga(action) {
     yield toast({ message });
 
     yield call(resolvePromiseAction, action);
-
-    yield history.push("/recruiter");
   } catch (err) {
     yield toastErr(err);
     yield call(rejectPromiseAction, action);
