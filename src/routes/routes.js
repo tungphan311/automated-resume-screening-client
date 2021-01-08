@@ -22,6 +22,7 @@ import HRFilterCandidates from "pages/HR/FindCandidates/FilterCandidates";
 import HRAddFilter from "pages/HR/AddFilter/AddFilter";
 import HRFilterDetail from "pages/HR/FilterDetail/FilterDetail";
 import HRSaveCandidates from "pages/HR/SaveCandidates/SaveCandidates";
+import CandidateSavedJobs from "pages/Candidate/Jobs/SavedJobs/SavedJobs";
 
 // component for admin site to determine user is logined or not
 export const AuthorizedRoute = ({
@@ -36,15 +37,23 @@ export const AuthorizedRoute = ({
       checkCookie(token_key) !== null ? (
         <Component {...props} {...rest} />
       ) : (
-        <Redirect
-          to={{
-            pathname: redirect
-          }}
-        />
+        <MyRedirect redirect={redirect} location={props.location.pathname} />
       )
     }
   />
 );
+
+export const MyRedirect = ({ location, redirect }) => {
+  localStorage.setItem("location", location);
+
+  return (
+    <Redirect
+      to={{
+        pathname: redirect
+      }}
+    />
+  );
+};
 
 export const CandidateRoute = ({
   token_key = "candidate_token",
@@ -65,7 +74,10 @@ export const UnauthorizedRoute = ({ component: Component, ...rest }) => (
 function Routes() {
   return (
     <Switch>
-      <Route exact path={["/", "/profile", "/profile/review", "/find-jobs"]}>
+      <Route
+        exact
+        path={["/", "/profile", "/profile/review", "/find-jobs", "/saved-jobs"]}
+      >
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
 
@@ -79,6 +91,11 @@ function Routes() {
             exact
             path="/find-jobs"
             component={CandidateJobList}
+          />
+          <CandidateRoute
+            exact
+            path="/saved-jobs"
+            component={CandidateSavedJobs}
           />
         </CandidateLayout>
       </Route>

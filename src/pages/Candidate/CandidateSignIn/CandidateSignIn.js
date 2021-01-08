@@ -28,7 +28,9 @@ function CandidateSignIn() {
 
     dispatch(loginCandidateProAction({ user: values.user }))
       .then(() => {
-        history.push("/");
+        const location = localStorage.getItem("location");
+        history.push(location);
+        localStorage.removeItem("location");
       })
       .catch(() => {
         setIsLoading(false);
