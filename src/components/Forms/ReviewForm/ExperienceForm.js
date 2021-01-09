@@ -5,25 +5,15 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { UPDATE_CV_VALUES } from "state/reducers/cvReducer";
 import { InputNumber } from "antd";
 
-function ExperienceForm({
-  curStep,
-  handleChangeStep,
-  detailMode = false,
-  changeCallback,
-  onChang,
-  exHtml,
-  exMonth
-}) {
+function ExperienceForm({ curStep, handleChangeStep }) {
   const experience = useSelector((state) => state.cv.experience, shallowEqual);
   const dispatch = useDispatch();
-  const [month, setMonth] = useState(exMonth || 0);
+  const [month, setMonth] = useState(0);
 
-  const [html, setHtml] = useState(exHtml || experience);
+  const [html, setHtml] = useState(experience);
 
   const handleChange = (evt) => {
     setHtml(evt.target.value);
-    detailMode && changeCallback(true);
-    detailMode && onChang(evt.target.value);
   };
 
   const handleSubmit = () => {
@@ -58,11 +48,7 @@ function ExperienceForm({
                   min={0}
                   max={500}
                   value={month}
-                  onChange={(value) => {
-                    setMonth(value);
-                    detailMode && changeCallback(true);
-                    detailMode && onChang(value.target.value);
-                  }}
+                  onChange={(value) => setMonth(value)}
                 />
                 <span>
                   {" "}
@@ -81,11 +67,7 @@ function ExperienceForm({
         </div>
       </div>
       <div>
-        <Button
-          className={detailMode && "hide-btn"}
-          type="primary"
-          onClick={handleSubmit}
-        >
+        <Button type="primary" onClick={handleSubmit}>
           Tới trang sau
         </Button>
         {curStep > 1 && (
