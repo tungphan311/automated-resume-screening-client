@@ -6,20 +6,9 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { updateCVAction } from "state/actions/index";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import Loading from "components/Loading/Loading";
-import { EditOutlined } from "@ant-design/icons";
 
-function SkillForm({
-  curStep,
-  handleChangeStep,
-  detailMode = false,
-  changeCallback,
-  isEditMode = false,
-  jobPosition,
-  techSkill
-}) {
+function SkillForm({ curStep, handleChangeStep }) {
   const [domain, setDomain] = useState(null);
-  let [editType, setEditType] = useState(isEditMode);
-
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -40,13 +29,10 @@ function SkillForm({
     dispatch({ type: GET_JOB_DOMAIN });
   }, []);
 
-  const [skills, setSkills] = useState(getIndexArray(techSkill || skill));
+  const [skills, setSkills] = useState(getIndexArray(skill));
   const [value, setValue] = useState("");
-  const [displayDomain, setDisplayDomain] = useState();
 
   const onChange = (key, value) => {
-    detailMode && changeCallback(true, domain);
-
     const skill = skills.find((ele) => ele.key === key);
     let newSkills = skills.filter((ele) => ele.key !== key);
     const newSkill = { ...skill, value };
@@ -70,7 +56,6 @@ function SkillForm({
 
   const handleInputChange = (e) => {
     setValue(e.target.value);
-    detailMode && changeCallback(true);
   };
 
   const handleSubmit = () => {
@@ -90,22 +75,6 @@ function SkillForm({
     }
   };
 
-  const changeDomains = (value) => {
-    setDomain(value);
-    console.log(domain);
-    const a = domains.find((item) => item.id === domain);
-    setDisplayDomain(a && a.name);
-
-    setError(false);
-    detailMode && changeCallback(true, domain);
-    detailMode && setEditType(false);
-  };
-
-  const hanldeEdit = () => {
-    editType = !editType;
-    setEditType(editType);
-  };
-
   return (
     <>
       <Loading loading={loading} />
@@ -119,57 +88,36 @@ function SkillForm({
               className="wizard-page-children container-fluid"
               spellCheck="false"
             >
-              {/* Display information  */}
-              {!isEditMode && (
-                <div className="display-type">
-                  <div className="TextInput-label">
-                    Loại công việc: <span className="text-danger">*</span>
-                  </div>
-                  <div className="display-type__input">
-                    <Input
-                      readOnly
-                      size="large"
-                      value={displayDomain || jobPosition.name}
-                    />
-                    <EditOutlined
-                      onClick={hanldeEdit}
-                      className="display-type__input__icon"
-                    />
-                  </div>
+              <div className="job-domain-wrapper">
+                <div className="TextInput-label">
+                  Chọn loại công việc: <span className="text-danger">*</span>
                 </div>
-              )}
-
-              {editType && (
-                <div className="job-domain-wrapper">
-                  <div className="TextInput-label">
-                    Chọn loại công việc: <span className="text-danger">*</span>
-                  </div>
-                  <div className="select--wrapper">
-                    <Select
-                      className="hide-btn"
-                      options={domains.map(({ id, name }) => ({
-                        value: id,
-                        label: name
-                      }))}
-                      value={domain}
-                      onChange={changeDomains}
-                    />
-                    {error && (
-                      <span
-                        className="error"
-                        style={{
-                          position: "absolute",
-                          color: "#f25961",
-                          top: "33px"
-                        }}
-                      >
-                        Vui lòng không bỏ trống
-                      </span>
-                    )}
-                  </div>
+                <div className="select--wrapper">
+                  <Select
+                    options={domains.map(({ id, name }) => ({
+                      value: id,
+                      label: name
+                    }))}
+                    value={domain}
+                    onChange={(value) => {
+                      setDomain(value);
+                      setError(false);
+                    }}
+                  />
+                  {error && (
+                    <span
+                      className="error"
+                      style={{
+                        position: "absolute",
+                        color: "#f25961",
+                        top: "33px"
+                      }}
+                    >
+                      Vui lòng không bỏ trống
+                    </span>
+                  )}
                 </div>
-              )}
-
+              </div>
               <div className="inline-skill-container is-compact">
                 <div className="inline-skill-input">
                   <div>
@@ -215,11 +163,7 @@ function SkillForm({
         </div>
       </div>
       <div>
-        <Button
-          className={detailMode && "hide-btn"}
-          type="primary"
-          onClick={handleSubmit}
-        >
+        <Button type="primary" onClick={handleSubmit}>
           Hoàn tất
         </Button>
         {curStep > 1 && (

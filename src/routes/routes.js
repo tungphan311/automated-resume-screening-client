@@ -6,6 +6,7 @@ import CandidateSignUp from "pages/Candidate/CandidateSignUp/CandidateSignUp";
 import CandidateHome from "pages/Candidate/Home/Home";
 import CandidateJobList from "pages/Candidate/JobList/JobList";
 import CandidateProfile from "pages/Candidate/Profile/Profile";
+import CandidateProfile1 from "pages/Candidate/Profile1/Profile1";
 import CandidateReviewCV from "pages/Candidate/ReviewCV/ReviewCV";
 import ConfirmMail from "pages/Empty/ConfirmMail/ConfirmMail";
 import HRHome from "pages/HR/Home/Home";
@@ -90,6 +91,12 @@ function Routes() {
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
 
           <CandidateRoute exact path="/profile" component={CandidateProfile} />
+          <CandidateRoute
+            exact
+            path="/profile1"
+            component={CandidateProfile1}
+          />
+
           <CandidateRoute
             exact
             path="/profile/review"
