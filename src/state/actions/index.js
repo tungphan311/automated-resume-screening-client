@@ -24,8 +24,12 @@ export const GET_CANDIDATE_PROFILE_SUCCESS = "GET_CANDIDATE_PROFILE_SUCCESS";
 
 export const uploadCVAction = createPromiseAction("UPLOAD_CV");
 export const updateCVAction = createPromiseAction("UPDATE_CV");
+export const updateCVProfileAction = createPromiseAction("UPDATE_CV_PROFILE");
 
 export const updateHRCompanyAction = createPromiseAction("UPDATE_HR_COMPANY");
 export const addCompanyAction = createPromiseAction("ADD_COMPANY");
 
 export const UPDATE_TOKEN = "UPDATE_TOKEN";
+
+export const addNewFilterAction = createPromiseAction("ADD_NEW_FILTER");
+export const updateFilterAction = createPromiseAction("UPDATE_FILTER");

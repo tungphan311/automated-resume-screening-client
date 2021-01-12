@@ -22,3 +22,12 @@ export function toastErr(error) {
 
 export const format_date = (dateString) =>
   new Date(dateString).toLocaleDateString();
+
+export function range(start, end) {
+  return Array(end - start + 1)
+    .fill()
+    .map((_, idx) => ({
+      value: start + idx,
+      label: start + idx
+    }));
+}

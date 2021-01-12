@@ -59,7 +59,7 @@ function SkillForm({
   };
 
   const onAddSkill = () => {
-    const key = skills[skills.length - 1].key + 1;
+    const key = skills.length && skills[skills.length - 1].key + 1;
     const newSkills = [...skills, { key, value }];
     setSkills(newSkills);
     setValue("");
@@ -174,14 +174,16 @@ function SkillForm({
                   </div>
                 </div>
                 <div className="inline-skill-button">
-                  <Button
-                    type="primary"
-                    size="large"
-                    icon={<PlusOutlined />}
-                    onClick={onAddSkill}
-                  >
-                    Thêm
-                  </Button>
+                  {value && (
+                    <Button
+                      type="primary"
+                      size="large"
+                      icon={<PlusOutlined />}
+                      onClick={onAddSkill}
+                    >
+                      Thêm
+                    </Button>
+                  )}
                 </div>
               </div>
               <div style={{ marginTop: "20px" }}>

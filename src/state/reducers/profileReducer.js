@@ -2,7 +2,7 @@ export const GET_CANDIDATE_PROFILE = "GET_CANDIDATE_PROFILE";
 export const GET_CANDIDATE_PROFILE_SUCCESS = "GET_CANDIDATE_PROFILE_SUCCESS";
 
 const initialState = {
-  candidateProfile: null
+  candidateProfile: {}
 };
 
 export default function profileReducer(state = initialState, action = {}) {
@@ -12,7 +12,7 @@ export default function profileReducer(state = initialState, action = {}) {
     case GET_CANDIDATE_PROFILE_SUCCESS:
       const { response } = action;
 
-      newState.candidateProfile = response;
+      newState.candidateProfile = response.profile;
       return newState;
 
     default:

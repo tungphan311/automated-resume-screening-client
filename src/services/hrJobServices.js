@@ -55,11 +55,7 @@ export const hrGetJobDetail = async (id, token) =>
 export const deleteJobPost = async (ids, token) => {
   const params = qs.stringify({ ids }, { arrayFormat: "comma" });
 
-  return await API.delete(
-    `/job-posts?${params}`,
-    {},
-    {
-      headers: { Authorization: `Bearer ${token}` }
-    }
-  );
+  return await API.delete(`/job-posts?${params}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
 };
