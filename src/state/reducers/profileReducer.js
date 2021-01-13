@@ -12,7 +12,7 @@ export default function profileReducer(state = initialState, action = {}) {
     case GET_CANDIDATE_PROFILE_SUCCESS:
       const { response } = action;
 
-      newState.candidateProfile = response.profile;
+      newState.candidateProfile = response;
       return newState;
 
     default:
