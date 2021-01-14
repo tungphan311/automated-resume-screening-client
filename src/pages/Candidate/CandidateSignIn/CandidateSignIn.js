@@ -29,8 +29,12 @@ function CandidateSignIn() {
     dispatch(loginCandidateProAction({ user: values.user }))
       .then(() => {
         const location = localStorage.getItem("location");
-        history.push(location);
-        localStorage.removeItem("location");
+        if (location) {
+          history.push(location);
+          localStorage.removeItem("location");
+        } else {
+          history.push("/");
+        }
       })
       .catch(() => {
         setIsLoading(false);
