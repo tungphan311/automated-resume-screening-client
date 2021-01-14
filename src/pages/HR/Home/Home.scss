@@ -1,0 +1,75 @@
+.panel-dashboard {
+  border-top: none;
+  border-radius: 0px 0px 4px 4px;
+
+  .header {
+    color: #333;
+    font-size: 22px;
+    line-height: 30px;
+    margin-top: 8px;
+    margin-bottom: 5px;
+  }
+
+  .panel-body {
+    padding: 20px 40px !important;
+  }
+
+  .card {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.panel-stats {
+  .text {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+
+  .number {
+    font-size: 30px;
+    font-weight: 600;
+  }
+}
+
+.border {
+  width: 100%;
+}
+
+.row.hr-item {
+  padding-bottom: 9.7px;
+}
+
+.hr-item {
+  border-bottom: 1px solid #e1eef4;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  a {
+    color: #000;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.text-insider {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 16px;
+  max-height: 32px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
