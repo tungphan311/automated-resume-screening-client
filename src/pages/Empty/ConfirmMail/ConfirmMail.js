@@ -33,20 +33,15 @@ const ConfirmMail = (props) => {
       <div className="confirm__page">
         <div className="text-center">
           <Link to="/" className="confirm__page__logo">
-            <img
-              src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
-              alt="logo"
-            />
+            <h3>
+              Automated&nbsp;<span>Screening</span>
+            </h3>
           </Link>
-
-          <h5 className="confirm__page__text ext-muted m-t-0 font-600">
-            Easy to find, easy to get
-          </h5>
         </div>
         <div className="m-t-40 card-box">
           <div className="text-center">
             <h4 className="text-uppercase font-bold m-b-0 confirm__title">
-              Confirm Email
+              Xác thực tài khoản
             </h4>
           </div>
           <div className="panel-body text-center">
@@ -57,12 +52,14 @@ const ConfirmMail = (props) => {
             />
             {!token ? (
               <p className="text-muted font-13 m-t-20">
-                A email has been send to <strong>{emailVerify}</strong>. Please
-                check for an email from us and click on the included link to
-                verify your account.
+                Email xác thực tài khoản đã được gửi{" "}
+                <strong>{emailVerify}</strong>. Vui lòng check hộp thư và nhấn
+                vào liên kết đính kèm để xác thực tài khoản
               </p>
             ) : (
-              <p>Email has been verify. Please login to join with us</p>
+              <p>
+                Email xác thực thành công. Hãy đăng nhập để trải nghiệm hệ thống
+              </p>
             )}
           </div>
         </div>
@@ -71,14 +68,14 @@ const ConfirmMail = (props) => {
           <div className="row">
             <div className="col-sm-12 text-center">
               <p className="text-muted">
-                Return to{" "}
+                Tới trang{" "}
                 <Link
                   to={`${
                     type === "candidate" ? "/sign-in" : "/recruiter/sign-in"
                   }`}
                   className="text-primary m-l-5"
                 >
-                  <strong>Sign in</strong>
+                  <strong>Đăng nhập</strong>
                 </Link>
               </p>
             </div>
