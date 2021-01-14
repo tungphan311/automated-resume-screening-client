@@ -218,7 +218,8 @@ function CandidateProfile() {
                 handleSkillChange,
                 handleSubmit,
                 changeDomains,
-                hanldeEdit
+                hanldeEdit,
+                ...resume
               }}
             />
           ) : (
@@ -376,7 +377,7 @@ const Resume = ({
         <ProfileCVItem
           image="/assets/img/CV-default.png"
           name={resume_filename}
-          date="1212121"
+          date="19-12-2020 16:02"
           url={store_url}
           onClick={handleColapse}
         />

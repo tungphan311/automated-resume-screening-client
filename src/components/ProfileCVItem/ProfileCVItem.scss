@@ -46,10 +46,18 @@
         font-size: 12px;
         margin-right: 5px;
 
-        &__icon{
+        &__icon {
           padding-right: 5px;
         }
       }
     }
   }
+}
+
+.cv-item-url {
+  border: 1px dashed #ccc;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+  padding: 10px;
 }
