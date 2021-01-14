@@ -19,6 +19,13 @@
       align-items: center;
       justify-content: center;
 
+      h3 {
+        font: normal 36px "Cookie", cursive;
+        span {
+          color: #5383d3;
+        }
+      }
+
       &__logo {
         width: 7.375rem;
         position: absolute;

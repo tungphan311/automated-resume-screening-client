@@ -70,10 +70,9 @@ function CandidateSignUp() {
               to="/"
               className="candidate-register__container__left__logo__wrapper"
             >
-              <img
-                src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
-                alt="logo"
-              />
+              <h3>
+                Automated&nbsp;<span>Screening</span>
+              </h3>
             </Link>
           </div>
 

@@ -21,6 +21,13 @@
     max-width: 420px;
     width: 60%;
 
+    h3 {
+      font: normal 36px "Cookie", cursive;
+      span {
+        color: #5383d3;
+      }
+    }
+
     &__logo {
       width: 40%;
       margin: 0 auto;
@@ -34,7 +41,8 @@
       border-radius: 5px;
       margin-bottom: 20px;
       background-color: #ffffff;
-      box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+      box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06),
+        0 1px 0px 0 rgba(0, 0, 0, 0.02);
 
       &__title {
         display: block;
@@ -91,7 +99,14 @@
           border-radius: 10px;
           color: $c-white;
           text-transform: uppercase;
-          background-image: linear-gradient(to right, $primary, #3853de 22%, #9c75e3 50%, #3853de 78%, $primary 100%);
+          background-image: linear-gradient(
+            to right,
+            $primary,
+            #3853de 22%,
+            #9c75e3 50%,
+            #3853de 78%,
+            $primary 100%
+          );
           transition: all 0.3s ease;
           background-size: 200% auto;
 
