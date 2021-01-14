@@ -42,18 +42,13 @@ function CandidateHome() {
 
 export default CandidateHome;
 
-const Section = ({ title, url, children, classNames }) => (
+const Section = ({ title, children, classNames }) => (
   <div className={classNames}>
     <div className="container space-2 space-3-top--lg">
       {/* Title section */}
       <div className="row align-items-end" style={{ marginBottom: "30px" }}>
         <div className="col-sm-8">
           <h2 className="text-lh-xs">{title}</h2>
-        </div>
-        <div className="col-sm-4 text-sm-right">
-          <Link to={url} className="btn btn-md btn-primary">
-            Xem thêm
-          </Link>
         </div>
       </div>
       {children}

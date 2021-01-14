@@ -3,12 +3,16 @@ import { toast, toastErr } from "utils/index";
 import { getFormValues } from "redux-form";
 import { FORM_KEY_JOB_POST } from "state/reducers/formReducer";
 import { addNewJob } from "services/hrJobServices";
-import { hrPostJobAction } from "state/actions/hrJobAction";
+import {
+  candidateApplyAction,
+  hrPostJobAction
+} from "state/actions/hrJobAction";
 import {
   rejectPromiseAction,
   resolvePromiseAction
 } from "@adobe/redux-saga-promise";
 import history from "state/history";
+import { candidateApply } from "services/candidateServices";
 
 export function* postJobSaga(action) {
   try {
@@ -22,7 +26,10 @@ export function* postJobSaga(action) {
       job_title,
       requirement_text,
       min_salary,
-      max_salary
+      max_salary,
+      education_level,
+      majors,
+      provinces
     } = yield select((state) => getFormValues(FORM_KEY_JOB_POST)(state));
 
     const { token, email } = yield select((state) => state.auth.recruiter);
@@ -38,7 +45,10 @@ export function* postJobSaga(action) {
       min_salary: min_salary || null,
       max_salary: max_salary || null,
       recruiter_email: email,
-      amount: amount ? parseInt(amount) : 0
+      amount: amount ? parseInt(amount) : 0,
+      education_level,
+      majors: majors ? majors.join(",") : String(majors),
+      province_id: provinces.join(",")
     };
 
     const result = yield call(addNewJob, formValue, token);
@@ -54,6 +64,22 @@ export function* postJobSaga(action) {
   }
 }
 
+export function* candidateApplySaga(action) {
+  try {
+    const { jp_id, resume_id, token } = action.payload;
+
+    const result = yield call(candidateApply, jp_id, resume_id, token);
+    const { message } = result.data;
+
+    yield toast({ message });
+    yield call(resolvePromiseAction, action);
+  } catch (err) {
+    yield toastErr(err);
+    yield call(rejectPromiseAction, action);
+  }
+}
+
 export default function* hrJobSaga() {
   yield takeEvery(hrPostJobAction, postJobSaga);
+  yield takeEvery(candidateApplyAction, candidateApplySaga);
 }

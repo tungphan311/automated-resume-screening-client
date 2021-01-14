@@ -20,19 +20,9 @@ function Header() {
                 to={`${recruiter ? "/recruiter" : "/"}`}
                 className="navbar-brand header__navbar-brand"
               >
-                {recruiter ? (
-                  <img
-                    src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
-                    alt="logo"
-                    className="header__navbar-brand-default"
-                  />
-                ) : (
-                  <img
-                    src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
-                    alt="logo"
-                    className="header__navbar-brand-default"
-                  />
-                )}
+                <h3>
+                  Automated&nbsp;<span>Screening</span>
+                </h3>
               </Link>
             </div>
 

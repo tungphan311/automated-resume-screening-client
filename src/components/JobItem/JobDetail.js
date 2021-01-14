@@ -116,7 +116,11 @@ function JobDetail({ id, top, onChangeSelect }) {
                       <div className="job-detail-section-itemKey text-bold">
                         {"Số lượng cần tuyển: "}
                       </div>
-                      <span>{amount} ứng viên</span>
+                      <span>
+                        {amount === 0
+                          ? "Không giới hạn số lượng"
+                          : `${amount} ứng viên`}
+                      </span>
                     </div>
                   </div>
                   <div id="jobDescriptionTitle">Thông tin chi tiết</div>
@@ -156,7 +160,7 @@ function JobDetail({ id, top, onChangeSelect }) {
       <ApplyModal
         visible={showModal.apply}
         onCancel={onCancel}
-        {...{ company_name, job_title }}
+        {...{ company_name, job_title, token, jp_id: id }}
       />
 
       <LoginModal show={showModal.authen} toggleModal={onCancel} />

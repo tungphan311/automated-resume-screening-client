@@ -7,14 +7,12 @@ export function toast({ type = "success", message = "" }) {
 }
 
 export function toastErr(error) {
-  const {
-    response: { data }
-  } = error;
+  const { response } = error;
 
-  let errMsg = data.message || null;
+  let errMsg = response ? response.data.message : null;
 
   if (!errMsg) {
-    errMsg = "Có lỗi xảy ra";
+    errMsg = "Thao tác không thành công";
   }
 
   toast({ type: "error", message: errMsg });

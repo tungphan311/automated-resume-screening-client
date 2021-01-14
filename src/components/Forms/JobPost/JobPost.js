@@ -3,7 +3,13 @@ import Editor from "components/Editor/Editor";
 import CustomInput from "components/Input/CustomInput";
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
-import { JOB_TYPES, MAX_SALARY, MIN_SALARY, SALARY } from "constants/index";
+import {
+  JOB_TYPES,
+  MAX_SALARY,
+  MIN_SALARY,
+  SALARY,
+  EDUCATIONS
+} from "constants/index";
 import React, { useEffect, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Field, formValueSelector, isDirty, reduxForm } from "redux-form";
@@ -12,7 +18,8 @@ import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import {
   requiredMaxSalary,
   requiredMinSalary,
-  requireField
+  requireField,
+  requireSelect
 } from "utils/formValidate";
 import { allowNumberOnly } from "utils/input";
 
@@ -27,6 +34,14 @@ function JobPostForm({ handleSubmit, salary }) {
 
   const dispatch = useDispatch();
   const domains = useSelector((state) => state.jobDomain.domains);
+  let { provinces } = useSelector((state) => state.cv);
+
+  if (provinces) {
+    provinces = provinces.map(({ province_id, province_name }) => ({
+      value: province_id,
+      label: province_name
+    }));
+  }
 
   useEffect(() => {
     if (!domains.length) {
@@ -105,15 +120,27 @@ function JobPostForm({ handleSubmit, salary }) {
           subLabel="Để trống mục này nếu không giới hạn số lượng cần tuyển"
           placeholder="0"
         />
-        {/* <Field
-          label="Kinh nghiệm"
+
+        <Field
+          label="Học vấn"
           component={Select}
-          name="experiences"
-          required
-          defaultValue={EXPERIENCES[0].value}
+          name="education_level"
+          options={EDUCATIONS}
           formClassName="col-md-6"
-          options={EXPERIENCES}
-        /> */}
+          defaultValue={EDUCATIONS[0].value}
+        />
+        <Field
+          label="Nơi làm việc (có thể chọn nhiều hơn 1 tỉnh/thành)"
+          component={Select}
+          loading={loading}
+          name="provinces"
+          mode="multiple"
+          defaultValue={[]}
+          required
+          options={provinces}
+          formClassName="col-md-6"
+          validate={[requireSelect]}
+        />
 
         <Field
           label="Lương"
@@ -125,7 +152,7 @@ function JobPostForm({ handleSubmit, salary }) {
           options={SALARY}
         />
         <div
-          className={`col-md-6 form-group ${salary !== "deal" ? "" : "d-none"}`}
+          className={`col-md-3 form-group ${salary !== "deal" ? "" : "d-none"}`}
         >
           <label>(Đơn vị VNĐ)</label>
           <br />

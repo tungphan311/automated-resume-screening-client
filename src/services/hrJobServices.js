@@ -59,3 +59,5 @@ export const deleteJobPost = async (ids, token) => {
     headers: { Authorization: `Bearer ${token}` }
   });
 };
+
+export const getMajors = async () => await API.get("/majors");

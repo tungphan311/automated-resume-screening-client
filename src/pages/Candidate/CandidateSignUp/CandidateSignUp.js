@@ -1,9 +1,9 @@
 // import { createFromIconfontCN, GooglePlusOutlined } from "@ant-design/icons";
-import { Form, Input, Radio, DatePicker } from "antd";
+import { Form, Input, Radio, DatePicker, Select } from "antd";
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 import { registerCandidateAction } from "state/actions/authenticationActions";
 import { checkCookie } from "utils/cookies";
 import "./CandidateSignUp.scss";
@@ -26,11 +26,17 @@ function CandidateSignUp() {
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
 
+  const provinces = useSelector((state) =>
+    state.cv.provinces.map(({ province_id, province_name }) => ({
+      value: province_id,
+      label: province_name
+    }))
+  );
+
   //Handle submit Login
   const onFinish = (fieldsValue) => {
     const values = {
-      ...fieldsValue,
-      dateOfBirth: fieldsValue["dateOfBirth"].format("YYYY-MM-DD")
+      ...fieldsValue
     };
 
     delete values.confirm;
@@ -40,6 +46,16 @@ function CandidateSignUp() {
     dispatch(registerCandidateAction(values)).catch(() => {
       setLoading(false);
     });
+  };
+
+  const disabledDate = (current) => {
+    const minYear = 1960;
+    const maxYear = 2003;
+
+    return (
+      current &&
+      (moment(current).year() <= minYear || moment(current).year() >= maxYear)
+    );
   };
 
   return checkCookie("candidate_token") ? (
@@ -54,10 +70,9 @@ function CandidateSignUp() {
               to="/"
               className="candidate-register__container__left__logo__wrapper"
             >
-              <img
-                src="https://htmlstream.com/preview/space-v1.6.1/assets/svg/logos/logo.svg"
-                alt="logo"
-              />
+              <h3>
+                Automated&nbsp;<span>Screening</span>
+              </h3>
             </Link>
           </div>
 
@@ -145,8 +160,10 @@ function CandidateSignUp() {
               {/* Date of birth */}
               <Form.Item name="dateOfBirth" label="Ngày sinh" {...config}>
                 <DatePicker
+                  format="DD/ MM/ YYYY"
                   placeholder="Ngày sinh"
                   className="candidate-register__container__left__form__input"
+                  disabledDate={disabledDate}
                 />
               </Form.Item>
 
@@ -163,6 +180,14 @@ function CandidateSignUp() {
                 </Radio.Group>
               </Form.Item>
             </div>
+
+            <Form.Item name="province_id" label="Tỉnh/ thành phố">
+              <Select
+                placeholder="Chọn tỉnh/thành sinh sống"
+                options={provinces}
+                size="large"
+              />
+            </Form.Item>
             {/* Phonenumber */}
             <Form.Item
               label="Số điện thoại"
@@ -170,10 +195,9 @@ function CandidateSignUp() {
               rules={[
                 { required: true },
                 {
-                  pattern: /^[\d]{0,11}$/,
-                  message: "Số điện thoại tối đa 11 số"
-                },
-                { min: 10, message: "Số điện thoại phải từ 10-11 số" }
+                  pattern: /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/,
+                  message: "Số điện thoại không hợp lệ"
+                }
               ]}
             >
               <Input

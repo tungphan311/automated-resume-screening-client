@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Select as AntSelect } from "antd";
 import "./Select.scss";
 
@@ -11,7 +11,10 @@ function Select({
   placeholder = "",
   required = false,
   size = "large",
+  disabled = false,
+  mode,
   defaultValue = "",
+  singleCondition = undefined,
   meta = {}, // redux form
   input: { value, onChange } // redux form
 }) {
@@ -20,6 +23,8 @@ function Select({
   const showError = touched && error;
   const { errCode } = error || {};
 
+  const [selectMode, setMode] = useState(mode);
+
   useEffect(() => {
     onChange(defaultValue);
   }, []);
@@ -27,13 +32,20 @@ function Select({
   const handleOnChange = (value) => onChange(value);
 
   const { Option } = AntSelect;
+
+  if (singleCondition !== undefined) {
+    if (value === singleCondition && selectMode === "multiple") setMode("");
+    if (selectMode === "" && value !== singleCondition) setMode("multiple");
+  }
   const props = {
     showSearch,
     loading,
     value,
     placeholder,
     size,
-    onChange: handleOnChange
+    onChange: handleOnChange,
+    disabled,
+    mode: selectMode
   };
 
   return (
