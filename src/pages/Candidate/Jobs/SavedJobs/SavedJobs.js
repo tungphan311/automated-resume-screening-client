@@ -61,11 +61,7 @@ function CandidateSavedJobs() {
                 <EmptyJob />
               ) : (
                 jobs.map((job, i) => (
-                  <Job
-                    key={job.id}
-                    {...job}
-                    lastChild={i === jobs.length - 1}
-                  />
+                  <Job key={i} {...job} lastChild={i === jobs.length - 1} />
                 ))
               )}
             </div>
