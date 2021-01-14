@@ -99,8 +99,68 @@ function HRHome() {
           <HRInsider />
         </div>
       </div>
+      <div className="panel panel-default panel-dashboard">
+        <div className="panel-body">
+          <div className="row header">
+            <div className="col-md-6">Sản phẩm của Automated Screening</div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="border"></div>
+            </div>
+          </div>
+          <div className="row">
+            <Square
+              img="/assets/img/search.png"
+              url="/recruiter/find-candidates"
+              title="Tìm ứng viên thông minh"
+              description="Dễ dàng tiếp cận hơn 1000 hồ sơ cập nhật hàng tháng"
+              btn="Tìm ứng viên"
+            />
+            <Square
+              img="/assets/img/edit.png"
+              url="/recruiter/new-job"
+              title="Xếp hạng CV tự động"
+              description="Tăng tốc quy trình dụng với ứng dụng của AI để xếp hạng CV một cách tự động"
+              btn="Đăng tin tuyển dụng"
+            />
+            <Square
+              img="/assets/img/target.png"
+              url="/recruiter/jobs"
+              title="Kênh việc làm"
+              description="Nhà tuyển dụng có thể đăng tin để tiếp cận nguồn ứng viên trên hệ thống"
+              btn="Xem tin tuyển dụng"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
 export default HRHome;
+
+const Square = ({ img, url, title, description, btn }) => (
+  <div className="col-md-4" style={{ paddingTop: 40, paddingBottom: 20 }}>
+    <div className="panel panel-default panel-show">
+      <div className="panel-body text-center">
+        <Link to={url}>
+          <div>
+            <img src={img} alt="" />
+          </div>
+        </Link>
+        <div>
+          <Link to={url}>
+            <div>
+              <h4>{title}</h4>
+            </div>
+            <p>{description}</p>
+            <Link to={url} className="btn btn-default">
+              {btn}
+            </Link>
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+);
