@@ -57,6 +57,10 @@
     padding: 5px 0;
     margin: auto 10px;
 
+    &:last-child {
+      border-bottom: 1px solid #dfdfdf;
+    }
+
     .view-apply-button {
       background-color: $primary;
       border: 1px solid transparent;
