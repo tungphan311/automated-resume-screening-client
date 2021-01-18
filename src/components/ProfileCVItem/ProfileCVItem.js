@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import { Link } from "react-router-dom";
 import "./ProfileCVItem.scss";
 import {
@@ -6,8 +6,12 @@ import {
   DownloadOutlined,
   DeleteOutlined
 } from "@ant-design/icons";
+import ProfileModal from "components/Modals/Profile/Profile";
+import { formatDateTime } from "utils/index";
 
-function ProfileCVItem({ image, name, date, url, onClick }) {
+function ProfileCVItem({ image, name, date, url, id }) {
+  const [show, toggleShow] = useState(false);
+
   return (
     <>
       <div className="cv-item row">
@@ -19,11 +23,13 @@ function ProfileCVItem({ image, name, date, url, onClick }) {
             <p className="cv-item__info__top__name">{name}</p>
             <div className="cv-item__info__top__group">
               <img
-                className="cv-item__info__top__group"
+                className="cv-item__info__top__group mr-5"
                 src="assets/img/icon-time.png"
                 alt="clock"
               />
-              <p className="cv-item__info__top__group__date">{date}</p>
+              <p className="cv-item__info__top__group__date">
+                {formatDateTime(date)}
+              </p>
             </div>
           </div>
           <div className="cv-item-url">{url}</div>
@@ -31,7 +37,7 @@ function ProfileCVItem({ image, name, date, url, onClick }) {
             <button
               type="button"
               className="cv-item__info__bottom__btn btn btn-outline-secondary"
-              onClick={onClick}
+              onClick={() => toggleShow(true)}
             >
               <EyeOutlined className="cv-item__info__bottom__btn__icon" />
               Xem
@@ -55,6 +61,7 @@ function ProfileCVItem({ image, name, date, url, onClick }) {
           </div>
         </div>
       </div>
+      <ProfileModal show={show} toggleModal={() => toggleShow(false)} id={id} />
     </>
   );
 }
