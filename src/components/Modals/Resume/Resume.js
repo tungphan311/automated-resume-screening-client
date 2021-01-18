@@ -34,7 +34,7 @@ function ResumeModal({ show, toggleModal }) {
           <Document
             file={{
               url:
-                "https://cors-anywhere.herokuapp.com/https://storage.googleapis.com/automated-resume-screeni-b6254.appspot.com/res_778e346b57cb4ba28e78c12c418f307e.pdf"
+                "https://cors-anywhere.herokuapp.com/https://storage.googleapis.com/automated-resume-screeni-b6254.appspot.com/CV_PhanThanhTung_1a22dfacbf5347b69548841e4cfcd2f2.pdf"
             }}
             onLoadSuccess={onDocumentLoadSuccess}
             loading={<LoadingContent loading={true} />}

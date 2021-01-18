@@ -17,7 +17,8 @@ function JobDetailMenu({ isCandidates }) {
           >
             <div className="split-menu">
               <button className="submenu-jobtitle">
-                Frontend Developer <DownOutlined style={{ marginLeft: 10 }} />
+                SR FRONT END DEVELOPER (JOINING BONUS)
+                <DownOutlined style={{ marginLeft: 10 }} />
               </button>
               <ul className="j-nav j-navbar-nav">
                 <Item

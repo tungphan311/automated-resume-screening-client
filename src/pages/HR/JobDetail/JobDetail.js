@@ -60,8 +60,13 @@ function HRJobDetail({ id }) {
             icon={<HeartOutlined style={{ fontSize: 48 }} />}
           />
           <Widget
+            title="Chấp thuận ứng viên"
+            value={Intl.NumberFormat().format(10)}
+            icon={<FileExcelOutlined style={{ fontSize: 48 }} />}
+          />
+          <Widget
             title="Từ chối ứng viên"
-            value={Intl.NumberFormat().format(100)}
+            value={Intl.NumberFormat().format(2)}
             icon={<FileExcelOutlined style={{ fontSize: 48 }} />}
           />
         </div>
