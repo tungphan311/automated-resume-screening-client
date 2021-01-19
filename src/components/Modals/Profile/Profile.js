@@ -110,9 +110,7 @@ function ProfileModal({ show, toggleModal, id }) {
             >
               {/* Display information  */}
               <div className="display-type d-flex">
-                <div className="TextInput-label">
-                  Loại công việc: <span className="text-danger">*</span>
-                </div>
+                <div className="TextInput-label">Loại công việc:</div>
                 <div
                   className="d-flex"
                   style={{
