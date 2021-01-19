@@ -3,16 +3,20 @@ import { Link } from "react-router-dom";
 import "./SavedJobs.scss";
 import { DollarCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import { getSaveJobs } from "services/jobServices.js";
+import { getSaveJobs, saveJob } from "services/jobServices.js";
 import { Tooltip, Pagination } from "antd";
 import { formatDateTime } from "utils";
 import ApplyModal from "components/Modals/Apply/ApplyModal";
+import LoadingContent from "components/Loading/LoadingContent";
+import { toast, toastErr } from "utils/index";
 
 function CandidateSavedJobs() {
   const [jobs, setJobs] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [unsaved, setUnsaved] = useState(0);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { token } = useSelector((state) => state.auth.candidate);
   const province_list = useSelector((state) => state.cv.provinces);
@@ -58,6 +62,7 @@ function CandidateSavedJobs() {
     );
 
   useEffect(() => {
+    setLoading(true);
     const fetchJobs = async () => {
       await getSaveJobs(page, token)
         .then((res) => {
@@ -69,13 +74,28 @@ function CandidateSavedJobs() {
           setJobs(mapResponseToState(data));
           setTotal(total);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .then(() => {
+          setLoading(false);
+        });
     };
 
     if (province_list.length) {
       fetchJobs();
     }
-  }, [page, province_list]);
+  }, [page, province_list, unsaved]);
+
+  const handleUnsaved = async (job_id) => {
+    setUnsaved(unsaved + 1);
+
+    await saveJob(job_id, 0, token)
+      .then(() => {
+        toast({ message: "Bỏ lưu thành công" });
+      })
+      .catch((err) => {
+        toastErr(err);
+      });
+  };
 
   return (
     <div className="container" id="saved-jobs">
@@ -92,6 +112,7 @@ function CandidateSavedJobs() {
       ) : null}
 
       <div className="row">
+        <LoadingContent loading={loading} />
         <div className="col-md-12">
           <div className="box box--white" id="box-jobs">
             <div className="job-list search-result">
@@ -106,6 +127,7 @@ function CandidateSavedJobs() {
                     toggleModal={toggleModal}
                     show={show}
                     token={token}
+                    handleUnsaved={handleUnsaved}
                   />
                 ))
               )}
@@ -136,7 +158,8 @@ const Job = ({
   toggleModal,
   show,
   job_id,
-  token
+  token,
+  handleUnsaved
 }) => (
   <div className="result-job-hover">
     <div className="row job" style={lastChild ? { borderBottom: 0 } : {}}>
@@ -190,7 +213,10 @@ const Job = ({
           Ứng tuyển ngay
         </button>
         <div className="box-save-job">
-          <button className="btn-unsave unsave text-red">
+          <button
+            className="btn-unsave unsave text-red"
+            onClick={() => handleUnsaved(job_id)}
+          >
             <i className="fa fa-trash mr-5"></i>
             Bỏ lưu
           </button>

@@ -36,3 +36,16 @@ export const getApplyJobs = async (page = 1, token) =>
   await API.get(`/user/job-posts/apply?page=${page}`, {
     headers: { Authorization: `Bearer ${token}` }
   });
+
+export const saveJob = async (jp_id, status, token) => {
+  await API.post(
+    "/user/job-posts/save",
+    {
+      job_post_id: jp_id,
+      status
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+};
