@@ -6,18 +6,9 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { updateCVAction } from "state/actions/index";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import Loading from "components/Loading/Loading";
-import { EditOutlined } from "@ant-design/icons";
 
-function SkillForm({
-  curStep,
-  handleChangeStep,
-  hideBtn = false,
-  changeCallback,
-  isEditMode = false
-}) {
+function SkillForm({ curStep, handleChangeStep }) {
   const [domain, setDomain] = useState(null);
-  let [editType, setEditType] = useState(isEditMode);
-
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -42,8 +33,6 @@ function SkillForm({
   const [value, setValue] = useState("");
 
   const onChange = (key, value) => {
-    changeCallback(true, domain);
-
     const skill = skills.find((ele) => ele.key === key);
     let newSkills = skills.filter((ele) => ele.key !== key);
     const newSkill = { ...skill, value };
@@ -59,7 +48,7 @@ function SkillForm({
   };
 
   const onAddSkill = () => {
-    const key = skills.length && skills[skills.length - 1].key + 1;
+    const key = skills[skills.length - 1].key + 1;
     const newSkills = [...skills, { key, value }];
     setSkills(newSkills);
     setValue("");
@@ -67,7 +56,6 @@ function SkillForm({
 
   const handleInputChange = (e) => {
     setValue(e.target.value);
-    changeCallback(true);
   };
 
   const handleSubmit = () => {
@@ -87,11 +75,6 @@ function SkillForm({
     }
   };
 
-  const hanldeEdit = () => {
-    editType = !editType;
-    setEditType(editType);
-  };
-
   return (
     <>
       <Loading loading={loading} />
@@ -105,58 +88,36 @@ function SkillForm({
               className="wizard-page-children container-fluid"
               spellCheck="false"
             >
-              {/* Display information  */}
-              {!isEditMode && (
-                <div className="display-type">
-                  <div className="TextInput-label">
-                    Loại công việc: <span className="text-danger">*</span>
-                  </div>
-                  <div className="display-type__input">
-                    <Input readOnly size="large" value={domain} />
-                    <EditOutlined
-                      onClick={hanldeEdit}
-                      className="display-type__input__icon"
-                    />
-                  </div>
+              <div className="job-domain-wrapper">
+                <div className="TextInput-label">
+                  Chọn loại công việc: <span className="text-danger">*</span>
                 </div>
-              )}
-
-              {editType && (
-                <div className="job-domain-wrapper">
-                  <div className="TextInput-label">
-                    Chọn loại công việc: <span className="text-danger">*</span>
-                  </div>
-                  <div className="select--wrapper">
-                    <Select
-                      className="hide-btn"
-                      options={domains.map(({ id, name }) => ({
-                        value: id,
-                        label: name
-                      }))}
-                      value={domain}
-                      onChange={(value) => {
-                        setDomain(value);
-                        setError(false);
-                        changeCallback(true, domain);
-                        setEditType(false);
+                <div className="select--wrapper">
+                  <Select
+                    options={domains.map(({ id, name }) => ({
+                      value: id,
+                      label: name
+                    }))}
+                    value={domain}
+                    onChange={(value) => {
+                      setDomain(value);
+                      setError(false);
+                    }}
+                  />
+                  {error && (
+                    <span
+                      className="error"
+                      style={{
+                        position: "absolute",
+                        color: "#f25961",
+                        top: "33px"
                       }}
-                    />
-                    {error && (
-                      <span
-                        className="error"
-                        style={{
-                          position: "absolute",
-                          color: "#f25961",
-                          top: "33px"
-                        }}
-                      >
-                        Vui lòng không bỏ trống
-                      </span>
-                    )}
-                  </div>
+                    >
+                      Vui lòng không bỏ trống
+                    </span>
+                  )}
                 </div>
-              )}
-
+              </div>
               <div className="inline-skill-container is-compact">
                 <div className="inline-skill-input">
                   <div>
@@ -174,16 +135,15 @@ function SkillForm({
                   </div>
                 </div>
                 <div className="inline-skill-button">
-                  {value && (
-                    <Button
-                      type="primary"
-                      size="large"
-                      icon={<PlusOutlined />}
-                      onClick={onAddSkill}
-                    >
-                      Thêm
-                    </Button>
-                  )}
+                  <Button
+                    type="primary"
+                    size="large"
+                    disabled={!value}
+                    icon={<PlusOutlined />}
+                    onClick={onAddSkill}
+                  >
+                    Thêm
+                  </Button>
                 </div>
               </div>
               <div style={{ marginTop: "20px" }}>
@@ -202,11 +162,7 @@ function SkillForm({
         </div>
       </div>
       <div>
-        <Button
-          className={hideBtn && "hide-btn"}
-          type="primary"
-          onClick={handleSubmit}
-        >
+        <Button type="primary" onClick={handleSubmit}>
           Hoàn tất
         </Button>
         {curStep > 1 && (

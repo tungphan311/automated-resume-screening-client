@@ -1,23 +1,40 @@
 import React, { useState } from "react";
-import { Button, Input, InputNumber } from "antd";
+import { Button, Input, InputNumber, Select } from "antd";
 import ContentEditable from "react-contenteditable";
 import { EditOutlined, DeleteFilled, PlusOutlined } from "@ant-design/icons";
 import { Modal } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Loading from "components/Loading/Loading";
+import { updateCVProfileAction } from "state/actions/index";
+
+const getIndexArray = (arr) => {
+  let newArr = [];
+  if (arr) {
+    for (let i = 0; i < arr.length; i++) {
+      newArr.push({ key: i, value: arr[i] });
+    }
+  }
+
+  return newArr;
+};
 
 function ProfileModal({ show, toggleModal, id }) {
   const RESUME = useSelector((state) =>
     id ? state.profile.candidateProfile.resumes.find((e) => e.id === id) : {}
   );
+  const dispatch = useDispatch();
   const domains = useSelector((state) => state.jobDomain.domains);
 
   const [resume, setResume] = useState(RESUME);
   const [value, setValue] = useState("");
+  const [isChange, setIsChange] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     educations,
     experiences,
-    technical_skills: skills,
+    technical_skills,
     months_of_experience,
     job_domain_id
   } = resume;
@@ -25,6 +42,8 @@ function ProfileModal({ show, toggleModal, id }) {
   const [domain, setDomain] = useState(
     domains.find((e) => e.id === job_domain_id).name
   );
+  const [domainSelect, setDomainSelect] = useState(job_domain_id);
+  const [skills, setSkills] = useState(getIndexArray(technical_skills));
 
   const handleChangeResume = (name, value) => {
     setResume((curState) => ({
@@ -33,11 +52,89 @@ function ProfileModal({ show, toggleModal, id }) {
     }));
   };
 
-  console.log(skills);
-  console.log(setDomain);
+  const onChangeSkills = (key, value) => {
+    const skill = skills.find((ele) => ele.key === key);
+    let newSkills = skills.filter((ele) => ele.key !== key);
+    const newSkill = { ...skill, value };
+    newSkills.push(newSkill);
+    newSkills.sort((a, b) => a.key - b.key);
+
+    setSkills(newSkills);
+    setIsChange(true);
+  };
+
+  const onDelete = (key) => {
+    const newSkills = skills.filter((ele) => ele.key !== key);
+    setSkills(newSkills);
+    setIsChange(true);
+  };
+
+  const onAddSkill = () => {
+    const key = skills.length && skills[skills.length - 1].key + 1;
+    const newSkills = [...skills, { key, value }];
+    setSkills(newSkills);
+    setValue("");
+    setIsChange(true);
+  };
+
+  const resetForm = () => {
+    setResume(RESUME);
+    setSkills(getIndexArray(RESUME.technical_skills));
+    setIsChange(false);
+  };
+
+  const changeDomains = () => {
+    setResume((curState) => ({
+      ...curState,
+      job_domain_id: domainSelect
+    }));
+    setDomain(domains.find((e) => e.id === domainSelect).name);
+    setIsChange(true);
+    setEdit(false);
+  };
+
+  const changeDomainSelect = (value) => {
+    setDomainSelect(value);
+  };
+
+  const handleCloseModal = () => {
+    setEdit(false);
+    setValue("");
+    toggleModal();
+  };
+
+  const resetSelect = () => {
+    setDomainSelect(job_domain_id);
+    setEdit(false);
+  };
+
+  const handleSubmit = () => {
+    setLoading(true);
+    const values = skills.map((ele) => ele.value);
+
+    dispatch(
+      updateCVProfileAction({
+        resumeId: id,
+        education: resume.educations,
+        experience: resume.experiences,
+        values,
+        domain: resume.job_domain_id,
+        monthEx: resume.months_of_experience
+      })
+    )
+      .then(() => {
+        setLoading(false);
+        setIsChange(false);
+        toggleModal();
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
 
   return (
-    <Modal show={show} onHide={toggleModal} dialogClassName="resume-modal">
+    <Modal show={show} onHide={handleCloseModal} dialogClassName="resume-modal">
+      <Loading loading={loading} />
       <div className="row">
         <div className="col-md-12">
           {/* Education  */}
@@ -109,28 +206,31 @@ function ProfileModal({ show, toggleModal, id }) {
               spellCheck="false"
             >
               {/* Display information  */}
-              <div className="display-type d-flex">
-                <div className="TextInput-label">Loại công việc:</div>
-                <div
-                  className="d-flex"
-                  style={{
-                    marginLeft: 10,
-                    flexGrow: 1,
-                    justifyContent: "space-between"
-                  }}
-                >
-                  <span>{domain}</span>
-                  <EditOutlined
-                    //   onClick={hanldeEdit}
-                    className="display-type__input__icon"
-                  />
-                </div>
-              </div>
-
-              {/* {editType && (
+              {!edit ? (
+                <>
+                  <div className="display-type d-flex">
+                    <div className="TextInput-label">Vị trí ứng tuyển:</div>
+                    <div
+                      className="d-flex"
+                      style={{
+                        marginLeft: 10,
+                        flexGrow: 1,
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <span>{domain}</span>
+                      <EditOutlined
+                        onClick={() => setEdit(true)}
+                        className="display-type__input__icon"
+                      />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
                   <div className="job-domain-wrapper">
                     <div className="TextInput-label">
-                      Chọn loại công việc:{" "}
+                      Chọn vị trí ứng tuyển:
                       <span className="text-danger">*</span>
                     </div>
                     <div className="select--wrapper">
@@ -140,24 +240,25 @@ function ProfileModal({ show, toggleModal, id }) {
                           value: id,
                           label: name
                         }))}
-                        value={domain}
-                        onChange={changeDomains}
+                        value={domains.find((e) => e.id === domainSelect).name}
+                        onChange={changeDomainSelect}
                       />
-                      {error && (
-                        <span
-                          className="error"
-                          style={{
-                            position: "absolute",
-                            color: "#f25961",
-                            top: "33px"
-                          }}
-                        >
-                          Vui lòng không bỏ trống
-                        </span>
-                      )}
                     </div>
                   </div>
-                )} */}
+                  <div style={{ textAlign: "right" }}>
+                    <Button
+                      className="mr-5"
+                      type="default"
+                      onClick={resetSelect}
+                    >
+                      Huỷ bỏ
+                    </Button>
+                    <Button type="primary" onClick={changeDomains}>
+                      Lưu
+                    </Button>
+                  </div>
+                </>
+              )}
 
               <div className="inline-skill-container is-compact">
                 <div className="inline-skill-input">
@@ -181,7 +282,7 @@ function ProfileModal({ show, toggleModal, id }) {
                     size="large"
                     disabled={!value}
                     icon={<PlusOutlined />}
-                    //   onClick={onAddSkill}
+                    onClick={onAddSkill}
                   >
                     Thêm
                   </Button>
@@ -193,22 +294,31 @@ function ProfileModal({ show, toggleModal, id }) {
                     skill={value}
                     key={key}
                     id={key}
-                    // onChange={onChangeSkills}
-                    // onDelete={onDelete}
+                    onChange={onChangeSkills}
+                    onDelete={onDelete}
                   />
                 ))}
               </div>
             </div>
           </div>
         </div>
-        <div className="col-md-12 text-center">
-          <Button
-            //   className={!isChange && "hide-btn"}
-            type="primary"
-            //   onClick={handleSubmit}
-          >
-            Hoàn tất
-          </Button>
+        <div className="col-md-12" style={{ textAlign: "right" }}>
+          <div style={{ paddingRight: 15 }}>
+            <Button
+              className={!isChange ? "hide-btn" : "mr-5"}
+              type="default"
+              onClick={resetForm}
+            >
+              Huỷ bỏ
+            </Button>
+            <Button
+              className={!isChange && "hide-btn"}
+              type="primary"
+              onClick={handleSubmit}
+            >
+              Lưu chỉnh sửa
+            </Button>
+          </div>
         </div>
       </div>
     </Modal>

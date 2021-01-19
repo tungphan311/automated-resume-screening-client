@@ -6,13 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadCVAction } from "state/actions/index";
 import Loading from "components/Loading/Loading";
 import ProfileCVItem from "components/ProfileCVItem/ProfileCVItem";
-import { Button, Card, Switch } from "antd";
-// import { PlusOutlined, EditOutlined, DeleteFilled } from "@ant-design/icons";
+import { Button, Card } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import { candidateProfileAction } from "state/actions/profileAction";
-// import { updateCVProfileAction } from "state/actions/index";
 
 const ACCEPTS = [
   "application/msword",
@@ -23,7 +21,7 @@ const ACCEPTS = [
 function CandidateProfile() {
   // state
   const [loading, setLoading] = useState(false);
-  // const [isChange, setIsChange] = useState(false);
+
   // ref
   const inputRef = useRef();
 
@@ -31,42 +29,11 @@ function CandidateProfile() {
 
   const token = useSelector((state) => state.auth.candidate.token);
   const profile = useSelector((state) => state.profile.candidateProfile);
-  // const domains = useSelector((state) => state.jobDomain.domains);
 
   let resumes = profile && profile.resumes;
-  // resume = resume && resume[0];
-  // const resumeId = resume && resume.id;
-  // const edu = resume && resume.educations;
-  // const ex = resume && resume.experiences;
-  // const sk = resume && resume.technical_skills;
-  // const month = resume && resume.months_of_experience;
-  // const jobDomain = resume && resume.job_domain;
-  // const jobDomainName = jobDomain && jobDomain.name;
-  // const jobDomainId = jobDomain && jobDomain.id;
-
-  // const [education, setEducation] = useState();
-  // const [experience, setExperience] = useState();
-  // const [monthEx, setMonthEx] = useState();
-  // let [editType, setEditType] = useState(false);
-
-  // const [error, setError] = useState(false);
-
-  // const handleChangeEdu = (evt) => {
-  //   setIsChange(true);
-  //   setEducation(evt.target.value);
-  // };
-
-  // const handleChangeEx = (evt) => {
-  //   setIsChange(true);
-  //   setExperience(evt.target.value);
-  // };
 
   const handleSelectFile = () => {
     inputRef.current.click();
-  };
-
-  const onChange = (checked) => {
-    console.log(`switch to ${checked}`);
   };
 
   const handleInputChange = async (e) => {
@@ -86,101 +53,9 @@ function CandidateProfile() {
     }
   };
 
-  // const getIndexArray = (arr) => {
-  //   let newArr = [];
-  //   if (arr) {
-  //     for (let i = 0; i < arr.length; i++) {
-  //       newArr.push({ key: i, value: arr[i] });
-  //     }
-  //   }
-
-  //   return newArr;
-  // };
-
-  // const [skills, setSkills] = useState([]);
-  // const [value, setValue] = useState("");
-  // const [displayDomain, setDisplayDomain] = useState();
-  // const [domain, setDomain] = useState(jobDomainId);
-
-  // const onChangeSkills = (key, value) => {
-  //   const skill = skills.find((ele) => ele.key === key);
-  //   let newSkills = skills.filter((ele) => ele.key !== key);
-  //   const newSkill = { ...skill, value };
-  //   newSkills.push(newSkill);
-  //   newSkills.sort((a, b) => a.key - b.key);
-
-  //   setSkills(newSkills);
-  //   setIsChange(true);
-  // };
-
-  // const onDelete = (key) => {
-  //   const newSkills = skills.filter((ele) => ele.key !== key);
-  //   setSkills(newSkills);
-  //   setIsChange(true);
-  // };
-
-  // const onAddSkill = () => {
-  //   const key = skills.length && skills[skills.length - 1].key + 1;
-  //   const newSkills = [...skills, { key, value }];
-  //   setSkills(newSkills);
-  //   setValue("");
-  //   setIsChange(true);
-  // };
-
-  // const handleSkillChange = (e) => {
-  //   setValue(e.target.value);
-  // };
-
-  // const handleSubmit = () => {
-  //   if (!domain) {
-  //     setError(true);
-  //     return;
-  //   } else {
-  //     setLoading(true);
-  //     const values = skills.map((ele) => ele.value);
-
-  //     dispatch(
-  //       updateCVProfileAction({
-  //         resumeId,
-  //         education,
-  //         experience,
-  //         values,
-  //         domain,
-  //         monthEx
-  //       })
-  //     )
-  //       .then(() => {
-  //         setLoading(false);
-  //       })
-  //       .catch(() => {
-  //         setLoading(false);
-  //       });
-  //   }
-  // };
-
-  // const changeDomains = (value) => {
-  //   setDomain(value);
-  //   const item = domains.find((item) => item.id === value);
-  //   setDisplayDomain(item && item.name);
-  //   setError(false);
-  //   setEditType(false);
-  //   setIsChange(true);
-  // };
-
-  // const hanldeEdit = () => {
-  //   editType = !editType;
-  //   setEditType(editType);
-  // };
-
   useEffect(() => {
     dispatch(candidateProfileAction(token));
     dispatch({ type: GET_JOB_DOMAIN });
-    // setEducation(edu);
-    // setMonthEx(month);
-    // setExperience(ex);
-    // setDomain(jobDomainId);
-    // setDisplayDomain(jobDomainName);
-    // setSkills(getIndexArray(sk));
   }, []);
 
   return (
@@ -194,7 +69,20 @@ function CandidateProfile() {
                 <Card
                   title="CV của bạn"
                   extra={
-                    <Button icon={<UploadOutlined />}>Tải lên 1 CV</Button>
+                    <Button
+                      onClick={handleSelectFile}
+                      icon={<UploadOutlined />}
+                    >
+                      Tải lên 1 CV
+                      <input
+                        type="file"
+                        name="CV"
+                        className="d-none"
+                        accept=".doc,.docx,.pdf"
+                        onChange={handleInputChange}
+                        ref={inputRef}
+                      />
+                    </Button>
                   }
                 >
                   {resumes.map(
@@ -265,14 +153,14 @@ function CandidateProfile() {
             </div>
 
             <div className="profile__wrapper__info__personal">
-              <div className="profile__wrapper__info__personal__status">
+              {/* <div className="profile__wrapper__info__personal__status">
                 <strong>Trạng thái</strong>
                 <Switch
                   defaultChecked
                   disable={profile.status === "2"}
                   onChange={onChange}
                 />
-              </div>
+              </div> */}
 
               <p>
                 <strong>Email: </strong>

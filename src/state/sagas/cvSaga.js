@@ -85,13 +85,10 @@ export function* updateCVProfileSaga(action) {
       job_domain_id: domain
     };
 
-    console.log(data);
     const result = yield call(updateCV, data, token);
     const { message } = result.data;
 
     yield toast({ message });
-
-    yield history.push("/profile");
 
     yield call(resolvePromiseAction, action);
   } catch (err) {
