@@ -31,3 +31,8 @@ export const getSaveJobs = async (page = 1, token) =>
   await API.get(`/user/job-posts/save?page=${page}`, {
     headers: { Authorization: `Bearer ${token}` }
   });
+
+export const getApplyJobs = async (page = 1, token) =>
+  await API.get(`/user/job-posts/apply?page=${page}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
