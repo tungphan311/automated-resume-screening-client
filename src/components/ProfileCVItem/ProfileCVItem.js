@@ -9,7 +9,7 @@ import {
 import ProfileModal from "components/Modals/Profile/Profile";
 import { formatDateTime } from "utils/index";
 
-function ProfileCVItem({ image, name, date, url, id }) {
+function ProfileCVItem({ image, name, date, url, id, download_url }) {
   const [show, toggleShow] = useState(false);
 
   return (
@@ -43,13 +43,13 @@ function ProfileCVItem({ image, name, date, url, id }) {
               Xem
             </button>
 
-            <button
-              type="button"
+            <a
+              href={download_url}
               className="cv-item__info__bottom__btn btn btn-sm btn-outline-secondary "
             >
               <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
               Tải xuống
-            </button>
+            </a>
 
             <button
               type="button"

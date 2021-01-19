@@ -86,13 +86,17 @@ function CandidateProfile() {
                   }
                 >
                   {resumes.map(
-                    ({ resume_filename, store_url, id, edit }, index) => (
+                    (
+                      { resume_filename, store_url, id, edit, download_url },
+                      index
+                    ) => (
                       <ProfileCVItem
                         key={index}
                         image="/assets/img/CV-default.png"
                         name={resume_filename}
                         date={edit}
                         url={store_url}
+                        download_url={download_url}
                         id={id}
                       />
                     )
