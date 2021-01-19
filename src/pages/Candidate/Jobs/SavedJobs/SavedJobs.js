@@ -1,58 +1,96 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./SavedJobs.scss";
 import { DollarCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
-
-const JOBS = [
-  {
-    id: 1,
-    job_title: "Cộng tác viên Content [Freelancer]",
-    created_on: "02:59 31/12/2020",
-    company_name: "Công ty Cổ phần TOPCV Việt Nam",
-    salary: "14-20 triệu",
-    deadline: "10/01/2021",
-    province: "Thành phố Hà Nội",
-    company_logo:
-      "https://static.topcv.vn/company_logos/cong-ty-co-phan-topcv-viet-nam-5f33477c4e78b.jpg"
-  },
-  {
-    id: 2,
-    job_title: "Front End Developer (Html/Css)",
-    created_on: "20:19 08/01/2021",
-    company_name: "Công ty Cổ phần Công nghệ HiveTech",
-    salary: "6-18 triệu",
-    deadline: "10/01/2021",
-    province: "Thành phố Hà Nội",
-    company_logo:
-      "https://static.topcv.vn/company_logos/cong-ty-co-phan-cong-nghe-hivetech-5d01b43ad68b2.jpg"
-  },
-  {
-    id: 3,
-    job_title: "Frontend Developer (JavaScript, Angular)",
-    created_on: "20:39 08/01/2021",
-    company_name: "Công ty Cổ phần GEM",
-    salary: "Thoả thuận",
-    deadline: "07/02/2021",
-    province: "Thành phố Hồ Chí Minh",
-    company_logo:
-      "https://static.topcv.vn/company_logos/cong-ty-co-phan-tap-doan-meey-land-5e5f277aa28fb.jpg"
-  }
-];
+import { useSelector } from "react-redux";
+import { getSaveJobs } from "services/jobServices.js";
+import { Tooltip, Pagination } from "antd";
+import { formatDateTime } from "utils";
+import ApplyModal from "components/Modals/Apply/ApplyModal";
 
 function CandidateSavedJobs() {
-  const [jobs, setJobs] = useState(JOBS);
+  const [jobs, setJobs] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [show, setShow] = useState(false);
 
-  console.log(setJobs);
+  const { token } = useSelector((state) => state.auth.candidate);
+  const province_list = useSelector((state) => state.cv.provinces);
+
+  const onChange = (page) => {
+    setPage(page);
+  };
+
+  const toggleModal = () => setShow(!show);
+
+  const mapResponseToState = (data) =>
+    data.map(
+      ({
+        id,
+        created_on,
+        job_post: {
+          id: job_id,
+          company_logo,
+          company_name,
+          deadline,
+          salary,
+          provinces,
+          job_title
+        }
+      }) => {
+        const province_names = provinces.map((id) => {
+          const p = province_list.find((p) => p.province_id === id);
+          return p ? p.province_name : "";
+        });
+
+        return {
+          id,
+          job_title,
+          created_on,
+          company_name,
+          salary,
+          deadline,
+          province: province_names.join(", "),
+          company_logo,
+          job_id
+        };
+      }
+    );
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      await getSaveJobs(page, token)
+        .then((res) => {
+          const {
+            data,
+            pagination: { total }
+          } = res.data;
+
+          setJobs(mapResponseToState(data));
+          setTotal(total);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    if (province_list.length) {
+      fetchJobs();
+    }
+  }, [page, province_list]);
 
   return (
     <div className="container" id="saved-jobs">
-      <div>
-        <div className="box box--white" id="box-result">
-          <div className="search-meta">
-            <h1 className="text-primary bold">Danh sách 3 việc làm đã lưu</h1>
+      {total ? (
+        <div>
+          <div className="box box--white" id="box-result">
+            <div className="search-meta">
+              <h1 className="text-primary bold">
+                {`Danh sách ${total} việc làm đã lưu`}
+              </h1>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
+
       <div className="row">
         <div className="col-md-12">
           <div className="box box--white" id="box-jobs">
@@ -61,10 +99,22 @@ function CandidateSavedJobs() {
                 <EmptyJob />
               ) : (
                 jobs.map((job, i) => (
-                  <Job key={i} {...job} lastChild={i === jobs.length - 1} />
+                  <Job
+                    key={i}
+                    {...job}
+                    lastChild={i === jobs.length - 1}
+                    toggleModal={toggleModal}
+                    show={show}
+                    token={token}
+                  />
                 ))
               )}
             </div>
+            {total > 10 && (
+              <div className="text-center">
+                <Pagination current={page} onChange={onChange} total={total} />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -82,7 +132,11 @@ const Job = ({
   deadline,
   province,
   company_logo,
-  lastChild
+  lastChild,
+  toggleModal,
+  show,
+  job_id,
+  token
 }) => (
   <div className="result-job-hover">
     <div className="row job" style={lastChild ? { borderBottom: 0 } : {}}>
@@ -101,7 +155,7 @@ const Job = ({
             <span className="bold transform-job-title">{job_title}</span>
           </Link>
         </h4>
-        <div>Đã lưu: {created_on}</div>
+        <div>Đã lưu: {formatDateTime(created_on)}</div>
         <div className="row-company name text_ellipsis">
           <Link to="#" target="_blank">
             {company_name}
@@ -118,19 +172,21 @@ const Job = ({
             <ClockCircleOutlined
               style={{ fontSize: 16, marginRight: 5, color: "#2557a7" }}
             />
-            {deadline}
+            {formatDateTime(deadline)}
           </div>
-          <div className="address col-sm-4 col-xs-12 text_ellipsis">
-            <i
-              className="fas fa-map-marker mr-5"
-              style={{ fontSize: 16, color: "#2557a7" }}
-            ></i>
-            {province}
-          </div>
+          <Tooltip placement="top" title={province}>
+            <div className="address col-sm-4 col-xs-12 text_ellipsis">
+              <i
+                className="fas fa-map-marker mr-5"
+                style={{ fontSize: 16, color: "#2557a7" }}
+              ></i>
+              {province}
+            </div>
+          </Tooltip>
         </div>
       </div>
       <div className="col-sm-2 job-button-group">
-        <button className="view-apply-button blue-button">
+        <button className="view-apply-button blue-button" onClick={toggleModal}>
           Ứng tuyển ngay
         </button>
         <div className="box-save-job">
@@ -141,6 +197,14 @@ const Job = ({
         </div>
       </div>
     </div>
+    <ApplyModal
+      visible={show}
+      onCancel={toggleModal}
+      company_name={company_name}
+      job_title={job_title}
+      token={token}
+      jp_id={job_id}
+    />
   </div>
 );
 

@@ -26,3 +26,8 @@ export const findJobs = async (
 
 export const getJobDetail = async (id) =>
   await API.get(`/job-posts/${id}/cand`);
+
+export const getSaveJobs = async (page = 1, token) =>
+  await API.get(`/user/job-posts/save?page=${page}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
