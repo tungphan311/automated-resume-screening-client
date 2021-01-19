@@ -1,5 +1,9 @@
 import { takeEvery, call, select, put } from "redux-saga/effects";
-import { uploadCVAction, updateCVAction } from "state/actions/index";
+import {
+  uploadCVAction,
+  updateCVAction,
+  updateCVProfileAction
+} from "state/actions/index";
 import history from "state/history";
 import { toast, toastErr } from "utils/index";
 import {
@@ -59,7 +63,42 @@ export function* updateResumeSaga(action) {
   }
 }
 
+export function* updateCVProfileSaga(action) {
+  try {
+    const {
+      resumeId,
+      values,
+      domain,
+      education,
+      experience,
+      monthEx
+    } = action.payload;
+
+    const { token } = yield select((state) => state.auth.candidate);
+
+    const data = {
+      resume_id: resumeId,
+      educations: education,
+      experiences: experience,
+      skills: values.join("|"),
+      months_of_experience: monthEx,
+      job_domain_id: domain
+    };
+
+    const result = yield call(updateCV, data, token);
+    const { message } = result.data;
+
+    yield toast({ message });
+
+    yield call(resolvePromiseAction, action);
+  } catch (err) {
+    yield toastErr(err);
+    yield call(rejectPromiseAction, action);
+  }
+}
+
 export default function* cvSaga() {
   yield takeEvery(uploadCVAction, uploadCVSaga);
   yield takeEvery(updateCVAction, updateResumeSaga);
+  yield takeEvery(updateCVProfileAction, updateCVProfileSaga);
 }

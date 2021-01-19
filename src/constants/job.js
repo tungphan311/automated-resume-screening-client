@@ -38,3 +38,10 @@ export const SORTS = [
   { value: 1, label: "Điểm kỹ năng" },
   { value: 2, label: "Điểm học vấn" }
 ];
+
+export const WEIGHTS = [
+  { value: 0, label: "Không quan tâm" },
+  { value: 1, label: "Ít quan tâm" },
+  { value: 2, label: "Quan tâm" },
+  { value: 3, label: "Rất quan tâm" }
+];

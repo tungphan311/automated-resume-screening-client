@@ -2,6 +2,7 @@
   "name": "automated-resume-screening-client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3000",
   "dependencies": {
     "@adobe/redux-saga-promise": "^1.1.1",
     "@ant-design/icons": "^4.2.2",

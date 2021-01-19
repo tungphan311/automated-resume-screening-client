@@ -2,7 +2,7 @@ import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrap
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Pagination, Select } from "antd";
-import { SORTS } from "constants/index";
+import { WEIGHTS } from "constants/index";
 
 function HRJobPostCandidates() {
   return (
@@ -21,6 +21,8 @@ function HRJobPostCandidates() {
                 {" ứng viên đã ứng tuyển"}
               </div>
               <div className="candidate-list">
+                <Candidate />
+                <Candidate />
                 <Candidate />
               </div>
               <nav>
@@ -47,7 +49,24 @@ const Filter = () => (
         <h4 className="filter-title">
           <i className="fa fa-magic"></i> Sắp xếp ứng viên
         </h4>
-        <Select options={SORTS} defaultValue={SORTS[0].value} />
+        <div className="filter-group">
+          <h4 className="filter-title">Điểm kỹ năng chung</h4>
+
+          <Select options={WEIGHTS} defaultValue={WEIGHTS[2].value} />
+        </div>
+        <div className="filter-group">
+          <h4 className="filter-title">Điểm kỹ năng chuyên ngành</h4>
+
+          <Select options={WEIGHTS} defaultValue={WEIGHTS[2].value} />
+        </div>
+        <div className="filter-group">
+          <h4 className="filter-title">Điểm kỹ năng mềm</h4>
+
+          <Select options={WEIGHTS} defaultValue={WEIGHTS[2].value} />
+        </div>
+        <div className="text-center">
+          <button className="btn btn-primary">Cập nhật trọng số</button>
+        </div>
       </div>
     </div>
   </div>

@@ -19,8 +19,12 @@ export const LOGOUT = "LOGOUT";
 export const INIT_DATA = "INIT_DATA";
 export const RESIGN_TOKEN = "RESIGN_TOKEN";
 
+export const GET_CANDIDATE_PROFILE = "GET_CANDIDATE_PROFILE";
+export const GET_CANDIDATE_PROFILE_SUCCESS = "GET_CANDIDATE_PROFILE_SUCCESS";
+
 export const uploadCVAction = createPromiseAction("UPLOAD_CV");
 export const updateCVAction = createPromiseAction("UPDATE_CV");
+export const updateCVProfileAction = createPromiseAction("UPDATE_CV_PROFILE");
 
 export const updateHRCompanyAction = createPromiseAction("UPDATE_HR_COMPANY");
 export const addCompanyAction = createPromiseAction("ADD_COMPANY");

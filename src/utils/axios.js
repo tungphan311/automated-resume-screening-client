@@ -8,5 +8,6 @@ const API = axios.create({
 });
 
 API.defaults.headers.post["Content-Type"] = "application/json";
+API.defaults.headers.post["Cache-Control"] = "no-cache";
 
 export default API;

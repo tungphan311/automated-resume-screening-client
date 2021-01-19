@@ -138,6 +138,7 @@ function SkillForm({ curStep, handleChangeStep }) {
                   <Button
                     type="primary"
                     size="large"
+                    disabled={!value}
                     icon={<PlusOutlined />}
                     onClick={onAddSkill}
                   >
