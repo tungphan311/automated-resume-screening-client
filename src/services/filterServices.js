@@ -64,3 +64,35 @@ export const getCandidates = async (
     headers: { Authorization: `Bearer ${token}` }
   });
 };
+
+export const getSaveCandidates = async ({
+  page = 1,
+  from = undefined,
+  to = undefined,
+  token
+}) => {
+  const query = qs.stringify(
+    {
+      page,
+      "from-date": from,
+      "to-date": to
+    },
+    { skipNull: true }
+  );
+
+  return await API.get(`/user/recruiter/save-resumes?${query}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+};
+
+export const saveCandidate = async (resume_id, status, token) =>
+  await API.post(
+    "/user/recruiter/save-resumes",
+    {
+      resume_id,
+      status
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );

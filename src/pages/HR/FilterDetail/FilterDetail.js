@@ -8,9 +8,14 @@ import { Link } from "react-router-dom";
 import { Pagination, Select } from "antd";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import LoadingContent from "components/Loading/LoadingContent";
-import { getCandidates, getFilterDetail } from "services/filterServices";
-import { range } from "utils/index";
+import {
+  getCandidates,
+  getFilterDetail,
+  saveCandidate
+} from "services/filterServices";
+import { range, toast, toastErr } from "utils/index";
 import { updateFilterAction } from "state/actions/index";
+import ResumeModal from "components/Modals/Resume/Resume";
 
 function HRFilterDetail({
   match: {
@@ -336,6 +341,7 @@ function HRFilterDetail({
                           key={cand.id}
                           {...cand}
                           province_list={province_list}
+                          token={token}
                         />
                       ))}
                   </div>
@@ -452,39 +458,61 @@ export default HRFilterDetail;
 const Candidate = ({
   name,
   id,
-  total_views,
   job_domain,
   province_id,
   province_list,
   skills,
-  experience
-}) => (
-  <div className="candidate">
-    <div className="avatar">
-      <img src="/assets/img/noavatar.png" alt="candidate avatar" />
-    </div>
-    <div className="row">
-      <div className="col-md-9">
-        <Link to={`find-cadidates/candidates/${id}`} className="name">
-          {name}
-        </Link>
-        <div>
-          <u>Vị trí ứng tuyển: </u>
-          {job_domain}
+  experience,
+  view,
+  last_edit,
+  url,
+  download_url,
+  token
+}) => {
+  const [show, toggleShow] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = async () => {
+    const status = saved ? 0 : 1;
+
+    await saveCandidate(id, status, token)
+      .then(() => {
+        setSaved(!saved);
+
+        toast({ message: "Thêm vào danh sách theo dõi thành công" });
+      })
+      .catch((err) => {
+        toastErr(err);
+      });
+  };
+
+  return (
+    <div className="candidate" onClick={() => toggleShow(true)}>
+      <div className="avatar">
+        <img src="/assets/img/noavatar.png" alt="candidate avatar" />
+      </div>
+      <div className="row">
+        <div className="col-md-9">
+          <Link to={`find-cadidates/candidates/${id}`} className="name">
+            {name}
+          </Link>
+          <div>
+            <u>Vị trí ứng tuyển: </u>
+            {job_domain}
+          </div>
+        </div>
+        <div className="col-md-3 text-right">
+          <div className="time">
+            <i className="fa fa-clock-o"></i> Cập nhật {last_edit}
+          </div>
+          <div style={{ fontSize: "0.9em", color: "rgb(153, 153, 153)" }}>
+            <span>
+              <span>{view}</span> người đã xem
+            </span>
+          </div>
         </div>
       </div>
-      <div className="col-md-3 text-right">
-        <div className="time">
-          <i className="fa fa-clock-o"></i> Cập nhật 7 phút trước
-        </div>
-        <div style={{ fontSize: "0.9em", color: "rgb(153, 153, 153)" }}>
-          <span>
-            <span>{total_views}</span> người đã xem
-          </span>
-        </div>
-      </div>
-    </div>
-    {/* <div className="row" style={{ marginTop: 10 }}>
+      {/* <div className="row" style={{ marginTop: 10 }}>
       <div className="col-md-9">
         <div className="education">
           <i className="fa fa-graduation-cap mr-5"></i>
@@ -495,25 +523,35 @@ const Candidate = ({
         </div>
       </div>
     </div> */}
-    <div className="row" style={{ marginTop: 10 }}>
-      <div className="col-md-10">
-        <div className="location mr-5">
-          <i className="fa fa-map-marker-alt mr-5"></i>
-          Địa điểm:{" "}
-          {province_list &&
-            province_list.find((e) => parseInt(e.province_id) === province_id)
-              .province_name}
-        </div>
-        <div className="location">
-          <i className="fa fa-map-marker-alt mr-5"></i>
-          Thời gian làm việc thực tế: {experience}
-        </div>
-        <div className="location location-right ">
-          <i className="fa fa-star mr-5"></i>
-          {"Skills: "}
-          {skills}
+      <div className="row" style={{ marginTop: 10 }}>
+        <div className="col-md-10">
+          <div className="location mr-5">
+            <i className="fa fa-map-marker-alt mr-5"></i>
+            Địa điểm:{" "}
+            {province_list &&
+              province_list.find((e) => parseInt(e.province_id) === province_id)
+                .province_name}
+          </div>
+          <div className="location">
+            <i className="fa fa-map-marker-alt mr-5"></i>
+            Thời gian làm việc thực tế: {experience}
+          </div>
+          <div className="location location-right ">
+            <i className="fa fa-star mr-5"></i>
+            {"Kỹ năng: "}
+            {skills}
+          </div>
         </div>
       </div>
+      <ResumeModal
+        show={show}
+        toggleModal={() => {
+          toggleShow(false);
+        }}
+        saved={saved}
+        handleSave={handleSave}
+        {...{ url, download_url }}
+      />
     </div>
-  </div>
-);
+  );
+};

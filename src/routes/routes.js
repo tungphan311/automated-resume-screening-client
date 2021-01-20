@@ -175,7 +175,7 @@ function Routes() {
         ]}
       >
         <RecruiterLayout>
-          <UnauthorizedRoute exact path="/recruiter" component={HRHome} />
+          <RecruiterRoute exact path="/recruiter" component={HRHome} />
           <RecruiterRoute
             exact
             path="/recruiter/new-job"

@@ -3,11 +3,17 @@ import { Modal } from "react-bootstrap";
 import "./Resume.scss";
 import { Document, Page, pdfjs } from "react-pdf";
 import LoadingContent from "components/Loading/LoadingContent";
-import { Link } from "react-router-dom";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function ResumeModal({ show, toggleModal }) {
+function ResumeModal({
+  show,
+  toggleModal,
+  saved,
+  handleSave,
+  url,
+  download_url
+}) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -33,8 +39,7 @@ function ResumeModal({ show, toggleModal }) {
         <div id="candidate-viewer-cv">
           <Document
             file={{
-              url:
-                "https://cors-anywhere.herokuapp.com/https://storage.googleapis.com/automated-resume-screeni-b6254.appspot.com/CV_PhanThanhTung_1a22dfacbf5347b69548841e4cfcd2f2.pdf"
+              url: `https://cors-anywhere.herokuapp.com/${url}`
             }}
             onLoadSuccess={onDocumentLoadSuccess}
             loading={<LoadingContent loading={true} />}
@@ -47,7 +52,7 @@ function ResumeModal({ show, toggleModal }) {
                 ‹
               </button>
               <span>
-                {pageNumber} of {numPages}
+                Trang {pageNumber} / {numPages}
               </span>
               <button type="button" onClick={toNextPage}>
                 ›
@@ -55,14 +60,24 @@ function ResumeModal({ show, toggleModal }) {
             </div>
           </div>
           <div className="action-list">
-            <button className="btn btn-border btn-default">
-              <i className="fa fa-user-plus mr-5"></i>
-              Lưu vào danh sách theo dõi
+            <button className="btn btn-border btn-default" onClick={handleSave}>
+              {saved ? (
+                <>
+                  <i className="fa fa-user-times mr-5"></i>
+                  Loại khỏi danh sách theo dõi
+                </>
+              ) : (
+                <>
+                  <i className="fa fa-user-plus mr-5"></i>
+                  Lưu vào danh sách theo dõi
+                </>
+              )}
             </button>
-            <Link to="#" className="btn btn-border btn-default">
+
+            <a href={download_url} className="btn btn-border btn-default">
               <i className="fa fa-download mr-5"></i>
               Tải CV
-            </Link>
+            </a>
             <button
               className="btn btn-border btn-default"
               onClick={toggleModal}

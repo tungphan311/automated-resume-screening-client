@@ -1,10 +1,12 @@
 import JobMenu from "components/JobMenu/JobMenu";
 import { CANDIDATES_MENU } from "constants/index";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Radio, DatePicker } from "antd";
 import "./SaveCandidates.scss";
 import { Link } from "react-router-dom";
 import ResumeModal from "components/Modals/Resume/Resume";
+import { getSaveCandidates, saveCandidate } from "services/filterServices";
+import { useSelector } from "react-redux";
 
 function HRSaveCandidates() {
   const [value, setValue] = useState({
@@ -13,6 +15,8 @@ function HRSaveCandidates() {
     to_date: null
   });
 
+  const { token } = useSelector((state) => state.auth.recruiter);
+
   const onSortChange = (e) => {
     setValue({ ...value, order: e.target.value });
   };
@@ -20,6 +24,18 @@ function HRSaveCandidates() {
   function onDateChange(key, date) {
     setValue({ ...value, [key]: date });
   }
+
+  useEffect(() => {
+    const fetchResumes = async () => {
+      await getSaveCandidates({ token })
+        .then((res) => console.log(res.data))
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchResumes();
+  }, []);
 
   return (
     <>
@@ -106,6 +122,13 @@ export default HRSaveCandidates;
 
 const Candidate = () => {
   const [show, toggleShow] = useState(false);
+  const [saved, setSaved] = useState(true);
+
+  const handleSave = async () => {
+    setSaved(!saved);
+
+    await saveCandidate();
+  };
 
   return (
     <>
@@ -165,6 +188,8 @@ const Candidate = () => {
         toggleModal={() => {
           toggleShow(false);
         }}
+        saved={saved}
+        handleSave={handleSave}
       />
     </>
   );
