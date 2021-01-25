@@ -32,3 +32,10 @@ export function range(start, end) {
       label: start + idx
     }));
 }
+
+export const formatMonths = (month) => {
+  const year = parseInt(month / 12);
+  const m = month % 12;
+
+  return year ? `${year} năm ${m} tháng` : `${month} tháng`;
+};

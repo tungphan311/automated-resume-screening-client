@@ -53,6 +53,11 @@
     &:hover {
       background-color: rgba(237, 241, 245, 0.45);
     }
+    .candidate-score {
+      .ant-progress-inner {
+        background-color: #dcdcdc;
+      }
+    }
   }
 
   .avatar {
@@ -135,5 +140,16 @@
   .candidate-action-item-text {
     margin-left: 10px;
     padding: 8px 0;
+  }
+}
+
+#candidate-score {
+  .ant-progress {
+    width: 100%;
+
+    .ant-progress-inner {
+      width: 100% !important;
+      height: 100% !important;
+    }
   }
 }

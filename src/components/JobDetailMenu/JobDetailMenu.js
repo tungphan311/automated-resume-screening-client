@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./JobDetailMenu.scss";
 import { DownOutlined } from "@ant-design/icons";
 
-function JobDetailMenu({ isCandidates }) {
+function JobDetailMenu({ isCandidates, id }) {
   return (
     <div className="header-sub-menu">
       <div className="container">
@@ -22,12 +22,12 @@ function JobDetailMenu({ isCandidates }) {
               </button>
               <ul className="j-nav j-navbar-nav">
                 <Item
-                  href="/recruiter/jobs/1"
+                  href={`/recruiter/jobs/${id}`}
                   label="Thông tin tuyển dụng"
                   active={!isCandidates}
                 />
                 <Item
-                  href="/recruiter/jobs/1/candidates"
+                  href={`/recruiter/jobs/${id}/candidates`}
                   label="Danh sách ứng viên"
                   active={isCandidates}
                 />

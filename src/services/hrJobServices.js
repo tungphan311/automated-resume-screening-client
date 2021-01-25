@@ -61,3 +61,24 @@ export const deleteJobPost = async (ids, token) => {
 };
 
 export const getMajors = async () => await API.get("/majors");
+
+export const getAppliedResumes = async (
+  jp_id,
+  token,
+  page,
+  general_weight,
+  domain_weight,
+  soft_weight
+) => {
+  const params = qs.stringify({
+    page,
+    "page-size": 10,
+    general_weight,
+    domain_weight,
+    soft_weight
+  });
+
+  return await API.get(`/job-posts/${jp_id}/candidates?${params}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+};
