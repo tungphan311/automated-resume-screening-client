@@ -5,7 +5,7 @@ import { WEIGHTS } from "constants/index";
 import "./JobManage.scss";
 import { getAppliedResumes } from "services/hrJobServices";
 import { useSelector } from "react-redux";
-import { formatMonths, format_date } from "utils/index";
+import { formatMonths, formatProvince, format_date } from "utils/index";
 import LoadingContent from "components/Loading/LoadingContent";
 import HRJobPostCandidateDetail from "pages/HR/JobDetail/CandidateDetail";
 
@@ -22,8 +22,14 @@ function HRJobPostCandidates({ jp_id }) {
   });
   const [loading, setLoading] = useState(false);
   const [resume, setResume] = useState(0);
+  const [avgScore, setAvgScore] = useState({
+    avg_soft_score: 0,
+    avg_domain_score: 0,
+    avg_general_score: 0
+  });
 
   const { token } = useSelector((state) => state.auth.recruiter);
+  const { provinces } = useSelector((state) => state.cv);
 
   const mapResonseToState = (result) => {
     const {
@@ -34,7 +40,7 @@ function HRJobPostCandidates({ jp_id }) {
     } = result;
 
     return {
-      candidateName: candidate[0].full_name,
+      candidate: candidate[0],
       applyDate: submission.submit_date,
       domainScore: domain_score,
       generalScore: general_score,
@@ -42,7 +48,11 @@ function HRJobPostCandidates({ jp_id }) {
       province: candidate[0].province_id,
       resumeId: resume.id,
       skills: resume.technical_skills,
-      months_of_experience: resume.months_of_experience
+      months_of_experience: resume.months_of_experience,
+      resume,
+      domain_score,
+      general_score,
+      softskill_score
     };
   };
 
@@ -62,11 +72,13 @@ function HRJobPostCandidates({ jp_id }) {
           const response = res.data;
           const {
             data,
-            pagination: { total }
+            pagination: { total },
+            statistics: { avg_domain_score, avg_general_score, avg_soft_score }
           } = response;
 
           setResumes(data.map((res) => mapResonseToState(res)));
           setPagination({ ...pagination, total });
+          setAvgScore({ avg_domain_score, avg_general_score, avg_soft_score });
         })
         .catch((err) => {
           console.log(err);
@@ -103,6 +115,7 @@ function HRJobPostCandidates({ jp_id }) {
                         {...weights}
                         {...resume}
                         setResume={setResume}
+                        provinces={provinces}
                       />
                     ))}
                 </div>
@@ -117,7 +130,12 @@ function HRJobPostCandidates({ jp_id }) {
           </div>
         </div>
       ) : (
-        <HRJobPostCandidateDetail />
+        <HRJobPostCandidateDetail
+          detail={resumes.find((r) => r.resumeId === resume)}
+          provinces={provinces}
+          setResume={setResume}
+          avgScore={avgScore}
+        />
       )}
     </div>
   );
@@ -185,7 +203,7 @@ const Candidate = ({
   general,
   domain,
   softskill,
-  candidateName,
+  candidate,
   applyDate,
   domainScore,
   generalScore,
@@ -194,7 +212,8 @@ const Candidate = ({
   months_of_experience,
   education,
   resumeId,
-  setResume
+  setResume,
+  provinces
 }) => {
   const [isShowing, setShowing] = useState(false);
 
@@ -203,7 +222,9 @@ const Candidate = ({
   const maxScore = general + domain + softskill;
   const score = Number(
     generalScore * general + domainScore * domain + softSkillScore * softskill
-  ).toFixed(1);
+  ).toFixed(2);
+
+  const { full_name, province_id } = candidate;
 
   return (
     <div className="candidate">
@@ -212,18 +233,20 @@ const Candidate = ({
       </div>
       <div className="row">
         <div className="col-md-10">
-          <button className="name" onClick={() => setResume(resumeId)}>
-            {candidateName}
+          <button onClick={() => setResume(resumeId)} className="name">
+            {full_name}
           </button>
           <div>
-            <u>Ngày ứng tuyển</u>:<b>{format_date(applyDate)}</b>
+            <u>Ngày ứng tuyển</u>: <b>{format_date(applyDate)}</b>
           </div>
           <div style={{ width: "60%" }} className="candidate-score">
             <Tooltip placement="top" title="Điểm kỹ năng chung">
               <Progress
                 percent={parseInt(generalScore * 100)}
                 size="small"
-                format={() => `${generalScore * general}/${general}`}
+                format={() =>
+                  `${Number(generalScore * general).toFixed(2)}/${general}`
+                }
                 strokeColor="blue"
               />
             </Tooltip>
@@ -233,7 +256,9 @@ const Candidate = ({
               <Progress
                 percent={parseInt(domainScore * 100)}
                 size="small"
-                format={() => `${domainScore * domain}/${domain}`}
+                format={() =>
+                  `${Number(domainScore * domain).toFixed(2)}/${domain}`
+                }
                 strokeColor="#ff7f24"
               />
             </Tooltip>
@@ -243,7 +268,11 @@ const Candidate = ({
               <Progress
                 percent={parseInt(softSkillScore * 100)}
                 size="small"
-                format={() => `${softSkillScore * softskill}/${softskill}`}
+                format={() =>
+                  `${Number(softSkillScore * softskill).toFixed(
+                    2
+                  )}/${softskill}`
+                }
                 strokeColor="#f34f80"
               />
             </Tooltip>
@@ -271,7 +300,7 @@ const Candidate = ({
         <div className="col-md-10">
           <div className="location mr-5">
             <i className="fa fa-map-marker mr-5"></i>
-            Địa điểm: Hồ Chí Minh
+            Địa điểm: {formatProvince(provinces, province_id)}
           </div>
           <div className="location">
             <i className="fa fa-calendar-check-o mr-5"></i> Thời gian làm việc
@@ -293,6 +322,7 @@ const Candidate = ({
           <OutsideClickWrapper
             isShowing={isShowing}
             onClickOutside={handleClose}
+            className="pos-relative"
           >
             <button
               className="candidate-action-btn"
@@ -302,22 +332,19 @@ const Candidate = ({
             </button>
             {isShowing && (
               <span className="candidate-action-menu">
-                <button className="candidate-action-item">
+                <button
+                  className="candidate-action-item"
+                  onClick={() => setResume(resumeId)}
+                >
                   <i className="fas fa-check"></i>
                   <span className="candidate-action-item-text">
-                    Chấp thuận ứng viên
+                    Xem chi tiết ứng viên
                   </span>
                 </button>
                 <button className="candidate-action-item">
                   <i className="fas fa-clipboard-list"></i>
                   <span className="candidate-action-item-text">
                     Thêm vào danh sách theo dõi
-                  </span>
-                </button>
-                <button className="candidate-action-item">
-                  <i className="fas fa-times"></i>
-                  <span className="candidate-action-item-text">
-                    Từ chối ứng viên
                   </span>
                 </button>
               </span>

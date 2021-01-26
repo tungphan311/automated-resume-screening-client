@@ -39,3 +39,9 @@ export const formatMonths = (month) => {
 
   return year ? `${year} năm ${m} tháng` : `${month} tháng`;
 };
+
+export const formatProvince = (provinces, provinceId) => {
+  const province = provinces.find((p) => p.province_id == provinceId);
+
+  return province.province_name;
+};
