@@ -15,7 +15,7 @@ const DEFAULT = {
   authen: false
 };
 
-function JobDetail({ id, top, onChangeSelect }) {
+function JobDetail({ id, top, onChangeSelect, bottom }) {
   const size = useWindowSize();
   const padding = (size.width - 1140) / 2;
   const [showModal, toggleShowModal] = useState(DEFAULT);
@@ -72,7 +72,7 @@ function JobDetail({ id, top, onChangeSelect }) {
         style={{
           left: `${padding + 441}px`,
           top: `${top > -230 ? top : -230}px`,
-          bottom: "-1px"
+          bottom
         }}
       >
         {!loading ? (

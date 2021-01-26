@@ -43,6 +43,7 @@ const MyLoader = (props) => (
 function CandidateJobList() {
   const [curSelect, setCurSelect] = useState(null);
   const [top, setTop] = useState(0);
+  const [bottom, setBottom] = useState(-1);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
@@ -83,10 +84,24 @@ function CandidateJobList() {
       })
     );
 
+  const isBottom = (el) =>
+    el.getBoundingClientRect().bottom <= window.innerHeight;
+
   useEffect(() => {
     function getScroll() {
       const scrollY = window.scrollY;
       setTop(top - scrollY);
+
+      const el = document.getElementById("content");
+
+      if (isBottom(el)) {
+        const footer = document.getElementById("footer");
+        setBottom(
+          document.body.clientHeight - footer.getBoundingClientRect().top
+        );
+      } else {
+        setBottom(-1);
+      }
     }
 
     const fetchJobs = async () => {
@@ -279,6 +294,7 @@ function CandidateJobList() {
                           curSelect={curSelect}
                           onChangeSelect={onChangeSelect}
                           top={top}
+                          bottom={bottom}
                         />
                       ))
                     )}
