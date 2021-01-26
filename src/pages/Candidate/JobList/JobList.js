@@ -11,6 +11,7 @@ import { getFormValues } from "redux-form";
 import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
+import qs from "query-string";
 
 const MyLoader = (props) => (
   <ContentLoader
@@ -40,7 +41,7 @@ const MyLoader = (props) => (
   </ContentLoader>
 );
 
-function CandidateJobList() {
+function CandidateJobList({ history }) {
   const [curSelect, setCurSelect] = useState(null);
   const [top, setTop] = useState(0);
   const [bottom, setBottom] = useState(-1);
@@ -51,15 +52,20 @@ function CandidateJobList() {
     pageSize: 10,
     total: 0
   });
-  const [query, setQuery] = useState({ job_title: null, province_id: null });
   const [filter, setFilter] = useState({
     posted_date: null,
-    contract_type: null
+    contract_type: null,
+    min_salary: null,
+    max_salary: null,
+    job_domain_id: null,
+    job_title: null,
+    province_id: null
   });
 
   const formValues = useSelector((state) =>
     getFormValues(FORM_KEY_JOB_SEARCH)(state)
   );
+  const { domains } = useSelector((state) => state.jobDomain);
 
   const mapResponseToState = (data) =>
     data.map(
@@ -106,9 +112,17 @@ function CandidateJobList() {
 
     const fetchJobs = async () => {
       setLoading(true);
+      setCurSelect(null);
       const { page, pageSize } = pagination;
-      const { posted_date, contact_type } = filter;
-      const { job_title, province_id } = query;
+      const {
+        posted_date,
+        contract_type,
+        job_title,
+        province_id,
+        min_salary,
+        max_salary,
+        job_domain_id
+      } = filter;
 
       await findJobs(
         page,
@@ -116,13 +130,15 @@ function CandidateJobList() {
         job_title,
         province_id,
         posted_date,
-        contact_type
+        contract_type,
+        min_salary,
+        max_salary,
+        job_domain_id
       )
         .then((res) => {
           setJobs(mapResponseToState(res.data.data));
           setPagination({
-            page: 1,
-            pageSize,
+            ...pagination,
             total: res.data.pagination.total
           });
         })
@@ -139,58 +155,24 @@ function CandidateJobList() {
     window.addEventListener("scroll", getScroll);
 
     return () => window.removeEventListener("scroll", getScroll);
-  }, [filter]);
-
-  const fetchJobs = async (page, pageSize, job_title, province_id) => {
-    setLoading(true);
-    return await findJobs(page, pageSize, job_title, province_id);
-  };
+  }, [filter, pagination.page, pagination.pageSize]);
 
   const handleChangePageSize = async (value) => {
-    const { page } = pagination;
-    const { job_title, province_id } = query;
-
-    await fetchJobs(page, value, job_title, province_id)
-      .then((res) => {
-        setJobs(mapResponseToState(res.data.data));
-        setPagination({
-          page: 1,
-          pageSize: value,
-          total: res.data.pagination.total
-        });
-      })
-      .catch((err) => {
-        toastErr(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    setPagination({
+      page: 1,
+      pageSize: value
+    });
   };
 
   const handleChangePage = async (page) => {
-    const { pageSize } = pagination;
-    const { job_title, province_id } = query;
-
-    await fetchJobs(page, pageSize, job_title, province_id)
-      .then((res) => {
-        setJobs(mapResponseToState(res.data.data));
-        setPagination({
-          page,
-          pageSize,
-          total: res.data.pagination.total
-        });
-      })
-      .catch((err) => {
-        toastErr(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    setPagination({
+      ...pagination,
+      page
+    });
   };
 
   const handleSubmit = async () => {
     setLoading(true);
-    const { page, pageSize } = pagination;
 
     const job_title = formValues
       ? formValues.job_title || undefined
@@ -201,28 +183,27 @@ function CandidateJobList() {
         : undefined
       : undefined;
 
-    await fetchJobs(page, pageSize, job_title, province_id)
-      .then((res) => {
-        setJobs(mapResponseToState(res.data.data));
-        setPagination({
-          page: 1,
-          pageSize,
-          total: res.data.pagination.total
-        });
-        setQuery({ job_title, province_id: province_id });
-      })
-      .catch((err) => {
-        toastErr(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    const query = qs.stringify(
+      { location: province_id, q: job_title },
+      { skipNull: true }
+    );
+
+    history.push({ search: `?${query}` });
+
+    setFilter({ ...filter, job_title, province_id: province_id });
+    setPagination({ ...pagination, page: 1 });
   };
 
   const onChangeSelect = (jobId) => setCurSelect(jobId);
 
   const { page, pageSize, total } = pagination;
-  const { posted_date, contract_type } = filter;
+  const {
+    posted_date,
+    contract_type,
+    min_salary,
+    max_salary,
+    job_domain_id
+  } = filter;
   return (
     <>
       <div id="search-jobs-wrapper">
@@ -231,7 +212,7 @@ function CandidateJobList() {
           className="search-jobs-container search-jobs-widget"
         >
           <div className="container">
-            <JobSearchAdvance onSubmit={handleSubmit} />
+            <JobSearchAdvance onSubmit={handleSubmit} history={history} />
 
             <div className="filters">
               <Dropdown
@@ -241,6 +222,7 @@ function CandidateJobList() {
                 onChange={(value) =>
                   setFilter({ ...filter, posted_date: value })
                 }
+                select
               />
               <Dropdown
                 title="Hình thức làm việc"
@@ -249,6 +231,30 @@ function CandidateJobList() {
                 onChange={(value) =>
                   setFilter({ ...filter, contract_type: value })
                 }
+                select
+              />
+              <Dropdown
+                title="Mức lương tối thiểu"
+                value={min_salary}
+                onChange={(value) =>
+                  setFilter({ ...filter, min_salary: value })
+                }
+              />
+              <Dropdown
+                title="Mức lương tối đa"
+                value={max_salary}
+                onChange={(value) =>
+                  setFilter({ ...filter, max_salary: value })
+                }
+              />
+              <Dropdown
+                title="Lĩnh vực công việc"
+                options={domains.map((d) => ({ value: d.id, label: d.name }))}
+                value={job_domain_id}
+                onChange={(value) =>
+                  setFilter({ ...filter, job_domain_id: value })
+                }
+                select
               />
             </div>
           </div>

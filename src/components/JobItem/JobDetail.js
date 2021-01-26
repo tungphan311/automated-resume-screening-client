@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useWindowSize } from "utils/window";
 import "./JobDetail.scss";
-import { HeartOutlined } from "@ant-design/icons";
+import { HeartOutlined, HeartFilled, LoadingOutlined } from "@ant-design/icons";
 import { Close } from "constants/svg";
 import ContentLoader from "react-content-loader";
 import ApplyModal from "components/Modals/Apply/ApplyModal";
-import { getJobDetail } from "services/jobServices";
+import { getJobDetail, saveJob } from "services/jobServices";
 import { format_date, toastErr } from "utils/index";
 import LoginModal from "components/Modals/LoginModal/LoginModal";
 import { useSelector } from "react-redux";
@@ -35,7 +35,7 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
   useEffect(() => {
     setLoading(true);
     const fetchJob = async () => {
-      await getJobDetail(id)
+      await getJobDetail(id, token)
         .then((res) => {
           setJob(res.data.data);
         })
@@ -48,7 +48,7 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
     };
 
     fetchJob();
-  }, []);
+  }, [token]);
 
   const {
     job_title,
@@ -61,7 +61,8 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
     salary,
     company_name,
     company_logo,
-    company_background
+    company_background,
+    saved_date
   } = job;
 
   return (
@@ -85,7 +86,10 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
                 deadline,
                 company_name,
                 company_logo,
-                company_background
+                company_background,
+                saved_date,
+                id,
+                token
               }}
             />
             <div id="vjs-content">
@@ -177,57 +181,101 @@ const Header = ({
   deadline,
   company_name,
   company_logo,
-  company_background
-}) => (
-  <div id="vjs-header" className="vjs-header-no-shadow">
-    <div id="vjs-image-wrapper">
-      <img
-        src={company_background || "/assets/img/company-default-bg.jpg"}
-        alt="company background"
-        className="vjs-header-background"
-      />
-      <img
-        src={company_logo || "/assets/img/company-default-logo.png"}
-        alt="company logo"
-        className="vjs-header-logo"
-      />
-    </div>
-    <div id="vjs-header-jobinfo">
-      <div id="vjs-jobinfo">
-        <div id="vjs-jobtitle">{job_title}</div>
-        <div>
-          <span id="vjs-cn">{company_name}</span>
-          <span id="vjs-loc">
-            <span> - </span>Thành phố Hồ Chí Minh
+  company_background,
+  saved_date,
+  id,
+  token
+}) => {
+  const [save, setSave] = useState(saved_date ? true : false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSaveJP = async () => {
+    setLoading(true);
+    setSave(!save);
+    const status = save ? 0 : 1;
+
+    await saveJob(id, status, token)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => toastErr(err))
+      .finally(() => setLoading(false));
+  };
+
+  return (
+    <div id="vjs-header" className="vjs-header-no-shadow">
+      <div id="vjs-image-wrapper">
+        <img
+          src={company_background || "/assets/img/company-default-bg.jpg"}
+          alt="company background"
+          className="vjs-header-background"
+        />
+        <img
+          src={company_logo || "/assets/img/company-default-logo.png"}
+          alt="company logo"
+          className="vjs-header-logo"
+        />
+      </div>
+      <div id="vjs-header-jobinfo">
+        <div id="vjs-jobinfo">
+          <div id="vjs-jobtitle">{job_title}</div>
+          <div>
+            <span id="vjs-cn">{company_name}</span>
+            <span id="vjs-loc">
+              <span> - </span>Thành phố Hồ Chí Minh
+            </span>
+          </div>
+          <div>Hạn nộp hồ sơ: {format_date(deadline)}</div>
+        </div>
+      </div>
+      <div id="vjs-x">
+        <button
+          className="CloseButton vjs-x-button-close"
+          onClick={() => onChangeSelect(null)}
+        >
+          {Close}
+        </button>
+      </div>
+      <div id="apply-button-container">
+        <div className="job-footer-button-row">
+          <button
+            className="view-apply-button blue-button"
+            onClick={toggleModal}
+          >
+            Ứng tuyển ngay
+          </button>
+          <span id="state-picker-container" className="dd-wrapper">
+            <button className="state-picker-button" onClick={handleSaveJP}>
+              <span>
+                {loading ? (
+                  <LoadingOutlined
+                    style={{ fontSize: "18px", fontWeight: "700" }}
+                  />
+                ) : !save ? (
+                  <>
+                    <HeartOutlined
+                      style={{ fontSize: "18px", fontWeight: "700" }}
+                      className="mr-5"
+                    />
+                    Lưu tin
+                  </>
+                ) : (
+                  <>
+                    <HeartFilled
+                      style={{ fontSize: "18px", fontWeight: "700" }}
+                      className="mr-5"
+                    />
+                    Đã lưu tin
+                  </>
+                )}
+              </span>
+            </button>
           </span>
         </div>
-        <div>Hạn nộp hồ sơ: {format_date(deadline)}</div>
       </div>
     </div>
-    <div id="vjs-x">
-      <button
-        className="CloseButton vjs-x-button-close"
-        onClick={() => onChangeSelect(null)}
-      >
-        {Close}
-      </button>
-    </div>
-    <div id="apply-button-container">
-      <div className="job-footer-button-row">
-        <button className="view-apply-button blue-button" onClick={toggleModal}>
-          Ứng tuyển ngay
-        </button>
-        <span id="state-picker-container" className="dd-wrapper">
-          <button className="state-picker-button">
-            <span>
-              <HeartOutlined style={{ fontSize: "18px", fontWeight: "700" }} />
-            </span>
-          </button>
-        </span>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 const Loading = (props) => (
   <div style={{ height: "100%", width: "100%", backgroundColor: "#fff" }}>
