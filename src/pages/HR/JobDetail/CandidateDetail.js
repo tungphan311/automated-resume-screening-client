@@ -154,8 +154,7 @@ function HRJobPostCandidateDetail({ detail, provinces, setResume, avgScore }) {
           }}
         >
           <Item label="Thông tin ứng viên" id={0} tab={tab} setTab={setTab} />
-          <Item label="Chi tiết kỹ năng" id={1} tab={tab} setTab={setTab} />
-          <Item label="Độ tương thích" id={2} tab={tab} setTab={setTab} />
+          <Item label="Độ tương thích" id={1} tab={tab} setTab={setTab} />
 
           <li
             style={{ paddingTop: 15, paddingBottom: 15 }}
@@ -171,7 +170,6 @@ function HRJobPostCandidateDetail({ detail, provinces, setResume, avgScore }) {
             <CandidateInfo {...{ educations, experiences, technical_skills }} />
           )}
           {tab === 1 && <Radar data={data} options={options} />}
-          {tab === 2 && <Radar data={data} options={options} />}
         </div>
       </div>
     </div>

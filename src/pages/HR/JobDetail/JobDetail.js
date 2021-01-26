@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   FundViewOutlined,
   FileDoneOutlined,
-  HeartOutlined,
-  FileExcelOutlined
+  HeartOutlined
 } from "@ant-design/icons";
 import Widget from "components/Widget/Widget";
 import { hrGetJobDetail } from "services/hrJobServices";
@@ -58,16 +57,6 @@ function HRJobDetail({ id }) {
             title="Lượt lưu tin tuyển dụng"
             value={Intl.NumberFormat().format(total_save)}
             icon={<HeartOutlined style={{ fontSize: 48 }} />}
-          />
-          <Widget
-            title="Chấp thuận ứng viên"
-            value={Intl.NumberFormat().format(10)}
-            icon={<FileExcelOutlined style={{ fontSize: 48 }} />}
-          />
-          <Widget
-            title="Từ chối ứng viên"
-            value={Intl.NumberFormat().format(2)}
-            icon={<FileExcelOutlined style={{ fontSize: 48 }} />}
           />
         </div>
         <div className="col-md-9" style={{ paddingRight: 0 }}>
