@@ -8,7 +8,7 @@ import Widget from "components/Widget/Widget";
 import { hrGetJobDetail } from "services/hrJobServices";
 import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
-import { toastErr } from "utils/index";
+import { formatDateTime, toastErr } from "utils/index";
 
 function HRJobDetail({ id }) {
   const [post, setPost] = useState({});
@@ -104,27 +104,13 @@ const Detail = ({
       <tr>
         <td className="jp-label">Ngày đăng tin</td>
         <td className="jp-value">
-          {!loading ? (
-            posted_in &&
-            new Date(
-              posted_in.substring(1, posted_in.length - 1)
-            ).toLocaleDateString()
-          ) : (
-            <MyLoader />
-          )}
+          {!loading ? posted_in && formatDateTime(posted_in) : <MyLoader />}
         </td>
       </tr>
       <tr>
         <td className="jp-label">Hạn chót nộp hồ sơ</td>
         <td className="jp-value">
-          {!loading ? (
-            deadline &&
-            new Date(
-              deadline.substring(1, deadline.length - 1)
-            ).toLocaleDateString()
-          ) : (
-            <MyLoader />
-          )}
+          {!loading ? deadline && formatDateTime(deadline) : <MyLoader />}
         </td>
       </tr>
       <tr>

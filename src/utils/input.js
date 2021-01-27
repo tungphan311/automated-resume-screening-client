@@ -10,7 +10,7 @@ export function allowNumberOnly(evt) {
     key = String.fromCharCode(key);
   }
 
-  const regex = /[0-9]|\./;
+  const regex = /^\d*(\.\d*)?$/;
   if (!regex.test(key)) {
     evt.preventDefault();
   }

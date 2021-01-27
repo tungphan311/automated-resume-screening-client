@@ -166,7 +166,7 @@ function HRJobList() {
               </Link>
             </li>
             <li>
-              <Link to="#">
+              <Link to={`/recruiter/jobs/${id}/edit`}>
                 <EditFilled />
                 {" Chỉnh sửa tin"}
               </Link>

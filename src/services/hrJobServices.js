@@ -6,6 +6,11 @@ export const addNewJob = async (job, token) =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
+export const updateJob = async (job, id, token) =>
+  await API.put(`/job-posts/${id}`, job, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
 export const getJobDomain = async () => await API.get("/job-domains");
 
 export const hrGetJobs = async (

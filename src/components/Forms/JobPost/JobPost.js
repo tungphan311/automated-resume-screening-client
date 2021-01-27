@@ -23,7 +23,7 @@ import {
 } from "utils/formValidate";
 import { allowNumberOnly } from "utils/input";
 
-function JobPostForm({ handleSubmit, salary }) {
+function JobPostForm({ handleSubmit, salary, id }) {
   const [state, setState] = useState({
     loading: false,
     fetch: false,
@@ -152,7 +152,7 @@ function JobPostForm({ handleSubmit, salary }) {
           options={SALARY}
         />
         <div
-          className={`col-md-3 form-group ${salary !== "deal" ? "" : "d-none"}`}
+          className={`col-md-6 form-group ${salary !== "deal" ? "" : "d-none"}`}
         >
           <label>(Đơn vị VNĐ)</label>
           <br />
@@ -165,7 +165,7 @@ function JobPostForm({ handleSubmit, salary }) {
                 MIN_SALARY.includes(salary) ? "" : "d-none"
               }`}
               className="text-right"
-              append="₫"
+              append="triệu"
               onKeyPress={allowNumberOnly}
               validate={[requiredMinSalary]}
             />
@@ -183,7 +183,7 @@ function JobPostForm({ handleSubmit, salary }) {
                 MAX_SALARY.includes(salary) ? "" : "d-none"
               }`}
               className="text-right"
-              append="₫"
+              append="triệu"
               validate={[requiredMaxSalary]}
             />
           </div>
@@ -217,7 +217,7 @@ function JobPostForm({ handleSubmit, salary }) {
         />
         <div className="form-group col-md-12 text-center">
           <button type="submit" className="btn btn-primary">
-            Đăng tin
+            {id ? "Cập nhật thông tin" : "Đăng tin tuyển dụng"}
           </button>
         </div>
       </div>
@@ -227,14 +227,52 @@ function JobPostForm({ handleSubmit, salary }) {
 
 JobPostForm = reduxForm({
   form: FORM_KEY_JOB_POST,
-  touchOnBlur: false
+  touchOnBlur: false,
+  enableReinitialize: true
 })(JobPostForm);
 
 const selector = formValueSelector(FORM_KEY_JOB_POST);
 
-JobPostForm = connect((state) => ({
-  shouldValidate: () => isDirty(FORM_KEY_JOB_POST)(state),
-  salary: selector(state, "salary")
-}))(JobPostForm);
+JobPostForm = connect((state, props) => {
+  let { job, id } = props;
+
+  if (id) {
+    const {
+      min_salary,
+      max_salary,
+      education_level,
+      description,
+      requirement,
+      benefit,
+      contract_type_id
+    } = job;
+
+    if (!min_salary) {
+      if (!max_salary) {
+        job.salary = "deal";
+      } else {
+        job.salary = "upto";
+      }
+    } else {
+      if (!max_salary) {
+        job.salary = "from";
+      } else {
+        job.salary = "between";
+      }
+    }
+
+    job.education = education_level;
+    job.description_text = description;
+    job.requirement_text = requirement;
+    job.benefit_text = benefit;
+    job.contract_type = contract_type_id;
+  }
+
+  return {
+    shouldValidate: () => isDirty(FORM_KEY_JOB_POST)(state),
+    salary: selector(state, "salary"),
+    initialValues: job
+  };
+})(JobPostForm);
 
 export default JobPostForm;

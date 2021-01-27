@@ -24,6 +24,7 @@ import HRFilterDetail from "pages/HR/FilterDetail/FilterDetail";
 import HRSaveCandidates from "pages/HR/SaveCandidates/SaveCandidates";
 import CandidateSavedJobs from "pages/Candidate/Jobs/SavedJobs/SavedJobs";
 import CandidateAppliedJobs from "pages/Candidate/Jobs/AppliedJobs/AppliedJobs";
+import HRUpdateJob from "pages/HR/UpdateJob/UpdateJob";
 
 // component for admin site to determine user is logined or not
 export const AuthorizedRoute = ({
@@ -164,6 +165,7 @@ function Routes() {
         path={[
           "/recruiter",
           "/recruiter/jobs/:id",
+          "/recruiter/jobs/:id/edit",
           "/recruiter/jobs/:id/candidates",
           "/recruiter/company/update",
           "/recruiter/jobs",
@@ -196,6 +198,11 @@ function Routes() {
             exact
             path="/recruiter/jobs/:id"
             component={HRJobManage}
+          />
+          <RecruiterRoute
+            exact
+            path="/recruiter/jobs/:id/edit"
+            component={HRUpdateJob}
           />
           <RecruiterRoute
             exact
