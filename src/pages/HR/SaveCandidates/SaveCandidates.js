@@ -27,13 +27,10 @@ function HRSaveCandidates() {
     total: 0
   });
   const [loading, setLoading] = useState(false);
+  const [update, setUpdate] = useState(0);
 
   const { token } = useSelector((state) => state.auth.recruiter);
   const { provinces } = useSelector((state) => state.cv);
-
-  // const onSortChange = (e) => {
-  //   setValue({ ...value, order: e.target.value });
-  // };
 
   function onDateChange(key, date) {
     setValue({ ...value, [key]: date.toISOString() });
@@ -74,7 +71,7 @@ function HRSaveCandidates() {
     };
 
     fetchResumes();
-  }, [pagination.page, value.order]);
+  }, [pagination.page, value.order, update]);
 
   const { total, page } = pagination;
 
@@ -85,6 +82,8 @@ function HRSaveCandidates() {
   const handleUpdate = () => {
     setValue({ ...value, order: value.order + 1 });
   };
+
+  const updateList = () => setUpdate(update + 1);
 
   return (
     <>
@@ -140,14 +139,19 @@ function HRSaveCandidates() {
                   </div>
                 </div>
                 <div className="candidate-list">
-                  {resumes.length &&
+                  {resumes.length ? (
                     resumes.map((resume, index) => (
                       <Candidate
                         key={index}
                         {...resume}
                         provinces={provinces}
+                        token={token}
+                        updated={updateList}
                       />
-                    ))}
+                    ))
+                  ) : (
+                    <EmptyResumes />
+                  )}
                 </div>
                 {total > 10 && (
                   <div className="text-center">
@@ -200,15 +204,22 @@ const Candidate = ({
   phone,
   lastEdit,
   provinces,
-  province_id
+  province_id,
+  resumeId,
+  token,
+  updated
 }) => {
   const [show, toggleShow] = useState(false);
   const [saved, setSaved] = useState(true);
 
   const handleSave = async () => {
-    setSaved(!saved);
+    const status = saved ? 0 : 1;
 
-    await saveCandidate();
+    await saveCandidate(resumeId, status, token)
+      .then(() => {
+        setSaved(!saved);
+      })
+      .catch((err) => toastErr(err));
   };
 
   return (
@@ -266,6 +277,7 @@ const Candidate = ({
         show={show}
         toggleModal={() => {
           toggleShow(false);
+          updated();
         }}
         saved={saved}
         handleSave={handleSave}
@@ -275,3 +287,16 @@ const Candidate = ({
     </>
   );
 };
+
+const EmptyResumes = () => (
+  <>
+    <div className="text-center">
+      <img
+        src="/assets/svg/Empty.svg"
+        alt="empty icon"
+        style={{ width: "380px", height: "160px", margin: "50px auto" }}
+      />
+      <p style={{ paddingBottom: "80px" }}>Bạn chưa theo dõi ứng viên nào!</p>
+    </div>
+  </>
+);

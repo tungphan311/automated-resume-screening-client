@@ -5,7 +5,7 @@ import "./FilterDetail.scss";
 import { useDispatch, useSelector } from "react-redux";
 import TagInput from "components/TagInput/TagInput";
 import { Link } from "react-router-dom";
-import { Pagination, Select } from "antd";
+import { Pagination, Select, Tag } from "antd";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import LoadingContent from "components/Loading/LoadingContent";
 import {
@@ -13,9 +13,10 @@ import {
   getFilterDetail,
   saveCandidate
 } from "services/filterServices";
-import { range, toast, toastErr } from "utils/index";
+import { range, toastErr } from "utils/index";
 import { updateFilterAction } from "state/actions/index";
 import ResumeModal from "components/Modals/Resume/Resume";
+import { CheckCircleOutlined } from "@ant-design/icons";
 
 function HRFilterDetail({
   match: {
@@ -108,7 +109,7 @@ function HRFilterDetail({
           });
         })
         .catch((err) => {
-          console.log(err);
+          toastErr(err);
         })
         .finally(() => {
           setLoading(false);
@@ -127,6 +128,8 @@ function HRFilterDetail({
     requiredSkills,
     notAllowedSkills
   } = filter;
+
+  console.log(candidates);
 
   const onselectionchange = (key, value) => {
     if (!filterChange) {
@@ -336,12 +339,13 @@ function HRFilterDetail({
                   </div>
                   <div className="candidate-list">
                     {candidates.length &&
-                      candidates.map((cand) => (
+                      candidates.map(({ resume, saved }) => (
                         <Candidate
-                          key={cand.id}
-                          {...cand}
+                          key={resume.id}
+                          {...resume}
                           province_list={province_list}
                           token={token}
+                          saved={saved}
                         />
                       ))}
                   </div>
@@ -457,7 +461,6 @@ export default HRFilterDetail;
 
 const Candidate = ({
   name,
-  id,
   job_domain,
   province_id,
   province_list,
@@ -467,19 +470,19 @@ const Candidate = ({
   last_edit,
   url,
   download_url,
-  token
+  token,
+  resume_id,
+  saved
 }) => {
   const [show, toggleShow] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(saved);
 
   const handleSave = async () => {
     const status = saved ? 0 : 1;
 
-    await saveCandidate(id, status, token)
+    await saveCandidate(resume_id, status, token)
       .then(() => {
-        setSaved(!saved);
-
-        toast({ message: "Thêm vào danh sách theo dõi thành công" });
+        setIsSaved(!isSaved);
       })
       .catch((err) => {
         toastErr(err);
@@ -493,8 +496,15 @@ const Candidate = ({
       </div>
       <div className="row">
         <div className="col-md-9">
-          <Link to={`find-cadidates/candidates/${id}`} className="name">
+          <Link to="#" className="name">
             {name}
+            {isSaved && (
+              <span style={{ marginLeft: 20 }}>
+                <Tag icon={<CheckCircleOutlined />} color="success">
+                  Đã theo dõi
+                </Tag>
+              </span>
+            )}
           </Link>
           <div>
             <u>Vị trí ứng tuyển: </u>
@@ -512,17 +522,6 @@ const Candidate = ({
           </div>
         </div>
       </div>
-      {/* <div className="row" style={{ marginTop: 10 }}>
-      <div className="col-md-9">
-        <div className="education">
-          <i className="fa fa-graduation-cap mr-5"></i>
-          <span>
-            Viện Khoa Học Xã Hội &amp; Nhân Văn - Đại học Công Nghệ Tp Hồ Chí
-            Minh - Hutech
-          </span>
-        </div>
-      </div>
-    </div> */}
       <div className="row" style={{ marginTop: 10 }}>
         <div className="col-md-10">
           <div className="location mr-5">
@@ -545,10 +544,8 @@ const Candidate = ({
       </div>
       <ResumeModal
         show={show}
-        toggleModal={() => {
-          toggleShow(false);
-        }}
-        saved={saved}
+        toggleModal={() => toggleShow(false)}
+        saved={isSaved}
         handleSave={handleSave}
         {...{ url, download_url }}
       />

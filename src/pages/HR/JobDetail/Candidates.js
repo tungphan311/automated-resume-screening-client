@@ -1,13 +1,20 @@
 import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
 import React, { useState, useEffect } from "react";
-import { Pagination, Select, Progress, Tooltip } from "antd";
+import { Pagination, Select, Progress, Tooltip, Tag } from "antd";
 import { WEIGHTS } from "constants/index";
 import "./JobManage.scss";
 import { getAppliedResumes } from "services/hrJobServices";
 import { useSelector } from "react-redux";
-import { formatMonths, formatProvince, format_date } from "utils/index";
+import {
+  formatMonths,
+  formatProvince,
+  format_date,
+  toastErr
+} from "utils/index";
 import LoadingContent from "components/Loading/LoadingContent";
 import HRJobPostCandidateDetail from "pages/HR/JobDetail/CandidateDetail";
+import { CheckCircleOutlined } from "@ant-design/icons";
+import { saveCandidate } from "services/filterServices";
 
 function HRJobPostCandidates({ jp_id }) {
   const [weights, setWeights] = useState({
@@ -36,23 +43,25 @@ function HRJobPostCandidates({ jp_id }) {
       candidate,
       resume,
       scores: { domain_score, general_score, softskill_score },
-      submission
+      submission,
+      saved
     } = result;
 
     return {
-      candidate: candidate[0],
+      candidate,
       applyDate: submission.submit_date,
       domainScore: domain_score,
       generalScore: general_score,
       softSkillScore: softskill_score,
-      province: candidate[0].province_id,
+      province: candidate.province_id,
       resumeId: resume.id,
       skills: resume.technical_skills,
       months_of_experience: resume.months_of_experience,
       resume,
       domain_score,
       general_score,
-      softskill_score
+      softskill_score,
+      saved
     };
   };
 
@@ -116,6 +125,7 @@ function HRJobPostCandidates({ jp_id }) {
                         {...resume}
                         setResume={setResume}
                         provinces={provinces}
+                        token={token}
                       />
                     ))}
                 </div>
@@ -213,9 +223,22 @@ const Candidate = ({
   education,
   resumeId,
   setResume,
-  provinces
+  provinces,
+  saved,
+  token
 }) => {
   const [isShowing, setShowing] = useState(false);
+  const [isSaved, setIsSaved] = useState(saved);
+
+  const handleSave = async () => {
+    const status = isSaved ? 0 : 1;
+
+    await saveCandidate(resumeId, status, token)
+      .then(() => {
+        setIsSaved(!saved);
+      })
+      .catch((err) => toastErr(err));
+  };
 
   const handleClose = () => setShowing(false);
 
@@ -235,6 +258,13 @@ const Candidate = ({
         <div className="col-md-10">
           <button onClick={() => setResume(resumeId)} className="name">
             {full_name}
+            {isSaved && (
+              <span style={{ marginLeft: 20 }}>
+                <Tag icon={<CheckCircleOutlined />} color="success">
+                  Đã theo dõi
+                </Tag>
+              </span>
+            )}
           </button>
           <div>
             <u>Ngày ứng tuyển</u>: <b>{format_date(applyDate)}</b>
@@ -341,10 +371,12 @@ const Candidate = ({
                     Xem chi tiết ứng viên
                   </span>
                 </button>
-                <button className="candidate-action-item">
+                <button className="candidate-action-item" onClick={handleSave}>
                   <i className="fas fa-clipboard-list"></i>
                   <span className="candidate-action-item-text">
-                    Thêm vào danh sách theo dõi
+                    {isSaved
+                      ? "Xoá khỏi danh sách theo dõi"
+                      : "Thêm vào danh sách theo dõi"}
                   </span>
                 </button>
               </span>
