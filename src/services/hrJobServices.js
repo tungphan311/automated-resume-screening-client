@@ -11,6 +11,15 @@ export const updateJob = async (job, id, token) =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
+export const closeJob = async (id, token) =>
+  await API.post(
+    `/job-posts/${id}/close`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+
 export const getJobDomain = async () => await API.get("/job-domains");
 
 export const hrGetJobs = async (

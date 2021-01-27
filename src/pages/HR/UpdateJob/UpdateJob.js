@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toastErr } from "utils/index";
 import { hrGetJobDetail } from "services/hrJobServices";
+import LoadingContent from "components/Loading/LoadingContent";
 
 function HRUpdateJob() {
   const [loading, setLoading] = useState(false);
@@ -41,6 +42,7 @@ function HRUpdateJob() {
       <JobMenu menu={JOBS_MENU} />
       <div className="container">
         <div className="panel post-job-form panel--light">
+          <LoadingContent loading={loading} />
           <Spin
             tip="Đang tải lên ..."
             size="large"

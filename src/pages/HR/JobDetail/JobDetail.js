@@ -2,13 +2,23 @@ import React, { useEffect, useState } from "react";
 import {
   FundViewOutlined,
   FileDoneOutlined,
-  HeartOutlined
+  HeartOutlined,
+  DeleteFilled,
+  CloseOutlined
 } from "@ant-design/icons";
 import Widget from "components/Widget/Widget";
-import { hrGetJobDetail } from "services/hrJobServices";
+import {
+  closeJob,
+  deleteJobPost,
+  hrGetJobDetail
+} from "services/hrJobServices";
 import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
-import { formatDateTime, toastErr } from "utils/index";
+import { formatDateTime, toast, toastErr } from "utils/index";
+import { Button } from "antd";
+import { EditOutlined } from "@ant-design/icons";
+import history from "state/history";
+import swal from "sweetalert";
 
 function HRJobDetail({ id }) {
   const [post, setPost] = useState({});
@@ -35,6 +45,69 @@ function HRJobDetail({ id }) {
 
     fetchData();
   }, []);
+
+  const handleCloseJp = () => {
+    swal({
+      title: "Bạn có chắc không?",
+      text: "Một khi đóng, bạn không thể khôi phục thông tin đã chọn!",
+      icon: "warning",
+      buttons: ["Huỷ", "Tiếp tục"],
+      dangerMode: true
+    })
+      .then(async (willDelete) => {
+        if (willDelete) {
+          setLoading(true);
+
+          await closeJob(id, token)
+            .then(() => {
+              toast({ message: "Đóng tin tuyển dụng thành công" });
+              history.push("/recruiter/jobs");
+            })
+            .catch((err) => toastErr(err))
+            .finally(() => setLoading(false));
+        } else {
+          swal("Chúc mừng dữ liệu của bạn vẫn an toàn!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDelete = () => {
+    swal({
+      title: "Bạn có chắc không?",
+      text: "Một khi xoá, bạn không thể khôi phục những tin đã chọn!",
+      icon: "warning",
+      buttons: ["Huỷ", "Xoá"],
+      dangerMode: true
+    })
+      .then(async (willDelete) => {
+        if (willDelete) {
+          const ids = [id];
+
+          setLoading(true);
+          await deleteJobPost(ids, token)
+            .then((res) => {
+              const { message } = res.data;
+              toast({ message });
+
+              history.push("/recruiter/jobs");
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        } else {
+          swal("Chúc mừng dữ liệu của bạn vẫn an toàn!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const { total_view, total_save, total_apply } = post;
 
@@ -64,6 +137,25 @@ function HRJobDetail({ id }) {
             <div className="panel-body">
               <div className="jp-header">
                 <h5>Thông tin chi tiết</h5>
+                <div>
+                  <Button
+                    icon={<EditOutlined />}
+                    onClick={() => history.push(`/recruiter/jobs/${id}/edit`)}
+                    className="mr-5"
+                  >
+                    Chỉnh sửa tin
+                  </Button>
+                  <Button
+                    icon={<CloseOutlined />}
+                    onClick={handleCloseJp}
+                    className="mr-5"
+                  >
+                    Đóng tin
+                  </Button>
+                  <Button icon={<DeleteFilled />} onClick={handleDelete}>
+                    Xoá tin
+                  </Button>
+                </div>
               </div>
               <div>
                 <Detail {...post} loading={loading} />

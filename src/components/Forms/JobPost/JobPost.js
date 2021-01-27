@@ -266,6 +266,8 @@ JobPostForm = connect((state, props) => {
     job.requirement_text = requirement;
     job.benefit_text = benefit;
     job.contract_type = contract_type_id;
+  } else {
+    job = {};
   }
 
   return {
