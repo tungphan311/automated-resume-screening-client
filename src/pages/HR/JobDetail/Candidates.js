@@ -112,13 +112,18 @@ function HRJobPostCandidates({ jp_id }) {
             <div className="panel panel-default search-result">
               <div className="panel-body">
                 <div className="results-stats">
-                  <strong>1 - {resumes.length}</strong>
-                  {" trong "}
+                  {resumes.length ? (
+                    <>
+                      {" "}
+                      <strong>1 - {resumes.length}</strong>
+                      {" trong "}
+                    </>
+                  ) : null}
                   <strong>{pagination.total}</strong>
                   {" ứng viên đã ứng tuyển"}
                 </div>
                 <div className="candidate-list">
-                  {resumes.length &&
+                  {resumes.length ? (
                     resumes.map((resume) => (
                       <Candidate
                         {...weights}
@@ -127,7 +132,10 @@ function HRJobPostCandidates({ jp_id }) {
                         provinces={provinces}
                         token={token}
                       />
-                    ))}
+                    ))
+                  ) : (
+                    <EmptyJob />
+                  )}
                 </div>
                 <nav>
                   <Pagination
@@ -387,3 +395,18 @@ const Candidate = ({
     </div>
   );
 };
+
+const EmptyJob = () => (
+  <>
+    <div className="text-center">
+      <img
+        src="/assets/svg/Empty.svg"
+        alt="empty icon"
+        style={{ width: "380px", height: "160px", margin: "50px auto" }}
+      />
+      <p style={{ paddingBottom: "80px" }}>
+        Chưa có ứng viên nào ứng tuyển tin này!
+      </p>
+    </div>
+  </>
+);
