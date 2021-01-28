@@ -14,8 +14,12 @@ function HRJobManage({ match }) {
 
   return (
     <>
-      <JobDetailMenu isCandidates={isCandidates} />
-      {!isCandidates ? <HRJobDetail id={id} /> : <HRJobPostCandidates />}
+      <JobDetailMenu isCandidates={isCandidates} id={id} />
+      {!isCandidates ? (
+        <HRJobDetail id={id} />
+      ) : (
+        <HRJobPostCandidates jp_id={id} />
+      )}
     </>
   );
 }

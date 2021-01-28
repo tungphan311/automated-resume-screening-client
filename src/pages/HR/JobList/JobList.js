@@ -1,10 +1,16 @@
-import { EditFilled, FileTextOutlined, DeleteFilled } from "@ant-design/icons";
+import {
+  EditFilled,
+  FileTextOutlined,
+  DeleteFilled,
+  CloseOutlined
+} from "@ant-design/icons";
 import { Table } from "antd";
 import JobMenu from "components/JobMenu/JobMenu";
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import {
+  closeJob,
   deleteJobPost,
   hrGetJobCount,
   hrGetJobs
@@ -16,6 +22,7 @@ import qs from "query-string";
 import swal from "sweetalert";
 import jwt_decode from "jwt-decode";
 import { JOBS_MENU } from "constants/index";
+import LoadingContent from "components/Loading/LoadingContent";
 
 function HRJobList() {
   const { search } = history.location;
@@ -64,6 +71,34 @@ function HRJobList() {
               setLoading(false);
             });
           setSelectedRowKeys([]);
+        } else {
+          swal("Chúc mừng dữ liệu của bạn vẫn an toàn!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleCloseJp = async (id) => {
+    swal({
+      title: "Bạn có chắc không?",
+      text: "Một khi đóng, bạn không thể khôi phục thông tin đã chọn!",
+      icon: "warning",
+      buttons: ["Huỷ", "Tiếp tục"],
+      dangerMode: true
+    })
+      .then(async (willDelete) => {
+        if (willDelete) {
+          setLoading(true);
+
+          await closeJob(id, token)
+            .then(() => {
+              toast({ message: "Đóng tin tuyển dụng thành công" });
+              setJobChange(jobChange + 1);
+            })
+            .catch((err) => toastErr(err))
+            .finally(() => setLoading(false));
         } else {
           swal("Chúc mừng dữ liệu của bạn vẫn an toàn!");
         }
@@ -166,9 +201,15 @@ function HRJobList() {
               </Link>
             </li>
             <li>
-              <Link to="#">
+              <Link to={`/recruiter/jobs/${id}/edit`}>
                 <EditFilled />
                 {" Chỉnh sửa tin"}
+              </Link>
+            </li>
+            <li>
+              <Link to="#" onClick={() => handleCloseJp(id)}>
+                <CloseOutlined />
+                {" Đóng tin tuyển dụng"}
               </Link>
             </li>
             <li>
@@ -317,7 +358,8 @@ function HRJobList() {
             </ul>
           </div>
           <div id="box-jobs">
-            <div className="jobs">
+            <div className="jobs" style={{ position: "relative" }}>
+              <LoadingContent loading={loading} />
               {!posts.length ? (
                 <EmptyJob />
               ) : (

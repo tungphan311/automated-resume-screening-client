@@ -1,81 +1,261 @@
 import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Pagination, Select } from "antd";
+import React, { useState, useEffect } from "react";
+import { Pagination, Select, Progress, Tooltip, Tag } from "antd";
 import { WEIGHTS } from "constants/index";
+import "./JobManage.scss";
+import { getAppliedResumes } from "services/hrJobServices";
+import { useSelector } from "react-redux";
+import {
+  formatMonths,
+  formatProvince,
+  format_date,
+  toastErr
+} from "utils/index";
+import LoadingContent from "components/Loading/LoadingContent";
+import HRJobPostCandidateDetail from "pages/HR/JobDetail/CandidateDetail";
+import { CheckCircleOutlined } from "@ant-design/icons";
+import { saveCandidate } from "services/filterServices";
 
-function HRJobPostCandidates() {
+function HRJobPostCandidates({ jp_id }) {
+  const [weights, setWeights] = useState({
+    general: 2,
+    domain: 3,
+    softskill: 1
+  });
+  const [resumes, setResumes] = useState([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    total: 0
+  });
+  const [loading, setLoading] = useState(false);
+  const [resume, setResume] = useState(0);
+  const [avgScore, setAvgScore] = useState({
+    avg_soft_score: 0,
+    avg_domain_score: 0,
+    avg_general_score: 0
+  });
+
+  const { token } = useSelector((state) => state.auth.recruiter);
+  const { provinces } = useSelector((state) => state.cv);
+
+  const mapResonseToState = (result) => {
+    const {
+      candidate,
+      resume,
+      scores: { domain_score, general_score, softskill_score },
+      submission,
+      saved
+    } = result;
+
+    return {
+      candidate,
+      applyDate: submission.submit_date,
+      domainScore: domain_score,
+      generalScore: general_score,
+      softSkillScore: softskill_score,
+      province: candidate.province_id,
+      resumeId: resume.id,
+      skills: resume.technical_skills,
+      months_of_experience: resume.months_of_experience,
+      resume,
+      domain_score,
+      general_score,
+      softskill_score,
+      saved
+    };
+  };
+
+  useEffect(() => {
+    const { general, domain, softskill } = weights;
+    setLoading(true);
+    const fetchResumes = async () => {
+      await getAppliedResumes(
+        jp_id,
+        token,
+        pagination.page,
+        general,
+        domain,
+        softskill
+      )
+        .then((res) => {
+          const response = res.data;
+          const {
+            data,
+            pagination: { total },
+            statistics: { avg_domain_score, avg_general_score, avg_soft_score }
+          } = response;
+
+          setResumes(data.map((res) => mapResonseToState(res)));
+          setPagination({ ...pagination, total });
+          setAvgScore({ avg_domain_score, avg_general_score, avg_soft_score });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+
+    fetchResumes();
+  }, [pagination.page, weights]);
+
   return (
     <div className="container">
-      <div className="row">
-        <div className="col-md-3">
-          <Filter />
-        </div>
-        <div className="col-md-9">
-          <div className="panel panel-default search-result">
-            <div className="panel-body">
-              <div className="results-stats">
-                <strong>1 - 12</strong>
-                {" trong "}
-                <strong>100</strong>
-                {" ứng viên đã ứng tuyển"}
+      {!resume ? (
+        <div className="row">
+          <div className="col-md-3">
+            <Filter {...weights} setWeights={setWeights} />
+          </div>
+          <div className="col-md-9">
+            <LoadingContent loading={loading} />
+            <div className="panel panel-default search-result">
+              <div className="panel-body">
+                <div className="results-stats">
+                  {resumes.length ? (
+                    <>
+                      {" "}
+                      <strong>1 - {resumes.length}</strong>
+                      {" trong "}
+                    </>
+                  ) : null}
+                  <strong>{pagination.total}</strong>
+                  {" ứng viên đã ứng tuyển"}
+                </div>
+                <div className="candidate-list">
+                  {resumes.length ? (
+                    resumes.map((resume) => (
+                      <Candidate
+                        {...weights}
+                        {...resume}
+                        setResume={setResume}
+                        provinces={provinces}
+                        token={token}
+                      />
+                    ))
+                  ) : (
+                    <EmptyJob />
+                  )}
+                </div>
+                <nav>
+                  <Pagination
+                    total={pagination.total}
+                    showSizeChanger={false}
+                  />
+                </nav>
               </div>
-              <div className="candidate-list">
-                <Candidate />
-                <Candidate />
-                <Candidate />
-              </div>
-              <nav>
-                <Pagination
-                  total={100}
-                  showSizeChanger={false}
-                  // pageSize={pageSize}
-                />
-              </nav>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <HRJobPostCandidateDetail
+          detail={resumes.find((r) => r.resumeId === resume)}
+          provinces={provinces}
+          setResume={setResume}
+          avgScore={avgScore}
+        />
+      )}
     </div>
   );
 }
 
 export default HRJobPostCandidates;
 
-const Filter = () => (
-  <div className="panel panel-default">
-    <div className="panel-body no-padding">
-      <div className="filter-group">
-        <h4 className="filter-title">
-          <i className="fa fa-magic"></i> Sắp xếp ứng viên
-        </h4>
-        <div className="filter-group">
-          <h4 className="filter-title">Điểm kỹ năng chung</h4>
+const Filter = ({ general, domain, softskill, setWeights }) => {
+  const [weights, updateWeights] = useState({
+    general,
+    domain,
+    softskill
+  });
 
-          <Select options={WEIGHTS} defaultValue={WEIGHTS[2].value} />
-        </div>
+  return (
+    <div className="panel panel-default">
+      <div className="panel-body no-padding">
         <div className="filter-group">
-          <h4 className="filter-title">Điểm kỹ năng chuyên ngành</h4>
+          <h4 className="filter-title">
+            <i className="fa fa-magic"></i> Sắp xếp ứng viên
+          </h4>
+          <div className="filter-group">
+            <h4 className="filter-title">Điểm kỹ năng chung</h4>
 
-          <Select options={WEIGHTS} defaultValue={WEIGHTS[2].value} />
-        </div>
-        <div className="filter-group">
-          <h4 className="filter-title">Điểm kỹ năng mềm</h4>
+            <Select
+              options={WEIGHTS}
+              defaultValue={general}
+              onChange={(value) =>
+                updateWeights((curState) => ({ ...curState, general: value }))
+              }
+            />
+          </div>
+          <div className="filter-group">
+            <h4 className="filter-title">Điểm kỹ năng chuyên ngành</h4>
 
-          <Select options={WEIGHTS} defaultValue={WEIGHTS[2].value} />
-        </div>
-        <div className="text-center">
-          <button className="btn btn-primary">Cập nhật trọng số</button>
+            <Select
+              options={WEIGHTS}
+              defaultValue={domain}
+              onChange={(value) =>
+                updateWeights((curState) => ({ ...curState, domain: value }))
+              }
+            />
+          </div>
+          <div className="filter-group">
+            <h4 className="filter-title">Điểm kỹ năng mềm</h4>
+
+            <Select
+              options={WEIGHTS}
+              defaultValue={softskill}
+              onChange={(value) =>
+                updateWeights((curState) => ({ ...curState, softskill: value }))
+              }
+            />
+          </div>
+          <div className="text-center" onClick={() => setWeights(weights)}>
+            <button className="btn btn-primary">Cập nhật trọng số</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
-const Candidate = () => {
+const Candidate = ({
+  general,
+  domain,
+  softskill,
+  candidate,
+  applyDate,
+  domainScore,
+  generalScore,
+  softSkillScore,
+  skills,
+  months_of_experience,
+  education,
+  resumeId,
+  setResume,
+  provinces,
+  saved,
+  token
+}) => {
   const [isShowing, setShowing] = useState(false);
+  const [isSaved, setIsSaved] = useState(saved);
+
+  const handleSave = async () => {
+    const status = isSaved ? 0 : 1;
+
+    await saveCandidate(resumeId, status, token)
+      .then(() => {
+        setIsSaved(!saved);
+      })
+      .catch((err) => toastErr(err));
+  };
 
   const handleClose = () => setShowing(false);
+
+  const maxScore = general + domain + softskill;
+  const score = Number(
+    generalScore * general + domainScore * domain + softSkillScore * softskill
+  ).toFixed(2);
+
+  const { full_name, province_id } = candidate;
 
   return (
     <div className="candidate">
@@ -84,18 +264,103 @@ const Candidate = () => {
       </div>
       <div className="row">
         <div className="col-md-10">
-          <Link to="#" className="name">
-            Phan Thanh Tùng
-          </Link>
+          <button onClick={() => setResume(resumeId)} className="name">
+            {full_name}
+            {isSaved && (
+              <span style={{ marginLeft: 20 }}>
+                <Tag icon={<CheckCircleOutlined />} color="success">
+                  Đã theo dõi
+                </Tag>
+              </span>
+            )}
+          </button>
           <div>
-            <u>Ngày ứng tuyển:</u>
-            <b>{" 30/12/2020"}</b>
+            <u>Ngày ứng tuyển</u>: <b>{format_date(applyDate)}</b>
+          </div>
+          <div style={{ width: "60%" }} className="candidate-score">
+            <Tooltip placement="top" title="Điểm kỹ năng chung">
+              <Progress
+                percent={parseInt(generalScore * 100)}
+                size="small"
+                format={() =>
+                  `${Number(generalScore * general).toFixed(2)}/${general}`
+                }
+                strokeColor="blue"
+              />
+            </Tooltip>
+          </div>
+          <div style={{ width: "60%" }} className="candidate-score">
+            <Tooltip placement="top" title="Điểm kỹ năng chuyên ngành">
+              <Progress
+                percent={parseInt(domainScore * 100)}
+                size="small"
+                format={() =>
+                  `${Number(domainScore * domain).toFixed(2)}/${domain}`
+                }
+                strokeColor="#ff7f24"
+              />
+            </Tooltip>
+          </div>
+          <div style={{ width: "60%" }} className="candidate-score">
+            <Tooltip placement="top" title="Điểm kỹ năng mềm">
+              <Progress
+                percent={parseInt(softSkillScore * 100)}
+                size="small"
+                format={() =>
+                  `${Number(softSkillScore * softskill).toFixed(
+                    2
+                  )}/${softskill}`
+                }
+                strokeColor="#f34f80"
+              />
+            </Tooltip>
           </div>
         </div>
-        <div className="col-md-2 text-right">
+        <div className="col-md-2 text-right" id="candidate-score">
+          <Progress
+            type="circle"
+            percent={parseInt((score * 100) / maxScore)}
+            format={() => `${score}/${maxScore}`}
+          />
+        </div>
+      </div>
+      {education && (
+        <div className="row" style={{ marginTop: "10px" }}>
+          <div className="col-md-10">
+            <div className="education">
+              <i className="fa fa-graduation-cap"></i>
+              <span>University of Information Technology</span>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="row" style={{ marginTop: 10 }}>
+        <div className="col-md-10">
+          <div className="location mr-5">
+            <i className="fa fa-map-marker mr-5"></i>
+            Địa điểm: {formatProvince(provinces, province_id)}
+          </div>
+          <div className="location">
+            <i className="fa fa-calendar-check-o mr-5"></i> Thời gian làm việc
+            thực tế: {formatMonths(months_of_experience)}
+          </div>
+          <div className="location location-right">
+            <i className="fa fa-star mr-5"></i> Kỹ năng:{" "}
+            {skills.replaceAll("|", ", ")}
+          </div>
+        </div>
+        <div
+          className="col-md-2 text-right"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end"
+          }}
+        >
           <OutsideClickWrapper
             isShowing={isShowing}
             onClickOutside={handleClose}
+            className="pos-relative"
           >
             <button
               className="candidate-action-btn"
@@ -105,22 +370,21 @@ const Candidate = () => {
             </button>
             {isShowing && (
               <span className="candidate-action-menu">
-                <button className="candidate-action-item">
+                <button
+                  className="candidate-action-item"
+                  onClick={() => setResume(resumeId)}
+                >
                   <i className="fas fa-check"></i>
                   <span className="candidate-action-item-text">
-                    Chấp thuận ứng viên
+                    Xem chi tiết ứng viên
                   </span>
                 </button>
-                <button className="candidate-action-item">
+                <button className="candidate-action-item" onClick={handleSave}>
                   <i className="fas fa-clipboard-list"></i>
                   <span className="candidate-action-item-text">
-                    Thêm vào danh sách theo dõi
-                  </span>
-                </button>
-                <button className="candidate-action-item">
-                  <i className="fas fa-times"></i>
-                  <span className="candidate-action-item-text">
-                    Từ chối ứng viên
+                    {isSaved
+                      ? "Xoá khỏi danh sách theo dõi"
+                      : "Thêm vào danh sách theo dõi"}
                   </span>
                 </button>
               </span>
@@ -128,41 +392,21 @@ const Candidate = () => {
           </OutsideClickWrapper>
         </div>
       </div>
-      <div className="row" style={{ marginTop: "10px" }}>
-        <div className="col-md-10">
-          <div className="experience">
-            <i className="fa fa-briefcase"></i>
-            <span>Frontend Developer - Designveloper</span>
-          </div>
-          <div className="education">
-            <i className="fa fa-graduation-cap"></i>
-            <span>University of Information Technology</span>
-          </div>
-        </div>
-      </div>
-      <div className="row" style={{ marginTop: 10 }}>
-        <div className="col-md-10">
-          <div className="location mr-5">
-            <i className="fa fa-map-marker mr-5"></i>
-            Địa điểm: Hồ Chí Minh
-          </div>
-          <div className="location">
-            <i className="fa fa-calendar-check-o mr-5"></i> Thời gian làm việc
-            thực tế: 1 năm 1 tháng
-          </div>
-          <div className="location location-right">
-            <i className="fa fa-star mr-5"></i> Mục tiêu: I've been interested
-            in computer science when i was a child. I am good at imagination. I
-            can read and understand documents quickly, thus i can easily apply
-            what i have learned to solve the problem. With experience and
-            knowledge gained during working for MegaNet (the company that i have
-            been working), now i can build on my own a web-app in small or
-            medium scale(with frameworks and libraries i describe in Experience
-            section). My goal is becoming a Technical Architect in next 3-5
-            years.
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
+
+const EmptyJob = () => (
+  <>
+    <div className="text-center">
+      <img
+        src="/assets/svg/Empty.svg"
+        alt="empty icon"
+        style={{ width: "380px", height: "160px", margin: "50px auto" }}
+      />
+      <p style={{ paddingBottom: "80px" }}>
+        Chưa có ứng viên nào ứng tuyển tin này!
+      </p>
+    </div>
+  </>
+);

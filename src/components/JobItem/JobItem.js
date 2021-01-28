@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./JobItem.scss";
-import { HeartOutlined } from "@ant-design/icons";
-import { Tooltip } from "antd";
+// import { HeartOutlined } from "@ant-design/icons";
+// import { Tooltip } from "antd";
 import JobDetail from "components/JobItem/JobDetail";
 import { format_date } from "utils/index";
 
@@ -11,6 +11,7 @@ function JobItem({
   curSelect,
   onChangeSelect,
   top,
+  bottom,
   jobTitle,
   company,
   salary,
@@ -58,7 +59,7 @@ function JobItem({
             <div className="result-link-bar-container">
               <div className="result-link-bar">
                 <span className="date">{format_date(lastEdit)}</span>
-                <div className="tt_set">
+                {/* <div className="tt_set">
                   <div className="job-reaction">
                     <Tooltip placement="right" title="Nhấn để lưu tin này">
                       <button className="job-reaction-love">
@@ -66,14 +67,19 @@ function JobItem({
                       </button>
                     </Tooltip>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </div>
       </div>
       {jobId === curSelect && (
-        <JobDetail id={jobId} top={top} onChangeSelect={onChangeSelect} />
+        <JobDetail
+          id={jobId}
+          top={top}
+          onChangeSelect={onChangeSelect}
+          bottom={bottom}
+        />
       )}
     </>
   );

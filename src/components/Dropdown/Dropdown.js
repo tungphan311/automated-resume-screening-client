@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { CaretDownOutlined } from "@ant-design/icons";
 import "./Dropdown.scss";
+import { Input } from "antd";
 import OutsideClickWrapper from "components/OutsideClickWrapper/OutsideClickWrapper";
+import { Close } from "constants/svg";
 
-function Dropdown({ title, options, value, onChange }) {
+function Dropdown({ title, options, value, onChange, select = false }) {
   const [isShowing, setShowing] = useState(false);
+  const [input, setInput] = useState(0);
 
   const openDropdown = () => setShowing(true);
   const closeDropdown = () => setShowing(false);
@@ -13,9 +16,23 @@ function Dropdown({ title, options, value, onChange }) {
     onChange(value);
     closeDropdown();
   };
+
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    const reg = /^-?\d*(\.\d*)?$/;
+    if ((!isNaN(value) && reg.test(value)) || value === "" || value === "-") {
+      setInput(value);
+    }
+  };
+
+  const handleUpdate = () => {
+    onChange(input);
+    closeDropdown();
+  };
+
   return (
     <div className="dd-wrapper">
-      {value === null ? (
+      {value === null || value === undefined ? (
         <>
           <button className="dd-button" onClick={openDropdown}>
             <span>
@@ -31,26 +48,65 @@ function Dropdown({ title, options, value, onChange }) {
             isShowing={isShowing}
             onClickOutside={closeDropdown}
           >
-            <ul
-              className={`dropdown-content dd-menu ${
-                isShowing ? "" : "dd-hidden"
-              }`}
-            >
-              {options.map(({ value, label }) => (
-                <Option
-                  key={value}
-                  value={value}
-                  label={label}
-                  handleSelect={handleSelect}
-                />
-              ))}
-            </ul>
+            {select ? (
+              <ul
+                className={`dropdown-content dd-menu ${
+                  isShowing ? "" : "dd-hidden"
+                }`}
+              >
+                {options.map(({ value, label }) => (
+                  <Option
+                    key={value}
+                    value={value}
+                    label={label}
+                    handleSelect={handleSelect}
+                  />
+                ))}
+              </ul>
+            ) : (
+              <div className="salary-selector-wrapper">
+                <div
+                  className={`salary-selector ${isShowing ? "" : "dd-hidden"}`}
+                >
+                  <div className="salary-selector-content">
+                    <h2 className="salary-header">
+                      {title} trong tháng mà bạn muốn?
+                    </h2>
+                  </div>
+                  <Input
+                    value={input}
+                    suffix="triệu"
+                    style={{ marginBottom: 16 }}
+                    onChange={handleInputChange}
+                  />
+                  <div id="salary-filter-submission">
+                    <span
+                      onClick={handleUpdate}
+                      tabIndex="0"
+                      role="button"
+                      className="apply-button"
+                    >
+                      Cập nhật
+                    </span>
+                  </div>
+                  <div
+                    className="salary-filter-close"
+                    role="button"
+                    onClick={closeDropdown}
+                  >
+                    {Close}
+                  </div>
+                </div>
+              </div>
+            )}
           </OutsideClickWrapper>
         </>
       ) : (
         <button className="dd-button dd-target blue">
           <span>
-            {options.find((ele) => ele.value === value).label}
+            {select
+              ? options.find((ele) => ele.value === value).label
+              : `${title}: ${value} triệu`}
             <div className="filters-close" onClick={() => onChange(null)}>
               <img src="/assets/svg/Close.svg" alt="clear filter" />
             </div>

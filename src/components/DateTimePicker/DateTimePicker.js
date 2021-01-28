@@ -1,13 +1,15 @@
 import { DatePicker, Space } from "antd";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./DateTimePicker.scss";
+import locale from "antd/lib/locale/vi_VN";
+import "moment/locale/vi";
 
 function DateTimePicker({
   formClassName = "",
   label = "",
   subLabel = "",
-  format = "YYYY-MM-DD HH:mm",
+  format = "HH:mm DD/MM/YYYY",
   showTime = false,
   required = false,
   meta = {}, // redux form
@@ -18,7 +20,7 @@ function DateTimePicker({
   const showError = touched && error;
   const { errCode } = error || {};
 
-  const [date, setDate] = useState(input.value);
+  const [date, setDate] = useState(null);
 
   const onChange = (value) => {
     setDate(value);
@@ -27,6 +29,12 @@ function DateTimePicker({
   function onOk(value) {
     input.onChange(moment(value).toISOString());
   }
+
+  useEffect(() => {
+    if (input.value) {
+      setDate(moment(input.value));
+    }
+  }, [input.value]);
 
   return (
     <div className={`form-group ${formClassName}`}>
@@ -46,6 +54,7 @@ function DateTimePicker({
             showTime={showTime}
             onOk={onOk}
             onChange={onChange}
+            locale={locale}
           />
         </Space>
       </div>

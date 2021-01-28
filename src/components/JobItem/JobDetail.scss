@@ -94,9 +94,10 @@
   .state-picker-button {
     border-radius: 0.5rem;
     background-color: #ececec;
-    width: 2.75rem;
     height: 2.75rem;
     border: 0;
+    font-size: 16px;
+    padding: 0 10px;
 
     &:hover,
     &:focus {

@@ -5,6 +5,8 @@ import { getCookie } from "utils/cookies";
 import jwt_decode from "jwt-decode";
 import { getProvinces } from "services/externalServices";
 import { GET_PROVINCES_SUCCESS } from "state/reducers/cvReducer";
+import { getJobDomain } from "services/hrJobServices";
+import { GET_JOB_DOMAIN_SUCCESS } from "state/reducers/jobDomainReducer";
 
 export function* initSaga() {
   try {
@@ -37,9 +39,13 @@ export function* initSaga() {
       });
     }
 
+    // get provinces from external API
     const result = yield call(getProvinces);
-
     yield put({ type: GET_PROVINCES_SUCCESS, provinces: result.data.results });
+
+    // get all domains
+    const result1 = yield call(getJobDomain);
+    yield put({ type: GET_JOB_DOMAIN_SUCCESS, response: result1.data.data });
   } catch (err) {
     yield toastErr(String(err));
   }

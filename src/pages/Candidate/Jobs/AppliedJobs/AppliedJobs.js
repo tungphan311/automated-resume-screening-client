@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./AppliedJobs.scss";
 import { DollarCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { getApplyJobs } from "services/jobServices";
 
 const JOBS = [
   {
@@ -42,7 +44,19 @@ const JOBS = [
 function CandidateAppliedJobs() {
   const [jobs, setJobs] = useState(JOBS);
 
+  const { token } = useSelector((state) => state.auth.candidate);
+
   console.log(setJobs);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      await getApplyJobs(1, token)
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
+    };
+
+    fetchJobs();
+  }, []);
 
   return (
     <div className="container" style={{ marginTop: 20 }}>

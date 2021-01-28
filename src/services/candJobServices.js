@@ -16,5 +16,7 @@ export const candidateGetJobList = async (
   !is_HR
     ? await API.get("/job-posts")
     : await API.get("/job-posts", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });

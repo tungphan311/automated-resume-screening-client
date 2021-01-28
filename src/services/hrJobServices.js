@@ -6,6 +6,20 @@ export const addNewJob = async (job, token) =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
+export const updateJob = async (job, id, token) =>
+  await API.put(`/job-posts/${id}`, job, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+export const closeJob = async (id, token) =>
+  await API.post(
+    `/job-posts/${id}/close`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+
 export const getJobDomain = async () => await API.get("/job-domains");
 
 export const hrGetJobs = async (
@@ -61,3 +75,24 @@ export const deleteJobPost = async (ids, token) => {
 };
 
 export const getMajors = async () => await API.get("/majors");
+
+export const getAppliedResumes = async (
+  jp_id,
+  token,
+  page,
+  general_weight,
+  domain_weight,
+  soft_weight
+) => {
+  const params = qs.stringify({
+    page,
+    "page-size": 10,
+    general_weight,
+    domain_weight,
+    soft_weight
+  });
+
+  return await API.get(`/job-posts/${jp_id}/candidates?${params}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+};

@@ -3,13 +3,22 @@ import {
   FundViewOutlined,
   FileDoneOutlined,
   HeartOutlined,
-  FileExcelOutlined
+  DeleteFilled,
+  CloseOutlined
 } from "@ant-design/icons";
 import Widget from "components/Widget/Widget";
-import { hrGetJobDetail } from "services/hrJobServices";
+import {
+  closeJob,
+  deleteJobPost,
+  hrGetJobDetail
+} from "services/hrJobServices";
 import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
-import { toastErr } from "utils/index";
+import { formatDateTime, toast, toastErr } from "utils/index";
+import { Button } from "antd";
+import { EditOutlined } from "@ant-design/icons";
+import history from "state/history";
+import swal from "sweetalert";
 
 function HRJobDetail({ id }) {
   const [post, setPost] = useState({});
@@ -37,6 +46,69 @@ function HRJobDetail({ id }) {
     fetchData();
   }, []);
 
+  const handleCloseJp = () => {
+    swal({
+      title: "Bạn có chắc không?",
+      text: "Một khi đóng, bạn không thể khôi phục thông tin đã chọn!",
+      icon: "warning",
+      buttons: ["Huỷ", "Tiếp tục"],
+      dangerMode: true
+    })
+      .then(async (willDelete) => {
+        if (willDelete) {
+          setLoading(true);
+
+          await closeJob(id, token)
+            .then(() => {
+              toast({ message: "Đóng tin tuyển dụng thành công" });
+              history.push("/recruiter/jobs");
+            })
+            .catch((err) => toastErr(err))
+            .finally(() => setLoading(false));
+        } else {
+          swal("Chúc mừng dữ liệu của bạn vẫn an toàn!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDelete = () => {
+    swal({
+      title: "Bạn có chắc không?",
+      text: "Một khi xoá, bạn không thể khôi phục những tin đã chọn!",
+      icon: "warning",
+      buttons: ["Huỷ", "Xoá"],
+      dangerMode: true
+    })
+      .then(async (willDelete) => {
+        if (willDelete) {
+          const ids = [id];
+
+          setLoading(true);
+          await deleteJobPost(ids, token)
+            .then((res) => {
+              const { message } = res.data;
+              toast({ message });
+
+              history.push("/recruiter/jobs");
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        } else {
+          swal("Chúc mừng dữ liệu của bạn vẫn an toàn!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const { total_view, total_save, total_apply } = post;
 
   return (
@@ -59,22 +131,31 @@ function HRJobDetail({ id }) {
             value={Intl.NumberFormat().format(total_save)}
             icon={<HeartOutlined style={{ fontSize: 48 }} />}
           />
-          <Widget
-            title="Chấp thuận ứng viên"
-            value={Intl.NumberFormat().format(10)}
-            icon={<FileExcelOutlined style={{ fontSize: 48 }} />}
-          />
-          <Widget
-            title="Từ chối ứng viên"
-            value={Intl.NumberFormat().format(2)}
-            icon={<FileExcelOutlined style={{ fontSize: 48 }} />}
-          />
         </div>
         <div className="col-md-9" style={{ paddingRight: 0 }}>
           <div className="panel panel--light">
             <div className="panel-body">
               <div className="jp-header">
                 <h5>Thông tin chi tiết</h5>
+                <div>
+                  <Button
+                    icon={<EditOutlined />}
+                    onClick={() => history.push(`/recruiter/jobs/${id}/edit`)}
+                    className="mr-5"
+                  >
+                    Chỉnh sửa tin
+                  </Button>
+                  <Button
+                    icon={<CloseOutlined />}
+                    onClick={handleCloseJp}
+                    className="mr-5"
+                  >
+                    Đóng tin
+                  </Button>
+                  <Button icon={<DeleteFilled />} onClick={handleDelete}>
+                    Xoá tin
+                  </Button>
+                </div>
               </div>
               <div>
                 <Detail {...post} loading={loading} />
@@ -115,27 +196,13 @@ const Detail = ({
       <tr>
         <td className="jp-label">Ngày đăng tin</td>
         <td className="jp-value">
-          {!loading ? (
-            posted_in &&
-            new Date(
-              posted_in.substring(1, posted_in.length - 1)
-            ).toLocaleDateString()
-          ) : (
-            <MyLoader />
-          )}
+          {!loading ? posted_in && formatDateTime(posted_in) : <MyLoader />}
         </td>
       </tr>
       <tr>
         <td className="jp-label">Hạn chót nộp hồ sơ</td>
         <td className="jp-value">
-          {!loading ? (
-            deadline &&
-            new Date(
-              deadline.substring(1, deadline.length - 1)
-            ).toLocaleDateString()
-          ) : (
-            <MyLoader />
-          )}
+          {!loading ? deadline && formatDateTime(deadline) : <MyLoader />}
         </td>
       </tr>
       <tr>
