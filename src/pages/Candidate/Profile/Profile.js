@@ -141,9 +141,9 @@ function CandidateProfile() {
                   src="https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
                   alt="logo"
                 />
-                <p className="profile__wrapper__info__general__avatar__update">
+                {/* <p className="profile__wrapper__info__general__avatar__update">
                   Cập nhập ảnh
-                </p>
+                </p> */}
               </div>
               <div className="profile__wrapper__info__general__detail">
                 <p>Chào bạn</p>
