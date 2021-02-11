@@ -9,7 +9,8 @@ import React from "react";
 export const NAVIGATIONS = [
   { title: "Tìm việc", url: "/find-jobs", link: true },
   { title: "Việc làm đã lưu", url: "/saved-jobs", link: true },
-  { title: "Việc làm đã ứng tuyển", url: "/applied-jobs", link: true }
+  { title: "Việc làm đã ứng tuyển", url: "/applied-jobs", link: true },
+  { title: "Quản lý CV", url: "/profile", link: true }
 ];
 
 export const RECRUITER_NAV = [

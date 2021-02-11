@@ -129,8 +129,6 @@ function HRFilterDetail({
     notAllowedSkills
   } = filter;
 
-  console.log(candidates);
-
   const onselectionchange = (key, value) => {
     if (!filterChange) {
       setFilterChange(true);
@@ -489,6 +487,8 @@ const Candidate = ({
       });
   };
 
+  const closeModal = () => toggleShow(false);
+
   return (
     <div className="candidate" onClick={() => toggleShow(true)}>
       <div className="avatar">
@@ -544,7 +544,7 @@ const Candidate = ({
       </div>
       <ResumeModal
         show={show}
-        toggleModal={() => toggleShow(false)}
+        toggleModal={closeModal}
         saved={isSaved}
         handleSave={handleSave}
         {...{ url, download_url }}

@@ -5,12 +5,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { UPDATE_CV_VALUES } from "state/reducers/cvReducer";
 import { InputNumber } from "antd";
 
-function ExperienceForm({
-  curStep,
-  handleChangeStep,
-  hideBtn = false,
-  changeCallback
-}) {
+function ExperienceForm({ curStep, handleChangeStep, hideBtn = false }) {
   const experience = useSelector((state) => state.cv.experience, shallowEqual);
   const dispatch = useDispatch();
   const [month, setMonth] = useState(0);
@@ -19,7 +14,6 @@ function ExperienceForm({
 
   const handleChange = (evt) => {
     setHtml(evt.target.value);
-    changeCallback(true);
   };
 
   const handleSubmit = () => {
@@ -56,7 +50,6 @@ function ExperienceForm({
                   value={month}
                   onChange={(value) => {
                     setMonth(value);
-                    changeCallback(true);
                   }}
                 />
                 <span>

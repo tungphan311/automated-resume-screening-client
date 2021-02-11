@@ -86,10 +86,9 @@ function CandidateSavedJobs() {
   }, [page, province_list, unsaved]);
 
   const handleUnsaved = async (job_id) => {
-    setUnsaved(unsaved + 1);
-
     await saveJob(job_id, 0, token)
       .then(() => {
+        setUnsaved(unsaved + 1);
         toast({ message: "Bỏ lưu thành công" });
       })
       .catch((err) => {
@@ -174,7 +173,7 @@ const Job = ({
       </div>
       <div className="col-sm-8">
         <h4 className="job-title">
-          <Link target="_blank" to="#">
+          <Link to="#">
             <span className="bold transform-job-title">{job_title}</span>
           </Link>
         </h4>

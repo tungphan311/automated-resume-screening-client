@@ -5,12 +5,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { UPDATE_CV_VALUES } from "state/reducers/cvReducer";
 import "./ReviewForm.scss";
 
-function EducationForm({
-  curStep,
-  handleChangeStep,
-  hideBtn = false,
-  changeCallback
-}) {
+function EducationForm({ curStep, handleChangeStep, hideBtn = false }) {
   const education = useSelector((state) => state.cv.education, shallowEqual);
   const dispatch = useDispatch();
 
@@ -18,7 +13,6 @@ function EducationForm({
 
   const handleChange = (evt) => {
     setHtml(evt.target.value);
-    changeCallback(true);
   };
 
   const handleSubmit = () => {

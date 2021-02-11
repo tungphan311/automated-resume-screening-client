@@ -4,63 +4,81 @@ import "./AppliedJobs.scss";
 import { DollarCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { getApplyJobs } from "services/jobServices";
-
-const JOBS = [
-  {
-    id: 1,
-    job_title: "Lập Trình Viên Front End",
-    created_on: "02:59 31/12/2020",
-    company_name: "CÔNG TY TNHH VATNOW",
-    salary: "14-20 triệu",
-    deadline: "20/01/2021",
-    province: "Thành phố Hồ Chí Minh",
-    company_logo:
-      "https://static.topcv.vn/company_logos/cong-ty-tnhh-vatnow-5fe57ab39a165.jpg"
-  },
-  {
-    id: 2,
-    job_title: "Front End Developer",
-    created_on: "20:19 08/01/2021",
-    company_name: "Công ty TNHH Truyền Thông và Giải pháp Trực Tuyến LeadsGen",
-    salary: "6-18 triệu",
-    deadline: "30/01/2021",
-    province: "Thành phố Hồ Chí Minh",
-    company_logo:
-      "https://static.topcv.vn/company_logos/cong-ty-tnhh-truyen-thong-va-giai-phap-truc-tiep-leadsgen-5b6412bac4ac5_rs.jpg"
-  },
-  {
-    id: 3,
-    job_title: "Lập Trình Viên Front End ( Nghỉ T7 Và Chủ Nhật) - Lương Net",
-    created_on: "20:39 08/01/2021",
-    company_name: "SonatGame Studio",
-    salary: "Thoả thuận",
-    deadline: "01/02/2021",
-    province: "Thành phố Hồ Chí Minh",
-    company_logo:
-      "https://static.topcv.vn/company_logos/sonatgame-studio-5ce254d301c98.jpg"
-  }
-];
+import { formatDateTime, toastErr } from "utils/index";
+import { Tooltip, Pagination } from "antd";
+import LoadingContent from "components/Loading/LoadingContent";
 
 function CandidateAppliedJobs() {
-  const [jobs, setJobs] = useState(JOBS);
+  const [jobs, setJobs] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const { token } = useSelector((state) => state.auth.candidate);
+  const province_list = useSelector((state) => state.cv.provinces);
 
-  console.log(setJobs);
+  const onChange = (page) => {
+    setPage(page);
+  };
+
+  const mapResponseToState = (data) =>
+    data.map(
+      ({
+        submit_date,
+        job_post: {
+          id,
+          job_title,
+          company_name,
+          salary,
+          deadline,
+          provinces,
+          company_logo
+        }
+      }) => {
+        const province_names = provinces.map((id) => {
+          const p = province_list.find((p) => p.province_id === id);
+          return p ? p.province_name : "";
+        });
+
+        return {
+          id,
+          job_title,
+          created_on: formatDateTime(submit_date),
+          company_name,
+          salary,
+          deadline: formatDateTime(deadline),
+          province: province_names.join(", "),
+          company_logo
+        };
+      }
+    );
 
   useEffect(() => {
     const fetchJobs = async () => {
+      setLoading(true);
       await getApplyJobs(1, token)
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          const {
+            data,
+            pagination: { total }
+          } = res.data;
+
+          setJobs(mapResponseToState(data));
+          setTotal(total);
+        })
+        .catch((err) => toastErr(err))
+        .finally(() => setLoading(false));
     };
 
-    fetchJobs();
-  }, []);
+    if (province_list.length) {
+      fetchJobs();
+    }
+  }, [page, province_list]);
 
   return (
     <div className="container" style={{ marginTop: 20 }}>
       <div className="row">
+        <LoadingContent loading={loading} />
         <div className="col-sm-8">
           {!jobs.length ? (
             <Empty />
@@ -73,7 +91,7 @@ function CandidateAppliedJobs() {
                       className="text-primary bold"
                       style={{ fontSize: 21, marginBottom: 0 }}
                     >
-                      Danh sách 3 việc làm đã ứng tuyển
+                      Danh sách {total} việc làm đã ứng tuyển
                     </h1>
                   </div>
                 </div>
@@ -89,6 +107,15 @@ function CandidateAppliedJobs() {
                   ))}
                 </div>
               </div>
+              {total > 10 && (
+                <div className="text-center">
+                  <Pagination
+                    current={page}
+                    onChange={onChange}
+                    total={total}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -154,9 +181,9 @@ const Job = ({
           <img src={company_logo} alt="Company avatar" />
         </Link>
       </div>
-      <div className="col-sm-8">
+      <div className="col-sm-10">
         <h4 className="job-title">
-          <Link target="_blank" to="#">
+          <Link to="#">
             <span className="bold transform-job-title">{job_title}</span>
           </Link>
         </h4>
@@ -179,16 +206,17 @@ const Job = ({
             />
             {deadline}
           </div>
-          <div className="address col-sm-4 col-xs-12 text_ellipsis">
-            <i
-              className="fas fa-map-marker mr-5"
-              style={{ fontSize: 16, color: "#2557a7" }}
-            ></i>
-            {province}
-          </div>
+          <Tooltip placement="top" title={province}>
+            <div className="address col-sm-4 col-xs-12 text_ellipsis">
+              <i
+                className="fas fa-map-marker mr-5"
+                style={{ fontSize: 16, color: "#2557a7" }}
+              ></i>
+              {province}
+            </div>
+          </Tooltip>
         </div>
       </div>
-      <div className="col-sm-2 job-button-group"></div>
     </div>
   </div>
 );

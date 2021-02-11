@@ -6,7 +6,7 @@ import { Close } from "constants/svg";
 import ContentLoader from "react-content-loader";
 import ApplyModal from "components/Modals/Apply/ApplyModal";
 import { getJobDetail, saveJob } from "services/jobServices";
-import { format_date, toastErr } from "utils/index";
+import { format_date, toast, toastErr } from "utils/index";
 import LoginModal from "components/Modals/LoginModal/LoginModal";
 import { useSelector } from "react-redux";
 
@@ -37,7 +37,10 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
     const fetchJob = async () => {
       await getJobDetail(id, token)
         .then((res) => {
-          setJob(res.data.data);
+          setJob({
+            ...res.data.data.post,
+            saved: res.data.data.saved_date
+          });
         })
         .catch((err) => {
           toastErr(err);
@@ -190,16 +193,20 @@ const Header = ({
   const [loading, setLoading] = useState(false);
 
   const handleSaveJP = async () => {
-    setLoading(true);
-    setSave(!save);
-    const status = save ? 0 : 1;
+    if (!token) {
+      toast({ type: "info", message: "Vui lòng đăng nhập để lưu tin" });
+    } else {
+      setLoading(true);
+      setSave(!save);
+      const status = save ? 0 : 1;
 
-    await saveJob(id, status, token)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => toastErr(err))
-      .finally(() => setLoading(false));
+      await saveJob(id, status, token)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => toastErr(err))
+        .finally(() => setLoading(false));
+    }
   };
 
   return (
