@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import Dropdown from "components/Dropdown/Dropdown";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import JobItem from "components/JobItem/JobItem";
@@ -12,7 +13,7 @@ import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
 import qs from "query-string";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const MyLoader = (props) => (
   <ContentLoader
@@ -273,28 +274,34 @@ function CandidateJobList({ history }) {
                 <tr role="main" style={{ verticalAlign: "top" }}>
                   <td id="resultCol">
                     <div style={{ paddingTop: "6px" }}></div>
-                    <div className="resultsTop">
-                      <div className="secondRow">
-                        <div>
-                          Hiển thị:{" "}
-                          <span style={{ display: "inline-block" }}>
-                            <Select
-                              style={{ width: 140 }}
-                              options={PAGE_SIZES}
-                              value={pageSize}
-                              onChange={(value) =>
-                                onFilterChange("limit", value)
-                              }
-                            />
-                          </span>
-                        </div>
-                        <div className="searchCountContainer">
-                          {/* <div id="searchCountPages">Page 1 of 101 jobs</div> */}
+                    {total ? (
+                      <div className="resultsTop">
+                        <div className="secondRow">
+                          <div>
+                            Hiển thị:{" "}
+                            <span style={{ display: "inline-block" }}>
+                              <Select
+                                style={{ width: 140 }}
+                                options={PAGE_SIZES}
+                                value={pageSize}
+                                onChange={(value) =>
+                                  onFilterChange("limit", value)
+                                }
+                              />
+                            </span>
+                          </div>
+                          <div className="searchCountContainer">
+                            <div id="searchCountPages">
+                              {total} tin tuyển dụng
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : null}
                     {loading ? (
                       <MyLoader />
+                    ) : !jobs.length ? (
+                      <EmptyJob />
                     ) : (
                       jobs.map((job) => (
                         <JobItem
@@ -307,24 +314,44 @@ function CandidateJobList({ history }) {
                         />
                       ))
                     )}
-
-                    <nav>
-                      <div className="vjs-pagination">
-                        <Pagination
-                          current={page}
-                          total={total}
-                          showSizeChanger={false}
-                          showLessItems
-                          pageSize={pageSize}
-                          onChange={(page) => onFilterChange("page", page)}
-                        />
-                      </div>
-                    </nav>
+                    {total ? (
+                      <nav>
+                        <div className="vjs-pagination">
+                          <Pagination
+                            current={page}
+                            total={total}
+                            showSizeChanger={false}
+                            showLessItems
+                            pageSize={pageSize}
+                            onChange={(page) => onFilterChange("page", page)}
+                          />
+                        </div>
+                      </nav>
+                    ) : null}
                   </td>
                   {curSelect === null && (
                     <td role="region" id="auxCol">
                       <JobAlert />
-                      <div className="recentsearches"></div>
+                      <div id="recentsearches" className="no-left-rail">
+                        <div className="rsh">Tìm kiếm gần đây</div>
+                        <ul className="rsList">
+                          <li>
+                            <Link to="#">frontend - Thành phồ Hà Nội</Link>
+                          </li>
+                        </ul>
+                        <div>
+                          <a
+                            className="sl"
+                            title="Xoá toàn bộ tìm kiếm của bạn"
+                            href=""
+                            onClick={(e) => {
+                              e.preventDefault();
+                            }}
+                          >
+                            » Xoá lịch sử tìm kiếm
+                          </a>
+                        </div>
+                      </div>
                     </td>
                   )}
                   <td id="applyCol"></td>
@@ -378,6 +405,29 @@ const JobAlert = () => (
           </div>
         </div>
       </div>
+    </div>
+  </div>
+);
+
+const EmptyJob = () => (
+  <div style={{ backgroundColor: "white", marginTop: "1rem" }}>
+    <div className="text-center">
+      <img
+        src="/assets/svg/Empty.svg"
+        alt="empty icon"
+        style={{ width: "380px", height: "160px", margin: "50px auto" }}
+      />
+      <p style={{ paddingBottom: "20px" }}>Không có tin tuyển dụng nào!</p>
+    </div>
+    <div>
+      <p style={{ padding: "20px", color: "#555" }}>
+        <b>{"Hãy thử: "}</b>
+        <ul>
+          <li>Chọn từ khoá đơn giản hơn</li>
+          <li>Kiểm tra chính tả</li>
+          <li>Thay các từ viết tắt thành từ hoàn chỉnh</li>
+        </ul>
+      </p>
     </div>
   </div>
 );
