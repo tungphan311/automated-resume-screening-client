@@ -23,6 +23,16 @@
   padding: 0.75rem 1rem;
 }
 
+.home-select__control {
+  border: none !important;
+  width: 100%;
+
+  &--is-focused {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
 @media (min-width: 768px) {
   .rounded-md-right-0 {
     border-top-right-radius: 0 !important;

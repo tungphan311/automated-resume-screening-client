@@ -2,17 +2,45 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Radio } from "antd";
 import React, { useState } from "react";
 import "./JobSearch.scss";
+import Select from "react-select";
+import { useSelector } from "react-redux";
+import history from "state/history";
+import qs from "query-string";
 
 const OPTIONS = [
-  { label: "Toàn thời gian", value: "fulltime" },
-  { label: "Bán thời gian", value: "parttime" },
-  { label: "Thực tập", value: "intern" }
+  { label: "Toàn thời gian", value: 0 },
+  { label: "Bán thời gian", value: 1 },
+  { label: "Thực tập", value: 2 }
 ];
 
 function JobSearch() {
-  const [jobTypeChecked, setJobTypeChecked] = useState([]);
+  const [jobTypeChecked, setJobTypeChecked] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [job_title, setJobTile] = useState(null);
+
+  const provinces = useSelector((state) => state.cv.provinces);
+  const options = provinces.map(({ province_id, province_name }) => ({
+    value: province_id,
+    label: province_name
+  }));
 
   const onChange = (checkedValues) => setJobTypeChecked(checkedValues);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const contract_type = jobTypeChecked ? jobTypeChecked.target.value : null;
+
+    const filter = {
+      contract_type,
+      q: job_title || null,
+      location: location ? location.value : null
+    };
+
+    const query = qs.stringify(filter, { skipNull: true });
+
+    history.push(`/find-jobs?${query}`);
+  };
 
   return (
     <form className="w-lg-80 mx-auto bg-white rounded shadow-sm">
@@ -22,15 +50,22 @@ function JobSearch() {
             <div className="col-md-7">
               <input
                 type="text"
-                placeholder="Tên công việc, kỹ năng hay công ty bạn muốn ứng tuyển"
+                value={job_title}
+                onChange={(e) => setJobTile(e.target.value)}
+                placeholder="Tên công việc bạn muốn ứng tuyển"
                 className="form-control form-control-lg rounded-bottom-0 rounded-md-right-0 border-left-0 border-top-0"
               />
             </div>
             <div className="col-md-5">
-              <input
-                type="text"
+              <Select
+                options={options}
+                value={location}
+                onChange={(value) => setLocation(value)}
                 placeholder="Địa điểm làm việc"
-                className="form-control form-control-lg rounded-0 border-left-0 border-right-0 border-top-0"
+                menuPosition="fixed"
+                isClearable={true}
+                className="form-control form-control-lg rounded-0 border-left-0 border-right-0 border-top-0 align-item-center"
+                classNamePrefix="home-select"
               />
             </div>
           </div>
@@ -48,6 +83,7 @@ function JobSearch() {
           <button
             type="submit"
             className="btn btn-primary d-block w-100 h-md-100 rounded-md-left-0 btn-search"
+            onClick={handleSubmit}
           >
             <SearchOutlined />
           </button>

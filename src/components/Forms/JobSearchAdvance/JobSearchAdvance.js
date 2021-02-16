@@ -62,10 +62,12 @@ JobSearchAdvance = connect((state) => {
   const { provinces } = state.cv;
 
   if (provinces.length) {
-    const { province_id, province_name } = provinces.find(
-      (e) => e.province_id === location
-    );
-    location = { value: province_id, label: province_name };
+    if (location) {
+      const { province_id, province_name } = provinces.find(
+        (e) => e.province_id === location
+      );
+      location = { value: province_id, label: province_name };
+    }
   }
 
   const initialValues = {
