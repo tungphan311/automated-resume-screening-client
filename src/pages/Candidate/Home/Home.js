@@ -1,10 +1,12 @@
 import JobSearch from "components/Forms/JobSearch/JobSearch";
-import { ROLES } from "constants/index";
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Home.scss";
 
 function CandidateHome() {
+  const { domains } = useSelector((state) => state.jobDomain);
+
   return (
     <>
       {/* Job Search Section */}
@@ -31,8 +33,8 @@ function CandidateHome() {
       {/* Popular job section */}
       <Section title="Vị trí phổ biến" url="#">
         <div className="row">
-          {ROLES.map(({ title, url }, index) => (
-            <Role key={index} {...{ title, url }} />
+          {domains.map(({ id, name }) => (
+            <Role key={id} {...{ id, name }} />
           ))}
         </div>
       </Section>
@@ -56,11 +58,14 @@ const Section = ({ title, children, classNames }) => (
   </div>
 );
 
-const Role = ({ title, url }) => (
+const Role = ({ id, name }) => (
   <div className="col-sm-6 col-lg-3 mb-3">
-    <Link className="card lift link-dark shadow-sm border-0" to={url}>
+    <Link
+      className="card lift link-dark shadow-sm border-0"
+      to={`/find-jobs?job-domain=${id}`}
+    >
       <div className="card-body d-flex justify-content-between align-items-center px-4">
-        <span>{title}</span>
+        <span>{name}</span>
         <i className="fas fa-chevron-right opacity ml-2" />
       </div>
     </Link>

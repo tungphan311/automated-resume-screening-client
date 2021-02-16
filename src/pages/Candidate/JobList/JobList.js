@@ -58,7 +58,7 @@ function CandidateJobList({ history }) {
     contract_type: undefined,
     min_salary: undefined,
     max_salary: undefined,
-    job_domain_id: undefined
+    "job-domain": undefined
   });
 
   const params = useLocation().search;
@@ -125,7 +125,7 @@ function CandidateJobList({ history }) {
         contract_type,
         min_salary,
         max_salary,
-        job_domain_id
+        "job-domain": job_domain_id
       } = search;
 
       page = page || 1;
@@ -155,7 +155,7 @@ function CandidateJobList({ history }) {
             contract_type,
             min_salary,
             max_salary,
-            job_domain_id
+            "job-domain": job_domain_id
           });
         })
         .catch((err) => {
@@ -212,7 +212,7 @@ function CandidateJobList({ history }) {
     contract_type,
     min_salary,
     max_salary,
-    job_domain_id
+    "job-domain": job_domain_id
   } = filter;
 
   return (
@@ -254,7 +254,7 @@ function CandidateJobList({ history }) {
                 title="Lĩnh vực công việc"
                 options={domains.map((d) => ({ value: d.id, label: d.name }))}
                 value={job_domain_id}
-                onChange={(value) => onFilterChange("job_domain_id", value)}
+                onChange={(value) => onFilterChange("job-domain", value)}
                 select
               />
             </div>

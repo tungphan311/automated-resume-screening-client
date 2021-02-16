@@ -19,6 +19,7 @@ function Header() {
               <Link
                 to={`${recruiter ? "/recruiter" : "/"}`}
                 className="navbar-brand header__navbar-brand"
+                style={{ width: "fit-content" }}
               >
                 <h3>
                   Automated&nbsp;<span>Screening</span>
