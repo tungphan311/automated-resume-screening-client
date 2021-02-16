@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import "./JobList.scss";
 import { Pagination, Select } from "antd";
 import { findJobs } from "services/jobServices";
-import { toastErr } from "utils/index";
+import { formatSearchHistory, toastErr } from "utils/index";
 import { getFormValues } from "redux-form";
 import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { useSelector } from "react-redux";
@@ -48,6 +48,7 @@ function CandidateJobList({ history }) {
   const [top, setTop] = useState(0);
   const [bottom, setBottom] = useState(-1);
   const [jobs, setJobs] = useState([]);
+  const [searchHistory, setSearchHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -68,6 +69,7 @@ function CandidateJobList({ history }) {
     getFormValues(FORM_KEY_JOB_SEARCH)(state)
   );
   const { domains } = useSelector((state) => state.jobDomain);
+  const { provinces } = useSelector((state) => state.cv);
 
   const mapResponseToState = (data) =>
     data.map(
@@ -112,6 +114,9 @@ function CandidateJobList({ history }) {
       }
     }
 
+    const searchHistory = JSON.parse(localStorage.getItem("search-history"));
+    setSearchHistory(searchHistory);
+
     const fetchJobs = async () => {
       setLoading(true);
       setCurSelect(null);
@@ -131,6 +136,29 @@ function CandidateJobList({ history }) {
 
       page = page || 1;
       limit = parseInt(limit) || 10;
+
+      if (q || location) {
+        const saveQuery = qs.stringify({ q, location }, { skipNull: true });
+        const item = {
+          url: `/find-jobs?${saveQuery}`,
+          label: formatSearchHistory(q, provinces, location)
+        };
+
+        if (searchHistory) {
+          const index = searchHistory.findIndex(
+            (ele) => ele.label === item.label
+          );
+          if (index < 0) {
+            const newHistory = [item, ...searchHistory];
+            localStorage.setItem(
+              "search-history",
+              JSON.stringify(newHistory.slice(0, 10))
+            );
+          }
+        } else {
+          localStorage.setItem("search-history", JSON.stringify([item]));
+        }
+      }
 
       await findJobs(
         page,
@@ -175,8 +203,6 @@ function CandidateJobList({ history }) {
   }, [params]);
 
   const handleSubmit = async () => {
-    setLoading(true);
-
     const job_title = formValues
       ? formValues.job_title || undefined
       : undefined;
@@ -332,26 +358,32 @@ function CandidateJobList({ history }) {
                   {curSelect === null && (
                     <td role="region" id="auxCol">
                       <JobAlert />
-                      <div id="recentsearches" className="no-left-rail">
-                        <div className="rsh">Tìm kiếm gần đây</div>
-                        <ul className="rsList">
-                          <li>
-                            <Link to="#">frontend - Thành phồ Hà Nội</Link>
-                          </li>
-                        </ul>
-                        <div>
-                          <a
-                            className="sl"
-                            title="Xoá toàn bộ tìm kiếm của bạn"
-                            href=""
-                            onClick={(e) => {
-                              e.preventDefault();
-                            }}
-                          >
-                            » Xoá lịch sử tìm kiếm
-                          </a>
+                      {searchHistory && searchHistory.length && (
+                        <div id="recentsearches" className="no-left-rail">
+                          <div className="rsh">Tìm kiếm gần đây</div>
+                          <ul className="rsList">
+                            {searchHistory.map(({ url, label }) => (
+                              <li>
+                                <Link to={url}>{label}</Link>
+                              </li>
+                            ))}
+                          </ul>
+                          <div>
+                            <a
+                              className="sl"
+                              title="Xoá toàn bộ tìm kiếm của bạn"
+                              href=""
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setSearchHistory(null);
+                                localStorage.removeItem("search-history");
+                              }}
+                            >
+                              » Xoá lịch sử tìm kiếm
+                            </a>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </td>
                   )}
                   <td id="applyCol"></td>

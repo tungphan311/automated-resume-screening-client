@@ -56,29 +56,37 @@ JobSearchAdvance = reduxForm({
   keepDirtyOnReinitialize: true
 })(JobSearchAdvance);
 
-JobSearchAdvance = connect((state) => {
-  const search = window.location.search.substring(1);
-  let { q, location } = qs.parse(search);
-  const { provinces } = state.cv;
-
-  if (provinces.length) {
-    if (location) {
-      const { province_id, province_name } = provinces.find(
-        (e) => e.province_id === location
-      );
-      location = { value: province_id, label: province_name };
+JobSearchAdvance = connect(
+  (
+    state,
+    {
+      history: {
+        location: { search }
+      }
     }
+  ) => {
+    let { q, location } = qs.parse(search.substring(1));
+    const { provinces } = state.cv;
+
+    if (provinces.length) {
+      if (location) {
+        const { province_id, province_name } = provinces.find(
+          (e) => e.province_id === location
+        );
+        location = { value: province_id, label: province_name };
+      }
+    }
+
+    const initialValues = {
+      job_title: q,
+      location
+    };
+
+    return {
+      initialValues
+    };
   }
-
-  const initialValues = {
-    job_title: q,
-    location
-  };
-
-  return {
-    initialValues
-  };
-})(JobSearchAdvance);
+)(JobSearchAdvance);
 
 export default JobSearchAdvance;
 

@@ -45,3 +45,26 @@ export const formatProvince = (provinces, provinceId) => {
 
   return province.province_name;
 };
+
+export const formatSearchHistory = (title, provinces, provinceId) => {
+  let province = {};
+  if (provinceId) {
+    province = provinces.find((p) => p.province_id == provinceId);
+  }
+
+  let result = "";
+
+  if (title) {
+    result += title;
+
+    if (provinceId) {
+      result += " - " + province.province_name;
+    }
+  } else {
+    if (provinceId) {
+      result += province.province_name;
+    }
+  }
+
+  return result;
+};
