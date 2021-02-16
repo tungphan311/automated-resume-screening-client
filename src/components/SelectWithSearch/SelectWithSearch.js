@@ -11,7 +11,8 @@ function SelectWithSearch({
   placeholder,
   isMulti,
   label,
-  icon = ""
+  icon = "",
+  isClearable
 }) {
   return (
     <div className={`dropdown ${className}`} style={{ zIndex: 999 }}>
@@ -26,6 +27,7 @@ function SelectWithSearch({
         onChange={onChange}
         placeholder={placeholder}
         menuPosition="fixed"
+        isClearable={isClearable}
       />
       {icon && <div className="input-icon">{icon}</div>}
     </div>

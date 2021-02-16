@@ -7,7 +7,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import SelectWithSearch from "components/SelectWithSearch/SelectWithSearch";
-import { useSelector } from "react-redux";
+import { useSelector, connect } from "react-redux";
+import qs from "query-string";
 
 function JobSearchAdvance({ handleSubmit }) {
   const provinces = useSelector((state) => state.cv.provinces);
@@ -34,6 +35,7 @@ function JobSearchAdvance({ handleSubmit }) {
             placeholder="Địa điểm làm việc"
             options={options}
             icon={<FontAwesomeIcon icon={faMapMarkerAlt} color="#555" />}
+            isClearable={true}
           />
         </div>
         <div className="col-sm-2">
@@ -49,11 +51,39 @@ function JobSearchAdvance({ handleSubmit }) {
 
 JobSearchAdvance = reduxForm({
   form: FORM_KEY_JOB_SEARCH,
-  touchOnBlur: false
+  touchOnBlur: false,
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
+})(JobSearchAdvance);
+
+JobSearchAdvance = connect((state) => {
+  const search = window.location.search.substring(1);
+  let { q, location } = qs.parse(search);
+  const { provinces } = state.cv;
+
+  if (provinces.length) {
+    const { province_id, province_name } = provinces.find(
+      (e) => e.province_id === location
+    );
+    location = { value: province_id, label: province_name };
+  }
+
+  const initialValues = {
+    job_title: q,
+    location
+  };
+
+  return {
+    initialValues
+  };
 })(JobSearchAdvance);
 
 export default JobSearchAdvance;
 
 const CustomSelect = ({ input, ...props }) => (
-  <SelectWithSearch value={input.value} onChange={input.onChange} {...props} />
+  <SelectWithSearch
+    selectedOption={input.value}
+    onChange={input.onChange}
+    {...props}
+  />
 );

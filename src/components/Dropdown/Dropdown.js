@@ -30,9 +30,11 @@ function Dropdown({ title, options, value, onChange, select = false }) {
     closeDropdown();
   };
 
+  if (select && (!options || !options.length)) return null;
+
   return (
     <div className="dd-wrapper">
-      {value === null || value === undefined ? (
+      {value === undefined ? (
         <>
           <button className="dd-button" onClick={openDropdown}>
             <span>
@@ -105,9 +107,9 @@ function Dropdown({ title, options, value, onChange, select = false }) {
         <button className="dd-button dd-target blue">
           <span>
             {select
-              ? options.find((ele) => ele.value === value).label
+              ? options.find((ele) => ele.value === parseInt(value)).label
               : `${title}: ${value} triệu`}
-            <div className="filters-close" onClick={() => onChange(null)}>
+            <div className="filters-close" onClick={() => onChange(undefined)}>
               <img src="/assets/svg/Close.svg" alt="clear filter" />
             </div>
           </span>

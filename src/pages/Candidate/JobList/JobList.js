@@ -1,7 +1,7 @@
 import Dropdown from "components/Dropdown/Dropdown";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import JobItem from "components/JobItem/JobItem";
-import { CONTACTS, DATES, PAGE_SIZES } from "constants/index";
+import { CONTACTS, PAGE_SIZES, DATES } from "constants/index";
 import React, { useEffect, useState } from "react";
 import "./JobList.scss";
 import { Pagination, Select } from "antd";
@@ -12,6 +12,7 @@ import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
 import qs from "query-string";
+import { useLocation } from "react-router-dom";
 
 const MyLoader = (props) => (
   <ContentLoader
@@ -53,14 +54,14 @@ function CandidateJobList({ history }) {
     total: 0
   });
   const [filter, setFilter] = useState({
-    posted_date: null,
-    contract_type: null,
-    min_salary: null,
-    max_salary: null,
-    job_domain_id: null,
-    job_title: null,
-    province_id: null
+    posted_date: undefined,
+    contract_type: undefined,
+    min_salary: undefined,
+    max_salary: undefined,
+    job_domain_id: undefined
   });
+
+  const params = useLocation().search;
 
   const formValues = useSelector((state) =>
     getFormValues(FORM_KEY_JOB_SEARCH)(state)
@@ -113,22 +114,28 @@ function CandidateJobList({ history }) {
     const fetchJobs = async () => {
       setLoading(true);
       setCurSelect(null);
-      const { page, pageSize } = pagination;
-      const {
+
+      const search = qs.parse(params);
+      let {
+        q,
+        location,
+        page,
+        limit,
         posted_date,
         contract_type,
-        job_title,
-        province_id,
         min_salary,
         max_salary,
         job_domain_id
-      } = filter;
+      } = search;
+
+      page = page || 1;
+      limit = parseInt(limit) || 10;
 
       await findJobs(
         page,
-        pageSize,
-        job_title,
-        province_id,
+        limit,
+        q,
+        location,
         posted_date,
         contract_type,
         min_salary,
@@ -139,7 +146,16 @@ function CandidateJobList({ history }) {
           setJobs(mapResponseToState(res.data.data));
           setPagination({
             ...pagination,
-            total: res.data.pagination.total
+            total: res.data.pagination.total,
+            page,
+            pageSize: limit
+          });
+          setFilter({
+            posted_date,
+            contract_type,
+            min_salary,
+            max_salary,
+            job_domain_id
           });
         })
         .catch((err) => {
@@ -155,21 +171,7 @@ function CandidateJobList({ history }) {
     window.addEventListener("scroll", getScroll);
 
     return () => window.removeEventListener("scroll", getScroll);
-  }, [filter, pagination.page, pagination.pageSize]);
-
-  const handleChangePageSize = async (value) => {
-    setPagination({
-      page: 1,
-      pageSize: value
-    });
-  };
-
-  const handleChangePage = async (page) => {
-    setPagination({
-      ...pagination,
-      page
-    });
-  };
+  }, [params]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -183,15 +185,23 @@ function CandidateJobList({ history }) {
         : undefined
       : undefined;
 
-    const query = qs.stringify(
-      { location: province_id, q: job_title },
-      { skipNull: true }
-    );
+    let filter = qs.parse(params);
+    filter = { ...filter, location: province_id, q: job_title };
+    const query = qs.stringify(filter, { skipNull: true });
 
     history.push({ search: `?${query}` });
 
     setFilter({ ...filter, job_title, province_id: province_id });
     setPagination({ ...pagination, page: 1 });
+  };
+
+  const onFilterChange = (key, value) => {
+    let filter = qs.parse(params);
+
+    filter = { ...filter, [key]: value };
+
+    const query = qs.stringify(filter, { skipNull: true });
+    history.push({ search: `?${query}` });
   };
 
   const onChangeSelect = (jobId) => setCurSelect(jobId);
@@ -204,6 +214,7 @@ function CandidateJobList({ history }) {
     max_salary,
     job_domain_id
   } = filter;
+
   return (
     <>
       <div id="search-jobs-wrapper">
@@ -219,41 +230,31 @@ function CandidateJobList({ history }) {
                 title="Ngày đăng"
                 options={DATES}
                 value={posted_date}
-                onChange={(value) =>
-                  setFilter({ ...filter, posted_date: value })
-                }
+                onChange={(value) => onFilterChange("posted_date", value)}
                 select
               />
               <Dropdown
                 title="Hình thức làm việc"
                 options={CONTACTS}
                 value={contract_type}
-                onChange={(value) =>
-                  setFilter({ ...filter, contract_type: value })
-                }
+                onChange={(value) => onFilterChange("contract_type", value)}
                 select
               />
               <Dropdown
                 title="Mức lương tối thiểu"
                 value={min_salary}
-                onChange={(value) =>
-                  setFilter({ ...filter, min_salary: value })
-                }
+                onChange={(value) => onFilterChange("min_salary", value)}
               />
               <Dropdown
                 title="Mức lương tối đa"
                 value={max_salary}
-                onChange={(value) =>
-                  setFilter({ ...filter, max_salary: value })
-                }
+                onChange={(value) => onFilterChange("max_salary", value)}
               />
               <Dropdown
                 title="Lĩnh vực công việc"
                 options={domains.map((d) => ({ value: d.id, label: d.name }))}
                 value={job_domain_id}
-                onChange={(value) =>
-                  setFilter({ ...filter, job_domain_id: value })
-                }
+                onChange={(value) => onFilterChange("job_domain_id", value)}
                 select
               />
             </div>
@@ -280,8 +281,10 @@ function CandidateJobList({ history }) {
                             <Select
                               style={{ width: 140 }}
                               options={PAGE_SIZES}
-                              defaultValue={pageSize}
-                              onChange={(value) => handleChangePageSize(value)}
+                              value={pageSize}
+                              onChange={(value) =>
+                                onFilterChange("limit", value)
+                              }
                             />
                           </span>
                         </div>
@@ -313,7 +316,7 @@ function CandidateJobList({ history }) {
                           showSizeChanger={false}
                           showLessItems
                           pageSize={pageSize}
-                          onChange={handleChangePage}
+                          onChange={(page) => onFilterChange("page", page)}
                         />
                       </div>
                     </nav>
