@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Input, InputNumber, Select } from "antd";
+import { Button, Input, InputNumber } from "antd";
 import ContentEditable from "react-contenteditable";
-import { EditOutlined, DeleteFilled, PlusOutlined } from "@ant-design/icons";
+import { DeleteFilled, PlusOutlined } from "@ant-design/icons";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "components/Loading/Loading";
@@ -23,26 +23,26 @@ function ProfileModal({ show, toggleModal, id }) {
     id ? state.profile.candidateProfile.resumes.find((e) => e.id === id) : {}
   );
   const dispatch = useDispatch();
-  const domains = useSelector((state) => state.jobDomain.domains);
+  // const domains = useSelector((state) => state.jobDomain.domains);
 
   const [resume, setResume] = useState(RESUME);
   const [value, setValue] = useState("");
   const [isChange, setIsChange] = useState(false);
-  const [edit, setEdit] = useState(false);
+  // const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const {
     educations,
     experiences,
     technical_skills,
-    months_of_experience,
-    job_domain_id
+    months_of_experience
+    // job_domain_id
   } = resume;
 
-  const [domain, setDomain] = useState(
-    domains.find((e) => e.id === job_domain_id).name
-  );
-  const [domainSelect, setDomainSelect] = useState(job_domain_id);
+  // const [domain, setDomain] = useState(
+  //   domains ? domains.find((e) => e.id === job_domain_id).name : ""
+  // );
+  // const [domainSelect, setDomainSelect] = useState(job_domain_id);
   const [skills, setSkills] = useState(getIndexArray(technical_skills));
 
   const handleChangeResume = (name, value) => {
@@ -83,29 +83,9 @@ function ProfileModal({ show, toggleModal, id }) {
     setIsChange(false);
   };
 
-  const changeDomains = () => {
-    setResume((curState) => ({
-      ...curState,
-      job_domain_id: domainSelect
-    }));
-    setDomain(domains.find((e) => e.id === domainSelect).name);
-    setIsChange(true);
-    setEdit(false);
-  };
-
-  const changeDomainSelect = (value) => {
-    setDomainSelect(value);
-  };
-
   const handleCloseModal = () => {
-    setEdit(false);
     setValue("");
     toggleModal();
-  };
-
-  const resetSelect = () => {
-    setDomainSelect(job_domain_id);
-    setEdit(false);
   };
 
   const handleSubmit = () => {
@@ -205,61 +185,6 @@ function ProfileModal({ show, toggleModal, id }) {
               className="wizard-page-children container-fluid"
               spellCheck="false"
             >
-              {/* Display information  */}
-              {!edit ? (
-                <>
-                  <div className="display-type d-flex">
-                    <div className="TextInput-label">Vị trí ứng tuyển:</div>
-                    <div
-                      className="d-flex"
-                      style={{
-                        marginLeft: 10,
-                        flexGrow: 1,
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <span>{domain}</span>
-                      <EditOutlined
-                        onClick={() => setEdit(true)}
-                        className="display-type__input__icon"
-                      />
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="job-domain-wrapper">
-                    <div className="TextInput-label">
-                      Chọn vị trí ứng tuyển:
-                      <span className="text-danger">*</span>
-                    </div>
-                    <div className="select--wrapper">
-                      <Select
-                        className="hide-btn"
-                        options={domains.map(({ id, name }) => ({
-                          value: id,
-                          label: name
-                        }))}
-                        value={domains.find((e) => e.id === domainSelect).name}
-                        onChange={changeDomainSelect}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <Button
-                      className="mr-5"
-                      type="default"
-                      onClick={resetSelect}
-                    >
-                      Huỷ bỏ
-                    </Button>
-                    <Button type="primary" onClick={changeDomains}>
-                      Lưu
-                    </Button>
-                  </div>
-                </>
-              )}
-
               <div className="inline-skill-container is-compact">
                 <div className="inline-skill-input">
                   <div>

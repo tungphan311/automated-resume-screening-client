@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Select } from "antd";
+import { Button, Input } from "antd";
 import { PlusOutlined, DeleteFilled } from "@ant-design/icons";
 import ContentEditable from "react-contenteditable";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -8,12 +8,9 @@ import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import Loading from "components/Loading/Loading";
 
 function SkillForm({ curStep, handleChangeStep }) {
-  const [domain, setDomain] = useState(null);
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const skill = useSelector((state) => state.cv.skill, shallowEqual) || [];
-  const domains = useSelector((state) => state.jobDomain.domains);
 
   const dispatch = useDispatch();
   const getIndexArray = (arr) => {
@@ -59,20 +56,14 @@ function SkillForm({ curStep, handleChangeStep }) {
   };
 
   const handleSubmit = () => {
-    if (!domain) {
-      setError(true);
+    setLoading(true);
+    const values = skills.map((ele) => ele.value);
 
-      return;
-    } else {
-      setLoading(true);
-      const values = skills.map((ele) => ele.value);
-
-      dispatch(updateCVAction({ values, domain })).catch(() => {
-        setLoading(false);
-      });
-      // dispatch({ type: UPDATE_CV_VALUES, key: "skill", value: values });
-      // handleChangeStep(curStep + 1);
-    }
+    dispatch(updateCVAction({ values })).catch(() => {
+      setLoading(false);
+    });
+    // dispatch({ type: UPDATE_CV_VALUES, key: "skill", value: values });
+    // handleChangeStep(curStep + 1);
   };
 
   return (
@@ -88,36 +79,6 @@ function SkillForm({ curStep, handleChangeStep }) {
               className="wizard-page-children container-fluid"
               spellCheck="false"
             >
-              <div className="job-domain-wrapper">
-                <div className="TextInput-label">
-                  Chọn loại công việc: <span className="text-danger">*</span>
-                </div>
-                <div className="select--wrapper">
-                  <Select
-                    options={domains.map(({ id, name }) => ({
-                      value: id,
-                      label: name
-                    }))}
-                    value={domain}
-                    onChange={(value) => {
-                      setDomain(value);
-                      setError(false);
-                    }}
-                  />
-                  {error && (
-                    <span
-                      className="error"
-                      style={{
-                        position: "absolute",
-                        color: "#f25961",
-                        top: "33px"
-                      }}
-                    >
-                      Vui lòng không bỏ trống
-                    </span>
-                  )}
-                </div>
-              </div>
               <div className="inline-skill-container is-compact">
                 <div className="inline-skill-input">
                   <div>

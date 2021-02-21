@@ -33,7 +33,7 @@ export function* uploadCVSaga(action) {
 
 export function* updateResumeSaga(action) {
   try {
-    const { values, domain } = action.payload;
+    const { values } = action.payload;
 
     const { education, experience, id, months_of_experience } = yield select(
       (state) => state.cv
@@ -45,8 +45,7 @@ export function* updateResumeSaga(action) {
       educations: education,
       experiences: experience,
       skills: values.join("|"),
-      months_of_experience,
-      job_domain_id: domain
+      months_of_experience
     };
 
     const result = yield call(updateCV, data, token);

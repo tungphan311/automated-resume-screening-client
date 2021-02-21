@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   FundViewOutlined,
   FileDoneOutlined,
@@ -7,11 +7,7 @@ import {
   CloseOutlined
 } from "@ant-design/icons";
 import Widget from "components/Widget/Widget";
-import {
-  closeJob,
-  deleteJobPost,
-  hrGetJobDetail
-} from "services/hrJobServices";
+import { closeJob, deleteJobPost } from "services/hrJobServices";
 import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
 import { formatDateTime, toast, toastErr } from "utils/index";
@@ -20,31 +16,10 @@ import { EditOutlined } from "@ant-design/icons";
 import history from "state/history";
 import swal from "sweetalert";
 
-function HRJobDetail({ id }) {
-  const [post, setPost] = useState({});
-  const [loading, setLoading] = useState(false);
+function HRJobDetail({ id, post, load }) {
+  const [loading, setLoading] = useState(load);
 
   const { token } = useSelector((state) => state.auth.recruiter);
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      await hrGetJobDetail(id, token)
-        .then((res) => {
-          const { data } = res.data;
-
-          setPost(data);
-        })
-        .catch((err) => {
-          toastErr(err);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    };
-
-    fetchData();
-  }, []);
 
   const handleCloseJp = () => {
     swal({

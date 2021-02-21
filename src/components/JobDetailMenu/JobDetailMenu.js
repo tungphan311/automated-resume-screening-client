@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./JobDetailMenu.scss";
 // import { DownOutlined } from "@ant-design/icons";
 
-function JobDetailMenu({ isCandidates, id }) {
+function JobDetailMenu({ isCandidates, id, title }) {
   return (
     <div className="header-sub-menu">
       <div className="container">
@@ -17,7 +17,7 @@ function JobDetailMenu({ isCandidates, id }) {
           >
             <div className="split-menu">
               <button className="submenu-jobtitle">
-                SR FRONT END DEVELOPER (JOINING BONUS)
+                {title}
                 {/* <DownOutlined style={{ marginLeft: 10 }} /> */}
               </button>
               <ul className="j-nav j-navbar-nav">

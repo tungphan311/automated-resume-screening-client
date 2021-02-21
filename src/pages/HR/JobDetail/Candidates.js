@@ -138,10 +138,12 @@ function HRJobPostCandidates({ jp_id }) {
                   )}
                 </div>
                 <nav>
-                  <Pagination
-                    total={pagination.total}
-                    showSizeChanger={false}
-                  />
+                  {pagination.total ? (
+                    <Pagination
+                      total={pagination.total}
+                      showSizeChanger={false}
+                    />
+                  ) : null}
                 </nav>
               </div>
             </div>

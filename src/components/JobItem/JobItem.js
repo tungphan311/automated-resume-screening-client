@@ -1,8 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./JobItem.scss";
-// import { HeartOutlined } from "@ant-design/icons";
-// import { Tooltip } from "antd";
 import JobDetail from "components/JobItem/JobDetail";
 import { format_date } from "utils/index";
 
@@ -28,14 +25,12 @@ function JobItem({
         onClick={() => onChangeSelect(jobId)}
       >
         <h2 className="job-title">
-          <Link to="#" className="jobtitle turnstileLink">
-            {jobTitle}
-          </Link>
+          <p className="jobtitle turnstileLink">{jobTitle}</p>
         </h2>
         <div className="job-detail">
           <div>
             <span className="company-name">
-              <Link to="#">{company}</Link>
+              <p>{company}</p>
             </span>
             <span className="remote-bullet">•</span>
             <span className="contact-type">{contractType}</span>
