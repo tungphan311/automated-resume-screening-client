@@ -10,7 +10,7 @@ import Widget from "components/Widget/Widget";
 import { closeJob, deleteJobPost } from "services/hrJobServices";
 import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
-import { formatDateTime, toast, toastErr } from "utils/index";
+import { formatDateTime, formatProvince, toast, toastErr } from "utils/index";
 import { Button } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import history from "state/history";
@@ -20,6 +20,7 @@ function HRJobDetail({ id, post, load }) {
   const [loading, setLoading] = useState(load);
 
   const { token } = useSelector((state) => state.auth.recruiter);
+  const { provinces } = useSelector((state) => state.cv);
 
   const handleCloseJp = () => {
     swal({
@@ -133,7 +134,7 @@ function HRJobDetail({ id, post, load }) {
                 </div>
               </div>
               <div>
-                <Detail {...post} loading={loading} />
+                <Detail {...post} loading={loading} provinceList={provinces} />
               </div>
             </div>
           </div>
@@ -156,7 +157,9 @@ const Detail = ({
   description,
   requirement,
   benefit,
-  loading
+  loading,
+  provinces,
+  provinceList
 }) => (
   <table className="jb-detail">
     <tbody>
@@ -190,7 +193,10 @@ const Detail = ({
       </tr>
       <tr>
         <td className="jp-label">Địa điểm làm việc</td>
-        <td className="jp-value">Thành phố Hồ Chí Minh</td>
+        <td className="jp-value">
+          {provinces &&
+            provinces.map((p) => formatProvince(provinceList, p)).join(", ")}
+        </td>
       </tr>
       <tr>
         <td className="jp-label">Số lượng cần tuyển</td>
