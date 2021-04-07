@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import { Link } from "react-router-dom";
 import "./ProfileCVItem.scss";
+import swal from "sweetalert";
 import {
   EyeOutlined,
   DownloadOutlined,
@@ -11,6 +12,42 @@ import { formatDateTime } from "utils/index";
 
 function ProfileCVItem({ image, name, date, url, id, download_url }) {
   const [show, toggleShow] = useState(false);
+
+  // const handleDelete = (id = null) => {
+  //   swal({
+  //     title: "Bạn có chắc không?",
+  //     text: "Một khi xoá, bạn không thể khôi phục những tin đã chọn!",
+  //     icon: "warning",
+  //     buttons: ["Huỷ", "Xoá"],
+  //     dangerMode: true
+  //   })
+  //     .then(async (willDelete) => {
+  //       if (willDelete) {
+  //         const ids = id ? [id] : selectedRowKeys;
+
+  //         setLoading(true);
+  //         await deleteJobPost(ids, token)
+  //           .then((res) => {
+  //             const { message } = res.data;
+
+  //             toast({ message });
+  //             setJobChange(jobChange + 1);
+  //           })
+  //           .catch((err) => {
+  //             console.log(err);
+  //           })
+  //           .finally(() => {
+  //             setLoading(false);
+  //           });
+  //         setSelectedRowKeys([]);
+  //       } else {
+  //         swal("Chúc mừng dữ liệu của bạn vẫn an toàn!");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <>
@@ -54,6 +91,7 @@ function ProfileCVItem({ image, name, date, url, id, download_url }) {
             <button
               type="button"
               className="cv-item__info__bottom__btn btn btn-sm  btn-outline-secondary"
+              // onClick={handleDelete}
             >
               <DeleteOutlined className="cv-item__info__bottom__btn__icon" />
               Xóa

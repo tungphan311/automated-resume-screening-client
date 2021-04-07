@@ -1,6 +1,9 @@
 .header__navbar-nav {
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
+
+  width: 90%;
+  justify-content: space-around;
 }
 
 .navbar-nav {
@@ -12,9 +15,15 @@
 }
 
 .header__nav-link {
-  color: #2d2d2d;
+  color: $c-shark;
   font-size: 1rem;
   font-weight: 400;
+
+  &:hover {
+    border-bottom: 3px solid $primary;
+    animation: alternate 5s;
+    color: $primary;
+  }
 }
 
 .header__nav-button {
@@ -25,6 +34,15 @@
 
 .header__nav-item {
   margin-left: 10px;
+
+  a {
+    padding: 0;
+    padding-bottom: 5px;
+  }
+
+  &:hover {
+    color: $c-alabaster;
+  }
 }
 
 .nav-link {
@@ -37,6 +55,7 @@
 .header__nav-item:hover .header__nav-link,
 .header__nav-item:focus .header__nav-link {
   color: $primary;
+  font-weight: 600;
 }
 
 .nav-separator {
@@ -50,6 +69,69 @@
   color: #faf9f8 !important;
   margin-right: 1.5rem !important;
   margin-left: 0.5rem !important;
+}
+
+.header {
+  &__navbar {
+    &__info {
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+
+      &__icon {
+        transition: transform 0.3s ease;
+      }
+
+      &__name {
+        padding-right: 5px;
+        font-size: 16px;
+      }
+
+      &__group {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: $c-white;
+        border: 1px solid #d6d6d6;
+        padding: 10px;
+        margin-top: 7px;
+        border-radius: 2px;
+        padding: 11px 0;
+        width: 255px;
+        cursor: initial;
+        // transition: width 2s, height 2s, transform 2s;
+
+        &__item {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #1c1c1c;
+          padding: 0 40px;
+          font-size: 16px;
+          line-height: 48px;
+          height: 48px;
+
+          &:hover {
+            background-color: #eeeeee;
+            transition: transform 0.3s ease;
+          }
+
+          &:nth-last-child(2) {
+            border-top: 1px solid #d6d6d6;
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+  }
+
+  .active {
+    border-bottom: 3px solid $primary;
+  }
 }
 
 @media (min-width: 992px) {
