@@ -87,3 +87,9 @@
     padding-top: 8rem;
   }
 }
+
+.domain__card{
+  &:hover{
+    font-weight: 700;
+  }
+}

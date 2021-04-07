@@ -13,6 +13,19 @@ export const NAVIGATIONS = [
   { title: "Quản lý CV", url: "/profile", link: true }
 ];
 
+export const CANDIDATE_NAV = [
+  { title: "Job Search", url: "/find-jobs", link: true },
+  { title: "Profile", url: "/profile", link: true },
+  { title: "Career Advice", url: "/career-advice", link: true }
+];
+
+export const CANDIDATE_NAV_EXTEND = [
+  { title: "Profile", url: "/profile", link: true },
+  { title: "Saved Jobs", url: "/saved-jobs", link: true },
+  { title: "Applied Jobs", url: "/applied-jobs", link: true },
+  { title: "Recommend Jobs", url: "/find-jobs", link: true }
+];
+
 export const RECRUITER_NAV = [
   { title: "Tìm ứng viên", url: "/recruiter/find-candidates", link: true },
   { title: "Tin tuyển dụng", url: "/recruiter/jobs", link: true }

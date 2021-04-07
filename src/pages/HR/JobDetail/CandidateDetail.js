@@ -99,6 +99,7 @@ function HRJobPostCandidateDetail({ detail, provinces, setResume, avgScore }) {
                   href={store_url}
                   target="_blank"
                   className="button-group-btn mr-5"
+                  rel="noreferrer"
                 >
                   <EyeOutlined className="mr-5" />
                   Xem CV
