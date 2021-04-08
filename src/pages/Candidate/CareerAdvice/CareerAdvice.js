@@ -1,7 +1,11 @@
 import JobSearch from "components/Forms/JobSearch/JobSearch";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
+import ExploreWithSkills from "./ExploreWithSkills";
+import FindJob from "./FindJob";
+
 import { getFormValues } from "redux-form";
 import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
+import { Tabs, Tab } from "react-bootstrap";
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -62,12 +66,26 @@ function CandidateCareerAdvice({ history }) {
   const { provinces } = useSelector((state) => state.cv);
 
   return (
-    <>
-      <div className="container">
-        <JobSearchAdvance onSubmit={handleSubmit} history={history} />
+    <div className="career-advice">
+      <div
+        id="search-jobs"
+        className="search-jobs-container search-jobs-widget"
+      >
+        <div className="container">
+          <JobSearchAdvance onSubmit={handleSubmit} history={history} />
+        </div>
       </div>
-      <h1>Trang career o day</h1>
-    </>
+
+      {/* Tabs  */}
+      <Tabs defaultActiveKey="explore">
+        <Tab eventKey="explore" title="Explore what I can do with my skills">
+          <ExploreWithSkills />
+        </Tab>
+        <Tab eventKey="find" title="Find the right job for me">
+          <FindJob />
+        </Tab>
+      </Tabs>
+    </div>
   );
 }
 
