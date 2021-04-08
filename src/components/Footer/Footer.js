@@ -38,19 +38,21 @@ function Footer() {
           </div>
           <div>
             <i className="fa fa-phone" />
-            <p>0333367634</p>
+            <p>0399699977</p>
           </div>
           <div>
             <i className="fa fa-envelope" />
-            <a href="mailto:16521399@gm.uit.eud.vn">16521399@gm.uit.eud.vn</a>
+            <a href="mailto:17521270@gm.uit.eud.vn">17521270@gm.uit.eud.vn</a>
+          </div>
+          <div>
+            <i className="fa fa-envelope" />
+            <a href="mailto:17520700@gm.uit.eud.vn">17520700@gm.uit.eud.vn</a>
           </div>
         </div>
         <div className="footer-right">
           <p className="footer-company-about">
             <span>Về Automated Screening</span>
-            Đây là sản phẩm khoá luận tốt nghiệp của nhóm sinh viên Phan Thanh
-            Tùng và Phạm Quang Vinh sau quá trình học tập tại Trường Đại học
-            Công nghệ Thông tin
+            Đây là sản phẩm khoá luận tốt nghiệp của nhóm sinh viên Lê Nguyễn Hoàng Vũ - Trần Hữu Lộc
           </p>
           <div className="footer-icons">
             <a href="#" target="_blank">

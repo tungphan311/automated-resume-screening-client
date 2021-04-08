@@ -43,10 +43,10 @@ const MyLoader = (props) => (
   </ContentLoader>
 );
 
-function CandidateJobDetail({}) {
+function CandidateJobDetail({ history }) {
   return (
     <>
-      <h1>Detail code o day</h1>
+     <h1>Detail code</h1>
     </>
   );
 }
