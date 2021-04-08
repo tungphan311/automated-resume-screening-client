@@ -1,0 +1,40 @@
+.career-advice {
+  .search-jobs-container {
+    margin-bottom: 0 !important;
+    padding: 30px 0 20px 0 !important;
+    background-color: rgb(13, 56, 128) !important;
+  }
+  
+  .btn{
+    background-color: rgb(39, 101, 207);;
+  }
+
+  .nav-tabs {
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $c-white;
+      background-color: rgb(10, 42, 96);
+      height: 45px;
+      width: 50%;
+
+      font-size: 16px;
+      line-height: 18px;
+
+      &:hover {
+        background-color: rgb(8, 34, 77);
+      }
+    }
+
+    .nav-link {
+      border: none;
+      border-radius: 0;
+    }
+    .nav-link.active {
+      background-color: rgb(39, 101, 207);
+      color: $c-white;
+    }
+  }
+
+}

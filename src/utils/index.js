@@ -41,7 +41,7 @@ export const formatMonths = (month) => {
 };
 
 export const formatProvince = (provinces, provinceId) => {
-  const province = provinces.find((p) => p.province_id == provinceId);
+  const province = provinces.find((p) => p.province_id === provinceId);
 
   return province.province_name;
 };
@@ -49,7 +49,7 @@ export const formatProvince = (provinces, provinceId) => {
 export const formatSearchHistory = (title, provinces, provinceId) => {
   let province = {};
   if (provinceId) {
-    province = provinces.find((p) => p.province_id == provinceId);
+    province = provinces.find((p) => p.province_id === provinceId);
   }
 
   let result = "";

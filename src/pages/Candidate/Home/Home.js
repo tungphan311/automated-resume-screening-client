@@ -64,7 +64,7 @@ const Role = ({ id, name }) => (
       className="card lift link-dark shadow-sm border-0"
       to={`/find-jobs?job-domain=${id}`}
     >
-      <div className="card-body d-flex justify-content-between align-items-center px-4">
+      <div className="card-body d-flex justify-content-between align-items-center px-4 domain__card">
         <span>{name}</span>
         <i className="fas fa-chevron-right opacity ml-2" />
       </div>

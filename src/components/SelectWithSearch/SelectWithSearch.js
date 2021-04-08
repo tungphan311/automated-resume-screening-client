@@ -15,7 +15,7 @@ function SelectWithSearch({
   isClearable
 }) {
   return (
-    <div className={`dropdown ${className}`} style={{ zIndex: 999 }}>
+    <div className={`dropdown ${className}`} style={{ zIndex: 5 }}>
       {label && <label>{label}</label>}
       <Select
         name={name}
