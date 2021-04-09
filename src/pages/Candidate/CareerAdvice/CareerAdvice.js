@@ -1,7 +1,7 @@
 import JobSearch from "components/Forms/JobSearch/JobSearch";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
-import ExploreWithSkills from "./ExploreWithSkills";
-import FindJob from "./FindJob";
+import ExploreWithSkills from "./ExploreSkills/ExploreWithSkills";
+import FindJob from "./FindJob/FindJob";
 
 import { getFormValues } from "redux-form";
 import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
