@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import "./FindJob.scss";
 
 function FindJob() {
+  // const [overlay, setOverlay] = useState(false)
+
   const onClickRole = () => {
     window.scrollTo(0, 0);
   };

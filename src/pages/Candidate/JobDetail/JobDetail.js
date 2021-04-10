@@ -45,9 +45,18 @@ const MyLoader = (props) => (
 
 function CandidateJobDetail({ history }) {
   return (
-    <>
-     <h1>Detail code</h1>
-    </>
+    <div className="detail-page">
+      <div
+        id="search-jobs"
+        className="search-jobs-container search-jobs-widget"
+      >
+        <div className="container">
+          <JobSearchAdvance history={history} />
+        </div>
+      </div>
+
+      <h1>Detail code</h1>
+    </div>
   );
 }
 
