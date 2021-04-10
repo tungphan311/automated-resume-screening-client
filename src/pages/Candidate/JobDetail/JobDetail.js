@@ -55,7 +55,9 @@ function CandidateJobDetail({ history }) {
         </div>
       </div>
 
-      <h1>Detail code</h1>
+      <div className="container">
+        <h1>Detail code</h1>
+      </div>
     </div>
   );
 }
