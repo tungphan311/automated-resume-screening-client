@@ -1,0 +1,114 @@
+.JobTitle {
+    border-color: #e4e2e0 !important;
+    border-bottom: 2px solid #f6f6f6;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    padding: 0 20px;
+    background-color: #fff;
+
+ }
+.JobTitle .text{
+    color: #2d2d2d !important;
+}
+.JobTitle h1 {
+    /* color: #2d2d2d !important; */
+    font-size: 23px !important;
+    line-height: 1.22 !important;
+    margin-bottom: .25rem !important;
+    font-weight: 700;
+}
+.JobTitle a {
+    background-color: #2557a7 !important;
+    border: 0.0625rem solid transparent !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    border-radius: 0.5rem !important;
+    margin-left: auto;
+    margin-right: auto;
+    margin: 0;
+    text-align: center;
+    background-repeat: repeat-x;
+    cursor: pointer;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    display: block;
+    width: 100%;
+    max-width: 21.9375rem;
+    box-sizing: border-box;
+    display: inline-block;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    white-space: nowrap;
+    -webkit-highlight: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: .875rem;
+    letter-spacing: 0;
+    font-weight: 700;
+    line-height: 1.43;
+    line-height: 1.5rem;
+}    
+.JobTitle a:hover {
+    box-shadow: none !important;
+    background-color: #164081 !important;
+}
+.JobTitle button {
+    margin: 0 0 0 1rem;
+    background-color: #e4e2e0 !important;
+    border: 0.0625rem solid transparent !important;
+    color: #2d2d2d !important;
+    box-shadow: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 42px;
+    width: 1rem;
+    text-align: center;
+    margin-bottom: .5rem;
+    line-height: 1.5rem;
+    border-radius: 0.5rem !important;
+    padding: .5rem 1.25rem!important;   
+    transition: background-color 180ms ease-out,border-color 180ms ease-out;
+    /* margin-left: auto; */
+    margin-right: auto;
+    background-repeat: repeat-x;
+    cursor: pointer;
+    max-width: 21.9375rem;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    white-space: nowrap;
+    -webkit-highlight: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);    
+    box-sizing: border-box;
+    font-size: 1rem;
+    letter-spacing: 0;
+    font-weight: 700;
+
+}
+.JobTitle button:hover {
+    margin-right: 0.4rem;
+    box-shadow: none !important;
+    background-color: #d4d2d0 !important;
+}
+.JobTitle .box {
+    padding: 20px 0 !important;
+    display: flex;
+}
+.JobTitle .icon {
+    width: 22px !important;
+}

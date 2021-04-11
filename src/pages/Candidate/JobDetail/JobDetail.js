@@ -5,6 +5,7 @@ import JobItem from "components/JobItem/JobItem";
 import { CONTACTS, PAGE_SIZES, DATES } from "constants/index";
 import React, { useEffect, useState } from "react";
 import "./JobDetail.scss";
+import './JobDetail.css';
 import { Pagination, Select } from "antd";
 import { findJobs } from "services/jobServices";
 import { formatSearchHistory, toastErr } from "utils/index";
@@ -14,6 +15,9 @@ import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
 import qs from "query-string";
 import { Link, useLocation } from "react-router-dom";
+import JobTitle from './JobTitle/JobTitle';
+import JobDetail  from './JobDetail/JobDetail';
+import ComSidebar from './ComSidebar/ComSidebar';
 
 const MyLoader = (props) => (
   <ContentLoader
@@ -55,8 +59,16 @@ function CandidateJobDetail({ history }) {
         </div>
       </div>
 
-      <div className="container">
-        <h1>Detail code</h1>
+      <div className="container" style={{backgroundColor: '#fff'}}>
+        <div className="row">
+          <div className="col-8">
+            <JobTitle />
+            <JobDetail />
+          </div>
+          <div className="col-4">
+            <ComSidebar />
+          </div>
+        </div>
       </div>
     </div>
   );
