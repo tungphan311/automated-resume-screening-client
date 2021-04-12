@@ -1,4 +1,6 @@
 .find-job {
+  position: relative;
+
   &__greeting {
     position: relative;
     display: flex;
@@ -57,7 +59,7 @@
         border-left: 3px solid rgb(230, 2, 120);
       }
 
-      &__group{
+      &__group {
         padding: 5px 15px;
         font-weight: 700;
         color: rgb(39, 101, 207);
@@ -67,10 +69,106 @@
       }
     }
 
-    img{
+    img {
       align-self: flex-end;
       max-width: 380px;
       max-height: 363px;
+    }
+  }
+
+  &__has-role {
+    padding-bottom: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: rgb(255, 255, 255);
+    padding: 50px 40px 50px 30px;
+    display: flex;
+    flex-direction: column;
+
+    &__greeting {
+      position: relative;
+      color: rgb(28, 28, 28);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 30px;
+      padding-left: 20px;
+      margin-bottom: 40px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        display: block;
+        height: calc(100% - 0px);
+        border-left: 3px solid rgb(230, 2, 120);
+      }
+    }
+
+    &__domains {
+      .nav-tabs {
+        min-height: 50px;
+        .nav-item {
+          min-height: 50px;
+          border-radius: 50px !important;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #1C1C1C !important;
+          background-color: red   !important;
+          // background-color: initial !important;
+          height: 45px;
+          width: 25% !important;
+
+          font-size: 16px;
+          line-height: 18px;
+
+          &:hover {
+            background-color: rgb(8, 34, 77);
+          }
+        }
+
+        .nav-link {
+          border: none;
+          border-radius: 0;
+        }
+        .nav-link.active {
+          background-color: rgb(39, 101, 207) i !important;
+          color: $c-white;
+        }
+      }
+    }
+  }
+
+  &__overlay {
+    height: 108%;
+    width: 100%;
+    position: absolute;
+    z-index: 4;
+    bottom: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow-x: hidden;
+    transition: 0.5s;
+
+    &__group {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 20px;
+      color: $c-white;
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: 700;
+
+      p {
+        margin-bottom: 0;
+      }
+
+      button {
+        color: $c-alabaster;
+        border-color: $primary i !important;
+      }
     }
   }
 }

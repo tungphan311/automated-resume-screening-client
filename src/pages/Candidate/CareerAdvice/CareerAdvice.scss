@@ -4,13 +4,13 @@
     padding: 30px 0 20px 0 !important;
     background-color: rgb(13, 56, 128) !important;
   }
-  
-  .btn{
-    background-color: rgb(39, 101, 207);;
+
+  .btn {
+    border: 1px solid $c-alabaster;
   }
 
   .nav-tabs {
-    a {
+    .nav-item {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -22,9 +22,9 @@
       font-size: 16px;
       line-height: 18px;
 
-      &:hover {
-        background-color: rgb(8, 34, 77);
-      }
+      // &:hover {
+      //   background-color: rgb(8, 34, 77);
+      // }
     }
 
     .nav-link {
@@ -36,5 +36,5 @@
       color: $c-white;
     }
   }
-
 }
+
