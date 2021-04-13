@@ -15,9 +15,6 @@ import { useSelector } from "react-redux";
 import ContentLoader from "react-content-loader";
 import qs from "query-string";
 import { Link, useLocation } from "react-router-dom";
-import JobTitle from './JobTitle/JobTitle';
-import JobDetail  from './JobDetail/JobDetail';
-import ComSidebar from './ComSidebar/ComSidebar';
 
 const MyLoader = (props) => (
   <ContentLoader
@@ -61,12 +58,117 @@ function CandidateJobDetail({ history }) {
 
       <div className="container" style={{backgroundColor: '#fff'}}>
         <div className="row">
-          <div className="col-8">
-            <JobTitle />
-            <JobDetail />
+          <div className="col-ct-8">
+            <div className="JobTitle">
+              <h1>Front-end Development Fresher (ReactJS)</h1>
+              <div>
+                  <div className="text">Zalo</div>
+                  <div className="text">Thành phố Hồ Chí Minh</div>
+              </div>
+              <div className="box">
+                <a>Apply Now</a>
+                <div>
+                    <button className="icon">
+                        <i className="far fa-heart"></i>
+                    </button>
+                </div>
+              </div>
+            </div>
+
+            
+            <div className="JobDetail">
+                <div>
+                <p>Develop Zalo for Work's features</p>
+                <div><h2 class="jobSectionHeader"><b>What you will do</b></h2>
+                <ul><li>Join a team to learn and research how to develop new features for Zalo for work - a web application in ReactJS;</li>
+                <li>Continuously grow by participating in valuable training sessions from experienced mentors.</li>
+                </ul><h2 class="jobSectionHeader"><b>What you will need</b></h2>
+                <ul><li>3rd/4th year student or fresh graduates in Computer Science, Engineering or related field;</li>
+                <li>Bold passion in programming with ReactJS and having knowledge of Javascript Core;</li>
+                <li>Understanding of data structures and algorithms;</li>
+                <li>A team player who can work both as individual and as a team;</li>
+                <li>Having a strong sense of ownership, being open-minded and eager to learn.</li></ul></div>
+                </div>
+                
+                <div class="jobsearch-JobMetadataFooter">
+                    <div class="icl-u-textColor--success">Zalo</div>
+                    <div>30+ days ago</div>
+                    <div id="originalJobLinkContainer" class="icl-u-lg-inline icl-us-xs-hide">
+                        <a>original job</a>
+                    </div>
+                    <div>
+                        <div>
+                            <div>
+                                <button class="mosaic-reportcontent-button desktop" type="button">
+                                <i class="fas fa-flag"></i>
+                                Report job
+                                </button>
+                            </div>
+                        <div class="mosaic-reportcontent-content"></div></div></div></div>
+            </div>
+
           </div>
-          <div className="col-4">
-            <ComSidebar />
+          <div className="col-ct-4">
+                <div className="ComSidebar">
+                  <div className="jobsearch-CompanyAvatar">
+                      <div  className="jobsearch-CompanyAvatar-card">
+                          <h2>Company Info</h2>
+                          <div className="body">
+                              <div className="jobsearch-CompanyAvatar-form">
+                                  <div>
+                                      <div>
+                                          <div className="jobsearch-CompanyAvatar-buttonContainer">
+                                              <a>
+                                              <img class="jobsearch-CompanyAvatar-image" src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/6e2561ea0f71d8647a00e216bd6d0440" />
+                                              </a>
+                                              <div className="jobsearch-CompanyAvatar-button">
+                                                  <button className="icl-Button" type="button">Follow</button>
+                                              </div>
+                                              <div className="jobsearch-CompanyAvatar-cta">Get job updates from Zalo</div>
+                                              <div className="name-rating">
+                                                  <a className="jobsearch-CompanyAvatar-companyLink" href="" target="_blank">State of Washington Dept. of Corrections</a>
+                                                  <div className="rating">
+                                                      <div className="icl-Ratings-starsWrapper">
+                                                          <div className="icl-Ratings-starsUnfilled">
+                                                              <div className="icl-Ratings-starsFilled" style={{width: '61.80000114440918px'}}></div>
+                                                          </div>
+                                                      </div>
+                                                      <div className="icl-Ratings-count" >285 reviews</div>
+                                                  </div>
+                                              </div>
+                                              <div class="jobsearch-CompanyAvatar-description">Whether it's helping a vulnerable child, making highways safer or restoring salmon habitat, the work that we do matters to the people of ...</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      
+                  </div>
+                  <div className="jobsearch-CompanyAvatar" style={{width: '250px'}}>
+                      <div  className="jobsearch-CompanyAvatar-card" style={{width: '250px'}}>
+                          <h2>Company Info</h2>
+                          <div className="body">
+                              <div className="jobsearch-CompanyAvatar-form">
+                                  <div>
+                                      <div>
+                                          <div className="jobsearch-CompanyAvatar-buttonContainer">
+                                            
+                                              <div className="jobsearch-CompanyAvatar-cta">Thousands of employers search for candidates on Indeed</div>
+                                              <div className="jobsearch-CompanyAvatar-button">
+                                                  <button className="icl-Button" type="button">Upload your resume</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      
+                  </div>
+              </div>
+              
+
           </div>
         </div>
       </div>
