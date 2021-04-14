@@ -1,4 +1,7 @@
 .find-job {
+  position: relative;
+  padding-bottom: 20px;
+
   &__greeting {
     position: relative;
     display: flex;
@@ -57,7 +60,7 @@
         border-left: 3px solid rgb(230, 2, 120);
       }
 
-      &__group{
+      &__group {
         padding: 5px 15px;
         font-weight: 700;
         color: rgb(39, 101, 207);
@@ -67,10 +70,152 @@
       }
     }
 
-    img{
+    img {
       align-self: flex-end;
       max-width: 380px;
       max-height: 363px;
+    }
+  }
+
+  &__has-role {
+    padding-bottom: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: rgb(255, 255, 255);
+    padding: 50px 40px 50px 30px;
+    display: flex;
+    flex-direction: column;
+
+    &__greeting {
+      position: relative;
+      color: rgb(28, 28, 28);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 30px;
+      padding-left: 20px;
+      margin-bottom: 40px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        display: block;
+        height: calc(100% - 0px);
+        border-left: 3px solid rgb(230, 2, 120);
+      }
+    }
+
+    &__domains {
+      .child-tabs {
+        border: 1px solid rgb(221, 227, 234);
+        border-radius: 50px;
+        margin-bottom: 40px;
+
+        .nav-item {
+          min-height: 50px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #1c1c1c;
+          background-color: $c-white;
+          width: 25% !important;
+          border-bottom: 1px solid rgb(221, 227, 234);
+          font-size: 16px;
+          line-height: 18px;
+
+          &:hover {
+            font-weight: 700;
+            color: rgb(39, 101, 207);
+            border: none;
+            border-bottom: 1px solid rgb(221, 227, 234);
+          }
+
+          &:first-child {
+            border-bottom-left-radius: 50px;
+            border-top-left-radius: 50px;
+            border-bottom: 1px solid rgb(221, 227, 234);
+          }
+
+          &:last-child {
+            border-bottom-right-radius: 50px;
+            border-top-right-radius: 50px;
+            border-bottom: 1px solid rgb(221, 227, 234);
+          }
+        }
+
+        .nav-link {
+          // border-radius: 50px;
+          // border-bottom-right-radius: 1px solid rgb(221, 227, 234);
+        }
+        .nav-link.active {
+          border-radius: 50px;
+          background-color: rgb(39, 101, 207);
+          color: $c-white;
+        }
+      }
+    }
+
+    &__similar-jd {
+      .slick-list {
+        position: relative;
+      }
+
+      .ant-carousel {
+        .slick-prev,
+        .slick-next {
+          display: block;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+          height: 44px;
+          width: 44px;
+        }
+
+        .slick-prev{
+          right: -20px;
+          background: url("https://www.seek.com.au/career-advice/assets/9388e9bc.svg");
+        }
+
+        .slick-next {
+          right: -20px;
+          background: url("https://www.seek.com.au/career-advice/assets/5e455b49.svg");
+        }
+      }
+
+    }
+  }
+
+  &__overlay {
+    height: 108%;
+    width: 100%;
+    position: absolute;
+    z-index: 4;
+    bottom: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.85);
+    overflow-x: hidden;
+    transition: 0.5s;
+
+    &__group {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 20px;
+      color: $c-white;
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: 700;
+
+      p {
+        margin-bottom: 0;
+      }
+
+      button {
+        color: $c-alabaster;
+        border-color: $primary i !important;
+      }
     }
   }
 }

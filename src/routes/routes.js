@@ -1,16 +1,18 @@
 import CandidateLayout from "layouts/CandidateLayout/CandidateLayout";
 import RecruiterLayout from "layouts/RecruiterLayout/RecruiterLayout";
 import EmptyLayout from "layouts/EmptyLayout/EmptyLayout";
+import ConfirmMail from "pages/Empty/ConfirmMail/ConfirmMail";
+
 import CandidateSignIn from "pages/Candidate/CandidateSignIn/CandidateSignIn";
 import CandidateSignUp from "pages/Candidate/CandidateSignUp/CandidateSignUp";
 import CandidateHome from "pages/Candidate/Home/Home";
 import CandidateJobList from "pages/Candidate/JobList/JobList";
 import CandidateJobDetail from "pages/Candidate/JobDetail/JobDetail";
 import CandidateCareerAdvice from "pages/Candidate/CareerAdvice/CareerAdvice";
-
 import CandidateProfile from "pages/Candidate/Profile/Profile";
 import CandidateReviewCV from "pages/Candidate/ReviewCV/ReviewCV";
-import ConfirmMail from "pages/Empty/ConfirmMail/ConfirmMail";
+
+import HRLandingPage from "pages/HR/LandingPage/LandingPage";
 import HRHome from "pages/HR/Home/Home";
 import HRSignIn from "pages/HR/HRSignIn/HRSignIn";
 import HRSignUp from "pages/HR/HRSignUp/HRSignUp";
@@ -18,6 +20,7 @@ import HRJobManage from "pages/HR/JobDetail/JobManage";
 import HRJobList from "pages/HR/JobList/JobList";
 import HRPostJob from "pages/HR/PostJob/PostJob";
 import HRUpdateCompany from "pages/HR/UpdateCompany/UpdateCompany";
+
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { checkCookie } from "../utils/cookies";
@@ -178,6 +181,7 @@ function Routes() {
       <Route
         exact
         path={[
+          "/recruiter/home",
           "/recruiter",
           "/recruiter/jobs/:id",
           "/recruiter/jobs/:id/edit",
@@ -192,6 +196,11 @@ function Routes() {
         ]}
       >
         <RecruiterLayout>
+        <UnauthorizedRoute
+            exact
+            path="/recruiter/home"
+            component={HRLandingPage}
+          />
           <RecruiterRoute exact path="/recruiter" component={HRHome} />
           <RecruiterRoute
             exact

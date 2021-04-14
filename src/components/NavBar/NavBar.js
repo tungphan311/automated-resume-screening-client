@@ -22,7 +22,7 @@ function NavBar() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.candidate.token);
   const [info, setInfo] = useState(false);
-  const [clickItem, setClickItem] = useState(0);
+  const [clickItem, setClickItem] = useState(null);
 
   // const recruiter = pathname.startsWith("/recruiter");
 
@@ -113,7 +113,7 @@ function NavBar() {
         <Button
           type="primary"
           size="large"
-          onClick={() => history.push("/recruiter")}
+          onClick={() => history.push("/recruiter/home")}
         >
           Employer
         </Button>

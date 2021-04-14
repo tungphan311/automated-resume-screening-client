@@ -17,7 +17,7 @@ function Header() {
             {/* Header section */}
             <div className="header__navbar-brand-wrapper">
               <Link
-                to={`${recruiter ? "/recruiter" : "/"}`}
+                to={`${recruiter ? "/recruiter/home" : "/"}`}
                 className="navbar-brand header__navbar-brand"
                 style={{ width: "fit-content" }}
               >

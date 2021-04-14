@@ -26,22 +26,22 @@ function JobSearchAdvance({ handleSubmit }) {
             name="job_title"
             icon={<SearchOutlined style={{ color: "#555" }} />}
             formClassName="col-sm-6 pr-10"
-            placeholder="Tên công việc bạn muốn ứng tuyển"
+            placeholder="Job title, role, keywords,..."
           />
           <Field
             component={CustomSelect}
             name="location"
             className="col-sm-6"
-            placeholder="Địa điểm làm việc"
+            placeholder="Location"
             options={options}
             icon={<FontAwesomeIcon icon={faMapMarkerAlt} color="#555" />}
             isClearable={true}
           />
         </div>
         <div className="col-sm-2">
-          <button type="submit" className="btn btn-primary btn-full-width">
+          <button type="submit" className="btn btn-primary btn-full-width" style={{fontWeight: 700}}>
             <SearchOutlined style={{ marginRight: "10px" }} />
-            Tìm kiếm
+            Find Jobs
           </button>
         </div>
       </div>

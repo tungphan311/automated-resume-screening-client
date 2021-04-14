@@ -68,3 +68,8 @@ export const formatSearchHistory = (title, provinces, provinceId) => {
 
   return result;
 };
+
+export const numberToArray = (value) =>
+  Array(value)
+    .fill("")
+    .map((_, index) => index);
