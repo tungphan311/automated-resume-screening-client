@@ -5,7 +5,6 @@ import JobItem from "components/JobItem/JobItem";
 import { CONTACTS, PAGE_SIZES, DATES } from "constants/index";
 import React, { useEffect, useState } from "react";
 import "./JobDetail.scss";
-import './JobDetail.css';
 import { Pagination, Select } from "antd";
 import { findJobs } from "services/jobServices";
 import { formatSearchHistory, toastErr } from "utils/index";
