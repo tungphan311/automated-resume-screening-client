@@ -22,7 +22,7 @@ function NavBar() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.candidate.token);
   const [info, setInfo] = useState(false);
-  const [clickItem, setClickItem] = useState();
+  const [clickItem, setClickItem] = useState(null);
 
   // const recruiter = pathname.startsWith("/recruiter");
 

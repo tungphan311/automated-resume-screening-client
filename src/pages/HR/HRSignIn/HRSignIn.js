@@ -50,7 +50,7 @@ function HRSignIn() {
         <div className="hr-login__container__left">
           <div className="hr-login__container__left__logo">
             <Link
-              to="/recruiter"
+              to="/recruiter/home"
               className="hr-login__container__left__logo__wrapper"
             >
               <h3>
