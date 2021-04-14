@@ -9,7 +9,7 @@
     border: 1px solid $c-alabaster;
   }
 
-  .nav-tabs {
+  .main-tabs {
     .nav-item {
       display: flex;
       justify-content: center;
@@ -22,9 +22,9 @@
       font-size: 16px;
       line-height: 18px;
 
-      // &:hover {
-      //   background-color: rgb(8, 34, 77);
-      // }
+      &:hover {
+        background-color: rgb(8, 34, 77);
+      }
     }
 
     .nav-link {

@@ -1,5 +1,6 @@
 .find-job {
   position: relative;
+  padding-bottom: 20px;
 
   &__greeting {
     position: relative;
@@ -106,37 +107,83 @@
     }
 
     &__domains {
-      .nav-tabs {
-        min-height: 50px;
+      .child-tabs {
+        border: 1px solid rgb(221, 227, 234);
+        border-radius: 50px;
+        margin-bottom: 40px;
+
         .nav-item {
           min-height: 50px;
-          border-radius: 50px !important;
           display: flex;
           justify-content: center;
           align-items: center;
-          color: #1C1C1C !important;
-          background-color: red   !important;
-          // background-color: initial !important;
-          height: 45px;
+          color: #1c1c1c;
+          background-color: $c-white;
           width: 25% !important;
-
+          border-bottom: 1px solid rgb(221, 227, 234);
           font-size: 16px;
           line-height: 18px;
 
           &:hover {
-            background-color: rgb(8, 34, 77);
+            font-weight: 700;
+            color: rgb(39, 101, 207);
+            border: none;
+            border-bottom: 1px solid rgb(221, 227, 234);
+          }
+
+          &:first-child {
+            border-bottom-left-radius: 50px;
+            border-top-left-radius: 50px;
+            border-bottom: 1px solid rgb(221, 227, 234);
+          }
+
+          &:last-child {
+            border-bottom-right-radius: 50px;
+            border-top-right-radius: 50px;
+            border-bottom: 1px solid rgb(221, 227, 234);
           }
         }
 
         .nav-link {
-          border: none;
-          border-radius: 0;
+          // border-radius: 50px;
+          // border-bottom-right-radius: 1px solid rgb(221, 227, 234);
         }
         .nav-link.active {
-          background-color: rgb(39, 101, 207) i !important;
+          border-radius: 50px;
+          background-color: rgb(39, 101, 207);
           color: $c-white;
         }
       }
+    }
+
+    &__similar-jd {
+      .slick-list {
+        position: relative;
+      }
+
+      .ant-carousel {
+        .slick-prev,
+        .slick-next {
+          display: block;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+          height: 44px;
+          width: 44px;
+        }
+
+        .slick-prev{
+          right: -20px;
+          background: url("https://www.seek.com.au/career-advice/assets/9388e9bc.svg");
+        }
+
+        .slick-next {
+          right: -20px;
+          background: url("https://www.seek.com.au/career-advice/assets/5e455b49.svg");
+        }
+      }
+
     }
   }
 
@@ -148,7 +195,7 @@
     bottom: 0;
     left: 0;
     background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.85);
     overflow-x: hidden;
     transition: 0.5s;
 

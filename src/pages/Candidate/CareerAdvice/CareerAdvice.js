@@ -77,7 +77,7 @@ function CandidateCareerAdvice({ history }) {
       </div>
 
       {/* Tabs  */}
-      <Tabs defaultActiveKey="explore">
+      <Tabs className="main-tabs" defaultActiveKey="explore">
         <Tab eventKey="explore" title="Explore what I can do with my skills">
           <ExploreWithSkills />
         </Tab>

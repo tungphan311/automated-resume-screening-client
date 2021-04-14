@@ -1,20 +1,31 @@
+import { PushpinOutlined, EditOutlined } from "@ant-design/icons";
+import { Carousel } from "antd";
 import JobSearch from "components/Forms/JobSearch/JobSearch";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import { getFormValues } from "redux-form";
 import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { Tabs, Tab } from "react-bootstrap";
-import { PushpinOutlined, EditOutlined } from "@ant-design/icons";
+import Statistics from "./Statistics";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import "./FindJob.scss";
 
 function FindJob() {
   const [overlay, setOverlay] = useState(false);
+  let slider = useRef(null);
 
   const onClickRole = () => {
     window.scrollTo(0, 0);
     setOverlay(true);
+  };
+
+  const contentStyle = {
+    height: "160px",
+    color: "#fff",
+    lineHeight: "160px",
+    textAlign: "center",
+    background: "#364d79"
   };
 
   return (
@@ -51,14 +62,14 @@ function FindJob() {
 
             <img
               src="https://www.seek.com.au/career-advice/assets/c3f39bdb.svg"
-              alt="Career Advice image"
+              alt="Career Advice"
             />
           </div>
 
           {/* If already has role */}
           <div className="find-job__has-role">
             <div className="find-job__has-role__greeting">
-              <div style={{ marginBottom: "10px" }}>
+              <div style={{ marginBottom: "20px" }}>
                 Great, you're interested in{" "}
                 <a
                   className="find-job__not-role__content__group"
@@ -82,24 +93,41 @@ function FindJob() {
               </div>
             </div>
             <div className="find-job__has-role__domains">
-              <Tabs defaultActiveKey="1">
-                <Tab eventKey="1" title="Frontend Developer" className="find-job__has-role__domains__tab">
-                  <h1> Tab 1</h1>
+              <Tabs className="child-tabs" defaultActiveKey="1">
+                <Tab eventKey="1" title="Frontend Developer">
+                  <Statistics />
                 </Tab>
                 <Tab eventKey="2" title="Backend Developer">
-                  <h1> Tab 2</h1>
+                  <Statistics />
                 </Tab>
-
                 <Tab eventKey="3" title="Fullstack Developer">
-                  <h1> Tab 3</h1>
+                  <Statistics />
                 </Tab>
-
                 <Tab eventKey="4" title="Project Manager">
-                  <h1> Tab 3</h1>
+                  <Statistics />
                 </Tab>
               </Tabs>
+
+              {/* JD suggestion  */}
+              <div className="find-job__has-role__similar-jd">
+                <button onClick={() => slider.current.next()}>next</button>
+                <Carousel arrows>
+                  <div>
+                    <h3 style={contentStyle}>1</h3>
+                  </div>
+                  <div>
+                    <h3 style={contentStyle}>2</h3>
+                  </div>
+                  <div>
+                    <h3 style={contentStyle}>3</h3>
+                  </div>
+                  <div>
+                    <h3 style={contentStyle}>4</h3>
+                  </div>
+                </Carousel>
+                <button onClick={() => slider.current.next()}>next</button>
+              </div>
             </div>
-            Tab 2
           </div>
         </div>
 
