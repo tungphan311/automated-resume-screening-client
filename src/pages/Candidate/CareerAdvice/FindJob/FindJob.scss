@@ -157,33 +157,17 @@
     }
 
     &__similar-jd {
-      .slick-list {
-        position: relative;
-      }
+      // .swiper-container{
+      //   width: 500px;
+      // }
 
-      .ant-carousel {
-        .slick-prev,
-        .slick-next {
-          display: block;
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          margin: auto;
-          height: 44px;
-          width: 44px;
-        }
+      // .swiper-wrapper {
+      //   padding-inline-start: 0;
 
-        .slick-prev{
-          right: -20px;
-          background: url("https://www.seek.com.au/career-advice/assets/9388e9bc.svg");
-        }
-
-        .slick-next {
-          right: -20px;
-          background: url("https://www.seek.com.au/career-advice/assets/5e455b49.svg");
-        }
-      }
-
+      //   // .swiper-slide{
+      //   //   width: 50%;
+      //   // }
+      // }
     }
   }
 
