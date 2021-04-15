@@ -1,5 +1,4 @@
 import { PushpinOutlined, EditOutlined } from "@ant-design/icons";
-import { Carousel } from "antd";
 import JobSearch from "components/Forms/JobSearch/JobSearch";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import { getFormValues } from "redux-form";
@@ -110,22 +109,7 @@ function FindJob() {
 
               {/* JD suggestion  */}
               <div className="find-job__has-role__similar-jd">
-                <button onClick={() => slider.current.next()}>next</button>
-                <Carousel arrows>
-                  <div>
-                    <h3 style={contentStyle}>1</h3>
-                  </div>
-                  <div>
-                    <h3 style={contentStyle}>2</h3>
-                  </div>
-                  <div>
-                    <h3 style={contentStyle}>3</h3>
-                  </div>
-                  <div>
-                    <h3 style={contentStyle}>4</h3>
-                  </div>
-                </Carousel>
-                <button onClick={() => slider.current.next()}>next</button>
+               
               </div>
             </div>
           </div>

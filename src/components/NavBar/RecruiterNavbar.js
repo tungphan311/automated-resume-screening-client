@@ -20,7 +20,7 @@ function RecruiterNavBar() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.recruiter.token);
   const [info, setInfo] = useState(false);
-  const [clickItem, setClickItem] = useState(0);
+  const [clickItem, setClickItem] = useState();
 
   //Handle logout
   const logOut = () => {
