@@ -49,6 +49,20 @@
     .jobsearch-SerpJobCard {
       width: 100%;
       background-color: #fff;
+      position: relative;
+
+      .job-expand{
+        font-size: 22px;
+        position: absolute;
+        right: 20px;
+        top: 23px;
+
+        &:hover{
+          color: $primary;
+          font-size: 27px;
+          transition: font-size ease-in 0.2s;
+        }
+      }
     }
 
     .row {
@@ -65,7 +79,7 @@
         font-size: 20px;
         font-weight: 700;
         float: none;
-        margin-bottom: 0;
+        margin-bottom: 5px;
       }
 
       .location {
@@ -100,6 +114,7 @@
       justify-content: space-between;
       align-items: center;
       flex-flow: row wrap;
+      
 
       & > * {
         flex: 0 2 auto;
@@ -116,6 +131,7 @@
         color: #6f6f6f;
 
         .date {
+          font-size: 12px;
           line-height: 1.125rem;
           border-bottom: 0 !important;
           display: inline-block;
@@ -150,13 +166,13 @@
     .salary {
       line-height: 1rem;
       display: inline-block;
-      font-size: 16px;
+      font-size: 15px;
       color: #000;
 
       .salaryText {
         line-height: 1rem;
         display: inline-block;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 700;
       }
     }
@@ -164,6 +180,7 @@
 
   .salarySnippet.holisticSalary {
     padding-top: 0.75rem;
+    font-size: 15px;
   }
 
   .holisticSalary {

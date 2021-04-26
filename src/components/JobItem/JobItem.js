@@ -1,9 +1,13 @@
 import React from "react";
 import "./JobItem.scss";
-import JobDetail from "components/JobItem/JobDetail";
-import { format_date } from "utils/index";
+import { FullscreenOutlined } from "@ant-design/icons";
+import { Tooltip } from "antd";
 
-function JobItem({
+import JobDetail from "components/JobItem/JobDetail";
+import { getDiffTime } from "utils/index";
+import history from "state/history";
+
+const JobItem = ({
   jobId,
   curSelect,
   onChangeSelect,
@@ -13,9 +17,10 @@ function JobItem({
   company,
   salary,
   jobDescription,
-  lastEdit,
+  postedIn,
   contractType
-}) {
+}) => {
+  console.log('postedIn',postedIn)
   return (
     <>
       <div
@@ -24,6 +29,14 @@ function JobItem({
         }`}
         onClick={() => onChangeSelect(jobId)}
       >
+        <Tooltip placement="bottom" title="Show detail on page">
+          <FullscreenOutlined
+            className="job-expand"
+            onClick={() => {
+              history.push(`/job-detail/${jobId}`);
+            }}
+          />
+        </Tooltip>
         <h2 className="job-title">
           <p className="jobtitle turnstileLink">{jobTitle}</p>
         </h2>
@@ -53,16 +66,22 @@ function JobItem({
           <div className="jobsearch-SerpJobCard-footerActions">
             <div className="result-link-bar-container">
               <div className="result-link-bar">
-                <span className="date">{format_date(lastEdit)}</span>
+                <span className="date">
+                  {" "}
+                  {getDiffTime(postedIn) > 1
+                    ? getDiffTime(postedIn).toString() + " days"
+                    : getDiffTime(postedIn).toString() + " day"}{" "}
+                  ago
+                </span>
                 {/* <div className="tt_set">
-                  <div className="job-reaction">
-                    <Tooltip placement="right" title="Nhấn để lưu tin này">
-                      <button className="job-reaction-love">
-                        <HeartOutlined style={{ fontSize: "24px" }} />
-                      </button>
-                    </Tooltip>
-                  </div>
-                </div> */}
+                    <div className="job-reaction">
+                      <Tooltip placement="right" title="Nhấn để lưu tin này">
+                        <button className="job-reaction-love">
+                          <HeartOutlined style={{ fontSize: "24px" }} />
+                        </button>
+                      </Tooltip>
+                    </div>
+                  </div> */}
               </div>
             </div>
           </div>
@@ -78,6 +97,6 @@ function JobItem({
       )}
     </>
   );
-}
+};
 
 export default JobItem;

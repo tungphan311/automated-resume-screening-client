@@ -22,6 +22,9 @@ export const RESIGN_TOKEN = "RESIGN_TOKEN";
 export const GET_CANDIDATE_PROFILE = "GET_CANDIDATE_PROFILE";
 export const GET_CANDIDATE_PROFILE_SUCCESS = "GET_CANDIDATE_PROFILE_SUCCESS";
 
+export const GET_JOB_SIMILAR = "GET_JOB_SIMILAR";
+export const GET_JOB_SIMILAR_SUCCESS = "GET_JOB_SIMILAR_SUCCESS";
+
 export const uploadCVAction = createPromiseAction("UPLOAD_CV");
 export const updateCVAction = createPromiseAction("UPDATE_CV");
 export const updateCVProfileAction = createPromiseAction("UPDATE_CV_PROFILE");

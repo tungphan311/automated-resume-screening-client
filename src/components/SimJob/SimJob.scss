@@ -3,11 +3,17 @@
   // width: 100%;
   color: $c-cod-gray;
   cursor: pointer;
+  margin-top: 15px;
+  box-shadow: 0 2px 3px 0 rgba(0, 106, 194, 0.2);
+
+  &:hover {
+    box-shadow: 0 4px 9px 0 rgba(0, 106, 194, 0.2);
+  }
 
   &:not(:last-child) {
     border-bottom: 2px solid #eee;
   }
-  
+
   &:nth-last-child(2) {
     border: none;
   }
@@ -38,6 +44,16 @@
         color: #333;
       }
     }
+
+    &__logo {
+      max-width: 110px;
+      max-height: 65px;
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
   }
 
   &__bottom {
@@ -49,6 +65,14 @@
       font-size: 12px;
       font-weight: 400;
       width: 82%;
+
+      &.show-less {
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+      }
     }
 
     &__time {
