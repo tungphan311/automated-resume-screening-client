@@ -51,7 +51,7 @@ export const formatMonths = (month) => {
 export const formatProvince = (provinces, provinceId) => {
   const province = provinces.find((p) => p.province_id === provinceId);
 
-  return province.province_name;
+  return province && province.province_name;
 };
 
 export const formatSearchHistory = (title, provinces, provinceId) => {
