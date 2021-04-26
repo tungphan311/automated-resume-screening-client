@@ -62,3 +62,6 @@ export const saveJob = async (jp_id, status, token) => {
     }
   );
 };
+
+export const getSimilarJob = async (job_post_id) =>
+  await API.get(`/job-posts/similar?job_post_id=${job_post_id}`);

@@ -104,12 +104,12 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
                   >
                     <div className="job-detail-section-title">
                       <div className="job-detail-section-title--main text-bold">
-                        Thông tin tuyển dụng
+                        Job Details
                       </div>
                     </div>
                     <div className="job-detail-section-item">
                       <div className="job-detail-section-itemKey text-bold">
-                        {"Mức lương: "}
+                        {"Slary: "}
                       </div>
                       <span>{salary}</span>
                     </div>
@@ -130,10 +130,10 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
                       </span>
                     </div>
                   </div>
-                  <div id="jobDescriptionTitle">Thông tin chi tiết</div>
+                  <div id="jobDescriptionTitle">Full Job Description</div>
                   <div id="jobDescriptionText">
                     <p>
-                      <b>Mô tả công việc: </b>
+                      <b>Description: </b>
                     </p>
                     <div
                       dangerouslySetInnerHTML={{ __html: description }}
@@ -142,14 +142,14 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
                     <br />
 
                     <p>
-                      <b>Yêu cầu ứng viên: </b>
+                      <b>Role Requirements: </b>
                     </p>
                     <div dangerouslySetInnerHTML={{ __html: requirement }} />
 
                     <p></p>
                     <br />
                     <p>
-                      <b>Quyền lợi ứng viên: </b>
+                      <b>Perks and Benefits: </b>
                     </p>
                     <div dangerouslySetInnerHTML={{ __html: benefit }} />
                     <p></p>
@@ -249,7 +249,7 @@ const Header = ({
             className="view-apply-button blue-button"
             onClick={toggleModal}
           >
-            Ứng tuyển ngay
+            Apply Now
           </button>
           <span id="state-picker-container" className="dd-wrapper">
             <button className="state-picker-button" onClick={handleSaveJP}>
@@ -264,7 +264,7 @@ const Header = ({
                       style={{ fontSize: "18px", fontWeight: "700" }}
                       className="mr-5"
                     />
-                    Lưu tin
+                    Save Job
                   </>
                 ) : (
                   <>

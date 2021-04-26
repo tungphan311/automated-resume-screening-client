@@ -72,12 +72,12 @@ function Dropdown({ title, options, value, onChange, select = false }) {
                 >
                   <div className="salary-selector-content">
                     <h2 className="salary-header">
-                      {title} trong tháng mà bạn muốn?
+                      {title} you desired per month
                     </h2>
                   </div>
                   <Input
                     value={input}
-                    suffix="triệu"
+                    suffix="million"
                     style={{ marginBottom: 16 }}
                     onChange={handleInputChange}
                   />
@@ -88,7 +88,7 @@ function Dropdown({ title, options, value, onChange, select = false }) {
                       role="button"
                       className="apply-button"
                     >
-                      Cập nhật
+                     Update
                     </span>
                   </div>
                   <div

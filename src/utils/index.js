@@ -24,6 +24,14 @@ export const format_date = (dateString) =>
 export const formatDateTime = (dateString) =>
   new Date(dateString).toLocaleString();
 
+export const getDiffTime = (dateStr) => {
+  let currDate = new Date();
+  let diffSeconds = Math.abs(currDate - new Date(dateStr)) / 1000;
+  let diffDate = Math.floor(diffSeconds / (3600 * 24));
+
+  return diffDate;
+};
+
 export function range(start, end) {
   return Array(end - start + 1)
     .fill()

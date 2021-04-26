@@ -22,15 +22,15 @@ export const MIN_SALARY = ["from", "between"];
 export const MAX_SALARY = ["upto", "between"];
 
 export const DATES = [
-  { value: 1, label: "24 giờ qua" },
-  { value: 3, label: "3 ngày qua" },
-  { value: 7, label: "7 ngày qua" }
+  { value: 1, label: "Last 24 hours" },
+  { value: 3, label: "Last 3 days" },
+  { value: 7, label: "Last 7 days" }
 ];
 
 export const CONTACTS = [
-  { value: 0, label: "Toàn thời gian" },
-  { value: 1, label: "Bán thời gian" },
-  { value: 2, label: "Thực tập" }
+  { value: 0, label: "Full-time" },
+  { value: 1, label: "Part-time" },
+  { value: 2, label: "Intership" }
 ];
 
 export const SORTS = [

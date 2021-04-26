@@ -1,7 +1,162 @@
 .detail-page {
+  background-color: $c-white;
 
-  &__container{
+  &__container {
     margin-bottom: 20px;
+  }
+
+  &__title {
+    margin-top: 20px;
+    padding: 0 20px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    padding-top: 20px;
+
+    border-color: #e4e2e0 !important;
+    border-bottom: 2px solid #f6f6f6;
+    background-color: #fff;
+
+    a:hover {
+      box-shadow: none !important;
+      background-color: #164081 !important;
+    }
+
+    .text {
+      color: #2d2d2d !important;
+    }
+    h1 {
+      /* color: #2d2d2d !important; */
+      font-size: 23px !important;
+      line-height: 1.22 !important;
+      margin-bottom: 0.25rem !important;
+      font-weight: 700;
+    }
+    a {
+      background-color: #2557a7 !important;
+      border: 0.0625rem solid transparent !important;
+      color: #fff !important;
+      box-shadow: none !important;
+      border-radius: 0.5rem !important;
+      margin-left: auto;
+      margin-right: auto;
+      margin: 0;
+      text-align: center;
+      background-repeat: repeat-x;
+      cursor: pointer;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      display: block;
+      width: 100%;
+      max-width: 21.9375rem;
+      box-sizing: border-box;
+      display: inline-block;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-decoration: none;
+      white-space: nowrap;
+      -webkit-highlight: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      -webkit-touch-callout: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      font-size: 0.875rem;
+      letter-spacing: 0;
+      font-weight: 700;
+      line-height: 1.43;
+      line-height: 1.5rem;
+    }
+
+    button {
+      margin: 0 0 0 1rem;
+      background-color: #e4e2e0 !important;
+      border: 0.0625rem solid transparent !important;
+      color: #2d2d2d !important;
+      box-shadow: none !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 42px;
+      width: 1rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      line-height: 1.5rem;
+      border-radius: 0.5rem !important;
+      padding: 0.5rem 1.25rem !important;
+      transition: background-color 180ms ease-out, border-color 180ms ease-out;
+      /* margin-left: auto; */
+      margin-right: auto;
+      background-repeat: repeat-x;
+      cursor: pointer;
+      max-width: 21.9375rem;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-decoration: none;
+      white-space: nowrap;
+      -webkit-highlight: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      box-sizing: border-box;
+      font-size: 1rem;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+    button:hover {
+      margin-right: 0.4rem;
+      box-shadow: none !important;
+      background-color: #d4d2d0 !important;
+    }
+    .box {
+      padding: 20px 0 !important;
+      display: flex;
+      margin-bottom: 0;
+
+      a {
+        max-height: 42px;
+      }
+    }
+    .icon {
+      width: 22px !important;
+    }
+  }
+
+  &__poster {
+    position: relative;
+
+    &__big {
+      border-radius: 0.5rem 0.5rem 0 0;
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+    }
+
+    &__logo {
+      position: absolute;
+      margin: 0;
+      width: 3.75rem;
+      height: 3.75rem;
+      object-fit: contain;
+      left: 1rem;
+      bottom: -9%;
+      border: 0.125rem solid #fff;
+      border-radius: 0.5rem;
+      box-shadow: 0 0.0625rem 0.25rem 0 rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__detail{
+    &__jd{
+
+    }
   }
 
   .row::after {
@@ -12,7 +167,7 @@
 
   [class*="col-ct"] {
     float: left;
-    padding: 15px;
+    // padding: 15px;
   }
 
   .col-ct-4 {
@@ -27,10 +182,15 @@
 
     &__wrapper {
       min-height: 400px;
+      padding-top: 20px;
     }
   }
+
+  .jobSectionHeader{
+    font-size: 16px
+  }
+
   .JobDetail h2 {
-    font-size: 10pt;
     font-weight: 400;
     line-height: 1.4;
   }
@@ -67,124 +227,6 @@
     background-color: #d4d2d0 !important;
   }
 
-  .JobTitle {
-    border-color: #e4e2e0 !important;
-    border-bottom: 2px solid #f6f6f6;
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 0;
-    padding: 0 20px;
-    background-color: #fff;
-    // box-shadow: 0 0.25rem 0.25rem rgb(0 0 0 / 8%) ;
-  }
-  .JobTitle .text {
-    color: #2d2d2d !important;
-  }
-  .JobTitle h1 {
-    /* color: #2d2d2d !important; */
-    font-size: 23px !important;
-    line-height: 1.22 !important;
-    margin-bottom: 0.25rem !important;
-    font-weight: 700;
-  }
-  .JobTitle a {
-    background-color: #2557a7 !important;
-    border: 0.0625rem solid transparent !important;
-    color: #fff !important;
-    box-shadow: none !important;
-    border-radius: 0.5rem !important;
-    margin-left: auto;
-    margin-right: auto;
-    margin: 0;
-    text-align: center;
-    background-repeat: repeat-x;
-    cursor: pointer;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    display: block;
-    width: 100%;
-    max-width: 21.9375rem;
-    box-sizing: border-box;
-    display: inline-block;
-    color: #fff;
-    -webkit-font-smoothing: antialiased;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none;
-    white-space: nowrap;
-    -webkit-highlight: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-touch-callout: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    font-size: 0.875rem;
-    letter-spacing: 0;
-    font-weight: 700;
-    line-height: 1.43;
-    line-height: 1.5rem;
-  }
-  .JobTitle a:hover {
-    box-shadow: none !important;
-    background-color: #164081 !important;
-  }
-  .JobTitle button {
-    margin: 0 0 0 1rem;
-    background-color: #e4e2e0 !important;
-    border: 0.0625rem solid transparent !important;
-    color: #2d2d2d !important;
-    box-shadow: none !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 42px;
-    width: 1rem;
-    text-align: center;
-    margin-bottom: 0.5rem;
-    line-height: 1.5rem;
-    border-radius: 0.5rem !important;
-    padding: 0.5rem 1.25rem !important;
-    transition: background-color 180ms ease-out, border-color 180ms ease-out;
-    /* margin-left: auto; */
-    margin-right: auto;
-    background-repeat: repeat-x;
-    cursor: pointer;
-    max-width: 21.9375rem;
-    -webkit-font-smoothing: antialiased;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none;
-    white-space: nowrap;
-    -webkit-highlight: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    box-sizing: border-box;
-    font-size: 1rem;
-    letter-spacing: 0;
-    font-weight: 700;
-  }
-  .JobTitle button:hover {
-    margin-right: 0.4rem;
-    box-shadow: none !important;
-    background-color: #d4d2d0 !important;
-  }
-  .JobTitle .box {
-    padding: 20px 0 !important;
-    display: flex;
-    
-     a{
-      max-height: 42px;
-     }
-  }
-  .JobTitle .icon {
-    width: 22px !important;
-  }
-
   .ComSidebar h2 {
     color: #2d2d2d;
     font-size: 0.75rem;
@@ -192,6 +234,11 @@
     font-weight: 700;
     line-height: 1.34;
   }
+
+  .ComSidebar {
+    padding-left: 50px;
+  }
+
   .jobsearch-CompanyAvatar {
     margin-bottom: 1.5rem !important;
     max-width: 320px;
@@ -313,24 +360,24 @@
     line-height: 1.34;
   }
 
-  .sim-name{
+  .sim-name {
     margin-top: 36px;
     color: #333;
     font-size: 22px;
     font-weight: 700;
     margin-bottom: 16px;
 
-    &__more{
+    &__more {
       margin-top: 20px;
       padding-left: 25px;
     }
   }
 
-  .right-title{
+  .right-title {
     color: #2d2d2d;
   }
 
-  .right-button{
+  .right-button {
     font-size: 12px;
     font-weight: 700;
     padding: 10px 16px;
