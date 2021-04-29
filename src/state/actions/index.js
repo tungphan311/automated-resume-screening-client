@@ -25,6 +25,9 @@ export const GET_CANDIDATE_PROFILE_SUCCESS = "GET_CANDIDATE_PROFILE_SUCCESS";
 export const GET_JOB_SIMILAR = "GET_JOB_SIMILAR";
 export const GET_JOB_SIMILAR_SUCCESS = "GET_JOB_SIMILAR_SUCCESS";
 
+export const GET_JOB_SUGGEST = "GET_JOB_SUGGEST";
+export const GET_JOB_SUGGEST_SUCCESS = "GET_JOB_SUGGEST_SUCCESS";
+
 export const uploadCVAction = createPromiseAction("UPLOAD_CV");
 export const updateCVAction = createPromiseAction("UPDATE_CV");
 export const updateCVProfileAction = createPromiseAction("UPDATE_CV_PROFILE");
