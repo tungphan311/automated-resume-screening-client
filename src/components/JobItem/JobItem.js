@@ -20,7 +20,7 @@ const JobItem = ({
   postedIn,
   contractType
 }) => {
-  console.log('postedIn',postedIn)
+
   return (
     <>
       <div

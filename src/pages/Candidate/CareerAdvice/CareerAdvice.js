@@ -67,22 +67,13 @@ function CandidateCareerAdvice({ history }) {
 
   return (
     <div className="career-advice">
-      <div
-        id="search-jobs"
-        className="search-jobs-container search-jobs-widget"
-      >
-        <div className="container">
-          <JobSearchAdvance onSubmit={handleSubmit} history={history} />
-        </div>
-      </div>
-
       {/* Tabs  */}
-      <Tabs className="main-tabs" defaultActiveKey="explore">
+      <Tabs className="main-tabs" defaultActiveKey="find">
+        <Tab eventKey="find" title="Find the right job for me">
+          <FindJob history={history} />
+        </Tab>
         <Tab eventKey="explore" title="Explore what I can do with my skills">
           <ExploreWithSkills />
-        </Tab>
-        <Tab eventKey="find" title="Find the right job for me">
-          <FindJob />
         </Tab>
       </Tabs>
     </div>

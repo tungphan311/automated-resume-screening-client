@@ -12,7 +12,8 @@ function ApplyModal({
   company_name,
   job_title,
   token,
-  jp_id
+  jp_id,
+  location
 }) {
   const [selected, setSelected] = useState(null);
   const [resumes, setResumes] = useState([]);
@@ -61,7 +62,7 @@ function ApplyModal({
               <div className="apply-subtitle">
                 <span>{company_name}</span>
                 {" - "}
-                <span>Thanh pho Ho Chi Minh</span>
+                <span>{location}</span>
               </div>
             </div>
           </div>

@@ -9,3 +9,8 @@ export const updateCV = async (data, token) =>
   await API.post("/resume/update", data, {
     headers: { Authorization: `Bearer ${token}` }
   });
+
+export const deleteResume = async (id, token) =>
+  await API.delete(`/resume/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });

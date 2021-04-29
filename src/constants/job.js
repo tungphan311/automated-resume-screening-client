@@ -1,7 +1,7 @@
 export const JOB_TYPES = [
-  { value: 0, label: "Toàn thời gian" },
-  { value: 1, label: "Bán thời gian" },
-  { value: 2, label: "Thực tập" }
+  { value: 0, label: "Full-time" },
+  { value: 1, label: "Part-time" },
+  { value: 2, label: "Intership" }
 ];
 
 export const SALARY = [

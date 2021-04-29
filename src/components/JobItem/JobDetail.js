@@ -6,7 +6,7 @@ import { Close } from "constants/svg";
 import ContentLoader from "react-content-loader";
 import ApplyModal from "components/Modals/Apply/ApplyModal";
 import { getJobDetail, saveJob } from "services/jobServices";
-import { format_date, toast, toastErr } from "utils/index";
+import { format_date, toast, toastErr, formatProvince } from "utils/index";
 import LoginModal from "components/Modals/LoginModal/LoginModal";
 import { useSelector } from "react-redux";
 
@@ -22,6 +22,7 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
   const [job, setJob] = useState({});
   const [loading, setLoading] = useState(false);
   const { token } = useSelector((state) => state.auth.candidate);
+  const provinceTotal = useSelector((state) => state.cv.provinces);
 
   const toggleModal = () => {
     if (!token) {
@@ -59,6 +60,7 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
     benefit,
     contract_type,
     deadline,
+    provinces,
     amount,
     requirement,
     salary,
@@ -92,7 +94,9 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
                 company_background,
                 saved_date,
                 id,
-                token
+                token,
+                provinces,
+                provinceTotal
               }}
             />
             <div id="vjs-content">
@@ -167,7 +171,16 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
       <ApplyModal
         visible={showModal.apply}
         onCancel={onCancel}
-        {...{ company_name, job_title, token, jp_id: id }}
+        {...{
+          company_name,
+          job_title,
+          token,
+          jp_id: id,
+          location:
+            provinces &&
+            provinces.length !== 0 &&
+            formatProvince(provinceTotal, provinces[0])
+        }}
       />
 
       <LoginModal show={showModal.authen} toggleModal={onCancel} />
@@ -187,7 +200,9 @@ const Header = ({
   company_background,
   saved_date,
   id,
-  token
+  token,
+  provinces,
+  provinceTotal
 }) => {
   const [save, setSave] = useState(saved_date ? true : false);
   const [loading, setLoading] = useState(false);
@@ -229,7 +244,10 @@ const Header = ({
           <div>
             <span id="vjs-cn">{company_name}</span>
             <span id="vjs-loc">
-              <span> - </span>Thành phố Hồ Chí Minh
+              <span> - </span>
+              {provinces &&
+                provinces.length !== 0 &&
+                formatProvince(provinceTotal, provinces[0])}
             </span>
           </div>
           <div>Hạn nộp hồ sơ: {format_date(deadline)}</div>
@@ -272,7 +290,7 @@ const Header = ({
                       style={{ fontSize: "18px", fontWeight: "700" }}
                       className="mr-5"
                     />
-                    Đã lưu tin
+                    Saved Job
                   </>
                 )}
               </span>
