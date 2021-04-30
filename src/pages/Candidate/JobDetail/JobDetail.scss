@@ -158,6 +158,13 @@
     }
   }
 
+  &__company {
+    padding: 10px 0;
+  }
+
+  &__province {
+  }
+
   .row::after {
     content: "";
     clear: both;
@@ -180,7 +187,7 @@
     padding: 0 20px;
 
     &__wrapper {
-      min-height: 400px;
+      min-height: 250px;
       padding-top: 20px;
     }
   }

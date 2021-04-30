@@ -34,8 +34,6 @@ const SimJob = ({
     );
   };
 
-  console.log(getProvince());
-
   const getDays = () => {
     let dayStr =
       getDiffTime(postedIn) > 1

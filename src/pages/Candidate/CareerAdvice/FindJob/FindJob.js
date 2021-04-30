@@ -5,6 +5,7 @@ import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { Tabs, Tab } from "react-bootstrap";
 import Statistics from "./Statistics";
 import { Pagination, Select } from "antd";
+import { Link } from "react-router-dom";
 
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -13,7 +14,7 @@ import qs from "query-string";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import SimJob from "components/SimJob/SimJob";
-import { toastErr } from "utils/index";
+import { toastErr, toast } from "utils/index";
 import ContentLoader from "react-content-loader";
 
 import { candidateJobSuggestProAction } from "state/actions/candidateJobAction";
@@ -55,53 +56,59 @@ const FindJob = ({ history }) => {
     setOverlay(true);
   };
 
-  const contentStyle = {
-    height: "160px",
-    color: "#fff",
-    lineHeight: "160px",
-    textAlign: "center",
-    background: "#364d79"
-  };
-
   const handleSubmit = async () => {
-    const job_id = formValues
-      ? formValues.job_title
-        ? formValues.job_title.value
-        : undefined
-      : undefined;
-    const province_id = formValues
-      ? formValues.location
-        ? formValues.location.value
-        : undefined
-      : undefined;
-    let filter = qs.parse(params);
-    filter = { ...filter, location: province_id, q: job_id };
-    console.log(filter);
-    // const query = qs.stringify(filter, { skipNull: true });
-
-    // let province = formatProvince(provinces, province_id);
-    // let domainCurr = domains?.find((p) => p.id === job_id);
-    // let domain = domainCurr && domainCurr.name;
-    formValues &&
-      setCurrentSelected({
-        domain: formValues.job_title.label,
-        province: formValues.location.label
+    if (!token) {
+      toast({
+        type: "error",
+        message: "Vui lòng đăng nhập để tìm công việc phù hợp"
       });
+    } else if (
+      !formValues ||
+      formValues.job_title?.label === undefined ||
+      formValues.location?.label === undefined
+    ) {
+      toast({
+        type: "error",
+        message: "Vui lòng nhập cả công việc và vị trí bạn muốn tìm"
+      });
+    } else {
+      const job_id = formValues
+        ? formValues.job_title
+          ? formValues.job_title.value
+          : undefined
+        : undefined;
+      const province_id = formValues
+        ? formValues.location
+          ? formValues.location.value
+          : undefined
+        : undefined;
+      let filter = qs.parse(params);
+      filter = { ...filter, location: province_id, q: job_id };
 
-    formValues &&
-      dispatch(
-        candidateJobSuggestProAction({
-          domain_id: formValues?.job_title?.value,
-          province_id: formValues?.location?.value
-        })
-      )
-        .then()
-        .catch((err) => console.log("err", err));
+      formValues &&
+        setCurrentSelected({
+          domain: formValues.job_title.label,
+          province: formValues.location.label
+        });
 
-    setOverlay(false);
-    setPagination({ ...pagination, page: 1 });
-    localStorage.setItem("right-job", JSON.stringify(formValues));
-    console.log("total", total);
+      formValues &&
+        dispatch(
+          candidateJobSuggestProAction({
+            domain_id: formValues?.job_title?.value,
+            province_id: formValues?.location?.value
+          })
+        )
+          .then()
+          .catch((err) => console.log("err", err));
+
+      setOverlay(false);
+      setPagination({
+        ...pagination,
+        page: 1,
+        total: suggestJobs.items.length
+      });
+      localStorage.setItem("right-job", JSON.stringify(formValues));
+    }
   };
 
   const onFilterChange = (key, value) => {
@@ -114,60 +121,56 @@ const FindJob = ({ history }) => {
   };
 
   useEffect(() => {
-    let preferences = JSON.parse(localStorage.getItem("right-job"));
-    let jobId =
-      preferences && preferences.job_title && preferences.job_title.label;
-    let provinceId =
-      preferences && preferences.location && preferences.location.label;
-    console.log("preferences", preferences);
+    if (token) {
+      let preferences = JSON.parse(localStorage.getItem("right-job"));
+      let jobId =
+        preferences && preferences.job_title && preferences.job_title.label;
+      let provinceId =
+        preferences && preferences.location && preferences.location.label;
+      console.log("preferences", preferences);
 
-    preferences &&
-      setCurrentSelected({
-        domain: jobId,
-        province: provinceId
-      });
-
-    dispatch(
-      candidateJobSuggestProAction({
-        domain_id: preferences?.job_title?.value,
-        province_id: preferences?.location?.value
-      })
-    )
-      .then()
-      .catch((err) => console.log("err", err));
-
-    const fetchJobs = async () => {
-      setLoading(true);
-
-      await getSuggestJob(
-        preferences?.job_title?.value,
-        preferences?.location?.value,
-        token
-      )
-        .then((res) => {
-          console.log("res", res);
-          setPagination({
-            ...pagination,
-            total: res.data.data.totalCount
-          });
-        })
-        .catch((err) => {
-          toastErr(err);
-        })
-        .finally(() => {
-          setLoading(false);
+      preferences &&
+        setCurrentSelected({
+          domain: jobId,
+          province: provinceId
         });
-    };
 
-    fetchJobs();
-    console.log("total", total);
+      dispatch(
+        candidateJobSuggestProAction({
+          domain_id: preferences?.job_title?.value,
+          province_id: preferences?.location?.value
+        })
+      )
+        .then()
+        .catch((err) => console.log("err", err));
+
+      const fetchJobs = async () => {
+        setLoading(true);
+
+        await getSuggestJob(
+          preferences?.job_title?.value,
+          preferences?.location?.value,
+          token
+        )
+          .then((res) => {
+            console.log("res", res);
+            setPagination({
+              ...pagination,
+              total: res.data.data.items.length
+            });
+            console.log("pagit");
+          })
+          .catch((err) => {
+            toastErr(err);
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      };
+
+      fetchJobs();
+    }
   }, []);
-
-  // suggestJobs &&
-  //   setPagination({
-  //     ...pagination,
-  //     total: suggestJobs.totalCount
-  //   });
 
   return (
     <>
@@ -192,7 +195,7 @@ const FindJob = ({ history }) => {
           {/* If not exist role */}
           {!currentSelected.domain || !currentSelected.province ? (
             <div className="find-job__not-role">
-              {profile ? (
+              {token ? (
                 <div className="find-job__not-role__content">
                   <p>
                     Learn what you need to know about a role, from salary to job
@@ -210,9 +213,33 @@ const FindJob = ({ history }) => {
                     you're interested in to see more.
                   </div>
                 </div>
-              ) : (
+              ) : Object.keys(profile).length !== 0 ? (
                 <div className="find-job__not-role__content">
                   You need to have an resume to use this features
+                </div>
+              ) : (
+                <div>
+                  <div className="find-job__not-role__content">
+                    Sign in or register a Profile to find the right job for you
+                  </div>
+                  <div
+                    className="sign-direct__button"
+                    style={{ marginTop: "30px" }}
+                  >
+                    <Link
+                      to="/sign-in"
+                      className="sign-direct__button__sign-in"
+                    >
+                      Sign In
+                    </Link>
+                    <p>or</p>
+                    <Link
+                      to="/sign-up"
+                      className="sign-direct__button__register"
+                    >
+                      Register
+                    </Link>
+                  </div>
                 </div>
               )}
 
@@ -252,7 +279,7 @@ const FindJob = ({ history }) => {
                 <Tabs className="child-tabs" defaultActiveKey="1">
                   <Tab eventKey="1" title={currentSelected.domain}>
                     <Statistics
-                      total={suggestJobs?.totalCount}
+                      total={suggestJobs?.items && suggestJobs?.items.length}
                       min={suggestJobs?.salary?.min}
                       max={suggestJobs?.salary?.max}
                     />

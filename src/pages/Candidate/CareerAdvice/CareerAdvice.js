@@ -8,72 +8,33 @@ import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { Tabs, Tab } from "react-bootstrap";
 
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import "./CareerAdvice.scss";
 import { useLocation } from "react-router-dom";
 import qs from "query-string";
+import { candidateProfileAction } from "state/actions/profileAction";
+import { useSelector, useDispatch } from "react-redux";
 
 function CandidateCareerAdvice({ history }) {
-  const [pagination, setPagination] = useState({
-    page: 1,
-    pageSize: 10,
-    total: 0
-  });
-  const [filter, setFilter] = useState({
-    posted_date: undefined,
-    contract_type: undefined,
-    min_salary: undefined,
-    max_salary: undefined,
-    "job-domain": undefined
-  });
-
-  const handleSubmit = async () => {
-    const job_title = formValues
-      ? formValues.job_title || undefined
-      : undefined;
-    const province_id = formValues
-      ? formValues.location
-        ? formValues.location.value
-        : undefined
-      : undefined;
-
-    let filter = qs.parse(params);
-    filter = { ...filter, location: province_id, q: job_title };
-    const query = qs.stringify(filter, { skipNull: true });
-
-    history.push({ search: `?${query}` });
-
-    setFilter({ ...filter, job_title, province_id: province_id });
-    setPagination({ ...pagination, page: 1 });
-  };
-
-  const onFilterChange = (key, value) => {
-    let filter = qs.parse(params);
-
-    filter = { ...filter, [key]: value };
-
-    const query = qs.stringify(filter, { skipNull: true });
-    history.push({ search: `?${query}` });
-  };
-
-  const params = useLocation().search;
-
-  const formValues = useSelector((state) =>
-    getFormValues(FORM_KEY_JOB_SEARCH)(state)
-  );
+  const dispatch = useDispatch();
+  const profile = useSelector((state) => state.profile.candidateProfile);
+  const token = useSelector((state) => state.auth.candidate.token);
 
   const { domains } = useSelector((state) => state.jobDomain);
   const { provinces } = useSelector((state) => state.cv);
 
+  useEffect(() => {
+    token && dispatch(candidateProfileAction(token));
+  }, []);
+
   return (
     <div className="career-advice">
       {/* Tabs  */}
-      <Tabs className="main-tabs" defaultActiveKey="find">
+      <Tabs className="main-tabs" defaultActiveKey="explore">
+        <Tab eventKey="explore" title="Explore what I can do with my skills">
+          <ExploreWithSkills profile={profile} />
+        </Tab>
         <Tab eventKey="find" title="Find the right job for me">
           <FindJob history={history} />
-        </Tab>
-        <Tab eventKey="explore" title="Explore what I can do with my skills">
-          <ExploreWithSkills />
         </Tab>
       </Tabs>
     </div>

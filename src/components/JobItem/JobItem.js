@@ -4,7 +4,7 @@ import { FullscreenOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 
 import JobDetail from "components/JobItem/JobDetail";
-import { getDiffTime } from "utils/index";
+import { getDiffTime, formatProvince } from "utils/index";
 import history from "state/history";
 
 const JobItem = ({
@@ -18,8 +18,19 @@ const JobItem = ({
   salary,
   jobDescription,
   postedIn,
-  contractType
+  contractType,
+  provinces,
+  provinceId
 }) => {
+  const getProvince = () => {
+    return (
+      provinceId &&
+      provinceId
+        .split(",")
+        .map((p) => formatProvince(provinces, p))
+        .join(", ")
+    );
+  };
 
   return (
     <>
@@ -48,7 +59,7 @@ const JobItem = ({
             <span className="remote-bullet">•</span>
             <span className="contact-type">{contractType}</span>
             <span className="location accessible-contrast-color-location">
-              Thành phố Hồ Chí Minh
+              {getProvince()}
             </span>
           </div>
         </div>
