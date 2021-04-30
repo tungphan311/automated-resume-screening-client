@@ -10,9 +10,9 @@ export const candidateJobSimilarProAction = createPromiseAction(
   "GET_JOB_SIMILAR"
 );
 
-export const candidateJobSuggestAction = (domain_id, province_id) => ({
+export const candidateJobSuggestAction = (domain_id, province_id, page) => ({
   type: types.GET_JOB_SUGGEST,
-  payload: { domain_id, province_id }
+  payload: { domain_id, province_id, page }
 });
 
 export const candidateJobSuggestProAction = createPromiseAction(

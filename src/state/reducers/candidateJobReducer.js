@@ -6,7 +6,7 @@ export const GET_JOB_SUGGEST_SUCCESS = "GET_JOB_SUGGEST_SUCCESS";
 
 const initialState = {
   candidateSimilarJob: [],
-  candidateSuggestJob: []
+  candidateSuggestJob: {}
 };
 
 export default function candidateJobReducer(state = initialState, action = {}) {
