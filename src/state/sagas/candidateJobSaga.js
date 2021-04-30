@@ -26,12 +26,13 @@ export function* getSimilarJobSaga({ payload }) {
 
 export function* getSuggestJobProSaga(action) {
   try {
-    const { domain_id, province_id } = action.payload;
+    const { domain_id, province_id, page } = action.payload;
 
     const { token } = yield select((state) => state.auth.candidate);
-    const result = yield call(getSuggestJob, domain_id, province_id, token);
 
-    const response = result.data.data;
+    const result = yield call(getSuggestJob, domain_id, province_id, page, token);
+
+    const response = result.data;
 
     yield put({ type: GET_JOB_SUGGEST_SUCCESS, response });
     yield call(resolvePromiseAction, action);

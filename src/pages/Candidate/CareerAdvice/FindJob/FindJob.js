@@ -7,7 +7,7 @@ import Statistics from "./Statistics";
 import { Pagination, Select } from "antd";
 import { Link } from "react-router-dom";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "./FindJob.scss";
 import qs from "query-string";
@@ -33,7 +33,11 @@ const FindJob = ({ history }) => {
   const token = useSelector((state) => state.auth.candidate.token);
   const provinceTotal = useSelector((state) => state.cv.provinces);
   const suggestJobs = useSelector(
-    (state) => state.candidateJob?.candidateSuggestJob
+    (state) => state.candidateJob?.candidateSuggestJob.data
+  );
+
+  const paginationTotal = useSelector(
+    (state) => state.candidateJob?.candidateSuggestJob.pagination
   );
 
   const params = useLocation().search;
@@ -45,6 +49,7 @@ const FindJob = ({ history }) => {
   });
 
   const { page, pageSize, total } = pagination;
+  console.log(total);
 
   const [currentSelected, setCurrentSelected] = useState({
     domain: null,
@@ -82,8 +87,8 @@ const FindJob = ({ history }) => {
           ? formValues.location.value
           : undefined
         : undefined;
+
       let filter = qs.parse(params);
-      filter = { ...filter, location: province_id, q: job_id };
 
       formValues &&
         setCurrentSelected({
@@ -94,19 +99,22 @@ const FindJob = ({ history }) => {
       formValues &&
         dispatch(
           candidateJobSuggestProAction({
-            domain_id: formValues?.job_title?.value,
-            province_id: formValues?.location?.value
+            domain_id: job_id,
+            province_id: province_id,
+            page: filter.page
           })
         )
           .then()
           .catch((err) => console.log("err", err));
 
       setOverlay(false);
-      setPagination({
-        ...pagination,
-        page: 1,
-        total: suggestJobs.items.length
-      });
+
+      setPagination({ ...pagination, page: 1 });
+      filter = { ...filter, page: 1 };
+
+      const query = qs.stringify(filter, { skipNull: true });
+      history.push({ search: `?${query}` });
+
       localStorage.setItem("right-job", JSON.stringify(formValues));
     }
   };
@@ -115,19 +123,25 @@ const FindJob = ({ history }) => {
     let filter = qs.parse(params);
 
     filter = { ...filter, [key]: value };
-    console.log("filter", filter);
+
     const query = qs.stringify(filter, { skipNull: true });
+    setPagination({
+      ...pagination,
+      page: filter.page
+    });
     history.push({ search: `?${query}` });
   };
 
   useEffect(() => {
+    console.log("chay lai");
     if (token) {
       let preferences = JSON.parse(localStorage.getItem("right-job"));
       let jobId =
         preferences && preferences.job_title && preferences.job_title.label;
       let provinceId =
         preferences && preferences.location && preferences.location.label;
-      console.log("preferences", preferences);
+
+      const filter = qs.parse(params);
 
       preferences &&
         setCurrentSelected({
@@ -138,7 +152,8 @@ const FindJob = ({ history }) => {
       dispatch(
         candidateJobSuggestProAction({
           domain_id: preferences?.job_title?.value,
-          province_id: preferences?.location?.value
+          province_id: preferences?.location?.value,
+          page: filter.page
         })
       )
         .then()
@@ -150,15 +165,15 @@ const FindJob = ({ history }) => {
         await getSuggestJob(
           preferences?.job_title?.value,
           preferences?.location?.value,
+          filter.page || page,
           token
         )
           .then((res) => {
-            console.log("res", res);
             setPagination({
               ...pagination,
-              total: res.data.data.items.length
+              total: res.data.pagination.total,
+              page
             });
-            console.log("pagit");
           })
           .catch((err) => {
             toastErr(err);
@@ -169,8 +184,9 @@ const FindJob = ({ history }) => {
       };
 
       fetchJobs();
+      // history.push({ search: `?${query}` });
     }
-  }, []);
+  }, [paginationTotal && paginationTotal.total, params]);
 
   return (
     <>
@@ -279,7 +295,7 @@ const FindJob = ({ history }) => {
                 <Tabs className="child-tabs" defaultActiveKey="1">
                   <Tab eventKey="1" title={currentSelected.domain}>
                     <Statistics
-                      total={suggestJobs?.items && suggestJobs?.items.length}
+                      total={total}
                       min={suggestJobs?.salary?.min}
                       max={suggestJobs?.salary?.max}
                     />
