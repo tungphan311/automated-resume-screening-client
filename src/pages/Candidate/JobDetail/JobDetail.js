@@ -59,12 +59,12 @@ const CandidateJobDetail = ({ history }) => {
     saved_date
   } = job;
 
-  const getProvinces = () => {
-    provinces &&
-      provinces.length !== 0 &&
-      formatProvince(provinceTotal, provinces[0]);
+  const getProvince = () => {
+    return (
+      provinces &&
+      provinces.map((p) => formatProvince(provinceTotal, p)).join(", ")
+    );
   };
-
   useEffect(() => {
     setLoading(true);
 
@@ -86,13 +86,12 @@ const CandidateJobDetail = ({ history }) => {
 
     fetchJob();
     id && dispatch(candidateJobSimilarAction(id));
-    console.log("simJob", simJob);
   }, []);
 
   return (
     <>
       {loading ? (
-        <div className="container">
+        <div className="container" style={{marginTop: "30px"}}>
           <MyLoader />
         </div>
       ) : (
@@ -128,12 +127,12 @@ const CandidateJobDetail = ({ history }) => {
                 <div className="detail-page__title">
                   <h1>{job_title}</h1>
                   <div>
-                    <div className="text">{company_name}</div>
-                    <div className="text">
+                    <div className="text detail-page__company">
+                      {company_name}
+                    </div>
+                    <div className="text detail-page__province">
                       {" "}
-                      {provinces &&
-                        provinces.length !== 0 &&
-                        formatProvince(provinceTotal, provinces[0])}
+                      {getProvince()}
                     </div>
                   </div>
                   <div className="box">
@@ -316,12 +315,15 @@ const CandidateJobDetail = ({ history }) => {
 
           <div className="container">
             <h2 className="sim-name">Similar Job</h2>
+            <p style={{ fontStyle: "italic" }}>
+              We found {simJob.length} similar jobs
+            </p>
             <div className="row">
               <div
                 className="col-ct-8"
                 style={{
                   backgroundColor: "#fff",
-                  padding: "20px",
+                  padding: "0 20px 20px 20px",
                   marginBottom: "20px"
                 }}
               >
@@ -373,10 +375,7 @@ const CandidateJobDetail = ({ history }) => {
           job_title,
           token,
           jp_id: id,
-          location:
-            provinces &&
-            provinces.length !== 0 &&
-            formatProvince(provinceTotal, provinces[0])
+          location: getProvince()
         }}
       />
 
@@ -412,6 +411,10 @@ const MyLoader = (props) => (
     <rect x="0" y="414" rx="0" ry="0" width="150" height="14" />
     <rect x="0" y="438" rx="0" ry="0" width="750" height="14" />
     <rect x="0" y="464" rx="0" ry="0" width="750" height="14" />
+    <rect x="0" y="344" rx="0" ry="0" width="750" height="20" />
+    <rect x="0" y="414" rx="0" ry="0" width="150" height="14" />
+    <rect x="0" y="344" rx="0" ry="0" width="750" height="20" />
+    <rect x="0" y="344" rx="0" ry="0" width="750" height="20" />
     <rect x="0" y="344" rx="0" ry="0" width="750" height="20" />
     <rect x="0" y="414" rx="0" ry="0" width="150" height="14" />
     <rect x="0" y="344" rx="0" ry="0" width="750" height="20" />

@@ -1,13 +1,19 @@
 .sim-job {
-  padding: 20px 25px;
-  // width: 100%;
+  padding: 20px 25px 10px 25px;
   color: $c-cod-gray;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 20px;
   box-shadow: 0 2px 3px 0 rgba(0, 106, 194, 0.2);
+  transition: box-shadow 0.2s ease-in 0s, -webkit-transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s,
+    transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 
   &:hover {
     box-shadow: 0 4px 9px 0 rgba(0, 106, 194, 0.2);
+    transform: translateY(-2px);
+
+    .sim-job__top__info__title {
+      color: rgb(39, 101, 207);
+    }
   }
 
   &:not(:last-child) {
@@ -25,7 +31,7 @@
     &__info {
       &__title {
         color: #333;
-        font-size: 17px;
+        font-size: 18px;
         font-weight: 700;
       }
 
@@ -37,7 +43,7 @@
           font-weight: 400;
         }
 
-        &__contract{
+        &__contract {
           font-size: 13px;
         }
       }
@@ -63,6 +69,7 @@
   &__bottom {
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
 
     &__des {
       color: #666;

@@ -81,3 +81,14 @@ export const numberToArray = (value) =>
   Array(value)
     .fill("")
     .map((_, index) => index);
+
+export const getIndexArray = (arr) => {
+  let newArr = [];
+  if (arr) {
+    for (let i = 0; i < arr.length; i++) {
+      newArr.push({ key: i, value: arr[i] });
+    }
+  }
+
+  return newArr;
+};

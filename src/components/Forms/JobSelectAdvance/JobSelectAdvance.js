@@ -65,8 +65,6 @@ function JobSelectAdvance({ handleSubmit }) {
             options={jobDomains}
             icon={<SearchOutlined style={{ color: "#555" }} />}
             isClearable={true}
-            required
-            validate={[requireField]}
           />
           <Field
             component={CustomSelect}

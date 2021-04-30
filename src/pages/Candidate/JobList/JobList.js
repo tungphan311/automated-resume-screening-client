@@ -342,6 +342,7 @@ function CandidateJobList({ history }) {
                           onChangeSelect={onChangeSelect}
                           top={top}
                           bottom={bottom}
+                          provinces={provinces}
                         />
                       ))
                     )}

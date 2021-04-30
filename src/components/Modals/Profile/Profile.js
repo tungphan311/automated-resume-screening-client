@@ -213,7 +213,7 @@ function ProfileModal({ show, toggleModal, id }) {
                   </Button>
                 </div>
               </div>
-              <div style={{ marginTop: "20px" }}>
+              <div className="chip" style={{ marginTop: "20px" }}>
                 {skills.map(({ key, value }) => (
                   <Skill
                     skill={value}
@@ -261,8 +261,7 @@ const Skill = ({ id, skill, onChange, onDelete }) => {
 
   return (
     <div>
-      <div className="hr-wizard"></div>
-      <div className="saved-item saved-item-new container-fluid">
+      <div className="chip__item saved-item saved-item-new container-fluid">
         <div className="row">
           <div className="clearfix col-xs-12">
             <div className="float-right edit-option">

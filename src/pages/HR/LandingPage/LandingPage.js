@@ -17,53 +17,9 @@ const HRLandingPage = () => {
 
   return (
     <div className="hr-landing">
-      <div id="languageSelectorContainer">
-        <div
-          id="languageSelector"
-          data-tn-element="languageSelector"
-          data-tn-link="redirect"
-          data-shield="language-selector"
-        >
-          <div
-            className=" css-1bf4zdh e10jok4m0"
-            role="button"
-            tabindex="0"
-            id="downshift-0-toggle-button"
-            aria-haspopup="listbox"
-            aria-expanded="false"
-            aria-labelledby="downshift-0-label downshift-0-toggle-button"
-            onClick={() => {
-              const isLang = hiddenLang;
-              setHiddenLang(!isLang);
-            }}
-          >
-            <span className="css-8vm539 e1wnkr790">
-              <div id="placeholder">
-                <img
-                  src="https://d3fw5vlhllyvee.cloudfront.net/allspark/static/images/world-caf7fe.svg"
-                  role="presentation"
-                  alt=""
-                ></img>
-                EN
-              </div>
-            </span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              focusable="false"
-              role="img"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              className=" css-5bafvi e18c60hj0"
-            >
-              <path d="M8.111 8.818a.5.5 0 00-.707 0l-.707.707a.5.5 0 000 .707l4.95 4.95a.498.498 0 00.707 0l4.95-4.95a.5.5 0 000-.707l-.708-.707a.5.5 0 00-.707 0L12 12.708l-3.889-3.89z"></path>
-            </svg>
-          </div>
-        </div>
-      </div>
       <div className="bumblebee">
         <header className="hire-hero bg-white" data-tn-section="header">
-          <div className="container">
+          <div className="container" style={{paddingTop: '100px'}}>
             <div className="hire-hero--text-body">
               <div className="hire-hero--text">
                 <h1 className="">
@@ -307,7 +263,10 @@ const HRLandingPage = () => {
                 <div className="FYwKg _2Bz3E _2II51_4 _3i7ia">
                   <div className="FYwKg d7v3r _3QaJd_4">
                     <div className="FYwKg _2Bz3E _2II51_4 _1lyEa IC4bo_4 _1q9J3 _3Aa4F_4">
-                      <div className="FYwKg _1uk_1 _3RtnC_4 _37N5v_4 _2Bz3E rNAgI">
+                      <div
+                        className="FYwKg _1uk_1 _3RtnC_4 _37N5v_4 _2Bz3E rNAgI"
+                        style={{ marginBottom: "50px" }}
+                      >
                         <button className="_btn111">Create a job ad</button>
                       </div>
                     </div>
@@ -318,7 +277,7 @@ const HRLandingPage = () => {
           </div>
         </header>
         <section className="hire-features">
-          <div className="container">
+          <div className="container" style={{paddingBottom: '0'}}>
             <h2>Save time and effort in your hiring journey.</h2>
             <p className="lead">
               Finding the best fit for the job shouldn’t be a full-time job.
@@ -327,7 +286,7 @@ const HRLandingPage = () => {
             </p>
           </div>
           <div className="hire-features-card-wrapper">
-            <div className="container">
+            <div className="container"  style={{paddingTop: '30px'}}>
               <div className="row">
                 <div className="hire-features-card feature-card-desktop">
                   <div className="hire-features-card-header">
@@ -439,6 +398,7 @@ const HRLandingPage = () => {
       <div
         className="FYwKg _3gJU3_4 _1yPon_4 hhBFx_4 _36Yi4_4 _1WtCj_4 _2OnNp_4 FLByR_4 _2QIfI_4"
         id="media-advice"
+        style={{ backgroundColor: "#FFFFFF" }}
       >
         <div className="FYwKg _3VCZm _3ZvRy_4 _2lrrP">
           <div className="FYwKg _2Bz3E _2II51_4 _1lyEa _1FEyf_4 _3ucB1_4 _1-_Yr_4">
@@ -586,9 +546,14 @@ const HRLandingPage = () => {
                         <div class="FYwKg _2Bz3E _2II51_4 _1lyEa IC4bo_4 _1q9J3 _3Aa4F_4">
                           <div class="FYwKg _1uk_1 _3RtnC_4 _37N5v_4 _2Bz3E rNAgI">
                             <a
-                              style={{backgroundColor: '#2765cf', color: 'white', padding: '12px 20px'}}
+                              style={{
+                                backgroundColor: "#2765cf",
+                                color: "white",
+                                padding: "12px 20px"
+                              }}
                               href="https://www.seek.com.au/employer/hiring-advice/"
-                            >Explore Hiring Advice
+                            >
+                              Explore Hiring Advice
                             </a>
                           </div>
                         </div>
