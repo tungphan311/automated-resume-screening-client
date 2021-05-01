@@ -216,8 +216,6 @@ const ExploreWithSkills = ({ profile }) => {
         <div class="explore__title-sub">
           Find out more about a role or skill you’re interested in.
         </div>
-
-        
       </div>
     </div>
   );

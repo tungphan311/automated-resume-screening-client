@@ -153,7 +153,7 @@ const FindJob = ({ history }) => {
         candidateJobSuggestProAction({
           domain_id: preferences?.job_title?.value,
           province_id: preferences?.location?.value,
-          page: filter.page
+          page: filter.page || page
         })
       )
         .then()
@@ -184,7 +184,6 @@ const FindJob = ({ history }) => {
       };
 
       fetchJobs();
-      // history.push({ search: `?${query}` });
     }
   }, [paginationTotal && paginationTotal.total, params]);
 

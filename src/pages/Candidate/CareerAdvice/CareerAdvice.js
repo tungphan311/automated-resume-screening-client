@@ -29,12 +29,12 @@ function CandidateCareerAdvice({ history }) {
   return (
     <div className="career-advice">
       {/* Tabs  */}
-      <Tabs className="main-tabs" defaultActiveKey="explore">
-        <Tab eventKey="explore" title="Explore what I can do with my skills">
-          <ExploreWithSkills profile={profile} />
-        </Tab>
+      <Tabs className="main-tabs" defaultActiveKey="find">
         <Tab eventKey="find" title="Find the right job for me">
           <FindJob history={history} />
+        </Tab>
+        <Tab eventKey="explore" title="Explore what I can do with my skills">
+          <ExploreWithSkills profile={profile} />
         </Tab>
       </Tabs>
     </div>
