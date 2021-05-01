@@ -11,6 +11,9 @@ import CandidateJobDetail from "pages/Candidate/JobDetail/JobDetail";
 import CandidateCareerAdvice from "pages/Candidate/CareerAdvice/CareerAdvice";
 import CandidateProfile from "pages/Candidate/Profile/Profile";
 import CandidateReviewCV from "pages/Candidate/ReviewCV/ReviewCV";
+import CareerDirection from "pages/Candidate/CareerDirection/CareerDirection";
+import CandidateSavedJobs from "pages/Candidate/Jobs/SavedJobs/SavedJobs";
+import CandidateAppliedJobs from "pages/Candidate/Jobs/AppliedJobs/AppliedJobs";
 
 import HRLandingPage from "pages/HR/LandingPage/LandingPage";
 import HRHome from "pages/HR/Home/Home";
@@ -28,8 +31,6 @@ import HRFilterCandidates from "pages/HR/FindCandidates/FilterCandidates";
 import HRAddFilter from "pages/HR/AddFilter/AddFilter";
 import HRFilterDetail from "pages/HR/FilterDetail/FilterDetail";
 import HRSaveCandidates from "pages/HR/SaveCandidates/SaveCandidates";
-import CandidateSavedJobs from "pages/Candidate/Jobs/SavedJobs/SavedJobs";
-import CandidateAppliedJobs from "pages/Candidate/Jobs/AppliedJobs/AppliedJobs";
 import HRUpdateJob from "pages/HR/UpdateJob/UpdateJob";
 
 // component for admin site to determine user is logined or not
@@ -92,7 +93,8 @@ function Routes() {
           "/saved-jobs",
           "/applied-jobs",
           "/job-detail/:id",
-          "/career-advice"
+          "/career-advice",
+          "/career-advice/direction"
         ]}
       >
         <CandidateLayout>
@@ -119,6 +121,11 @@ function Routes() {
             exact
             path="/career-advice"
             component={CandidateCareerAdvice}
+          />
+          <UnauthorizedRoute
+            exact
+            path="/career-advice/direction"
+            component={CareerDirection}
           />
           <CandidateRoute
             exact
@@ -196,7 +203,7 @@ function Routes() {
         ]}
       >
         <RecruiterLayout>
-        <UnauthorizedRoute
+          <UnauthorizedRoute
             exact
             path="/recruiter/home"
             component={HRLandingPage}
