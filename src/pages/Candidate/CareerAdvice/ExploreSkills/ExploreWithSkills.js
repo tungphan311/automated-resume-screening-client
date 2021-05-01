@@ -1,6 +1,6 @@
 import JobSearch from "components/Forms/JobSearch/JobSearch";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
-import { getFormValues } from "redux-form";
+import { formValues, getFormValues } from "redux-form";
 import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { Tabs, Tab } from "react-bootstrap";
 import ContentEditable from "react-contenteditable";
@@ -14,8 +14,10 @@ import "./ExploreWithSkills.scss";
 import SignInDirect from "../SignInDirect/SignInDirect";
 import { getIndexArray } from "utils/index";
 import MatchSkill from "components/MatchSkill/MatchSkill";
+import Explore from "components/Explore/Explore";
+import qs from "query-string";
 
-const ExploreWithSkills = ({ profile }) => {
+const ExploreWithSkills = ({ profile, history }) => {
   const dispatch = useDispatch();
   // const profile = useSelector((state) => state.profile.candidateProfile);
   const token = useSelector((state) => state.auth.candidate.token);
@@ -117,6 +119,15 @@ const ExploreWithSkills = ({ profile }) => {
     setIsChange(true);
   };
 
+  const submitSkillFocus = () => {
+    console.log("form values", formValues);
+    const filter = { skill: "alal" };
+
+    const query = qs.stringify(filter, { skipNull: true });
+    console.log('qurery', query)
+    history.push(`/career-advice/direction?${query}`);
+  };
+
   return (
     <div className="explore">
       <div className="explore__title">
@@ -184,6 +195,16 @@ const ExploreWithSkills = ({ profile }) => {
                 </div>
               </div>
 
+              <div className="explore__content__skills__match">
+                <button
+                  type="submit"
+                  className="btn explore-look__btn"
+                  style={{ fontWeight: 700 }}
+                >
+                  Match now
+                </button>
+              </div>
+
               <div className="explore__content__match">
                 <h2 className="explore__content__title">
                   Your matched opportunities
@@ -213,9 +234,13 @@ const ExploreWithSkills = ({ profile }) => {
         <h2 className="explore__title-look">
           Looking for a specific role or skill?
         </h2>
-        <div class="explore__title-sub">
+        <div className="explore__title-sub">
           Find out more about a role or skill you’re interested in.
         </div>
+        <Explore handleSubmit={submitSkillFocus} history={history} />
+        <div style={{height:'80px'}}></div>
+        <Explore handleSubmit={submitSkillFocus} history={history} />
+
       </div>
     </div>
   );
