@@ -49,7 +49,6 @@ const FindJob = ({ history }) => {
   });
 
   const { page, pageSize, total } = pagination;
-  console.log(total);
 
   const [currentSelected, setCurrentSelected] = useState({
     domain: null,

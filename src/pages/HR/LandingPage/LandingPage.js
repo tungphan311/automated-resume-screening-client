@@ -496,16 +496,16 @@ const HRLandingPage = () => {
         </div>
       </div>
       <div
-        class="FYwKg _3gJU3_4 _2JU1c_4 _3oVlh_4 FLByR_4 _2QIfI_4"
+        className="FYwKg _3gJU3_4 _2JU1c_4 _3oVlh_4 FLByR_4 _2QIfI_4"
         id="marketing-campaign-covid19-resources"
         style={{ backgroundColor: "#96dccf" }}
       >
-        <div class="FYwKg _3VCZm _3ZvRy_4 _2lrrP">
-          <div class="FYwKg _2Bz3E _2II51_4 _1lyEa IC4bo_4 _3O7rA _3ucB1_4">
-            <div class="FYwKg _3VCZm _1uk_1 _3Ve9Z">
-              <div class="FYwKg _1GAuD _3gJU3_4 _2JU1c_4 hLznC_4 _2Bz3E rNAgI _1tfFt">
-                <div class="FYwKg d7v3r UJoTY_4">
-                  <div class="FYwKg _6Gmbl_4">
+        <div className="FYwKg _3VCZm _3ZvRy_4 _2lrrP">
+          <div className="FYwKg _2Bz3E _2II51_4 _1lyEa IC4bo_4 _3O7rA _3ucB1_4">
+            <div className="FYwKg _3VCZm _1uk_1 _3Ve9Z">
+              <div className="FYwKg _1GAuD _3gJU3_4 _2JU1c_4 hLznC_4 _2Bz3E rNAgI _1tfFt">
+                <div className="FYwKg d7v3r UJoTY_4">
+                  <div className="FYwKg _6Gmbl_4">
                     <svg
                       id="prefix__Layer_1"
                       xmlns="http://www.w3.org/2000/svg"
@@ -540,11 +540,11 @@ const HRLandingPage = () => {
                       </g>
                     </svg>
                   </div>
-                  <div class="FYwKg _6Gmbl_4">
-                    <div class="FYwKg _3ftyQ _3i7ia _1d5GB_4">
-                      <div class="FYwKg d7v3r _3QaJd_4">
-                        <div class="FYwKg _2Bz3E _2II51_4 _1lyEa IC4bo_4 _1q9J3 _3Aa4F_4">
-                          <div class="FYwKg _1uk_1 _3RtnC_4 _37N5v_4 _2Bz3E rNAgI">
+                  <div className="FYwKg _6Gmbl_4">
+                    <div className="FYwKg _3ftyQ _3i7ia _1d5GB_4">
+                      <div className="FYwKg d7v3r _3QaJd_4">
+                        <div className="FYwKg _2Bz3E _2II51_4 _1lyEa IC4bo_4 _1q9J3 _3Aa4F_4">
+                          <div className="FYwKg _1uk_1 _3RtnC_4 _37N5v_4 _2Bz3E rNAgI">
                             <a
                               style={{
                                 backgroundColor: "#2765cf",
@@ -563,8 +563,8 @@ const HRLandingPage = () => {
                 </div>
               </div>
             </div>
-            <div class="FYwKg _3VCZm _1uk_1 _3Ve9Z">
-              <div class="FYwKg _1GAuD _3gJU3_4 _2JU1c_4 hLznC_4 _2Bz3E rNAgI _1tfFt">
+            <div className="FYwKg _3VCZm _1uk_1 _3Ve9Z">
+              <div className="FYwKg _1GAuD _3gJU3_4 _2JU1c_4 hLznC_4 _2Bz3E rNAgI _1tfFt">
                 {" "}
                 <svg
                   viewBox="0 0 3252 3187"
