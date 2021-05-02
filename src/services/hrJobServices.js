@@ -22,6 +22,8 @@ export const closeJob = async (id, token) =>
 
 export const getJobDomain = async () => await API.get("/job-domains");
 
+export const getJobSkill = async () => await API.get("/skills​/search");
+
 export const hrGetJobs = async (
   {
     page = 1,

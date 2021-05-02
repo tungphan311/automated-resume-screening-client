@@ -17,7 +17,13 @@ import MatchSkill from "components/MatchSkill/MatchSkill";
 import Explore from "components/Explore/Explore";
 import qs from "query-string";
 
-const ExploreWithSkills = ({ profile, history }) => {
+import { SearchOutlined } from "@ant-design/icons";
+import Select from "react-select";
+import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
+import { ROLES } from "constants/roles";
+import history from "state/history";
+
+const ExploreWithSkills = ({ profile }) => {
   const dispatch = useDispatch();
   // const profile = useSelector((state) => state.profile.candidateProfile);
   const token = useSelector((state) => state.auth.candidate.token);
@@ -119,14 +125,55 @@ const ExploreWithSkills = ({ profile, history }) => {
     setIsChange(true);
   };
 
-  const submitSkillFocus = () => {
-    console.log("form values", formValues);
-    const filter = { skill: "alal" };
+  const [role, setRole] = useState(null);
 
+  const submit1 = (e) => {
+    e.preventDefault();
+    console.log("role", role);
+
+    let filter = { role: role.value };
     const query = qs.stringify(filter, { skipNull: true });
-    console.log('qurery', query)
-    history.push(`/career-advice/direction?${query}`);
+    const win = window.open(`/career-advice/direction?${query}`, "_blank");
+    win.focus();
+    // history.push(`/career-advice/direction?${query}`);
   };
+
+  const [state, setState] = useState({
+    loadingSelect: false,
+    fetch: false,
+    jobDomains: []
+  });
+
+  const { loadingSelect, fetch, jobDomains } = state;
+
+  const provinces = useSelector((state) => state.cv.provinces);
+  const domains = useSelector((state) => state.jobDomain.domains);
+  // const skillsDrop = useSelector((state) => state.jobDomain.domains);
+
+  useEffect(() => {
+    if (!domains.length) {
+      dispatch({ type: GET_JOB_DOMAIN });
+      setState((curState) => ({ ...curState, loadingSelect: true }));
+    } else {
+      setState((curState) => ({
+        ...curState,
+        jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
+      }));
+    }
+  }, []);
+
+  if (!fetch) {
+    if (domains.length && loadingSelect) {
+      setState((curState) => ({
+        ...curState,
+        loadingSelect: false,
+        fetch: true,
+        jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
+      }));
+    }
+
+    console.log('domains', domains)
+  }
 
   return (
     <div className="explore">
@@ -237,10 +284,43 @@ const ExploreWithSkills = ({ profile, history }) => {
         <div className="explore__title-sub">
           Find out more about a role or skill you’re interested in.
         </div>
-        <Explore handleSubmit={submitSkillFocus} history={history} />
-        <div style={{height:'80px'}}></div>
-        <Explore handleSubmit={submitSkillFocus} history={history} />
+        <div className="explore-look">
+          <h2 className="explore-look__title">
+            What skill do you want to focus on?
+          </h2>
 
+          <form>
+            <div className="row">
+              <div className="col-md-8 explore-look__input">
+                <div className="dropdown pr-10" style={{ zIndex: 5 }}>
+                  <Select
+                    value={role}
+                    onChange={(value) => setRole(value)}
+                    options={jobDomains}
+                    placeholder="Địa điểm làm việc"
+                    menuPosition="fixed"
+                    isClearable={true}
+                  />
+                  <div className="input-icon">
+                    <SearchOutlined style={{ color: "#555" }} />
+                  </div>
+                </div>
+              </div>
+              <div className="col-6 col-md-4">
+                <button
+                  type="submit"
+                  className="btn btn-full-width explore-look__btn"
+                  style={{ fontWeight: 700 }}
+                  onClick={submit1}
+                >
+                  Explore
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div style={{ height: "80px" }}></div>
+        {/* <Explore handleSubmit={submit1} history={history} /> */}
       </div>
     </div>
   );

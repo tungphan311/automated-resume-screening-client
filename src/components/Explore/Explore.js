@@ -8,7 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import SelectWithSearch from "components/SelectWithSearch/SelectWithSearch";
 import qs from "query-string";
-import Select from "components/Select/Select";
+
+import Select from "react-select";
+
 import { connect, useDispatch, useSelector } from "react-redux";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 
@@ -61,24 +63,28 @@ function Explore({ handleSubmit }) {
         What skill do you want to focus on?
       </h2>
 
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="row">
           <div className="col-md-8 explore-look__input">
-            <Field
-              component={CustomSelect}
-              name="skill"
-              className="pr-10 "
-              placeholder="Enter a skill..."
-              options={jobDomains}
-              icon={<SearchOutlined style={{ color: "#555"}} />}
-              isClearable={true}
-            />
+            <div className="dropdown pr-10" style={{ zIndex: 5 }}>
+              <Select
+                value={1}
+                options={jobDomains}
+                placeholder="Địa điểm làm việc"
+                menuPosition="fixed"
+                isClearable={true}
+              />
+              <div className="input-icon">
+                <SearchOutlined style={{ color: "#555" }} />
+              </div>
+            </div>
           </div>
           <div className="col-6 col-md-4">
             <button
               type="submit"
               className="btn btn-full-width explore-look__btn"
               style={{ fontWeight: 700 }}
+              onClick={handleSubmit}
             >
               Explore
             </button>
@@ -89,12 +95,10 @@ function Explore({ handleSubmit }) {
   );
 }
 
-Explore = reduxForm({
+export default Explore = reduxForm({
   form: "simple",
   touchOnBlur: false
 })(Explore);
-
-export default Explore;
 
 const CustomSelect = ({ input, ...props }) => (
   <SelectWithSearch

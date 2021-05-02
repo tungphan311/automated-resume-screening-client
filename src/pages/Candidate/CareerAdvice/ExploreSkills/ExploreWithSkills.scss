@@ -40,7 +40,7 @@
     border-radius: 10px;
 
     width: 100%;
-
+    border-bottom-right-radius: 20%;
     &__title {
       font-size: 34px;
       line-height: 40px;
@@ -94,13 +94,13 @@
         }
       }
 
-      &__match{
+      &__match {
         width: 100%;
         display: flex;
         justify-content: center;
         padding-bottom: 50px;
 
-        button{
+        button {
           width: 200px;
         }
       }
@@ -162,7 +162,7 @@
     }
   }
 
-  &__title-look{
+  &__title-look {
     font-size: 28px;
     line-height: 36px;
     margin: 0px 0px 30px;
@@ -171,11 +171,35 @@
     margin-top: 50px;
   }
 
-  &__title-sub{
+  &__title-sub {
     font-size: 16px;
     line-height: 24px;
     color: rgb(28, 28, 28);
     margin-bottom: 30px;
+  }
+
+  &-look__input {
+    height: 50px;
+
+    .css-yk16xz-control,
+    .dropdown,
+    .css-2b097c-container,
+    .css-1pahdxg-control {
+      height: 50px;
+    }
+
+    .css-g1d714-ValueContainer {
+      padding-left: 50px;
+    }
+
+    .icon-select__control {
+      height: 50px;
+      padding-left: 20px;
+    }
+
+    .input-icon {
+      padding-left: 10px;
+    }
   }
 }
 
