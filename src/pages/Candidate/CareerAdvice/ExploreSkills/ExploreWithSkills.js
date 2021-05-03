@@ -19,87 +19,29 @@ import qs from "query-string";
 
 import { SearchOutlined } from "@ant-design/icons";
 import Select from "react-select";
-import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
+import { GET_JOB_DOMAIN, GET_JOB_SKILL } from "state/reducers/jobDomainReducer";
 import { ROLES } from "constants/roles";
 import history from "state/history";
+import { candidateProfileAction } from "state/actions/profileAction";
 
 const ExploreWithSkills = ({ profile }) => {
   const dispatch = useDispatch();
-  // const profile = useSelector((state) => state.profile.candidateProfile);
   const token = useSelector((state) => state.auth.candidate.token);
-
-  // const RESUME = profile && profile.resumes && profile.resumes[0];
-  const [resume, setResume] = useState({});
   const [value, setValue] = useState("");
   const [isChange, setIsChange] = useState(false);
   // const [edit, setEdit] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  // const {
-  //   educations,
-  //   experiences,
-  //   technical_skills,
-  //   months_of_experience
-  // } = resume;
-  const a = [
-    "security mechanisms",
-    "engineering",
-    "source code",
-    "python",
-    "codeigniter",
-    "c++",
-    "rails",
-    "source codes",
-    "framework",
-    "education",
-    "compiler",
-    "software developer",
-    "software developers",
-    "build",
-    "engineers",
-    "blog",
-    "restful",
-    "sales",
-    "ruby",
-    "e-learning",
-    "security mechanism",
-    "laravel",
-    "mysql",
-    "c",
-    "java",
-    "knowledge",
-    "json",
-    "android",
-    "stack",
-    "software",
-    "docker",
-    "jquery",
-    "algorithms",
-    "project",
-    "django",
-    "code",
-    "magento",
-    "javascript",
-    "google cloud",
-    "library",
-    "aws",
-    "css",
-    "https",
-    "compilers",
-    "git",
-    "computer science",
-    "data mining",
-    "tool",
-    "kubernetes",
-    "symfony",
-    "position",
-    "tools",
-    "university",
-    "mysql workbench",
-    "php",
-    "golang"
-  ];
-  const [skills, setSkills] = useState(getIndexArray(a));
+  console.log("profile", profile);
+  const [resume, setResume] = useState(profile);
+
+  const {
+    educations,
+    experiences,
+    technical_skills,
+    months_of_experience
+  } = resume;
+
+  const [skills, setSkills] = useState(getIndexArray(technical_skills));
   const onChangeSkills = (key, value) => {
     const skill = skills.find((ele) => ele.key === key);
     let newSkills = skills.filter((ele) => ele.key !== key);
@@ -125,11 +67,8 @@ const ExploreWithSkills = ({ profile }) => {
     setIsChange(true);
   };
 
-  const [role, setRole] = useState(null);
-
   const submit1 = (e) => {
     e.preventDefault();
-    console.log("role", role);
 
     let filter = { role: role.value };
     const query = qs.stringify(filter, { skipNull: true });
@@ -138,41 +77,78 @@ const ExploreWithSkills = ({ profile }) => {
     // history.push(`/career-advice/direction?${query}`);
   };
 
-  const [state, setState] = useState({
+  const [searchRole, setSearchRole] = useState({
     loadingSelect: false,
     fetch: false,
     jobDomains: []
   });
 
-  const { loadingSelect, fetch, jobDomains } = state;
+  const [searchSkill, setSearchSkill] = useState({
+    loadingSkillSelect: false,
+    fetchSkill: false,
+    jobSkills: []
+  });
 
-  const provinces = useSelector((state) => state.cv.provinces);
+  const { loadingSelect, fetch, jobDomains } = searchRole;
+  const { loadingSkillSelect, fetchSkill, jobSkills } = searchSkill;
+
+  const [role, setRole] = useState(null);
+  const [skill, setSkill] = useState(null);
+
   const domains = useSelector((state) => state.jobDomain.domains);
-  // const skillsDrop = useSelector((state) => state.jobDomain.domains);
+  const skillsData = useSelector((state) => state.jobDomain.skills);
 
   useEffect(() => {
+    console.log("profile", profile);
+
+    // Explore with search skill and domain
     if (!domains.length) {
       dispatch({ type: GET_JOB_DOMAIN });
-      setState((curState) => ({ ...curState, loadingSelect: true }));
+      setSearchRole((curState) => ({ ...curState, loadingSelect: true }));
     } else {
-      setState((curState) => ({
+      setSearchRole((curState) => ({
         ...curState,
         jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
+      }));
+    }
+
+    if (!skillsData.length) {
+      dispatch({ type: GET_JOB_SKILL });
+      setSearchSkill((curState) => ({ ...curState, loadingSkillSelect: true }));
+    } else {
+      setSearchSkill((curState) => ({
+        ...curState,
+        jobSkills: skillsData.map(({ id, name }) => ({
+          value: id,
+          label: name
+        }))
       }));
     }
   }, []);
 
   if (!fetch) {
     if (domains.length && loadingSelect) {
-      setState((curState) => ({
+      setSearchRole((curState) => ({
         ...curState,
         loadingSelect: false,
         fetch: true,
         jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
       }));
     }
+  }
 
-    console.log('domains', domains)
+  if (!fetchSkill) {
+    if (skillsData.length && loadingSkillSelect) {
+      setSearchSkill((curState) => ({
+        ...curState,
+        loadingSkillSelect: false,
+        fetchSkill: true,
+        jobSkills: skillsData.map(({ id, name }) => ({
+          value: id,
+          label: name
+        }))
+      }));
+    }
   }
 
   return (
@@ -195,17 +171,15 @@ const ExploreWithSkills = ({ profile }) => {
           <div className="explore__content__key">
             <p>Key skills</p>
           </div>
-          {Object.keys(profile).length === 0 ? (
-            <SignInDirect />
-          ) : (
-            <div className="explore__content__skills">
-              <p className="explore__content__skills__intro">
-                Using skills listed in your Profile, we’ll help you discover
-                career options.
-              </p>
+          <div className="explore__content__skills">
+            <p className="explore__content__skills__intro">
+              Using skills listed in your Profile, we’ll help you discover
+              career options.
+            </p>
 
-              <div className="chip" style={{ marginTop: "20px" }}>
-                {skills.map(({ key, value }) => (
+            <div className="chip" style={{ marginTop: "20px" }}>
+              {skills.length &&
+                skills.map(({ key, value }) => (
                   <Skill
                     skill={value}
                     key={key}
@@ -214,66 +188,65 @@ const ExploreWithSkills = ({ profile }) => {
                     onDelete={onDelete}
                   />
                 ))}
-              </div>
+            </div>
 
-              <div className="inline-skill-container is-compact explore__content__skills__add">
-                <div className="inline-skill-input">
-                  <div className="TextInput-wrapper">
-                    <Input
-                      className="explore__content__skills__add__input"
-                      placeholder="Add skill"
-                      size="large"
-                      value={value}
-                      onChange={(evt) => setValue(evt.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="inline-skill-button">
-                  <Button
-                    className="explore__content__skills__add__btn"
-                    type="primary"
+            <div className="inline-skill-container is-compact explore__content__skills__add">
+              <div className="inline-skill-input">
+                <div className="TextInput-wrapper">
+                  <Input
+                    className="explore__content__skills__add__input"
+                    placeholder="Add skill"
                     size="large"
-                    disabled={!value}
-                    icon={<PlusOutlined />}
-                    onClick={onAddSkill}
-                  >
-                    Add skill
-                  </Button>
+                    value={value}
+                    onChange={(evt) => setValue(evt.target.value)}
+                  />
                 </div>
               </div>
-
-              <div className="explore__content__skills__match">
-                <button
-                  type="submit"
-                  className="btn explore-look__btn"
-                  style={{ fontWeight: 700 }}
+              <div className="inline-skill-button">
+                <Button
+                  className="explore__content__skills__add__btn"
+                  type="primary"
+                  size="large"
+                  disabled={!value}
+                  icon={<PlusOutlined />}
+                  onClick={onAddSkill}
                 >
-                  Match now
-                </button>
-              </div>
-
-              <div className="explore__content__match">
-                <h2 className="explore__content__title">
-                  Your matched opportunities
-                </h2>
-
-                <div className="explore__content__match__tabs">
-                  <Tabs className="child-tabs" defaultActiveKey="1">
-                    <Tab eventKey="1" title="Most skill matches">
-                      <MatchSkill />
-                      <MatchSkill />
-                    </Tab>
-                    <Tab eventKey="2" title="What you're good at">
-                      <MatchSkill />
-                    </Tab>
-                    <Tab eventKey="3" title="What you enjoy">
-                      <MatchSkill />
-                    </Tab>
-                  </Tabs>
-                </div>
+                  Add skill
+                </Button>
               </div>
             </div>
-          )}
+
+            <div className="explore__content__skills__match">
+              <button
+                type="submit"
+                className="btn explore-look__btn"
+                style={{ fontWeight: 700 }}
+              >
+                Match now
+              </button>
+            </div>
+
+            <div className="explore__content__match">
+              <h2 className="explore__content__title">
+                Your matched opportunities
+              </h2>
+
+              <div className="explore__content__match__tabs">
+                <Tabs className="child-tabs" defaultActiveKey="1">
+                  <Tab eventKey="1" title="Most skill matches">
+                    <MatchSkill />
+                    <MatchSkill />
+                  </Tab>
+                  <Tab eventKey="2" title="What you're good at">
+                    <MatchSkill />
+                  </Tab>
+                  <Tab eventKey="3" title="What you enjoy">
+                    <MatchSkill />
+                  </Tab>
+                </Tabs>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -297,6 +270,36 @@ const ExploreWithSkills = ({ profile }) => {
                     value={role}
                     onChange={(value) => setRole(value)}
                     options={jobDomains}
+                    placeholder="Địa điểm làm việc"
+                    menuPosition="fixed"
+                    isClearable={true}
+                  />
+                  <div className="input-icon">
+                    <SearchOutlined style={{ color: "#555" }} />
+                  </div>
+                </div>
+              </div>
+              <div className="col-6 col-md-4">
+                <button
+                  type="submit"
+                  className="btn btn-full-width explore-look__btn"
+                  style={{ fontWeight: 700 }}
+                  onClick={submit1}
+                >
+                  Explore
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <form>
+            <div className="row">
+              <div className="col-md-8 explore-look__input">
+                <div className="dropdown pr-10" style={{ zIndex: 5 }}>
+                  <Select
+                    value={skill}
+                    onChange={(value) => setSkill(value)}
+                    options={jobSkills}
                     placeholder="Địa điểm làm việc"
                     menuPosition="fixed"
                     isClearable={true}

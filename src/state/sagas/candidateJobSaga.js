@@ -20,7 +20,7 @@ export function* getSimilarJobSaga({ payload }) {
 
     yield put({ type: GET_JOB_SIMILAR_SUCCESS, response });
   } catch (err) {
-    yield toastErr(err);
+    // yield toastErr(err);
   }
 }
 
@@ -37,7 +37,7 @@ export function* getSuggestJobProSaga(action) {
     yield put({ type: GET_JOB_SUGGEST_SUCCESS, response });
     yield call(resolvePromiseAction, action);
   } catch (err) {
-    yield toastErr(err);
+    // yield toastErr(err);
     yield call(rejectPromiseAction, action);
   }
 }

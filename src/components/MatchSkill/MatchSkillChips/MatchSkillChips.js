@@ -25,8 +25,8 @@ const MatchSkillChip = () => {
 
   return (
     <div className="match-skill__chips">
-      {a.map((item) => {
-        return <div className="match-skill__chips__item">{item}</div>;
+      {a.map((item, key) => {
+        return <div className="match-skill__chips__item" key={item}>{item}</div>;
       })}
     </div>
   );
