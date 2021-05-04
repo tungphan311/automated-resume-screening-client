@@ -1,7 +1,3 @@
-import JobSearch from "components/Forms/JobSearch/JobSearch";
-import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
-import { formValues, getFormValues } from "redux-form";
-import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { Tabs, Tab } from "react-bootstrap";
 import ContentEditable from "react-contenteditable";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
@@ -11,37 +7,59 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import "./ExploreWithSkills.scss";
-import SignInDirect from "../SignInDirect/SignInDirect";
-import { getIndexArray } from "utils/index";
+import "components/Explore/Explore.scss";
+
 import MatchSkill from "components/MatchSkill/MatchSkill";
-import Explore from "components/Explore/Explore";
+import { getIndexArray } from "utils/index";
 import qs from "query-string";
+import Loading from "components/Loading/Loading";
 
 import { SearchOutlined } from "@ant-design/icons";
 import Select from "react-select";
 import { GET_JOB_DOMAIN, GET_JOB_SKILL } from "state/reducers/jobDomainReducer";
-import { ROLES } from "constants/roles";
 import history from "state/history";
-import { candidateProfileAction } from "state/actions/profileAction";
+import { exploreSkillsProAction } from "state/actions/candidateJobAction";
+import ContentLoader from "react-content-loader";
 
 const ExploreWithSkills = ({ profile }) => {
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.candidate.token);
+
+  const domains = useSelector((state) => state.jobDomain.domains);
+  const skillsData = useSelector((state) => state.jobDomain.skills);
+  const exploreSkillsData = useSelector(
+    (state) => state.candidateJob.candidateExploreSkills
+  );
+
+  const [loading, setLoading] = useState(false);
+  const [loadContent, setLoadContent] = useState(true);
+
   const [value, setValue] = useState("");
   const [isChange, setIsChange] = useState(false);
-  // const [edit, setEdit] = useState(false);
 
-  console.log("profile", profile);
+  const [role, setRole] = useState(null);
+  const [skill, setSkill] = useState(null);
+
   const [resume, setResume] = useState(profile);
 
-  const {
-    educations,
-    experiences,
-    technical_skills,
-    months_of_experience
-  } = resume;
+  const [searchRole, setSearchRole] = useState({
+    loadingSelect: false,
+    fetch: false,
+    jobDomains: []
+  });
+
+  const [searchSkill, setSearchSkill] = useState({
+    loadingSkillSelect: false,
+    fetchSkill: false,
+    jobSkills: []
+  });
+
+  const { technical_skills } = resume;
 
   const [skills, setSkills] = useState(getIndexArray(technical_skills));
+
+  const { loadingSelect, fetch, jobDomains } = searchRole;
+  const { loadingSkillSelect, fetchSkill, jobSkills } = searchSkill;
+
   const onChangeSkills = (key, value) => {
     const skill = skills.find((ele) => ele.key === key);
     let newSkills = skills.filter((ele) => ele.key !== key);
@@ -67,6 +85,19 @@ const ExploreWithSkills = ({ profile }) => {
     setIsChange(true);
   };
 
+  const handleMatch = () => {
+    let skillsList = skills.map((item) => item.value);
+    setLoading(true);
+
+    dispatch(exploreSkillsProAction({ skills: skillsList }))
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        // setIsLoading(false);
+      });
+  };
+
   const submit1 = (e) => {
     e.preventDefault();
 
@@ -77,29 +108,23 @@ const ExploreWithSkills = ({ profile }) => {
     // history.push(`/career-advice/direction?${query}`);
   };
 
-  const [searchRole, setSearchRole] = useState({
-    loadingSelect: false,
-    fetch: false,
-    jobDomains: []
-  });
+  const handleFocusSkill = () =>{
 
-  const [searchSkill, setSearchSkill] = useState({
-    loadingSkillSelect: false,
-    fetchSkill: false,
-    jobSkills: []
-  });
-
-  const { loadingSelect, fetch, jobDomains } = searchRole;
-  const { loadingSkillSelect, fetchSkill, jobSkills } = searchSkill;
-
-  const [role, setRole] = useState(null);
-  const [skill, setSkill] = useState(null);
-
-  const domains = useSelector((state) => state.jobDomain.domains);
-  const skillsData = useSelector((state) => state.jobDomain.skills);
+  }
 
   useEffect(() => {
-    console.log("profile", profile);
+    history.push("/career-advice");
+
+    let skillsList = skills.length && skills.map((item) => item.value);
+
+    dispatch(exploreSkillsProAction({ skills: skillsList }))
+      .then(() => {
+        setLoadContent(false);
+      })
+      .catch(() => {
+        setLoadContent(true);
+      });
+    console.log("exploreSkillsData", exploreSkillsData && exploreSkillsData);
 
     // Explore with search skill and domain
     if (!domains.length) {
@@ -136,7 +161,7 @@ const ExploreWithSkills = ({ profile }) => {
       }));
     }
   }
-
+  console.log(`jobSkills`, jobSkills)
   if (!fetchSkill) {
     if (skillsData.length && loadingSkillSelect) {
       setSearchSkill((curState) => ({
@@ -153,6 +178,8 @@ const ExploreWithSkills = ({ profile }) => {
 
   return (
     <div className="explore">
+      <Loading loading={loading} />
+
       <div className="explore__title">
         <div className="container">
           <h1 className="explore__title__big">
@@ -218,11 +245,11 @@ const ExploreWithSkills = ({ profile }) => {
 
             <div className="explore__content__skills__match">
               <button
-                type="submit"
                 className="btn explore-look__btn"
                 style={{ fontWeight: 700 }}
+                onClick={handleMatch}
               >
-                Match now
+                Save and Match now
               </button>
             </div>
 
@@ -234,8 +261,25 @@ const ExploreWithSkills = ({ profile }) => {
               <div className="explore__content__match__tabs">
                 <Tabs className="child-tabs" defaultActiveKey="1">
                   <Tab eventKey="1" title="Most skill matches">
-                    <MatchSkill />
-                    <MatchSkill />
+                    {loadContent ? (
+                      <MyLoader />
+                    ) : (
+                      exploreSkillsData.length &&
+                      exploreSkillsData.map(
+                        (
+                          { domain, matchedSkills, salary, totalCount },
+                          index
+                        ) => (
+                          <MatchSkill
+                            key={index}
+                            domain={domain}
+                            matchedSkills={matchedSkills}
+                            salary={salary}
+                            totalCount={totalCount}
+                          />
+                        )
+                      )
+                    )}
                   </Tab>
                   <Tab eventKey="2" title="What you're good at">
                     <MatchSkill />
@@ -300,7 +344,7 @@ const ExploreWithSkills = ({ profile }) => {
                     value={skill}
                     onChange={(value) => setSkill(value)}
                     options={jobSkills}
-                    placeholder="Địa điểm làm việc"
+                    placeholder="Enter a skill..."
                     menuPosition="fixed"
                     isClearable={true}
                   />
@@ -314,7 +358,7 @@ const ExploreWithSkills = ({ profile }) => {
                   type="submit"
                   className="btn btn-full-width explore-look__btn"
                   style={{ fontWeight: 700 }}
-                  onClick={submit1}
+                  onClick={handleFocusSkill}
                 >
                   Explore
                 </button>
@@ -360,3 +404,31 @@ const Skill = ({ id, skill, onChange, onDelete }) => {
     </div>
   );
 };
+
+const MyLoader = (props) => (
+  <ContentLoader
+    speed={2}
+    width={750}
+    height={600}
+    viewBox="0 0 750 600"
+    backgroundColor="#b7b3b3"
+    foregroundColor="#ffffff"
+    {...props}
+  >
+    <rect x="0" y="10" rx="0" ry="0" width="740" height="20" />
+    <rect x="0" y="40" rx="0" ry="0" width="300" height="16" />
+    <rect x="0" y="90" rx="0" ry="0" width="150" height="14" />
+    <rect x="0" y="112" rx="0" ry="0" width="740" height="14" />
+    <rect x="0" y="135" rx="0" ry="0" width="740" height="14" />
+    <rect x="0" y="177" rx="0" ry="0" width="740" height="20" />
+    <rect x="0" y="207" rx="0" ry="0" width="300" height="16" />
+    <rect x="0" y="246" rx="0" ry="0" width="150" height="14" />
+    <rect x="0" y="271" rx="0" ry="0" width="740" height="14" />
+    <rect x="0" y="296" rx="0" ry="0" width="740" height="14" />
+    <rect x="0" y="344" rx="0" ry="0" width="740" height="20" />
+    <rect x="0" y="376" rx="0" ry="0" width="300" height="16" />
+    <rect x="0" y="414" rx="0" ry="0" width="150" height="14" />
+    <rect x="0" y="438" rx="0" ry="0" width="740" height="14" />
+    <rect x="0" y="464" rx="0" ry="0" width="740" height="14" />
+  </ContentLoader>
+);

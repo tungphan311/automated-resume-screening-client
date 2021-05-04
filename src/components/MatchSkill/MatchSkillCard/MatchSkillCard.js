@@ -5,23 +5,23 @@ import "../MatchSkill.scss";
 import { getDiffTime } from "utils/index";
 import { formatProvince } from "utils/index";
 
-const MatchSkillCard = () => {
+const MatchSkillCard = ({name, logo, content, max, min}) => {
   return (
     <div className="match-skill__card">
       <div className="match-skill__card__poster">
-        <img src="https://cdn.seeklearning.com.au/media/images/career-guide/module/javascript-developer-module.jpg" />
+        <img src={logo} alt="poster" />
       </div>
 
       <div className="match-skill__card__content">
-      <h3 className="match-skill__card__content__title">Full stack</h3>
+      <h3 className="match-skill__card__content__title">{name}</h3>
         <div className="match-skill__card__content__item ">
-          <span className="match-skill__card__content__item__left">Most common salary</span>
-          <b className="match-skill__card__content__item__right">$110k</b>
+          <span className="match-skill__card__content__item__left">Minimum common salary</span>
+          <b className="match-skill__card__content__item__right">${min}</b>
         </div>
 
         <div className="match-skill__card__content__item ">
-          <span className="match-skill__card__content__item__left">Most common salary</span>
-          <b>$110k</b>
+          <span className="match-skill__card__content__item__left">Maximum common salary</span>
+          <b>${max}</b>
         </div>
       </div>
     </div>

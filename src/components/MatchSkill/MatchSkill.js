@@ -1,28 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./MatchSkill.scss";
-import { getDiffTime } from "utils/index";
-import { formatProvince } from "utils/index";
 import MatchSkillCard from "./MatchSkillCard/MatchSkillCard";
 import MatchSkillChips from "./MatchSkillChips/MatchSkillChips";
 import MatchSkillSub from "./MatchSkillSub/MatchSkillSub";
+import isEmpty from "lodash/isEmpty";
 
-const MatchSkill = () => {
+const MatchSkill = ({ domain, matchedSkills, salary, totalCount }) => {
   return (
     <div className="match-skill">
       <div className="match-skill__left">
-        <MatchSkillCard />
+        {!isEmpty(domain) && !isEmpty(salary) && (
+          <MatchSkillCard
+            name={domain.name}
+            logo={domain.logo}
+            content={domain.content}
+            min={salary.min}
+            max={salary.max}
+          />
+        )}
       </div>
 
       <div className="match-skill__right">
         <div className="match-skill__right__chip">
           <p className="match-skill__right__chip__title">Your skills match</p>
-          <MatchSkillChips />
+          {matchedSkills?.length && (
+            <MatchSkillChips chipList={matchedSkills} />
+          )}
         </div>
 
         <div className="match-skill__right__see">
-          <MatchSkillSub />
+          {matchedSkills?.length && !isEmpty(domain) && (
+            <MatchSkillSub
+              matchedSkills={matchedSkills}
+              mainSkills={domain.special_skills.map((item) => item.name)}
+              name={domain.name}
+            />
+          )}
         </div>
       </div>
     </div>
