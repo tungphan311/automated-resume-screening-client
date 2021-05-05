@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import MatchSkillCard from "components/MatchSkill/MatchSkillCard/MatchSkillCard";
-import "./CareerDirection.scss";
+import "./CareerRole.scss";
 
-const CareerDirection = () => {
+const CareerRole = () => {
   return (
-    <div className="career-direction">
-      <h2>career direction</h2>
+    <div className="career-role">
+      <h2>career role</h2>
       <MatchSkillCard />
     </div>
   );
 };
 
-export default CareerDirection;
+export default CareerRole;

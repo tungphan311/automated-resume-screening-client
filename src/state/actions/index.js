@@ -39,3 +39,8 @@ export const UPDATE_TOKEN = "UPDATE_TOKEN";
 
 export const addNewFilterAction = createPromiseAction("ADD_NEW_FILTER");
 export const updateFilterAction = createPromiseAction("UPDATE_FILTER");
+
+export const EXPLORE_SKILLS = createPromiseAction("EXPLORE_SKILLS");
+export const EXPLORE_SKILLS_SUCCESS = createPromiseAction("EXPLORE_SKILLS_SUCCESS");
+
+export const RESET_SKILLS_ACTION = "RESET_SKILLS_ACTION"

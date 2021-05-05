@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "../MatchSkill.scss";
-import { getDiffTime } from "utils/index";
-import { formatProvince } from "utils/index";
+import MatchSkillSubModal from "./MatchSkillSubModal";
 
-const MatchSkillSub = () => {
+const MatchSkillSub = ({ matchedSkills, mainSkills, name }) => {
+  const [show, toggleShow] = useState(false);
+  const toggleModal = () => {
+    toggleShow(true);
+  };
+
   return (
-    <div className="match-skill__sub row">
-      <div className="match-skill__sub__title">See how you match</div>
-      <div className="match-skill__sub__number">
-        <span>2</span>
+    <>
+      <div onClick={toggleModal} className="match-skill__sub row">
+        <div className="match-skill__sub__title">See how you match</div>
+        <div className="match-skill__sub__number">
+          <span>{matchedSkills.length}</span>
+        </div>
       </div>
-    </div>
+      <MatchSkillSubModal
+        show={show}
+        toggleModal={() => toggleShow(false)}
+        matchedSkills={matchedSkills}
+        mainSkills={mainSkills}
+        name={name}
+      />
+    </>
   );
 };
 

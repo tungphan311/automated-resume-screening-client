@@ -14,6 +14,7 @@ import CandidateReviewCV from "pages/Candidate/ReviewCV/ReviewCV";
 import CareerDirection from "pages/Candidate/CareerDirection/CareerDirection";
 import CandidateSavedJobs from "pages/Candidate/Jobs/SavedJobs/SavedJobs";
 import CandidateAppliedJobs from "pages/Candidate/Jobs/AppliedJobs/AppliedJobs";
+import CareerRole from "pages/Candidate/CareerRole/CareerRole";
 
 import HRLandingPage from "pages/HR/LandingPage/LandingPage";
 import HRHome from "pages/HR/Home/Home";
@@ -23,15 +24,16 @@ import HRJobManage from "pages/HR/JobDetail/JobManage";
 import HRJobList from "pages/HR/JobList/JobList";
 import HRPostJob from "pages/HR/PostJob/PostJob";
 import HRUpdateCompany from "pages/HR/UpdateCompany/UpdateCompany";
-
-import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { checkCookie } from "../utils/cookies";
 import HRFilterCandidates from "pages/HR/FindCandidates/FilterCandidates";
 import HRAddFilter from "pages/HR/AddFilter/AddFilter";
 import HRFilterDetail from "pages/HR/FilterDetail/FilterDetail";
 import HRSaveCandidates from "pages/HR/SaveCandidates/SaveCandidates";
 import HRUpdateJob from "pages/HR/UpdateJob/UpdateJob";
+
+import React from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { checkCookie } from "../utils/cookies";
+
 
 // component for admin site to determine user is logined or not
 export const AuthorizedRoute = ({
@@ -94,7 +96,8 @@ function Routes() {
           "/applied-jobs",
           "/job-detail/:id",
           "/career-advice",
-          "/career-advice/direction"
+          "/career-advice/direction",
+          "/career-advice/role"
         ]}
       >
         <CandidateLayout>
@@ -126,6 +129,11 @@ function Routes() {
             exact
             path="/career-advice/direction"
             component={CareerDirection}
+          />
+          <UnauthorizedRoute
+            exact
+            path="/career-advice/role"
+            component={CareerRole}
           />
           <CandidateRoute
             exact

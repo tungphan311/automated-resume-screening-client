@@ -132,7 +132,6 @@ const FindJob = ({ history }) => {
   };
 
   useEffect(() => {
-    console.log("chay lai");
     if (token) {
       let preferences = JSON.parse(localStorage.getItem("right-job"));
       let jobId =
@@ -140,49 +139,51 @@ const FindJob = ({ history }) => {
       let provinceId =
         preferences && preferences.location && preferences.location.label;
 
-      const filter = qs.parse(params);
+      if (jobId && provinceId) {
+        const filter = qs.parse(params);
 
-      preferences &&
-        setCurrentSelected({
-          domain: jobId,
-          province: provinceId
-        });
-
-      dispatch(
-        candidateJobSuggestProAction({
-          domain_id: preferences?.job_title?.value,
-          province_id: preferences?.location?.value,
-          page: filter.page || page
-        })
-      )
-        .then()
-        .catch((err) => console.log("err", err));
-
-      const fetchJobs = async () => {
-        setLoading(true);
-
-        await getSuggestJob(
-          preferences?.job_title?.value,
-          preferences?.location?.value,
-          filter.page || page,
-          token
-        )
-          .then((res) => {
-            setPagination({
-              ...pagination,
-              total: res.data.pagination.total,
-              page
-            });
-          })
-          .catch((err) => {
-            toastErr(err);
-          })
-          .finally(() => {
-            setLoading(false);
+        preferences &&
+          setCurrentSelected({
+            domain: jobId,
+            province: provinceId
           });
-      };
 
-      fetchJobs();
+        dispatch(
+          candidateJobSuggestProAction({
+            domain_id: preferences?.job_title?.value,
+            province_id: preferences?.location?.value,
+            page: filter.page || page
+          })
+        )
+          .then()
+          .catch((err) => console.log("err", err));
+
+        const fetchJobs = async () => {
+          setLoading(true);
+
+          await getSuggestJob(
+            preferences?.job_title?.value,
+            preferences?.location?.value,
+            filter.page || page,
+            token
+          )
+            .then((res) => {
+              setPagination({
+                ...pagination,
+                total: res.data.pagination.total,
+                page
+              });
+            })
+            .catch((err) => {
+              toastErr(err);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        };
+
+        fetchJobs();
+      }
     }
   }, [paginationTotal && paginationTotal.total, params]);
 

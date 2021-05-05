@@ -18,3 +18,16 @@ export const candidateJobSuggestAction = (domain_id, province_id, page) => ({
 export const candidateJobSuggestProAction = createPromiseAction(
   "GET_JOB_SUGGEST"
 );
+
+export const exploreSkillsAction = (skills) => ({
+  type: types.EXPLORE_SKILLS,
+  payload: { skills }
+});
+
+export const exploreSkillsProAction = createPromiseAction(
+  "EXPLORE_SKILLS"
+);
+
+export const resetSkillsAction = {
+  type: types.RESET_SKILLS_ACTION
+};
