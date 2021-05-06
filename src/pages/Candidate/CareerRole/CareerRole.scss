@@ -1,0 +1,195 @@
+.career-role {
+  background-color: #f2f4f7;
+
+  &__container {
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    padding-top: 40px;
+    padding-bottom: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-bottom: 50px;
+  }
+
+  &__row {
+    height: 20px;
+    background-color: rgb(10, 42, 96);
+  }
+
+  &__header {
+    background-color: rgb(39, 101, 207);
+    background-position: center top;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+
+    &__title {
+      font-size: 42px;
+      line-height: 44px;
+      font-weight: 700;
+      text-align: center;
+      color: rgb(255, 255, 255);
+    }
+
+    &__sub-title {
+      margin: 20px auto 0px;
+      color: rgb(255, 255, 255);
+      font-size: 18px;
+      line-height: 24px;
+      text-align: center;
+    }
+  }
+
+  &__back {
+    align-items: center;
+    color: #1c1c1c;
+    padding: 20px 0;
+    width: fit-content;
+    margin-left: 0px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &__icon {
+      color: #1c1c1c;
+      margin-right: 10px;
+    }
+
+    span {
+      font-size: 16px;
+    }
+  }
+
+  &__general {
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    margin-bottom: 40px;
+    padding: 30px 0;
+
+    &__top {
+      font-size: 18px;
+      line-height: 26px;
+      color: rgb(28, 28, 28);
+      margin-bottom: 10px;
+    }
+
+    &__star {
+      font-size: 18px;
+      margin-right: 2px;
+    }
+  }
+
+  &__detail {
+    color: rgb(28, 28, 28);
+
+    &__title {
+      color: rgb(28, 28, 28);
+      margin: 0px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    &__description {
+      text-align: center;
+      margin: 0px 0px 20px;
+      color: #1c1c1c;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    &__poster {
+      margin-top: 15px;
+      margin-bottom: 30px;
+      max-height: 326px;
+      border-radius: 4px;
+
+      img {
+        object-fit: cover;
+        border-radius: 4px;
+
+        width: 100%;
+      }
+    }
+
+    &__task {
+      font-size: 24px;
+      line-height: 30px;
+      color: rgb(28, 28, 28);
+      margin: 0px 0px 20px;
+      font-weight: 700;
+      margin-top: 60px;
+    }
+
+    &__text {
+      color: #1c1c1c;
+      font-size: 16px;
+    }
+  }
+
+  &__tabs {
+    justify-content: center;
+    border: 1px solid rgb(221, 227, 234);
+    border-radius: 50px;
+    margin-bottom: 40px;
+
+    .nav-item {
+      min-height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #1c1c1c;
+      background-color: $c-white;
+      width: 25% !important;
+      border-bottom: 1px solid rgb(221, 227, 234);
+      font-size: 16px;
+      line-height: 18px;
+
+      &:hover {
+        font-weight: 700;
+        color: rgb(39, 101, 207);
+        border: none;
+        border-bottom: 1px solid rgb(221, 227, 234);
+      }
+
+      &:first-child {
+        border-bottom-left-radius: 50px;
+        border-top-left-radius: 50px;
+        border-bottom: 1px solid rgb(221, 227, 234);
+      }
+
+      &:last-child {
+        border-bottom-right-radius: 50px;
+        border-top-right-radius: 50px;
+        border-bottom: 1px solid rgb(221, 227, 234);
+      }
+    }
+
+    .nav-link {
+      // border-radius: 50px;
+      // border-bottom-right-radius: 1px solid rgb(221, 227, 234);
+    }
+    .nav-link.active {
+      border-radius: 50px;
+      background-color: rgb(39, 101, 207);
+      color: $c-white;
+    }
+  }
+
+  &__become{
+    
+  }
+}
+
+.career-earn{
+  &__salary{
+    text-align: center;
+    font-size: 16px;
+  }
+
+  &__total{
+    text-align: center;
+    font-size: 16px;
+  }
+}

@@ -20,6 +20,7 @@ import { GET_JOB_DOMAIN, GET_JOB_SKILL } from "state/reducers/jobDomainReducer";
 import history from "state/history";
 import { exploreSkillsProAction } from "state/actions/candidateJobAction";
 import ContentLoader from "react-content-loader";
+import Explore from "components/Explore/Explore";
 
 const ExploreWithSkills = ({ profile }) => {
   const dispatch = useDispatch();
@@ -108,9 +109,7 @@ const ExploreWithSkills = ({ profile }) => {
     // history.push(`/career-advice/direction?${query}`);
   };
 
-  const handleFocusSkill = () =>{
-
-  }
+  const handleFocusSkill = () => {};
 
   useEffect(() => {
     history.push("/career-advice");
@@ -149,6 +148,7 @@ const ExploreWithSkills = ({ profile }) => {
         }))
       }));
     }
+    console.log(`jobSkills useEff`, jobSkills);
   }, []);
 
   if (!fetch) {
@@ -161,7 +161,7 @@ const ExploreWithSkills = ({ profile }) => {
       }));
     }
   }
-  console.log(`jobSkills`, jobSkills)
+
   if (!fetchSkill) {
     if (skillsData.length && loadingSkillSelect) {
       setSearchSkill((curState) => ({
@@ -175,6 +175,7 @@ const ExploreWithSkills = ({ profile }) => {
       }));
     }
   }
+  console.log(`jobSkills`, jobSkills);
 
   return (
     <div className="explore">
@@ -267,7 +268,7 @@ const ExploreWithSkills = ({ profile }) => {
                       exploreSkillsData.length &&
                       exploreSkillsData.map(
                         (
-                          { domain, matchedSkills, salary, totalCount },
+                          { domain, matchedSkills, salary, totalCount, mainSkills },
                           index
                         ) => (
                           <MatchSkill
@@ -276,6 +277,7 @@ const ExploreWithSkills = ({ profile }) => {
                             matchedSkills={matchedSkills}
                             salary={salary}
                             totalCount={totalCount}
+                            mainSkills={mainSkills}
                           />
                         )
                       )
@@ -303,7 +305,7 @@ const ExploreWithSkills = ({ profile }) => {
         </div>
         <div className="explore-look">
           <h2 className="explore-look__title">
-            What skill do you want to focus on?
+            What role do you want to focus on?
           </h2>
 
           <form>
@@ -314,7 +316,7 @@ const ExploreWithSkills = ({ profile }) => {
                     value={role}
                     onChange={(value) => setRole(value)}
                     options={jobDomains}
-                    placeholder="Địa điểm làm việc"
+                    placeholder="Enter a role..."
                     menuPosition="fixed"
                     isClearable={true}
                   />
@@ -335,15 +337,23 @@ const ExploreWithSkills = ({ profile }) => {
               </div>
             </div>
           </form>
+        </div>
 
+        <div style={{ height: "80px" }}></div>
+
+        <div className="explore-look">
+          <h2 className="explore-look__title">
+            What skill do you want to focus on?
+          </h2>
           <form>
             <div className="row">
               <div className="col-md-8 explore-look__input">
-                <div className="dropdown pr-10" style={{ zIndex: 5 }}>
+                <div className="dropdown pr-10" style={{ zIndex: 2 }}>
                   <Select
                     value={skill}
                     onChange={(value) => setSkill(value)}
                     options={jobSkills}
+                    filterOptions= {false}
                     placeholder="Enter a skill..."
                     menuPosition="fixed"
                     isClearable={true}
@@ -366,8 +376,9 @@ const ExploreWithSkills = ({ profile }) => {
             </div>
           </form>
         </div>
-        <div style={{ height: "80px" }}></div>
         {/* <Explore handleSubmit={submit1} history={history} /> */}
+
+        <Explore/>
       </div>
     </div>
   );
@@ -408,27 +419,27 @@ const Skill = ({ id, skill, onChange, onDelete }) => {
 const MyLoader = (props) => (
   <ContentLoader
     speed={2}
-    width={750}
+    width={1000}
     height={600}
-    viewBox="0 0 750 600"
+    viewBox="0 0 1000  600"
     backgroundColor="#b7b3b3"
     foregroundColor="#ffffff"
     {...props}
   >
-    <rect x="0" y="10" rx="0" ry="0" width="740" height="20" />
+    <rect x="0" y="10" rx="0" ry="0" width="900" height="20" />
     <rect x="0" y="40" rx="0" ry="0" width="300" height="16" />
     <rect x="0" y="90" rx="0" ry="0" width="150" height="14" />
-    <rect x="0" y="112" rx="0" ry="0" width="740" height="14" />
-    <rect x="0" y="135" rx="0" ry="0" width="740" height="14" />
-    <rect x="0" y="177" rx="0" ry="0" width="740" height="20" />
+    <rect x="0" y="112" rx="0" ry="0" width="900" height="14" />
+    <rect x="0" y="135" rx="0" ry="0" width="900" height="14" />
+    <rect x="0" y="177" rx="0" ry="0" width="900" height="20" />
     <rect x="0" y="207" rx="0" ry="0" width="300" height="16" />
     <rect x="0" y="246" rx="0" ry="0" width="150" height="14" />
-    <rect x="0" y="271" rx="0" ry="0" width="740" height="14" />
-    <rect x="0" y="296" rx="0" ry="0" width="740" height="14" />
-    <rect x="0" y="344" rx="0" ry="0" width="740" height="20" />
+    <rect x="0" y="271" rx="0" ry="0" width="900" height="14" />
+    <rect x="0" y="296" rx="0" ry="0" width="900" height="14" />
+    <rect x="0" y="344" rx="0" ry="0" width="900" height="20" />
     <rect x="0" y="376" rx="0" ry="0" width="300" height="16" />
     <rect x="0" y="414" rx="0" ry="0" width="150" height="14" />
-    <rect x="0" y="438" rx="0" ry="0" width="740" height="14" />
-    <rect x="0" y="464" rx="0" ry="0" width="740" height="14" />
+    <rect x="0" y="438" rx="0" ry="0" width="900" height="14" />
+    <rect x="0" y="464" rx="0" ry="0" width="900" height="14" />
   </ContentLoader>
 );

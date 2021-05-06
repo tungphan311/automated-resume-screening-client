@@ -7,7 +7,7 @@ import MatchSkillChips from "./MatchSkillChips/MatchSkillChips";
 import MatchSkillSub from "./MatchSkillSub/MatchSkillSub";
 import isEmpty from "lodash/isEmpty";
 
-const MatchSkill = ({ domain, matchedSkills, salary, totalCount }) => {
+const MatchSkill = ({ domain, matchedSkills, salary, totalCount, mainSkills }) => {
   return (
     <div className="match-skill">
       <div className="match-skill__left">
@@ -31,10 +31,10 @@ const MatchSkill = ({ domain, matchedSkills, salary, totalCount }) => {
         </div>
 
         <div className="match-skill__right__see">
-          {matchedSkills?.length && !isEmpty(domain) && (
+          {matchedSkills?.length && mainSkills?.length && !isEmpty(domain) && (
             <MatchSkillSub
               matchedSkills={matchedSkills}
-              mainSkills={domain.special_skills.map((item) => item.name)}
+              mainSkills={mainSkills.map((item) => item.name)}
               name={domain.name}
             />
           )}
