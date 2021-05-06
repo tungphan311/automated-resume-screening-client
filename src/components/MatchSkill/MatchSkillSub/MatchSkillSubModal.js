@@ -28,16 +28,14 @@ const MatchSkillSubModal = ({
       <Modal.Body>
         <div className="row skills-modal__header-text">
           <img src="https://www.seek.com.au/career-advice/assets/801328b9.svg" />
-          <span>
-            Skill overlaps with your previous roles and {name}
-          </span>
+          <span>Skill overlaps with your previous roles and {name}</span>
         </div>
 
         <h3 className="row skills-modal__title">Key skills and experience</h3>
 
         <p className="row skills-modal__sub-title">
-          Your previous roles have&nbsp;<b>{matchedSkills.length}</b>&nbsp;overlapping key skills
-          and experience.
+          Your previous roles have&nbsp;<b>{matchedSkills.length}</b>
+          &nbsp;overlapping key skills and experience.
         </p>
 
         <div className="skills-modal__list">
@@ -70,7 +68,7 @@ export default MatchSkillSubModal;
 const SkillMatched = ({ name, isMatch = true }) => {
   return (
     <div className={`row skill-matched ${!isMatch && "skill-matched-not"}`}>
-      <span>{name}</span>
+      <span style={{ textTransform: "capitalize" }}>{name}</span>
       {isMatch && (
         <img src="https://www.seek.com.au/career-advice/assets/801328b9.svg" />
       )}

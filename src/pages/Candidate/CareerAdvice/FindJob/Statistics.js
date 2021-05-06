@@ -2,12 +2,10 @@ import {
   StarTwoTone,
   StarFilled,
   CaretUpOutlined,
-  CaretDownOutlined,
   StockOutlined
 } from "@ant-design/icons";
 
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import "./Statistics.scss";
 import { numberToArray } from "utils/index";
 

@@ -1,10 +1,6 @@
-import JobSearch from "components/Forms/JobSearch/JobSearch";
-import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import ExploreWithSkills from "./ExploreSkills/ExploreWithSkills";
 import FindJob from "./FindJob/FindJob";
 
-import { getFormValues } from "redux-form";
-import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import { Tabs, Tab } from "react-bootstrap";
 
 import React, { useEffect, useState } from "react";
@@ -19,16 +15,32 @@ import SignInDirect from "./SignInDirect/SignInDirect";
 
 import { toastErr } from "utils/index";
 import isEmpty from "lodash/isEmpty";
+import { GET_JOB_DOMAIN, GET_JOB_SKILL } from "state/reducers/jobDomainReducer";
+import Select from "react-select";
+import { SearchOutlined } from "@ant-design/icons";
 
 function CandidateCareerAdvice({ history }) {
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.profile.candidateProfile);
   const token = useSelector((state) => state.auth.candidate.token);
+  const domains = useSelector((state) => state.jobDomain.domains);
+
   const [state, setState] = useState();
   const [loading, setLoading] = useState(false);
   const [resume, setResume] = useState();
 
+  const [searchRole, setSearchRole] = useState({
+    loadingSelect: false,
+    fetch: false,
+    jobDomains: []
+  });
+  const { loadingSelect, fetch, jobDomains } = searchRole;
+
+  const [role, setRole] = useState(null);
+
   const selectFind = (key) => setState(key);
+
+  const subitSearch = () => {};
 
   useEffect(() => {
     setState("explore");
@@ -53,7 +65,29 @@ function CandidateCareerAdvice({ history }) {
       fetchProfile();
       dispatch(candidateProfileAction(token));
     }
+
+    // Explore with search skill and domain
+    if (!domains.length) {
+      dispatch({ type: GET_JOB_DOMAIN });
+      setSearchRole((curState) => ({ ...curState, loadingSelect: true }));
+    } else {
+      setSearchRole((curState) => ({
+        ...curState,
+        jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
+      }));
+    }
   }, []);
+
+  if (!fetch) {
+    if (domains.length && loadingSelect) {
+      setSearchRole((curState) => ({
+        ...curState,
+        loadingSelect: false,
+        fetch: true,
+        jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
+      }));
+    }
+  }
 
   return (
     <div className="career-advice">
@@ -106,7 +140,7 @@ function CandidateCareerAdvice({ history }) {
                       What skill do you want to focus on?
                     </h2>
 
-                    {/* <form>
+                    <form>
                       <div className="row">
                         <div className="col-md-8 explore-look__input">
                           <div className="dropdown pr-10" style={{ zIndex: 5 }}>
@@ -128,13 +162,13 @@ function CandidateCareerAdvice({ history }) {
                             type="submit"
                             className="btn btn-full-width explore-look__btn"
                             style={{ fontWeight: 700 }}
-                            onClick={submit1}
+                            onClick={subitSearch}
                           >
                             Explore
                           </button>
                         </div>
                       </div>
-                    </form> */}
+                    </form>
 
                     {/* <form>
                       <div className="row">
