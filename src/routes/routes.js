@@ -97,7 +97,7 @@ function Routes() {
           "/job-detail/:id",
           "/career-advice",
           "/career-advice/direction",
-          "/career-advice/role"
+          "/career-advice/role=:role"
         ]}
       >
         <CandidateLayout>
@@ -132,7 +132,7 @@ function Routes() {
           />
           <UnauthorizedRoute
             exact
-            path="/career-advice/role"
+            path="/career-advice/role=:role"
             component={CareerRole}
           />
           <CandidateRoute

@@ -27,7 +27,7 @@ const MatchSkillSubModal = ({
 
       <Modal.Body>
         <div className="row skills-modal__header-text">
-          <img src="https://www.seek.com.au/career-advice/assets/801328b9.svg" />
+          <img src="https://www.seek.com.au/career-advice/assets/801328b9.svg" alt="icon match"/>
           <span>Skill overlaps with your previous roles and {name}</span>
         </div>
 
