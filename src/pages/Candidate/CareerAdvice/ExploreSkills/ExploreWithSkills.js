@@ -110,14 +110,13 @@ const ExploreWithSkills = ({ profile }) => {
       });
   };
 
-  const submit1 = (e) => {
+  const handleSearchRole = (e) => {
     e.preventDefault();
 
     let filter = { role: role.value };
     const query = qs.stringify(filter, { skipNull: true });
-    const win = window.open(`/career-advice/direction?${query}`, "_blank");
+    const win = window.open(`/career-advice/${query}`, "_blank");
     win.focus();
-    // history.push(`/career-advice/direction?${query}`);
   };
 
   useEffect(() => {
@@ -344,7 +343,7 @@ const ExploreWithSkills = ({ profile }) => {
                   type="submit"
                   className="btn btn-full-width explore-look__btn"
                   style={{ fontWeight: 700 }}
-                  onClick={submit1}
+                  onClick={handleSearchRole}
                 >
                   Explore
                 </button>

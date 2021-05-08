@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
-import qs from "query-string";
 import AutoSuggest from "react-autosuggest";
 
 import { connect, useDispatch, useSelector } from "react-redux";
-import { getJobDomain, getJobSkill } from "services/hrJobServices";
+import { getJobSkill } from "services/hrJobServices";
 import { GET_JOB_SKILL } from "state/reducers/jobDomainReducer";
 import { toastErr, toast } from "utils/index";
-import ContentLoader from "react-content-loader";
 import Loading from "components/Loading/Loading";
 
 import "./SearchSuggest.scss";

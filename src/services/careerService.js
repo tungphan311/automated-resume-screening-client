@@ -8,3 +8,6 @@ export const exploreSkills = async (skills, token) =>
       headers: { Authorization: `Bearer ${token}` }
     }
   );
+
+export const getCareerRole = async (domain_id) =>
+  await API.get(`/career/domain?domain_id=${domain_id}`);

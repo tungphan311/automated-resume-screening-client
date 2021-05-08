@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import MatchSkillCard from "components/MatchSkill/MatchSkillCard/MatchSkillCard";
 import "./CareerRole.scss";
+import { AreaChartOutlined } from "@ant-design/icons";
 
-const CareerEarn = () => {
+const CareerEarn = ({ province, role, min, max, total, name }) => {
   return (
     <div className="career-earn">
       <p className="career-earn__salary">
-        The&nbsp;<b>most common annual salary</b>&nbsp;in VIC for a Frontend
-        Developer is between&nbsp;<b>$100k</b>&nbsp;and&nbsp;<b>$120k</b>
+        The&nbsp;<b>most common annual salary</b>&nbsp;in {name || "all"} for a {role} is
+        between&nbsp;<b>${min}</b>&nbsp;and&nbsp;<b>${max}</b>
       </p>
 
-      <p className="career-earn__total">
-        <b>150k jobs</b> Frontend Developer in xxxx
-      </p>
+      <div className="career-earn__total row">
+        <AreaChartOutlined className="career-earn__total__icon"/>
+        <span>
+          <b>{total} jobs</b> {role} in {province || "total"}
+        </span>
+      </div>
     </div>
   );
 };
