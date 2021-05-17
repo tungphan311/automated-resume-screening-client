@@ -8,10 +8,10 @@ import { checkCookie } from "utils/cookies";
 import "./CandidateSignIn.scss";
 
 const validateMessages = {
-  required: "Vui lòng nhập ${label}",
+  required: "Please enter ${label}",
   types: {
-    email: "Email không hợp lệ",
-    password: "Mật khẩu"
+    email: "Email not valid",
+    password: "Password"
   }
 };
 
@@ -59,8 +59,12 @@ function CandidateSignIn() {
             </Link>
           </div>
 
+          <div className="candidate-login__container__left__employer">
+            <span>Are you an employer?</span>
+          </div>
+
           <span className="candidate-login__container__left__title">
-            Người&nbsp;tìm&nbsp;việc&nbsp;đăng&nbsp;nhập
+            Sign&nbsp;in
           </span>
 
           <Form
@@ -72,25 +76,25 @@ function CandidateSignIn() {
           >
             {/* Email */}
             <Form.Item
-              label="Email"
+              label="Email address"
               name={["user", "email"]}
               rules={[{ type: "email", required: true }]}
             >
               <Input
                 className="candidate-login__container__left__form__input"
-                placeholder="Nhập email"
+                placeholder="Enter email..."
               />
             </Form.Item>
 
             {/* Password  */}
             <Form.Item
-              label="Mật khẩu"
+              label="Password"
               name={["user", "password"]}
               rules={[{ required: true }]}
             >
               <Input.Password
                 className="candidate-login__container__left__form__input"
-                placeholder="Nhập mật khẩu"
+                placeholder="Enter password..."
               />
             </Form.Item>
 
@@ -99,33 +103,22 @@ function CandidateSignIn() {
               htmlType="submit"
               className="candidate-login__container__left__form__btn"
             >
-              Đăng nhập
+              Sign in
               {isLoading && <div className="dashed-loading"></div>}
             </button>
-
-            {/* Login with social  */}
-            {/* <span className="candidate-login__container__left__form__with text-center">
-              Hoặc bạn có thể
-            </span> */}
           </Form>
 
           <div className="candidate-login__container__left__form__social">
             {/* Login with gmail  */}
-            <Link to="/sign-up">
-              <button className="candidate-login__container__left__form__social__item candidate-login__container__left__form__social__item--register">
-                <span> Đăng ký tài khoản mới</span>
-              </button>
-            </Link>
+
+            <button className="candidate-login__container__left__form__social__item--register">
+              <span>
+                {" "}
+                Don't have an account? <Link to="/sign-up">Register</Link>
+              </span>
+            </button>
           </div>
         </div>
-
-        {/* Background Image  */}
-        <div
-          className="candidate-login__bg"
-          style={{
-            backgroundImage: "url('/assets/img/login-candidate-bg.jpg')"
-          }}
-        ></div>
       </div>
     </div>
   );

@@ -19,8 +19,9 @@ import ContentLoader from "react-content-loader";
 
 import { candidateJobSuggestProAction } from "state/actions/candidateJobAction";
 import { getSuggestJob } from "services/jobServices";
+import height from "../../../../../node_modules/dom-helpers/cjs/height";
 
-const FindJob = ({ history }) => {
+const FindJob = ({ history, hasResume }) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
@@ -132,7 +133,7 @@ const FindJob = ({ history }) => {
   };
 
   useEffect(() => {
-    if (token) {
+    if (token && hasResume) {
       let preferences = JSON.parse(localStorage.getItem("right-job"));
       let jobId =
         preferences && preferences.job_title && preferences.job_title.label;
@@ -200,172 +201,203 @@ const FindJob = ({ history }) => {
         </div>
         <div className="container">
           <div className="find-job__greeting">
-            <strong>Hi there,</strong>{" "}
+            <strong>Hi there,&nbsp;</strong>
             <span>
               ready to explore advice and career options tailored to you?
             </span>
             <PushpinOutlined className="find-job__greeting__pin" />
           </div>
           <div className="find-job__title">Find the right job for me</div>
-          {/* If not exist role */}
-          {!currentSelected.domain || !currentSelected.province ? (
-            <div className="find-job__not-role">
-              {token ? (
-                <div className="find-job__not-role__content">
-                  <p>
-                    Learn what you need to know about a role, from salary to job
-                    satisfaction.
-                  </p>
-                  <div>
-                    Get a{" "}
-                    <a
-                      className="find-job__not-role__content__group"
-                      onClick={onClickRole}
-                    >
-                      role{" "}
-                      <EditOutlined className="find-job__not-role__content__group__icon" />
-                    </a>{" "}
-                    you're interested in to see more.
+
+          <div
+            className="find-job__not-role"
+            style={{
+              height: !hasResume && "600px",
+              paddingTop: hasResume && "30px"
+            }}
+          >
+            {token ? (
+              hasResume ? (
+                currentSelected.domain && currentSelected.province ? (
+                  // Already Has a roles
+                  <div className="find-job__has-role">
+                    <div className="find-job__has-role__greeting">
+                      <div style={{ marginBottom: "20px" }}>
+                        Great, you're interested in{" "}
+                        <a
+                          className="find-job__not-role__content__group"
+                          onClick={onClickRole}
+                        >
+                          {currentSelected && currentSelected.domain}{" "}
+                          <EditOutlined className="find-job__not-role__content__group__icon" />
+                        </a>{" "}
+                        roles.
+                      </div>
+
+                      <div>
+                        Find out the facts about this role and others like it in{" "}
+                        <a
+                          className="find-job__not-role__content__group"
+                          onClick={onClickRole}
+                        >
+                          {currentSelected && currentSelected.province}{" "}
+                          <EditOutlined className="find-job__not-role__content__group__icon" />
+                        </a>{" "}
+                      </div>
+                    </div>
+                    <div className="find-job__has-role__domains">
+                      <Tabs className="child-tabs" defaultActiveKey="1">
+                        <Tab eventKey="1" title={currentSelected.domain}>
+                          <Statistics
+                            total={total}
+                            min={suggestJobs?.salary?.min}
+                            max={suggestJobs?.salary?.max}
+                          />
+                        </Tab>
+                        <Tab eventKey="2" title="Web Developer">
+                          <Statistics />
+                        </Tab>
+                        <Tab eventKey="3" title="Fullstack Developer">
+                          <Statistics />
+                        </Tab>
+                        <Tab eventKey="4" title="Developer">
+                          <Statistics />
+                        </Tab>
+                      </Tabs>
+
+                      {/* JD suggestion  */}
+                      {loading ? (
+                        <MyLoader className="loader" />
+                      ) : (
+                        <div className="find-job__has-role__suggest">
+                          {suggestJobs?.items &&
+                            suggestJobs?.items?.length !== 0 &&
+                            suggestJobs?.items.map(
+                              ({
+                                job_post_id,
+                                contact_type,
+                                job_description,
+                                job_title,
+                                company_background,
+                                company_logo,
+                                company_name,
+                                posted_in,
+                                province_id,
+                                salary
+                              }) => {
+                                return (
+                                  <SimJob
+                                    key={job_post_id}
+                                    id={job_post_id}
+                                    contractType={contact_type}
+                                    description={job_description}
+                                    title={job_title}
+                                    companyBg={company_background}
+                                    companyLogo={company_logo}
+                                    companyName={company_name}
+                                    postedIn={posted_in}
+                                    provinceId={province_id}
+                                    salary={salary}
+                                    provinces={provinceTotal}
+                                  />
+                                );
+                              }
+                            )}
+                          {total ? (
+                            <nav>
+                              <div className="find-job__has-role__suggest__pagination">
+                                <Pagination
+                                  current={page}
+                                  total={total}
+                                  showSizeChanger={false}
+                                  showLessItems
+                                  pageSize={pageSize}
+                                  onChange={(page) =>
+                                    onFilterChange("page", page)
+                                  }
+                                />
+                              </div>
+                            </nav>
+                          ) : null}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ) : Object.keys(profile).length !== 0 ? (
-                <div className="find-job__not-role__content">
-                  You need to have an resume to use this features
-                </div>
-              ) : (
-                <div>
+                ) : (
+                  // If not exist role
                   <div className="find-job__not-role__content">
-                    Sign in or register a Profile to find the right job for you
+                    <p>
+                      Learn what you need to know about a role, from salary to
+                      job satisfaction.
+                    </p>
+                    <div>
+                      Get a{" "}
+                      <a
+                        className="find-job__not-role__content__group"
+                        onClick={onClickRole}
+                      >
+                        role{" "}
+                        <EditOutlined className="find-job__not-role__content__group__icon" />
+                      </a>{" "}
+                      you're interested in to see more.
+                    </div>
+                  </div>
+                )
+              ) : (
+                <>
+                  <div className="find-job__not-role__content">
+                    You need to have an resume to explore the <br /> right jobs
+                    which are waiting to you
                   </div>
                   <div
                     className="sign-direct__button"
-                    style={{ marginTop: "30px" }}
+                    style={{ marginTop: "50px" }}
                   >
                     <Link
                       to="/sign-in"
                       className="sign-direct__button__sign-in"
                     >
-                      Sign In
+                      Get started
                     </Link>
                     <p>or</p>
                     <Link
                       to="/sign-up"
                       className="sign-direct__button__register"
                     >
-                      Register
-                    </Link>
+                      Upload your resume
+                    </Link>{" "}
                   </div>
+                </>
+              )
+            ) : (
+              <div>
+                <div className="find-job__not-role__content">
+                  Sign in or register a Profile to find the right job for you
                 </div>
-              )}
-
-              <img
-                src="https://www.seek.com.au/career-advice/assets/c3f39bdb.svg"
-                alt="Career Advice"
-              />
-            </div>
-          ) : (
-            // Already Has a roles
-            <div className="find-job__has-role">
-              <div className="find-job__has-role__greeting">
-                <div style={{ marginBottom: "20px" }}>
-                  Great, you're interested in{" "}
-                  <a
-                    className="find-job__not-role__content__group"
-                    onClick={onClickRole}
-                  >
-                    {currentSelected && currentSelected.domain}{" "}
-                    <EditOutlined className="find-job__not-role__content__group__icon" />
-                  </a>{" "}
-                  roles.
-                </div>
-
-                <div>
-                  Find out the facts about this role and others like it in{" "}
-                  <a
-                    className="find-job__not-role__content__group"
-                    onClick={onClickRole}
-                  >
-                    {currentSelected && currentSelected.province}{" "}
-                    <EditOutlined className="find-job__not-role__content__group__icon" />
-                  </a>{" "}
+                <div
+                  className="sign-direct__button"
+                  style={{ marginTop: "30px" }}
+                >
+                  <Link to="/sign-in" className="sign-direct__button__sign-in">
+                    Sign In
+                  </Link>
+                  <p>or</p>
+                  <Link to="/sign-up" className="sign-direct__button__register">
+                    Register
+                  </Link>
                 </div>
               </div>
-              <div className="find-job__has-role__domains">
-                <Tabs className="child-tabs" defaultActiveKey="1">
-                  <Tab eventKey="1" title={currentSelected.domain}>
-                    <Statistics
-                      total={total}
-                      min={suggestJobs?.salary?.min}
-                      max={suggestJobs?.salary?.max}
-                    />
-                  </Tab>
-                  <Tab eventKey="2" title="Web Developer">
-                    <Statistics />
-                  </Tab>
-                  <Tab eventKey="3" title="Fullstack Developer">
-                    <Statistics />
-                  </Tab>
-                  <Tab eventKey="4" title="Developer">
-                    <Statistics />
-                  </Tab>
-                </Tabs>
+            )}
 
-                {/* JD suggestion  */}
-                {loading ? (
-                  <MyLoader className="loader" />
-                ) : (
-                  <div className="find-job__has-role__suggest">
-                    {suggestJobs?.items &&
-                      suggestJobs?.items?.length !== 0 &&
-                      suggestJobs?.items.map(
-                        ({
-                          job_post_id,
-                          contact_type,
-                          job_description,
-                          job_title,
-                          company_background,
-                          company_logo,
-                          company_name,
-                          posted_in,
-                          province_id,
-                          salary
-                        }) => {
-                          return (
-                            <SimJob
-                              id={job_post_id}
-                              contractType={contact_type}
-                              description={job_description}
-                              title={job_title}
-                              companyBg={company_background}
-                              companyLogo={company_logo}
-                              companyName={company_name}
-                              postedIn={posted_in}
-                              provinceId={province_id}
-                              salary={salary}
-                              provinces={provinceTotal}
-                            />
-                          );
-                        }
-                      )}
-                    {total ? (
-                      <nav>
-                        <div className="find-job__has-role__suggest__pagination">
-                          <Pagination
-                            current={page}
-                            total={total}
-                            showSizeChanger={false}
-                            showLessItems
-                            pageSize={pageSize}
-                            onChange={(page) => onFilterChange("page", page)}
-                          />
-                        </div>
-                      </nav>
-                    ) : null}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+            <img
+              src="https://www.seek.com.au/career-advice/assets/c3f39bdb.svg"
+              alt="Career Advice"
+              style={{
+                position: !hasResume && "absolute",
+                bottom: !hasResume && "65px"
+              }}
+            />
+          </div>
         </div>
 
         {/* Overlay background  */}

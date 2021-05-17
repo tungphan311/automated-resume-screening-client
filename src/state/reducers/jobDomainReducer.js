@@ -7,10 +7,14 @@ export const GET_JOB_SKILL_SUCCESS = "GET_JOB_SKILL_SUCCESS";
 export const GET_CAREER_ROLE = "GET_CAREER_ROLE";
 export const GET_CAREER_ROLE_SUCCESS = "GET_CAREER_ROLE_SUCCESS";
 
+export const GET_CAREER_SKILL = " GET_CAREER_SKILL";
+export const GET_CAREER_SKILL_SUCCESS = "GET_CAREER_SKILL_SUCCESS";
+
 const initialState = {
   domains: [],
   skills: [],
-  careerDomain: {}
+  careerDomain: {},
+  careerSkill: {}
 };
 
 export default function jobDomainReducer(state = initialState, action = {}) {
@@ -28,6 +32,10 @@ export default function jobDomainReducer(state = initialState, action = {}) {
 
     case GET_CAREER_ROLE_SUCCESS:
       newState.careerDomain = response;
+      return newState;
+
+    case GET_CAREER_SKILL_SUCCESS:
+      newState.careerSkill = response;
       return newState;
 
     default:

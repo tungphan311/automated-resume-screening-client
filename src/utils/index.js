@@ -62,14 +62,18 @@ export const formatProvinceName = (province) => {
     name = province.split("Tỉnh ");
   }
 
-  return name.length && name[1];
+  return name && name.length && name[1];
 };
 
 export const formatProvinceNameBrief = (province) => {
+  let provinceName = formatProvinceName(province);
   
-  return formatProvinceName(province)
-    .split(/\s/)
-    .reduce((response, word) => (response += word.slice(0, 1)), "");
+  return (
+    provinceName ?
+    provinceName
+      .split(/\s/)
+      .reduce((response, word) => (response += word.slice(0, 1)), "") : "All"
+  );
 };
 
 export const formatSearchHistory = (title, provinces, provinceId) => {

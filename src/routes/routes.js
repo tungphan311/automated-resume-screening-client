@@ -33,7 +33,7 @@ import HRUpdateJob from "pages/HR/UpdateJob/UpdateJob";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { checkCookie } from "../utils/cookies";
-
+import MyProfile from "pages/Candidate/CandidateProfile/CandidateProfile";
 
 // component for admin site to determine user is logined or not
 export const AuthorizedRoute = ({
@@ -96,8 +96,9 @@ function Routes() {
           "/applied-jobs",
           "/job-detail/:id",
           "/career-advice",
-          "/career-advice/direction",
-          "/career-advice/role=:role"
+          "/career-advice/skill=:skill",
+          "/career-advice/id=:id&role=:role",
+          "/my-profile"
         ]}
       >
         <CandidateLayout>
@@ -127,12 +128,12 @@ function Routes() {
           />
           <UnauthorizedRoute
             exact
-            path="/career-advice/direction"
+            path="/career-advice/skill=:skill"
             component={CareerDirection}
           />
           <UnauthorizedRoute
             exact
-            path="/career-advice/role=:role"
+            path="/career-advice/id=:id&role=:role"
             component={CareerRole}
           />
           <CandidateRoute
@@ -145,6 +146,7 @@ function Routes() {
             path="/applied-jobs"
             component={CandidateAppliedJobs}
           />
+          <CandidateRoute exact path="/my-profile" component={MyProfile} />
         </CandidateLayout>
       </Route>
 

@@ -5,19 +5,22 @@
     justify-content: center;
     align-items: stretch;
     width: 100%;
-    background: $c-white;
+    background-color: #f5f6f8;
     display: flex;
     flex-wrap: wrap;
+    min-height: 100vh;
+    align-items: center;
 
     &__left {
-      background-color: #f7f7f7;
-      padding: 0 80px 0 80px;
-      width: 40vw;
-      min-height: 100vh;
+      background: #fff;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
+      max-width: 660px;
+      height: fit-content;
+      box-shadow: 0 2px 4px 0 rgba(30, 34, 43, 0.1), 0 8px 8px -4px rgba(30, 34, 4, 0.1),
+        0 12px 12px -8px rgba(30, 34, 43, 0.2);
 
       h3 {
         font: normal 36px "Cookie", cursive;
@@ -27,19 +30,32 @@
       }
 
       &__logo {
-        width: 7.375rem;
-        position: absolute;
-        top: 30px;
-        left: 30px;
+        margin-bottom: 30px;
+      }
+
+      &__employer {
+        font-size: 16px;
+        color: #1e468c;
+        cursor: pointer;
+        text-decoration: underline;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        background: #e8ecf2;
+        padding-right: 20px;
+        padding-bottom: 15px;
+        padding-top: 15px;
       }
 
       &__title {
         display: block;
-        font-size: 28px;
-        color: $c-royal-blue;
-        line-height: 1.2;
-        text-align: center;
-        margin-bottom: 20px;
+        font-size: 42px;
+        line-height: 44px;
+        text-align: left;
+        padding-left: 24px;
+        padding-top: 24px;
+        color: #0d3880;
+        font-weight: 700;
       }
 
       &__link {
@@ -60,38 +76,43 @@
         width: 100%;
         display: flex;
         flex-direction: column;
+        padding: 24px;
+        padding-bottom: 15px;
 
-        &__label {
-          margin-bottom: 5px;
+        .ant-form-item-label {
+          color: #1e222b;
+          font-weight: 700;
+          line-height: 24px;
+          padding-bottom: 5px;
+
+          .ant-form-item-required { 
+            font-size: 16px;
+          }
         }
 
         &__input {
           height: 40px;
+          border-radius: 4px;
+          background: #fff;
+          border: 1px solid rgba(113, 113, 113, 0.7);
         }
 
         &__btn {
           max-height: 42px;
-          margin: 10px 0;
+          margin-top: 10px;
           font-weight: 500;
+          font-size: 17px;
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 100%;
           padding: 12px 0;
-          border-radius: 10px;
+          border-radius: 4px;
           color: $c-white;
-          text-transform: uppercase;
-          background-image: linear-gradient(
-            to right,
-            $primary,
-            #3853de 22%,
-            #9c75e3 50%,
-            #3853de 78%,
-            $primary 100%
-          );
+          background-image: linear-gradient(to right, #FD0585, #ec1685 22%, #df75e3 50%, #ec1685 78%, #FD0585 100%);
           transition: all 0.3s ease;
           background-size: 200% auto;
-
+          width: 30%;
+          
           &:hover {
             background-position: right center;
           }
@@ -127,9 +148,9 @@
 
         &__social {
           display: flex;
-          flex-direction: column;
           width: 100%;
           padding-top: 10px;
+          padding-left: 24px;
 
           &__item {
             margin-bottom: 15px;
@@ -155,29 +176,14 @@
 
             &--register {
               position: relative;
-              background-color: $c-valencia;
-              display: flex;
-              justify-content: center;
-              // margin-top: 20px;
-
-              &__icon {
-                font-size: 24px;
-                padding-right: 20px;
-              }
+              font-size: 14px;
+              padding-bottom: 20px;
+              padding-top: 0;
             }
           }
         }
       }
     }
-  }
-
-  &__bg {
-    width: calc(100% - 40vw);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    z-index: 1;
   }
 }
 

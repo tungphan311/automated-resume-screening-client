@@ -23,16 +23,18 @@ import {
   formatProvinceNameBrief
 } from "utils/index";
 import SimJob from "components/SimJob/SimJob";
+import HasNoPost from "./HasNoPost";
 
 const CareerRole = (props) => {
-  const { role } = useParams();
+  const { id } = useParams();
+  // const { role } = useParams();
+
   const dispatch = useDispatch();
   const domainData = useSelector((state) => state.jobDomain.careerDomain);
   let { provinces } = useSelector((state) => state.cv);
 
   const [loading, setLoading] = useState(false);
 
-  console.log("role", role);
   let provinceId =
     !isEmpty(domainData) &&
     provinces.length &&
@@ -50,7 +52,7 @@ const CareerRole = (props) => {
     if (isEmpty(domainData)) {
       setLoading(true);
 
-      dispatch(getCareerRoleProAction({ domain_id: role }))
+      dispatch(getCareerRoleProAction({ domain_id: id }))
         .then((res) => setLoading(false))
         .catch((err) => console.log("err", err));
     }
@@ -73,7 +75,7 @@ const CareerRole = (props) => {
             </div>
           </div>
           <div className="container">
-            <Link className="career-role__back row">
+            <Link to="/career-advice" className="career-role__back row">
               <LeftOutlined className="career-role__back__icon" />
               <span>Explore careers</span>
             </Link>
@@ -92,7 +94,7 @@ const CareerRole = (props) => {
               </div>
 
               <div className="statistics__item">
-                <p className="career-role__general__top">Job growth</p>
+                <p className="career-role__general__top">Salary rank</p>
                 <p className="statistics__item__number">
                   <StockOutlined className="statistics__item__number__stock" />$
                   {domainData.salary.min}
@@ -104,7 +106,7 @@ const CareerRole = (props) => {
               </div>
 
               <div className="statistics__item">
-                <p className="career-role__general__top">Job growth</p>
+                <p className="career-role__general__top">Salary rank</p>
                 <p className="statistics__item__number">
                   <CaretUpOutlined className="statistics__item__number__care" />{" "}
                   ${/* {max || 7000}{" "} */}
@@ -118,20 +120,20 @@ const CareerRole = (props) => {
 
               <div className="statistics__item">
                 <p className="career-role__general__top">Job satisfaction</p>
-                <p className="statistics__item__number">3.212</p>
-                {numberToArray(4).map((item, i) => (
+                <p className="statistics__item__number">2.703</p>
+                {numberToArray(5).map((item, i) => (
                   <StarFilled
                     className="statistics__item__icon-fill career-role__general__star"
                     key={i}
                   />
                 ))}
-                {numberToArray(1).map((item, i) => (
+                {/* {numberToArray(1).map((item, i) => (
                   <StarTwoTone
                     className="career-role__general__star"
                     twoToneColor="#F57C00"
                     key={i}
                   />
-                ))}
+                ))} */}
                 <div style={{ height: "22px" }}></div>
               </div>
             </div>
@@ -164,18 +166,21 @@ const CareerRole = (props) => {
 
             {/* Tabs earn in role */}
             <div className="career-role__container">
+              <h2 className="career-role__skills__title">
+                What can I earn as a {domainData.domain.name}?
+              </h2>
               <Tabs
                 className="career-role__tabs"
                 defaultActiveKey="All"
                 style={{ "--sizeTab": domainData.provinceSummary.length + 1 }}
               >
                 <Tab eventKey="All" title="All">
-                  <CareerEarn 
-                  role={domainData.domain.name}
-                  min={domainData.salary.min}
-                  max={domainData.salary.max}
-                  total={domainData.totalJobsCount}
-                 />
+                  <CareerEarn
+                    role={domainData.domain.name}
+                    min={domainData.salary.min}
+                    max={domainData.salary.max}
+                    total={domainData.totalJobsCount}
+                  />
                 </Tab>
                 {domainData.provinceSummary.length &&
                   domainData.provinceSummary.map((item, index) => (
@@ -239,13 +244,16 @@ const CareerRole = (props) => {
             {/* Latest job  */}
             <div className="career-role__skills career-role__container">
               <h2 className="career-role__skills__title">Hottest Job Posts</h2>
-              <p className="career-role__skills__sub-title" style={{marginBottom: "40px"}}>
+              <p
+                className="career-role__skills__sub-title"
+                style={{ marginBottom: "40px" }}
+              >
                 We see {domainData.lastJobsPost.length} lastest job{" "}
                 {domainData.lastJobsPost.length > 1 ? "posts" : "post"} of{" "}
                 {domainData.domain.name}
               </p>
 
-              {domainData.lastJobsPost.length &&
+              {domainData.lastJobsPost.length ? (
                 domainData.lastJobsPost.map(
                   ({
                     job_post_id,
@@ -275,7 +283,10 @@ const CareerRole = (props) => {
                       />
                     );
                   }
-                )}
+                )
+              ) : (
+                <HasNoPost name={domainData.domain.name}/>
+              )}
             </div>
           </div>
         </>
