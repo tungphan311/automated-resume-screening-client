@@ -40,7 +40,6 @@ const ExploreWithSkills = ({ profile }) => {
   const [role, setRole] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
 
-
   const [resume, setResume] = useState(profile);
 
   const [searchRole, setSearchRole] = useState({
@@ -94,7 +93,11 @@ const ExploreWithSkills = ({ profile }) => {
   };
 
   const submitSearchSkill = (value) => {
-    console.log("submit", value);
+    const win = window.open(
+      `/career-advice/skill=${value.replace(" ", "-")}`,
+      "_blank"
+    );
+    win && win.focus();
   };
 
   const handleMatch = () => {
@@ -108,15 +111,6 @@ const ExploreWithSkills = ({ profile }) => {
       .catch(() => {
         // setIsLoading(false);
       });
-  };
-
-  const handleSearchRole = (e) => {
-    e.preventDefault();
-
-    let filter = { role: role.value };
-    const query = qs.stringify(filter, { skipNull: true });
-    const win = window.open(`/career-advice/${query}`, "_blank");
-    win.focus();
   };
 
   useEffect(() => {
@@ -133,29 +127,29 @@ const ExploreWithSkills = ({ profile }) => {
       });
     console.log("exploreSkillsData", exploreSkillsData && exploreSkillsData);
 
-    // Explore with search skill and domain
-    if (!domains.length) {
-      dispatch({ type: GET_JOB_DOMAIN });
-      setSearchRole((curState) => ({ ...curState, loadingSelect: true }));
-    } else {
-      setSearchRole((curState) => ({
-        ...curState,
-        jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
-      }));
-    }
+    // // Explore with search skill and domain
+    // if (!domains.length) {
+    //   dispatch({ type: GET_JOB_DOMAIN });
+    //   setSearchRole((curState) => ({ ...curState, loadingSelect: true }));
+    // } else {
+    //   setSearchRole((curState) => ({
+    //     ...curState,
+    //     jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
+    //   }));
+    // }
 
-    if (!skillsData.length) {
-      dispatch({ type: GET_JOB_SKILL });
-      setSearchSkill((curState) => ({ ...curState, loadingSkillSelect: true }));
-    } else {
-      setSearchSkill((curState) => ({
-        ...curState,
-        jobSkills: skillsData.map(({ id, name }) => ({
-          value: id,
-          label: name
-        }))
-      }));
-    }
+    // if (!skillsData.length) {
+    //   dispatch({ type: GET_JOB_SKILL });
+    //   setSearchSkill((curState) => ({ ...curState, loadingSkillSelect: true }));
+    // } else {
+    //   setSearchSkill((curState) => ({
+    //     ...curState,
+    //     jobSkills: skillsData.map(({ id, name }) => ({
+    //       value: id,
+    //       label: name
+    //     }))
+    //   }));
+    // }
   }, []);
 
   if (!fetch) {
@@ -307,56 +301,6 @@ const ExploreWithSkills = ({ profile }) => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="container">
-        <h2 className="explore__title-look">
-          Looking for a specific role or skill?
-        </h2>
-        <div className="explore__title-sub">
-          Find out more about a role or skill you’re interested in.
-        </div>
-        <div className="explore-look">
-          <h2 className="explore-look__title">
-            What role do you want to focus on?
-          </h2>
-
-          <form>
-            <div className="row">
-              <div className="col-md-8 explore-look__input">
-                <div className="dropdown pr-10" style={{ zIndex: 5 }}>
-                  <Select
-                    value={role}
-                    onChange={(value) => setRole(value)}
-                    options={jobDomains}
-                    placeholder="Enter a role..."
-                    menuPosition="fixed"
-                    isClearable={true}
-                  />
-                  <div className="input-icon">
-                    <SearchOutlined style={{ color: "#555" }} />
-                  </div>
-                </div>
-              </div>
-              <div className="col-6 col-md-4">
-                <button
-                  type="submit"
-                  className="btn btn-full-width explore-look__btn"
-                  style={{ fontWeight: 700 }}
-                  onClick={handleSearchRole}
-                >
-                  Explore
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div style={{ height: "80px" }}></div>
-
-        <SearchSuggest handleSubmit={submitSearchSkill} />
-
-        {/* <SearchSuggest/> */}
       </div>
     </div>
   );

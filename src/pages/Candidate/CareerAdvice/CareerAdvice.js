@@ -41,11 +41,24 @@ function CandidateCareerAdvice({ history }) {
 
   const selectFind = (key) => setState(key);
 
-  const subitSearch = () => {};
+  const subitSearch = (e) => {
+    e.preventDefault();
 
-  const submit = (value)=>{
-    console.log('submit', value)
-  }
+    let filter = {
+      id: role.value,
+      role: role.label.toLowerCase().replaceAll(" ", "-")
+    };
+    const query = qs.stringify(filter, { skipNull: true });
+    console.log(query);
+
+    window.location.replace(`/career-advice/${query}`);
+  };
+
+  const submit = (value) => {
+    window.location.replace(`/career-advice/skill=${value.replaceAll(" ", "-")}`);
+  };
+
+  console.log("resume", !isEmpty(resume));
 
   useEffect(() => {
     setState("explore");
@@ -106,7 +119,21 @@ function CandidateCareerAdvice({ history }) {
         <Tab eventKey="explore" title="Explore what I can do with my skills">
           {state === "explore" &&
             (token ? (
-              !isEmpty(resume) && <ExploreWithSkills profile={resume} />
+              !isEmpty(resume) ? (
+                <ExploreWithSkills profile={resume} />
+              ) : (
+                <div className="container">
+                  <div className="explore__content">
+                    <h2 className="explore__content__title">
+                      Your career so far
+                    </h2>
+                    <div className="explore__content__key">
+                      <p>Key skills</p>
+                    </div>
+                    <SignInDirect isNeedCV={true} />
+                  </div>
+                </div>
+              )
             ) : (
               <div className="explore">
                 <div className="explore__title">
@@ -132,90 +159,59 @@ function CandidateCareerAdvice({ history }) {
                     <SignInDirect />
                   </div>
                 </div>
-
-                <div className="container">
-                  <h2 className="explore__title-look">
-                    Looking for a specific role or skill?
-                  </h2>
-                  <div className="explore__title-sub">
-                    Find out more about a role or skill you’re interested in.
-                  </div>
-                  <div className="explore-look">
-                    <h2 className="explore-look__title">
-                      What skill do you want to focus on?
-                    </h2>
-
-                    <form>
-                      <div className="row">
-                        <div className="col-md-8 explore-look__input">
-                          <div className="dropdown pr-10" style={{ zIndex: 5 }}>
-                            <Select
-                              value={role}
-                              onChange={(value) => setRole(value)}
-                              options={jobDomains}
-                              placeholder="Địa điểm làm việc"
-                              menuPosition="fixed"
-                              isClearable={true}
-                            />
-                            <div className="input-icon">
-                              <SearchOutlined style={{ color: "#555" }} />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-6 col-md-4">
-                          <button
-                            type="submit"
-                            className="btn btn-full-width explore-look__btn"
-                            style={{ fontWeight: 700 }}
-                            onClick={subitSearch}
-                          >
-                            Explore
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-
-              
-                    {/* <form>
-                      <div className="row">
-                        <div className="col-md-8 explore-look__input">
-                          <div className="dropdown pr-10" style={{ zIndex: 5 }}>
-                            <Select
-                              value={skill}
-                              onChange={(value) => setSkill(value)}
-                              options={jobSkills}
-                              placeholder="Địa điểm làm việc"
-                              menuPosition="fixed"
-                              isClearable={true}
-                            />
-                            <div className="input-icon">
-                              <SearchOutlined style={{ color: "#555" }} />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-6 col-md-4">
-                          <button
-                            type="submit"
-                            className="btn btn-full-width explore-look__btn"
-                            style={{ fontWeight: 700 }}
-                            onClick={submit1}
-                          >
-                            Explore
-                          </button>
-                        </div>
-                      </div>
-                    </form> */}
-                  </div>
-                  <div style={{ height: "80px" }}></div>
-                  {/* <Explore handleSubmit={submit1} history={history} /> */}
-                <SearchSuggest handleSubmit={submit}/>
-
-                </div>
               </div>
             ))}
+
+          <div className="container">
+            <h2 className="explore__title-look">
+              Looking for a specific role or skill?
+            </h2>
+            <div className="explore__title-sub">
+              Find out more about a role or skill you’re interested in.
+            </div>
+            <div className="explore-look">
+              <h2 className="explore-look__title">
+                What role would you like to get into?
+              </h2>
+
+              <form>
+                <div className="row">
+                  <div className="col-md-8 explore-look__input">
+                    <div className="dropdown pr-10" style={{ zIndex: 5 }}>
+                      <Select
+                        value={role}
+                        onChange={(value) => setRole(value)}
+                        options={jobDomains}
+                        placeholder="Enter a role..."
+                        menuPosition="fixed"
+                        isClearable={true}
+                      />
+                      <div className="input-icon">
+                        <SearchOutlined style={{ color: "#555" }} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6 col-md-4">
+                    <button
+                      className="btn btn-full-width explore-look__btn"
+                      style={{ fontWeight: 700 }}
+                      onClick={subitSearch}
+                    >
+                      Explore
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div style={{ height: "80px" }}></div>
+            <SearchSuggest handleSubmit={submit} />
+          </div>
         </Tab>
         <Tab eventKey="find" title="Find the right job for me">
-          {state === "find" && <FindJob history={history} />}
+          {state === "find" && (
+            <FindJob history={history} hasResume={!isEmpty(resume)} />
+          )}
         </Tab>
       </Tabs>
     </div>

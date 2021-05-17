@@ -10,6 +10,7 @@ import { toastErr, toast } from "utils/index";
 import Loading from "components/Loading/Loading";
 
 import "./SearchSuggest.scss";
+import { getValues } from "../../../node_modules/jest-validate/build/condition";
 
 function SearchSuggest({ handleSubmit }) {
   const dispatch = useDispatch();
@@ -83,6 +84,10 @@ function SearchSuggest({ handleSubmit }) {
     );
   }
 
+  const getValue = () => {
+    handleSubmit(value);
+  };
+
   useEffect(() => {
     if (!skillsData.length) {
       dispatch({ type: GET_JOB_SKILL });
@@ -103,8 +108,7 @@ function SearchSuggest({ handleSubmit }) {
       };
 
       fetchSkills();
-    }
-    else{
+    } else {
       setSkills(skillsData);
     }
   }, []);
@@ -140,7 +144,7 @@ function SearchSuggest({ handleSubmit }) {
           <button
             className="btn btn-full-width explore-look__btn"
             style={{ fontWeight: 700 }}
-            onClick={handleSubmit(value)}
+            onClick={getValue}
           >
             Explore
           </button>

@@ -1,0 +1,111 @@
+.my-profile {
+  &__candidate {
+    width: 100%;
+    background-color: #3f51b5;
+    padding: 24px;
+    padding-top: 32px;
+
+    &__name {
+      color: $c-white;
+      font-size: 42px;
+      line-height: 44px;
+    }
+
+    &__email,
+    &__phone {
+      font-size: 16px;
+      color: $c-white;
+    }
+
+    &__button {
+      box-shadow: inset 0 0 0 2px #fff;
+      border-radius: 2px;
+      border: 1px solid $c-alabaster;
+      padding: 10px 20px;
+      color: $c-white;
+      font-size: 16px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+
+      &:hover {
+        background-color: #5c6bc0;
+      }
+    }
+
+    &__edit {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      background-color: #fff;
+      height: 300px;
+      width: 300px;
+    }
+  }
+
+  &__resume {
+    margin-top: 25px;
+
+    &__upload {
+      align-items: center;
+      background-color: #f1f6fc;
+      padding: 32px 60px;
+
+      &__left {
+
+        &__btn-gr {
+          align-items: center;
+          margin-left: 0;
+
+          &__start {
+            border-radius: 2px;
+            background: #2765cf;
+            padding: 10px 20px;
+            color: $c-alabaster;
+            font-size: 16px;
+
+            &:hover {
+              box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.7);
+            }
+          }
+
+          &__or{
+            font-size: 16px;
+            margin-left: 15px;
+            color: #316DD2;
+            cursor: pointer;
+            padding: 10px 20px;
+
+            &:hover{
+              background-color: #E3ECF9;
+            }
+          }
+
+          &__or {
+          }
+        }
+      }
+
+      &__right {
+        margin-left: 50px;
+        img {
+          width: 156px;
+        }
+      }
+    }
+  }
+
+  .profile-section {
+    margin-top: 25px;
+    padding: 32px 24px;
+    background-color: #fff;
+  }
+
+  .profile-title {
+    font-size: 21px;
+    line-height: 28px;
+    color: #1c1c1c;
+    font-weight: 500;
+    padding-bottom: 32px;
+  }
+}

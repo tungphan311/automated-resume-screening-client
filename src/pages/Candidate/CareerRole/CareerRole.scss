@@ -43,7 +43,7 @@
   &__back {
     align-items: center;
     color: #1c1c1c;
-    padding: 20px 0;
+    padding: 30px 0;
     width: fit-content;
     margin-left: 0px;
 
@@ -159,6 +159,7 @@
     border: 1px solid rgb(221, 227, 234);
     border-radius: 50px;
     margin-bottom: 40px;
+    margin-top: 40px;
 
     .nav-item {
       min-height: 50px;
@@ -207,7 +208,7 @@
   }
 
   &__skills {
-    &__title{
+    &__title {
       text-align: center;
       font-weight: 600;
     }
@@ -219,7 +220,7 @@
       margin: 0 auto;
       margin-top: 40px;
       position: relative;
-      
+
       &::before {
         content: "";
         position: absolute;
@@ -231,15 +232,15 @@
       }
     }
 
-    &__container{
+    &__container {
       display: grid;
       grid-gap: 20px;
-  
+
       grid-template-columns: repeat(3, 1fr);
-      
+
       margin-top: 50px;
 
-      &__item{
+      &__item {
         color: #1c1c1c;
         width: 100%;
         min-height: 40px;
@@ -256,8 +257,7 @@
     }
   }
 
-  &__skill-item{
-
+  &__skill-item {
   }
 }
 
@@ -274,10 +274,33 @@
     justify-content: center;
     align-items: center;
 
-    &__icon{
+    &__icon {
       color: rgb(0, 170, 178);
       margin-right: 10px;
       font-size: 28px;
+    }
+  }
+}
+
+.no-job {
+  color: rgb(149, 86, 183);
+  background-color: rgba(149, 86, 183, 0.05);
+  padding: 40px 30px 50px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 26px;
+
+  &__title {
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+
+    &__link {
+      color: #9856b7;
+
+      &:hover {
+        font-weight: 700;
+      }
     }
   }
 }

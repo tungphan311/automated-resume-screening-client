@@ -1,19 +1,14 @@
-import JobSearch from "components/Forms/JobSearch/JobSearch";
-import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
-import { getFormValues } from "redux-form";
-import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
-import { Tabs, Tab } from "react-bootstrap";
-
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import "./SignInDirect.scss";
 import { Link } from "react-router-dom";
 
-const SignInDirect = () => {
+const SignInDirect = ({ isNeedCV = false }) => {
   return (
     <div className="sign-direct">
       <h2 className="sign-direct__title">
-        Sign in or register a Profile to see tailored matches
+        {isNeedCV
+          ? "Create a Profile to see tailored matches"
+          : " Sign in or register a Profile to see tailored matches"}
       </h2>
 
       <ul className="sign-direct__list">
@@ -33,9 +28,29 @@ const SignInDirect = () => {
       </ul>
 
       <div className="sign-direct__button">
-        <Link to="/sign-in" className="sign-direct__button__sign-in">Sign In</Link>
-        <p>or</p>
-        <Link to="/sign-up" className="sign-direct__button__register">Register</Link>
+        {isNeedCV ? (
+          <>
+            {" "}
+            <Link to="/sign-in" className="sign-direct__button__sign-in">
+              Get started
+            </Link>
+            <p>or</p>
+            <Link to="/sign-up" className="sign-direct__button__register">
+              Upload your resume
+            </Link>{" "}
+          </>
+        ) : (
+          <>
+            {" "}
+            <Link to="/sign-in" className="sign-direct__button__sign-in">
+              Sign In
+            </Link>
+            <p>or</p>
+            <Link to="/sign-up" className="sign-direct__button__register">
+              Register
+            </Link>{" "}
+          </>
+        )}
       </div>
 
       <div className="sign-direct__img">
