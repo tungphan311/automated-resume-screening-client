@@ -29,23 +29,13 @@ function SkillForm({ curStep, handleChangeStep }) {
   const [skills, setSkills] = useState(getIndexArray(skill));
   const [value, setValue] = useState("");
 
-  const onChange = (key, value) => {
-    const skill = skills.find((ele) => ele.key === key);
-    let newSkills = skills.filter((ele) => ele.key !== key);
-    const newSkill = { ...skill, value };
-    newSkills.push(newSkill);
-    newSkills.sort((a, b) => a.key - b.key);
-
-    setSkills(newSkills);
-  };
-
   const onDelete = (key) => {
-    const newSkills = skills.filter((ele) => ele.key !== key);
+    const newSkills = skills.length && skills.filter((ele) => ele.key !== key);
     setSkills(newSkills);
   };
 
   const onAddSkill = () => {
-    const key = skills[skills.length - 1].key + 1;
+    const key = skills.length && skills[skills.length - 1].key + 1;
     const newSkills = [...skills, { key, value }];
     setSkills(newSkills);
     setValue("");
@@ -113,7 +103,6 @@ function SkillForm({ curStep, handleChangeStep }) {
                     skill={value}
                     key={key}
                     id={key}
-                    onChange={onChange}
                     onDelete={onDelete}
                   />
                 ))}
@@ -142,11 +131,6 @@ function SkillForm({ curStep, handleChangeStep }) {
 export default SkillForm;
 
 const Skill = ({ id, skill, onChange, onDelete }) => {
-  const handleChange = (evt) => {
-    const value = evt.target.value;
-
-    onChange(id, value);
-  };
 
   return (
     <div>
@@ -164,7 +148,6 @@ const Skill = ({ id, skill, onChange, onDelete }) => {
                 className="content-editable"
                 html={skill} // innerHTML of the editable div
                 disabled={false} // use true to disable edition
-                onChange={handleChange} // handle innerHTML change
               />
             </div>
           </div>

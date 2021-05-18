@@ -11,16 +11,12 @@ import "components/SearchSuggest/SearchSuggest.scss";
 
 import MatchSkill from "components/MatchSkill/MatchSkill";
 import { getIndexArray } from "utils/index";
-import qs from "query-string";
 import Loading from "components/Loading/Loading";
 
-import { SearchOutlined } from "@ant-design/icons";
-import Select from "react-select";
 import { GET_JOB_DOMAIN, GET_JOB_SKILL } from "state/reducers/jobDomainReducer";
 import history from "state/history";
 import { exploreSkillsProAction } from "state/actions/candidateJobAction";
 import ContentLoader from "react-content-loader";
-import SearchSuggest from "components/SearchSuggest/SearchSuggest";
 import AddSkillSuggest from "components/AddSkillSuggest/AddSkillSuggest";
 
 const ExploreWithSkills = ({ profile }) => {
@@ -37,7 +33,6 @@ const ExploreWithSkills = ({ profile }) => {
 
   const [value, setValue] = useState("");
 
-  const [role, setRole] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
 
   const [resume, setResume] = useState(profile);
@@ -60,16 +55,6 @@ const ExploreWithSkills = ({ profile }) => {
 
   const { loadingSelect, fetch, jobDomains } = searchRole;
   const { loadingSkillSelect, fetchSkill, jobSkills } = searchSkill;
-
-  const onChangeSkills = (key, value) => {
-    const skill = skills.find((ele) => ele.key === key);
-    let newSkills = skills.filter((ele) => ele.key !== key);
-    const newSkill = { ...skill, value };
-    newSkills.push(newSkill);
-    newSkills.sort((a, b) => a.key - b.key);
-
-    setSkills(newSkills);
-  };
 
   const onDelete = (key) => {
     const newSkills = skills.filter((ele) => ele.key !== key);
@@ -126,30 +111,6 @@ const ExploreWithSkills = ({ profile }) => {
         setLoadContent(true);
       });
     console.log("exploreSkillsData", exploreSkillsData && exploreSkillsData);
-
-    // // Explore with search skill and domain
-    // if (!domains.length) {
-    //   dispatch({ type: GET_JOB_DOMAIN });
-    //   setSearchRole((curState) => ({ ...curState, loadingSelect: true }));
-    // } else {
-    //   setSearchRole((curState) => ({
-    //     ...curState,
-    //     jobDomains: domains.map(({ id, name }) => ({ value: id, label: name }))
-    //   }));
-    // }
-
-    // if (!skillsData.length) {
-    //   dispatch({ type: GET_JOB_SKILL });
-    //   setSearchSkill((curState) => ({ ...curState, loadingSkillSelect: true }));
-    // } else {
-    //   setSearchSkill((curState) => ({
-    //     ...curState,
-    //     jobSkills: skillsData.map(({ id, name }) => ({
-    //       value: id,
-    //       label: name
-    //     }))
-    //   }));
-    // }
   }, []);
 
   if (!fetch) {
@@ -212,7 +173,6 @@ const ExploreWithSkills = ({ profile }) => {
                     skill={value}
                     key={key}
                     id={key}
-                    onChange={onChangeSkills}
                     onDelete={onDelete}
                   />
                 ))}
@@ -221,13 +181,6 @@ const ExploreWithSkills = ({ profile }) => {
             <div className="inline-skill-container is-compact explore__content__skills__add">
               <div className="inline-skill-input">
                 <div className="TextInput-wrapper">
-                  {/* <Input
-                    className="explore__content__skills__add__input"
-                    placeholder="Add skill"
-                    size="large"
-                    value={value}
-                    onChange={(evt) => setValue(evt.target.value)}
-                  /> */}
                   <AddSkillSuggest handleAdd={getNewSkill} isAdd={isAdd} />
                 </div>
               </div>
@@ -309,11 +262,6 @@ const ExploreWithSkills = ({ profile }) => {
 export default ExploreWithSkills;
 
 const Skill = ({ id, skill, onChange, onDelete }) => {
-  const handleChange = (evt) => {
-    const value = evt.target.value;
-
-    onChange(id, value);
-  };
 
   return (
     <div className="chip__item">
@@ -324,7 +272,6 @@ const Skill = ({ id, skill, onChange, onDelete }) => {
               className="content-editable chip__item__content"
               html={skill} // innerHTML of the editable div
               disabled={true} // use true to disable edition
-              onChange={handleChange} // handle innerHTML change
             />
           </div>
           <div className="float-right chip__item__delete">

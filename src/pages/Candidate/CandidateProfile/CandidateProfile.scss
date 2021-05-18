@@ -1,4 +1,6 @@
 .my-profile {
+  margin-bottom: 40px;
+
   &__candidate {
     width: 100%;
     background-color: #3f51b5;
@@ -50,12 +52,14 @@
       align-items: center;
       background-color: #f1f6fc;
       padding: 32px 60px;
+      margin-left: 0;
+      margin-right: 0;
 
       &__left {
-
         &__btn-gr {
           align-items: center;
           margin-left: 0;
+          margin-top: 32px;
 
           &__start {
             border-radius: 2px;
@@ -69,15 +73,15 @@
             }
           }
 
-          &__or{
+          &__or {
             font-size: 16px;
             margin-left: 15px;
-            color: #316DD2;
+            color: #316dd2;
             cursor: pointer;
             padding: 10px 20px;
 
-            &:hover{
-              background-color: #E3ECF9;
+            &:hover {
+              background-color: #e3ecf9;
             }
           }
 
@@ -93,19 +97,239 @@
         }
       }
     }
+
+    &__education {
+      margin-bottom: 50px;
+
+      &__content {
+        font-size: 16px;
+        // max-height: 350px;
+        // overflow: hidden;
+      }
+    }
+
+    &__skills {
+      margin-top: 25px;
+      padding: 32px 20px 32px 60px;
+      background-color: #fff;
+
+      &__intro {
+        font-size: 17px;
+        padding: 20px 0;
+        color: rgb(28, 28, 28);
+        line-height: 24px;
+        font-weight: 400;
+      }
+
+      &__add {
+        padding-bottom: 10px;
+        margin-top: 10px;
+        display: none;
+
+        &__sub {
+          margin-top: 30px;
+          font-size: 14px;
+          color: rgba(28, 28, 28, 0.6313725490196078);
+        }
+
+        &__input,
+        &__btn {
+          // border-radius: 40px !important;
+        }
+
+        &__input {
+          background-color: rgb(247, 248, 250);
+          padding-left: 20px;
+        }
+
+        &__btn {
+          height: 43px;
+        }
+      }
+
+      &__match {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding-bottom: 50px;
+
+        button {
+          width: 200px;
+        }
+      }
+    }
+
+    &__info {
+      &__tag {
+        margin-top: 32px;
+        background: #ebebeb;
+        border-radius: 2px;
+        padding: 2px 8px;
+        width: fit-content;
+        font-size: 12px;
+      }
+
+      &__name {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        padding-top: 12px;
+
+        span {
+          font-size: 20px;
+          margin-left: 15px;
+        }
+      }
+
+      &__days {
+        color: rgba(28, 28, 28, 0.6313725490196078);
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+        padding-top: 5px;
+      }
+    }
+
+    &__strength {
+      margin-top: 25px;
+      background-color: #fff;
+      position: sticky;
+      top: 20px;
+      padding: 32px;
+
+      &__group{
+        margin: 0;
+        align-items: flex-end;
+      }
+
+      &__subtitle {
+        color: rgba(28, 28, 28, 0.63);
+        font-size: 15px;
+        line-height: 24px;
+      }
+
+      &__weight{
+        color: #1c1c1c;
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 700;
+      }
+
+      &__last{
+        color: #1c1c1c;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+      }
+    }
   }
 
   .profile-section {
     margin-top: 25px;
-    padding: 32px 24px;
+    padding: 32px 60px;
     background-color: #fff;
   }
 
   .profile-title {
-    font-size: 21px;
+    font-size: 23px;
     line-height: 28px;
     color: #1c1c1c;
     font-weight: 500;
-    padding-bottom: 32px;
+  }
+
+  .profile-button {
+    box-shadow: inset 0 0 0 2px #2765cf;
+    border-radius: 2px;
+    color: #2865d0;
+    background-color: $c-white;
+    padding: 10px 20px;
+    font-size: 16px;
+
+    &:hover {
+      background-color: #f0f4fc;
+    }
+  }
+
+  .profile-button-cancel {
+    color: #3672d9;
+    font-size: 16px;
+  }
+
+  .save-btn {
+    background-color: #2865d0;
+    color: $c-white;
+    margin-right: 10px;
+
+    &:hover {
+      background-color: #1050be;
+    }
+  }
+
+  .profile-button-gr {
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .profile-gradient {
+    // position: absolute;
+    height: 24px;
+    width: 100%;
+    // bottom: 3px;
+    background: linear-gradient(hsla(0, 0%, 100%, 0), #fff);
+  }
+
+  .edit-mode-container {
+    border-left: 2px solid #2765cf;
+    box-shadow: 0 5px 12px 0 rgba(28, 28, 28, 0.2), 0 2px 2px -2px rgba(28, 28, 28, 0.1),
+      0 4px 4px -4px rgba(28, 28, 28, 0.2);
+  }
+
+  .edit-mode {
+    div {
+      position: relative;
+      max-height: 480px;
+      overflow: auto;
+    }
+  }
+
+  .ant-input-number {
+    max-width: 70px;
+  }
+
+  .ant-input-number-input {
+    text-align: center;
+    font-size: 16px;
+  }
+}
+
+.chip-skill {
+  display: flex;
+  flex-wrap: wrap;
+
+  .skill-editable {
+    white-space: nowrap;
+  }
+
+  &__item {
+    color: #1c1c1c;
+    margin-right: 10px !important;
+    margin-bottom: 12px;
+    padding: 4px 4px 4px 12px;
+
+    border-radius: 40px;
+    line-height: 20px;
+    background-color: #ebebeb;
+    text-transform: capitalize;
+
+    &__content {
+      margin-right: 10px;
+    }
+
+    &__delete {
+      color: #7a7e85;
+      :hover {
+        color: #085ff7;
+      }
+    }
   }
 }
