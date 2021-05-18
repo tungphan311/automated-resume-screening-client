@@ -4,8 +4,8 @@ import { SearchOutlined, CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import qs from "query-string";
 import AutoSuggest from "react-autosuggest";
 
-import {  useDispatch, useSelector } from "react-redux";
-import {  getJobSkill } from "services/hrJobServices";
+import { useDispatch, useSelector } from "react-redux";
+import { getJobSkill } from "services/hrJobServices";
 import { GET_JOB_SKILL } from "state/reducers/jobDomainReducer";
 import { toastErr, toast } from "utils/index";
 import Loading from "components/Loading/Loading";
@@ -13,7 +13,7 @@ import { Button } from "antd";
 
 import "./AddSkillSuggest.scss";
 
-function AddSkillSuggest({ handleAdd, isAdd }) {
+function AddSkillSuggest({ handleAdd, isAdd, isCorner = false }) {
   const dispatch = useDispatch();
 
   const skillsData = useSelector((state) => state.jobDomain.skills);
@@ -84,8 +84,8 @@ function AddSkillSuggest({ handleAdd, isAdd }) {
     );
   }
 
-  console.log('isAdd',isAdd)
-  if(isAdd){
+  console.log("isAdd", isAdd);
+  if (isAdd) {
     value && setValue("");
   }
 
@@ -119,7 +119,10 @@ function AddSkillSuggest({ handleAdd, isAdd }) {
     >
       <Loading loading={loading} />
 
-      <div className="col-lg add-suggest__input row">
+      <div
+        className="col-lg add-suggest__input row"
+        style={{ "--border": isCorner ? "0px" : "40px" }}
+      >
         <div className="input-icon">
           <SearchOutlined className="add-suggest__search" />
         </div>

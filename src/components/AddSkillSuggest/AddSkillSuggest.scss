@@ -76,7 +76,7 @@
   .react-autosuggest__container {
     position: relative;
     width: 100%;
-    border-radius: 40px;
+    border-radius: var(--border);
     width: 100%;
 
   }
@@ -92,7 +92,8 @@
     border: 1px solid #aaa;
     padding-left: 50px;
     background-color: rgb(247, 248, 250);
-    border-radius: 40px;
+    border-radius: var(--border);
+    text-transform: capitalize;
   }
 
   .react-autosuggest__input--focused {
