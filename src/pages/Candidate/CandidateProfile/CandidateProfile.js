@@ -5,7 +5,7 @@ import FormData from "form-data";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadCVAction } from "state/actions/index";
 import Loading from "components/Loading/Loading";
-import { Button, Input, InputNumber } from "antd";
+import { Button, Input, InputNumber, Form } from "antd";
 
 import {
   CloseOutlined,
@@ -14,7 +14,8 @@ import {
   DownloadOutlined,
   EyeOutlined,
   DeleteOutlined,
-  ProfileTwoTone
+  ProfileTwoTone,
+  ProfileOutlined
 } from "@ant-design/icons";
 
 import isEmpty from "lodash/isEmpty";
@@ -56,12 +57,37 @@ function MyProfile() {
   const [exForm, setExForm] = useState(false);
   const [skillForm, setSkillForm] = useState(false);
   const [resumeForm, setResumeForm] = useState(false);
+  const [profileForm, setProfileForm] = useState(false);
 
   // Handle chips
   const [isAdd, setIsAdd] = useState(false);
   const [value, setValue] = useState("");
   const [skills, setSkills] = useState();
   const [defaultSkills, setDefaultSkills] = useState();
+
+  const toggleEduForm = () => {
+    setEduForm(true);
+    eduFormRef.current.scrollIntoView();
+  };
+
+  const toggleExForm = () => {
+    setExForm(true);
+    exFormRef.current.scrollIntoView();
+  };
+
+  const toggleSkillForm = () => {
+    setSkillForm(true);
+    skillFormRef.current.scrollIntoView();
+  };
+
+  const toggleResumeForm = () => {
+    setResumeForm(true);
+    resumeFormRef.current.scrollIntoView();
+  };
+
+  const toggleProFormEdit = () => {
+    setProfileForm(true);
+  };
 
   const onDelete = (key) => {
     const newSkills =
@@ -111,26 +137,6 @@ function MyProfile() {
 
       // await uploadFile(formData);
     }
-  };
-
-  const toggleEduForm = () => {
-    setEduForm(true);
-    eduFormRef.current.scrollIntoView();
-  };
-
-  const toggleExForm = () => {
-    setExForm(true);
-    exFormRef.current.scrollIntoView();
-  };
-
-  const toggleSkillForm = () => {
-    setSkillForm(true);
-    skillFormRef.current.scrollIntoView();
-  };
-
-  const toggleResumeForm = () => {
-    setResumeForm(true);
-    resumeFormRef.current.scrollIntoView();
   };
 
   const handleChangeResume = (name, value) => {
@@ -184,13 +190,70 @@ function MyProfile() {
               {profile.email}
             </span>
             <p className="my-profile__candidate__phone"> {profile.phone}</p>
-            <button className="my-profile__candidate__button">
+            <button
+              onClick={toggleProFormEdit}
+              className="my-profile__candidate__button"
+            >
               Edit personal details
             </button>
 
-            {/* <div className="my-profile__candidate__edit">
-              <h3>Edit personal details</h3>
-            </div> */}
+            {profileForm && (
+              <div className="col-sm-8 my-profile__candidate__edit edit-mode-container">
+                <h3>Edit personal details</h3>
+                <Form
+                  layout="vertical"
+                  name="nest-messages"
+                  // validateMessages={validateMessages}
+                  // onFinish={onFinish}
+                  className="candidate-login__container__left__form"
+                >
+                  {/* Email */}
+                  <Form.Item
+                    label="Email address"
+                    name={["user", "email"]}
+                    rules={[{ type: "email", required: true }]}
+                  >
+                    <Input
+                      className="candidate-login__container__left__form__input"
+                      placeholder="Enter email..."
+                    />
+                  </Form.Item>
+
+                  {/* Password  */}
+                  <Form.Item
+                    label="Password"
+                    name={["user", "password"]}
+                    rules={[{ required: true }]}
+                  >
+                    <Input.Password
+                      className="candidate-login__container__left__form__input"
+                      placeholder="Enter password..."
+                    />
+                  </Form.Item>
+
+                  {/* Button Login  */}
+                  {/* <button
+                    htmlType="submit"
+                    className="candidate-login__container__left__form__btn"
+                  > */}
+                  {/* {isLoading && <div className="dashed-loading"></div>} */}
+                  <div className="profile-button-gr">
+                    <button
+                      className="save-btn profile-button"
+                      onClick={toggleProFormEdit}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="profile-button-cancel"
+                      onClick={() => setProfileForm(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </Form>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -429,59 +492,117 @@ function MyProfile() {
                 {/* Resume file*/}
                 <div
                   ref={resumeFormRef}
-                  className="my-profile__resume__info profile-section"
+                  className={
+                    "my-profile__resume__info profile-section " +
+                    (resumeForm && "edit-mode-container")
+                  }
                 >
                   <h4 className="profile-title" style={{ fontWeight: "700" }}>
                     Resume
                   </h4>
 
-                  <img
-                    className=" cv-item__img"
-                    src="/assets/img/CV-default.png"
-                    alt="Ảnh CV"
-                  />
+                  {/* Resume exist */}
+                  {!isEmpty(profile) ? (
+                    <>
+                      <div className="my-profile__resume__info__row">
+                        <img
+                          className="cv-item__img"
+                          src="/assets/img/CV-default.png"
+                          alt="Ảnh CV"
+                        />
 
-                  <div className="my-profile__resume__info__tag">Default</div>
-                  <a
-                    href={resume.download_url}
-                    className="my-profile__resume__info__name"
-                  >
-                    {resume.resume_filename +
-                      "." +
-                      resume.resume_file_extension}
-                    <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
-                  </a>
-                  <div className="my-profile__resume__info__days">
-                    Added 2 days ago
-                  </div>
+                        <div className="my-profile__resume__info__row__left">
+                          <div className="my-profile__resume__info__tag">
+                            Default
+                          </div>
 
-                  {resumeForm && (
-                    <div className="row cv-item__info__bottom ">
-                      <button
-                        type="button"
-                        className="cv-item__info__bottom__btn btn btn-outline-secondary"
-                        onClick={() => window.open(resume.store_url, "_blank")}
+                          <a
+                            href={resume.download_url}
+                            className="my-profile__resume__info__name"
+                          >
+                            {resume.resume_filename +
+                              "." +
+                              resume.resume_file_extension}
+                            <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
+                          </a>
+                          <div className="my-profile__resume__info__days">
+                            Added 2 days ago
+                          </div>
+                        </div>
+                      </div>
+
+                      {resumeForm && (
+                        <>
+                          <div className="row cv-item__info__bottom ">
+                            <button
+                              type="button"
+                              className="cv-item__info__bottom__btn btn btn-outline-secondary"
+                              onClick={() =>
+                                window.open(resume.store_url, "_blank")
+                              }
+                            >
+                              <EyeOutlined className="cv-item__info__bottom__btn__icon" />
+                              Xem
+                            </button>
+
+                            <a
+                              href={resume.download_url}
+                              className="cv-item__info__bottom__btn btn btn-sm btn-outline-secondary "
+                            >
+                              <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
+                              Tải xuống
+                            </a>
+
+                            <button
+                              type="button"
+                              className="cv-item__info__bottom__btn btn btn-sm  btn-outline-secondary"
+                              // onClick={handleDelete}
+                            >
+                              <DeleteOutlined className="cv-item__info__bottom__btn__icon" />
+                              Xóa
+                            </button>
+                          </div>
+
+                          {/* Handle upload resume  */}
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <div className="my-profile__resume__upload-file">
+                      <p className="my-profile__resume__upload-file__note">
+                        Add 1 resume. Accepted file types: Microsoft Word (.doc
+                        or .docx) or Adobe PDF (.pdf)
+                      </p>
+                      <div
+                        className="my-profile__resume__upload-file__box"
+                        onClick={handleSelectFile}
                       >
-                        <EyeOutlined className="cv-item__info__bottom__btn__icon" />
-                        Xem
-                      </button>
-
-                      <a
-                        href={resume.download_url}
-                        className="cv-item__info__bottom__btn btn btn-sm btn-outline-secondary "
-                      >
-                        <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
-                        Tải xuống
-                      </a>
-
-                      <button
-                        type="button"
-                        className="cv-item__info__bottom__btn btn btn-sm  btn-outline-secondary"
-                        // onClick={handleDelete}
-                      >
-                        <DeleteOutlined className="cv-item__info__bottom__btn__icon" />
-                        Xóa
-                      </button>
+                        <ProfileOutlined
+                          style={{
+                            fontSize: "50px",
+                            color: "#707070"
+                          }}
+                        />
+                        <span className="my-profile__resume__upload-file__box__add">
+                          To add a resume, click here or simply browse for a
+                          file.
+                        </span>
+                        <Button
+                          onClick={handleSelectFile}
+                          icon={<UploadOutlined />}
+                          className="my-profile__resume__upload-file__box__btn"
+                        >
+                          Upload
+                          <input
+                            type="file"
+                            name="CV"
+                            className="d-none"
+                            accept=".doc,.docx,.pdf"
+                            onChange={handleInputChange}
+                            ref={inputRef}
+                          />
+                        </Button>
+                      </div>
                     </div>
                   )}
 

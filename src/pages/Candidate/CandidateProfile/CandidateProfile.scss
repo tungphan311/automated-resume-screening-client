@@ -40,8 +40,9 @@
       left: 0;
 
       background-color: #fff;
-      height: 300px;
-      width: 300px;
+      padding: 32px 60px;
+      max-width: 64.666667%;
+      left: 12px;
     }
   }
 
@@ -161,12 +162,26 @@
 
     &__info {
       &__tag {
-        margin-top: 32px;
         background: #ebebeb;
         border-radius: 2px;
         padding: 2px 8px;
         width: fit-content;
         font-size: 12px;
+      }
+
+      &__row {
+        display: flex;
+        margin-top: 32px;
+        align-items: center;
+
+        img {
+          width: 80px;
+          height: 88px;
+        }
+
+        &__left {
+          margin-left: 30px;
+        }
       }
 
       &__name {
@@ -197,7 +212,7 @@
       top: 20px;
       padding: 32px;
 
-      &__group{
+      &__group {
         margin: 0;
         align-items: flex-end;
       }
@@ -208,18 +223,52 @@
         line-height: 24px;
       }
 
-      &__weight{
+      &__weight {
         color: #1c1c1c;
         font-size: 16px;
         line-height: 24px;
         font-weight: 700;
       }
 
-      &__last{
+      &__last {
         color: #1c1c1c;
         font-size: 14px;
         line-height: 20px;
         font-weight: 400;
+      }
+    }
+
+    &__upload-file {
+      &__note {
+        padding-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      &__box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        height: 240px;
+        border: 2px dashed #a9c1eb;
+        justify-content: center;
+        font-size: 16px;
+        cursor: pointer;
+
+        &__add {
+          padding: 20px 0;
+          color: #989898;
+          text-align: center;
+        }
+
+        &__btn {
+          height: 48px;
+          background-color: #3672d9;
+          padding: 10px 20px;
+          border-radius: 2px;
+          color: $c-alabaster;
+          font-size: 16px;
+        }
       }
     }
   }
