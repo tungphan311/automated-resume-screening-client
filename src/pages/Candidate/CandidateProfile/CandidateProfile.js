@@ -295,7 +295,7 @@ function MyProfile() {
                     (eduForm && "edit-mode-container")
                   }
                 >
-                  <h4 className="profile-title" style={{ fontWeight: "700" }}>
+                  <h4 className="profile-title" style={{ fontWeight: "700", marginBottom: '32px' }}>
                     Education
                   </h4>
                   <div
@@ -415,7 +415,7 @@ function MyProfile() {
                     (skillForm && "edit-mode-container")
                   }
                 >
-                  <h4 className="profile-title" style={{ fontWeight: "700" }}>
+                  <h4 className="profile-title" style={{ fontWeight: "700", marginBottom: '32px' }}>
                     Skills
                   </h4>
                   <div className="chip" style={{ marginTop: "20px" }}>
@@ -542,7 +542,7 @@ function MyProfile() {
                               }
                             >
                               <EyeOutlined className="cv-item__info__bottom__btn__icon" />
-                              Xem
+                              Watch online
                             </button>
 
                             <a
@@ -550,7 +550,7 @@ function MyProfile() {
                               className="cv-item__info__bottom__btn btn btn-sm btn-outline-secondary "
                             >
                               <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
-                              Tải xuống
+                              Download
                             </a>
 
                             <button
@@ -559,7 +559,7 @@ function MyProfile() {
                               // onClick={handleDelete}
                             >
                               <DeleteOutlined className="cv-item__info__bottom__btn__icon" />
-                              Xóa
+                              Delete
                             </button>
                           </div>
 
