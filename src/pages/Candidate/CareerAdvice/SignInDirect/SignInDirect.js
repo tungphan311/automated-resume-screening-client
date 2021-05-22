@@ -31,13 +31,13 @@ const SignInDirect = ({ isNeedCV = false }) => {
         {isNeedCV ? (
           <>
             {" "}
-            <Link to="/sign-in" className="sign-direct__button__sign-in">
-              Get started
-            </Link>
-            <p>or</p>
-            <Link to="/sign-up" className="sign-direct__button__register">
+            <Link to="/profile" className="sign-direct__button__sign-in">
               Upload your resume
-            </Link>{" "}
+            </Link>
+            {/* <p>or</p>
+            <Link to="/profile" className="sign-direct__button__register">
+             
+            </Link>{" "} */}
           </>
         ) : (
           <>

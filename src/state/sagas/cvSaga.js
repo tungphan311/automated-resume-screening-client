@@ -67,7 +67,6 @@ export function* updateCVProfileSaga(action) {
     const {
       resumeId,
       values,
-      domain,
       education,
       experience,
       monthEx
@@ -81,7 +80,6 @@ export function* updateCVProfileSaga(action) {
       experiences: experience,
       skills: values.join("|"),
       months_of_experience: monthEx,
-      job_domain_id: domain
     };
 
     const result = yield call(updateCV, data, token);

@@ -9,3 +9,13 @@ export const candidateProfileAction = (token) => ({
 export const candidateProfileProAction = createPromiseAction(
   "GET_CANDIDATE_PROFILE"
 );
+
+export const updateProfileAction = (user) => ({
+  type: types.UPDATE_CAND_PROFILE,
+  payload: user
+});
+
+export const updateProfileProAction = createPromiseAction(
+  "UPDATE_CAND_PROFILE"
+);
+
