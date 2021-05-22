@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
-import { toast } from "utils/index";
 import "./CandidateProfile.scss";
 import FormData from "form-data";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadCVAction } from "state/actions/index";
 import Loading from "components/Loading/Loading";
-import { Button, Input, InputNumber, Form } from "antd";
-
+import { Button, Input, InputNumber, Form, DatePicker, Radio } from "antd";
+import Select from "react-select";
+import moment from "moment";
 import {
   CloseOutlined,
   PlusOutlined,
@@ -19,14 +19,17 @@ import {
 } from "@ant-design/icons";
 
 import isEmpty from "lodash/isEmpty";
-import { toastErr } from "utils/index";
+import { toastErr, toast } from "utils/index";
 import ContentEditable from "react-contenteditable";
 
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
-import { getCandidateProfile } from "services/candidateProfileServices";
-import { candidateProfileAction } from "state/actions/profileAction";
 import { getIndexArray } from "utils/index";
 import AddSkillSuggest from "components/AddSkillSuggest/AddSkillSuggest";
+
+import { getCandidateProfile } from "services/candidateProfileServices";
+import { candidateProfileAction } from "state/actions/profileAction";
+import { updateProfileProAction } from "state/actions/profileAction";
+import { updateCVProfileAction } from "state/actions/index";
 
 const ACCEPTS = [
   "application/msword",
@@ -34,7 +37,27 @@ const ACCEPTS = [
   "application/pdf"
 ];
 
+const config = {
+  rules: [
+    {
+      type: "object",
+      required: true,
+      message: "Please choose your date of birth!"
+    }
+  ]
+};
+
+const validateMessages = {
+  required: "Please enter ${label}!",
+  types: {
+    // fullName: "Email không hợp lệ",
+    // password: "Mật khẩu"
+  }
+};
+
 function MyProfile() {
+  const dispatch = useDispatch();
+
   // state
   const [loading, setLoading] = useState(false);
 
@@ -46,12 +69,12 @@ function MyProfile() {
   const skillFormRef = useRef();
   const resumeFormRef = useRef();
 
-  const dispatch = useDispatch();
-
   const token = useSelector((state) => state.auth.candidate.token);
   const profile = useSelector((state) => state.profile.candidateProfile);
+  // const provinces = useSelector((state) => state.cv.provinces);
 
   const [resume, setResume] = useState();
+  const [resumeDefault, setResumeDefault] = useState();
 
   const [eduForm, setEduForm] = useState(false);
   const [exForm, setExForm] = useState(false);
@@ -64,6 +87,43 @@ function MyProfile() {
   const [value, setValue] = useState("");
   const [skills, setSkills] = useState();
   const [defaultSkills, setDefaultSkills] = useState();
+
+  const { RangePicker } = DatePicker;
+
+  const provinces = useSelector((state) =>
+    state.cv.provinces.map(({ province_id, province_name }) => ({
+      value: province_id,
+      label: province_name
+    }))
+  );
+
+  const defaultProvince = (id) =>
+    provinces.length && provinces.find((item) => item.value === id);
+
+  const onFinish = (fieldsValue) => {
+    const values = {
+      ...fieldsValue,
+      dateOfBirth: fieldsValue["dateOfBirth"].format("YYYY-MM-DD"),
+      provinceId:
+        fieldsValue.province_id?.value ||
+        (!isEmpty(profile) && profile.provinceId)
+    };
+
+    delete values.province_id;
+
+    console.log(values);
+
+    dispatch(updateProfileProAction(values))
+      .then(() => {
+        dispatch(candidateProfileAction(token));
+        setLoading(false);
+        setProfileForm(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+    setLoading(true);
+  };
 
   const toggleEduForm = () => {
     setEduForm(true);
@@ -87,6 +147,23 @@ function MyProfile() {
 
   const toggleProFormEdit = () => {
     setProfileForm(true);
+  };
+
+  const cancelEdu = () => {
+    setEduForm(false);
+    setResume((curState) => ({
+      ...curState,
+      educations: resumeDefault.educations
+    }));
+  };
+
+  const cancelEx = () => {
+    setExForm(false);
+    setResume((curState) => ({
+      ...curState,
+      months_of_experience: resumeDefault.months_of_experience,
+      experiences: resumeDefault.experiences
+    }));
   };
 
   const onDelete = (key) => {
@@ -114,10 +191,7 @@ function MyProfile() {
     setSkills(defaultSkills);
   };
 
-  console.log("skills", skills);
-
   // Hanlde upload file
-
   const handleSelectFile = () => {
     inputRef.current.click();
   };
@@ -145,34 +219,65 @@ function MyProfile() {
       [name]: value
     }));
   };
+
+  const handleSubmit = () => {
+    setLoading(true);
+    const values = skills.map((ele) => ele.value);
+
+    dispatch(
+      updateCVProfileAction({
+        resumeId: resume.id,
+        education: resume.educations,
+        experience: resume.experiences,
+        values,
+        monthEx: resume.months_of_experience
+      })
+    )
+      .then(() => {
+        setLoading(false);
+        resume.educations !== resumeDefault.educations && setEduForm(false);
+        (resume.experiences !== resumeDefault.experiences ||
+          resume.months_of_experience !== resumeDefault.months_of_experience) &&
+          setExForm(false);
+        values.length !== defaultSkills.length && setSkillForm(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
+
+  const fetchProfile = async () => {
+    setLoading(true);
+
+    await getCandidateProfile(token)
+      .then(async (res) => {
+        setResume({
+          ...res.data.data.resumes[0]
+        });
+        setResumeDefault({
+          ...res.data.data.resumes[0]
+        });
+        setSkills(getIndexArray(res.data.data.resumes[0].technical_skills));
+        setDefaultSkills(
+          getIndexArray(res.data.data.resumes[0].technical_skills)
+        );
+      })
+      .catch((err) => {
+        toastErr(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   useEffect(() => {
     if (token) {
-      const fetchProfile = async () => {
-        setLoading(true);
-
-        await getCandidateProfile(token)
-          .then(async (res) => {
-            setResume({
-              ...res.data.data.resumes[0]
-            });
-            setSkills(getIndexArray(res.data.data.resumes[0].technical_skills));
-            setDefaultSkills(
-              getIndexArray(res.data.data.resumes[0].technical_skills)
-            );
-          })
-          .catch((err) => {
-            toastErr(err);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      };
       fetchProfile();
       dispatch(candidateProfileAction(token));
 
       dispatch({ type: GET_JOB_DOMAIN });
     }
-  }, []);
+  }, [profile.name]);
 
   // useEffect(() => {
   //   dispatch(candidateProfileAction(token));
@@ -199,37 +304,118 @@ function MyProfile() {
 
             {profileForm && (
               <div className="col-sm-8 my-profile__candidate__edit edit-mode-container">
-                <h3>Edit personal details</h3>
+                <h3 style={{ paddingLeft: "24px" }}>Edit personal details</h3>
+                <h4 className="my-profile__candidate__edit__title">
+                  Email address
+                </h4>
+                <span className="my-profile__candidate__edit__email">
+                  {profile.email}
+                </span>
                 <Form
                   layout="vertical"
                   name="nest-messages"
-                  // validateMessages={validateMessages}
-                  // onFinish={onFinish}
-                  className="candidate-login__container__left__form"
+                  validateMessages={validateMessages}
+                  onFinish={onFinish}
+                  className="candidate-login__container__left__form my-profile__candidate__edit__form"
+                  fields={[
+                    {
+                      name: ["fullName"],
+                      value: profile.fullName
+                    },
+                    {
+                      name: ["phone"],
+                      value: profile.phone
+                    },
+                    {
+                      name: ["dateOfBirth"],
+                      value: moment(profile.dateOfBirth, "DD/MM/YYYY")
+                    },
+                    {
+                      name: ["gender"],
+                      value: profile.gender
+                    }
+                  ]}
                 >
-                  {/* Email */}
                   <Form.Item
-                    label="Email address"
-                    name={["user", "email"]}
-                    rules={[{ type: "email", required: true }]}
-                  >
-                    <Input
-                      className="candidate-login__container__left__form__input"
-                      placeholder="Enter email..."
-                    />
-                  </Form.Item>
-
-                  {/* Password  */}
-                  <Form.Item
-                    label="Password"
-                    name={["user", "password"]}
+                    label="Fullname"
+                    name="fullName"
                     rules={[{ required: true }]}
                   >
-                    <Input.Password
-                      className="candidate-login__container__left__form__input"
-                      placeholder="Enter password..."
+                    <Input className="candidate-login__container__left__form__input " />
+                  </Form.Item>
+
+                  {/* Email */}
+                  <Form.Item
+                    label="Phone"
+                    name="phone"
+                    rules={[
+                      { required: true },
+                      {
+                        pattern: /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/,
+                        message: "Your phone number is invalid"
+                      }
+                    ]}
+                  >
+                    <Input className="candidate-login__container__left__form__input" />
+                  </Form.Item>
+
+                  {/* Date of birth  */}
+                  <div className="row">
+                    <Form.Item
+                      className="col-sm"
+                      name="dateOfBirth"
+                      label="Date of birth"
+                      // defaultValue={moment(deadline)}
+                      {...config}
+                    >
+                      <DatePicker
+                        defaultValue={moment(profile.dateOfBirth, "DD/MM/YYYY")}
+                        className="my-profile__candidate__edit__form__date"
+                      />
+                    </Form.Item>
+
+                    {/* Gender  */}
+                    <Form.Item
+                      className="col-sm"
+                      style={{ paddingLeft: "40px" }}
+                      rules={[
+                        { required: true, message: "Please choose gender!" }
+                      ]}
+                      name="gender"
+                      label="Gender"
+                    >
+                      <Radio.Group defaultValue={profile.gender}>
+                        <Radio value={true}>Male</Radio>
+                        <Radio value={false}>Female</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+                  </div>
+
+                  <Form.Item name="province_id" label=" Lives in">
+                    <Select
+                      defaultValue={defaultProvince(profile.provinceId)}
+                      options={provinces}
+                      size="large"
                     />
                   </Form.Item>
+                  {/* Provinces  */}
+                  {/* <h4 className="my-profile__candidate__edit__title__live">
+                    Lives in
+                  </h4>
+                  <div
+                    className="explore-look__input my-profile__candidate__edit__select"
+                    style={{}}
+                  >
+                    <div className="dropdown pr-10" style={{ zIndex: 5 }}>
+                      <Select
+                        value={province}
+                        onChange={(value) => setProvince(value)}
+                        options={provinceOptions}
+                        menuPosition="fixed"
+                        isClearable={true}
+                      />
+                    </div>
+                  </div> */}
 
                   {/* Button Login  */}
                   {/* <button
@@ -284,7 +470,10 @@ function MyProfile() {
 
         {/* Resume information  */}
         <div className="row">
-          <div className="col-sm-8">
+          <div
+            className="col-sm-8"
+            style={{ marginTop: profileForm && "255px" }}
+          >
             {!isEmpty(resume) && (
               <>
                 {/* Education  */}
@@ -295,7 +484,10 @@ function MyProfile() {
                     (eduForm && "edit-mode-container")
                   }
                 >
-                  <h4 className="profile-title" style={{ fontWeight: "700", marginBottom: '32px' }}>
+                  <h4
+                    className="profile-title"
+                    style={{ fontWeight: "700", marginBottom: "32px" }}
+                  >
                     Education
                   </h4>
                   <div
@@ -308,9 +500,9 @@ function MyProfile() {
                     <ContentEditable
                       html={resume.educations} // innerHTML of the editable div
                       disabled={!eduForm} // use true to disable edition
-                      // onChange={(evt) =>
-                      //   handleChangeResume("educations", evt.target.value)
-                      // } // handle innerHTML change
+                      onChange={(evt) =>
+                        handleChangeResume("educations", evt.target.value)
+                      } // handle innerHTML change
                     />
                     <div className="profile-gradient"></div>
                   </div>
@@ -319,14 +511,14 @@ function MyProfile() {
                       className={
                         eduForm ? "save-btn profile-button" : "profile-button"
                       }
-                      onClick={toggleEduForm}
+                      onClick={!eduForm ? toggleEduForm : handleSubmit}
                     >
                       {!eduForm ? "Edit education" : "Save"}
                     </button>
                     {eduForm && (
                       <button
                         className="profile-button-cancel"
-                        onClick={() => setEduForm(false)}
+                        onClick={cancelEdu}
                       >
                         Cancel
                       </button>
@@ -365,9 +557,9 @@ function MyProfile() {
                             max={500}
                             bordered={exForm}
                             readOnly={!exForm}
-                            defaultValue={resume.months_of_experience}
+                            value={resume.months_of_experience}
                             onChange={(val) => {
-                              console.log("changed", val);
+                              handleChangeResume("months_of_experience", val);
                             }}
                           />
                           <span style={{ marginLeft: "10px" }}>
@@ -381,9 +573,9 @@ function MyProfile() {
                         <ContentEditable
                           html={resume.experiences} // innerHTML of the editable div
                           disabled={!exForm} // use true to disable edition
-                          // onChange={(evt) =>
-                          //   handleChangeResume("experiences", evt.target.value)
-                          // } // handle innerHTML change
+                          onChange={(evt) =>
+                            handleChangeResume("experiences", evt.target.value)
+                          } // handle innerHTML change
                         />
                       </div>
                     </div>
@@ -393,14 +585,14 @@ function MyProfile() {
                       className={
                         exForm ? "save-btn profile-button" : "profile-button"
                       }
-                      onClick={toggleExForm}
+                      onClick={!exForm ? toggleExForm : handleSubmit}
                     >
                       {!exForm ? "Edit Experience" : "Save"}
                     </button>
                     {exForm && (
                       <button
                         className="profile-button-cancel"
-                        onClick={() => setExForm(false)}
+                        onClick={cancelEx}
                       >
                         Cancel
                       </button>
@@ -415,7 +607,10 @@ function MyProfile() {
                     (skillForm && "edit-mode-container")
                   }
                 >
-                  <h4 className="profile-title" style={{ fontWeight: "700", marginBottom: '32px' }}>
+                  <h4
+                    className="profile-title"
+                    style={{ fontWeight: "700", marginBottom: "32px" }}
+                  >
                     Skills
                   </h4>
                   <div className="chip" style={{ marginTop: "20px" }}>
@@ -474,7 +669,7 @@ function MyProfile() {
                       className={
                         skillForm ? "save-btn profile-button" : "profile-button"
                       }
-                      onClick={toggleSkillForm}
+                      onClick={!skillForm ? toggleSkillForm : handleSubmit}
                     >
                       {!skillForm ? "Add skills" : "Save"}
                     </button>

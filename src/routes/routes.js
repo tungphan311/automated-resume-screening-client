@@ -98,14 +98,10 @@ function Routes() {
           "/career-advice",
           "/career-advice/skill=:skill",
           "/career-advice/id=:id&role=:role",
-          "/my-profile"
         ]}
       >
         <CandidateLayout>
           <UnauthorizedRoute exact path="/" component={CandidateHome} />
-
-          <CandidateRoute exact path="/profile" component={CandidateProfile} />
-
           <CandidateRoute
             exact
             path="/profile/review"
@@ -146,7 +142,7 @@ function Routes() {
             path="/applied-jobs"
             component={CandidateAppliedJobs}
           />
-          <CandidateRoute exact path="/my-profile" component={MyProfile} />
+          <CandidateRoute exact path="/profile" component={MyProfile} />
         </CandidateLayout>
       </Route>
 
