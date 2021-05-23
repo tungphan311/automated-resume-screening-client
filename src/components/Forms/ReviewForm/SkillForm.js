@@ -30,12 +30,13 @@ function SkillForm({ curStep, handleChangeStep }) {
   const [value, setValue] = useState("");
 
   const onDelete = (key) => {
-    const newSkills = skills.length && skills.filter((ele) => ele.key !== key);
+    const newSkills =
+      skills && skills.length && skills.filter((ele) => ele.key !== key);
     setSkills(newSkills);
   };
 
   const onAddSkill = () => {
-    const key = skills.length && skills[skills.length - 1].key + 1;
+    const key = skills && skills.length && skills[skills.length - 1].key + 1;
     const newSkills = [...skills, { key, value }];
     setSkills(newSkills);
     setValue("");
@@ -47,7 +48,7 @@ function SkillForm({ curStep, handleChangeStep }) {
 
   const handleSubmit = () => {
     setLoading(true);
-    const values = skills.map((ele) => ele.value);
+    const values = skills.length && skills.map((ele) => ele.value);
 
     dispatch(updateCVAction({ values })).catch(() => {
       setLoading(false);
@@ -99,12 +100,7 @@ function SkillForm({ curStep, handleChangeStep }) {
               </div>
               <div style={{ marginTop: "20px" }}>
                 {skills.map(({ key, value }) => (
-                  <Skill
-                    skill={value}
-                    key={key}
-                    id={key}
-                    onDelete={onDelete}
-                  />
+                  <Skill skill={value} key={key} id={key} onDelete={onDelete} />
                 ))}
               </div>
             </div>
@@ -131,7 +127,6 @@ function SkillForm({ curStep, handleChangeStep }) {
 export default SkillForm;
 
 const Skill = ({ id, skill, onChange, onDelete }) => {
-
   return (
     <div>
       <div className="hr-wizard"></div>

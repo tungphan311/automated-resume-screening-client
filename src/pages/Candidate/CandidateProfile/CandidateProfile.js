@@ -273,11 +273,10 @@ function MyProfile() {
   useEffect(() => {
     if (token) {
       fetchProfile();
-      dispatch(candidateProfileAction(token));
 
       dispatch({ type: GET_JOB_DOMAIN });
     }
-  }, [profile.name]);
+  }, []);
 
   // useEffect(() => {
   //   dispatch(candidateProfileAction(token));
@@ -398,31 +397,7 @@ function MyProfile() {
                       size="large"
                     />
                   </Form.Item>
-                  {/* Provinces  */}
-                  {/* <h4 className="my-profile__candidate__edit__title__live">
-                    Lives in
-                  </h4>
-                  <div
-                    className="explore-look__input my-profile__candidate__edit__select"
-                    style={{}}
-                  >
-                    <div className="dropdown pr-10" style={{ zIndex: 5 }}>
-                      <Select
-                        value={province}
-                        onChange={(value) => setProvince(value)}
-                        options={provinceOptions}
-                        menuPosition="fixed"
-                        isClearable={true}
-                      />
-                    </div>
-                  </div> */}
 
-                  {/* Button Login  */}
-                  {/* <button
-                    htmlType="submit"
-                    className="candidate-login__container__left__form__btn"
-                  > */}
-                  {/* {isLoading && <div className="dashed-loading"></div>} */}
                   <div className="profile-button-gr">
                     <button
                       className="save-btn profile-button"
@@ -451,15 +426,12 @@ function MyProfile() {
               Create a new resume from your FASTJOB Profile
             </h4>
             <div className="my-profile__resume__upload__left__btn-gr row">
-              <button className="my-profile__resume__upload__left__btn-gr__start">
-                Get started
-              </button>
-              <span
-                className="my-profile__resume__upload__left__btn-gr__or"
+              <button
+                className="my-profile__resume__upload__left__btn-gr__start"
                 onClick={() => resumeFormRef.current.scrollIntoView()}
               >
-                Or, upload your resume
-              </span>
+                Upload your resume
+              </button>
             </div>
           </div>
 
@@ -807,7 +779,7 @@ function MyProfile() {
                         className="profile-button"
                         onClick={toggleResumeForm}
                       >
-                        Manage resume
+                        About resume
                       </button>
                     ) : (
                       <button
@@ -995,7 +967,10 @@ const Skill = ({ id, skill, onDelete, isAction }) => {
           <div className="float-right chip-skill__item__delete">
             {isAction && (
               <button className=" delete-button">
-                <CloseOutlined onClick={() => onDelete(id)} />
+                <CloseOutlined
+                  className="chip-skill__item__delete__icon"
+                  onClick={() => onDelete(id)}
+                />
               </button>
             )}
           </div>

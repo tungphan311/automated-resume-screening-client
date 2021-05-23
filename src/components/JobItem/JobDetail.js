@@ -52,7 +52,7 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
     };
 
     fetchJob();
-  }, [token]);
+  }, [token, job.saved_date]);
 
   const {
     job_title,
@@ -209,7 +209,7 @@ const Header = ({
 
   const handleSaveJP = async () => {
     if (!token) {
-      toast({ type: "info", message: "Vui lòng đăng nhập để lưu tin" });
+      toast({ type: "info", message: "Please login to save job" });
     } else {
       setLoading(true);
       setSave(!save);

@@ -15,6 +15,9 @@ import { getJobDetail } from "services/jobServices";
 import { candidateJobSimilarAction } from "state/actions/candidateJobAction";
 import { getDiffTime, toastErr, formatProvince } from "utils/index";
 import { useSelector } from "react-redux";
+import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
+import qs from "query-string";
+import { getFormValues } from "redux-form";
 
 const DEFAULT = {
   apply: false,
@@ -41,6 +44,45 @@ const CandidateJobDetail = ({ history }) => {
     }
   };
   const onCancel = () => toggleShowModal(DEFAULT);
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   const filter = {
+  //     q: job_title || null,
+  //     location: location ? location.value : null
+  //   };
+
+  //   const query = qs.stringify(filter, { skipNull: true });
+
+  //   history.push(`/find-jobs?${query}`);
+  // };
+
+  const formValues = useSelector((state) =>
+    getFormValues(FORM_KEY_JOB_SEARCH)(state)
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const job_title = formValues
+      ? formValues.job_title || undefined
+      : undefined;
+    const province_id = formValues
+      ? formValues.location
+        ? formValues.location.value
+        : undefined
+      : undefined;
+
+    const filter = {
+      q: job_title || null,
+      location: province_id || null
+    };
+
+    const query = qs.stringify(filter, { skipNull: true });
+
+    history.push(`/find-jobs?${query}`);
+  };
 
   const {
     job_title,
@@ -91,7 +133,7 @@ const CandidateJobDetail = ({ history }) => {
   return (
     <>
       {loading ? (
-        <div className="container" style={{marginTop: "30px"}}>
+        <div className="container" style={{ marginTop: "30px" }}>
           <MyLoader />
         </div>
       ) : (
@@ -101,7 +143,7 @@ const CandidateJobDetail = ({ history }) => {
             className="search-jobs-container search-jobs-widget"
           >
             <div className="container">
-              <JobSearchAdvance history={history} />
+              <JobSearchAdvance onSubmit={handleSubmit} history={history} />
             </div>
           </div>
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 import "./MatchSkill.scss";
 import MatchSkillCard from "./MatchSkillCard/MatchSkillCard";
@@ -7,12 +6,19 @@ import MatchSkillChips from "./MatchSkillChips/MatchSkillChips";
 import MatchSkillSub from "./MatchSkillSub/MatchSkillSub";
 import isEmpty from "lodash/isEmpty";
 
-const MatchSkill = ({ domain, matchedSkills, salary, totalCount, mainSkills }) => {
+const MatchSkill = ({
+  domain,
+  matchedSkills,
+  salary,
+  totalCount,
+  mainSkills
+}) => {
   return (
     <div className="match-skill">
       <div className="match-skill__left">
         {!isEmpty(domain) && !isEmpty(salary) && (
           <MatchSkillCard
+            id={domain.id}
             name={domain.name}
             logo={domain.logo}
             content={domain.content}

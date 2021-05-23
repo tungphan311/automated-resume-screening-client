@@ -8,11 +8,11 @@ function Loading({ loading }) {
         mode="bounce"
         background="rgba(0, 0, 0, 0)"
         speed="0.9"
-        style={{ width: "500px", height: "500px" }}
+        style={{ width: "250px", height: "250px" }}
         loop
         autoplay
       ></lottie-player>
-      <span>Vui lòng chờ trong giây lát ...</span>
+      <span>Please wait ...</span>
     </div>
   );
 }

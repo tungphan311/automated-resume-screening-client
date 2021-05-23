@@ -50,4 +50,74 @@
   .header__navbar-brand-default {
     display: inline-block;
   }
+
+  .lang {
+    position: relative;
+    margin-left: 20px;
+    &__toggle {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+
+      .flag {
+        margin-right: 0 !important;
+      }
+    }
+
+    &__dropdown {
+      right: 0;
+      left: auto;
+      position: absolute;
+      top: 100%;
+      z-index: 1000;
+      float: left;
+      min-width: 160px;
+      padding: 5px 0;
+      margin: 2px 0 0;
+      font-size: 14px;
+      text-align: left;
+      list-style: none;
+      background-color: #fff;
+      // background-clip: padding-box;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 5px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
+
+      > li > a {
+        padding: 8px 10px;
+        margin: 0 5px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        clear: both;
+        font-weight: 400;
+        line-height: 1.485;
+        color: #444655;
+        white-space: nowrap;
+        font-size: 16px;
+      }
+
+      > li > .active-lang {
+        color: #fff;
+        text-decoration: none;
+        background-color: #4080ff;
+        outline: 0;
+      }
+    }
+
+    .flag {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: url(https://www.updiagram.com/public/images/flags.png) no-repeat;
+      transform: scale(0.75);
+      margin-right: 10px;
+      &-en {
+      }
+
+      &-vi {
+        background-position: -24px 0;
+      }
+    }
+  }
 }

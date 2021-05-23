@@ -103,7 +103,7 @@ function CandidateSavedJobs() {
           <div className="box box--white" id="box-result">
             <div className="search-meta">
               <h1 className="text-primary bold">
-                {`Danh sách ${total} việc làm đã lưu`}
+                {`Saved ${total} jobs`}
               </h1>
             </div>
           </div>
@@ -209,7 +209,7 @@ const Job = ({
       </div>
       <div className="col-sm-2 job-button-group">
         <button className="view-apply-button blue-button" onClick={toggleModal}>
-          Ứng tuyển ngay
+          Apply now
         </button>
         <div className="box-save-job">
           <button

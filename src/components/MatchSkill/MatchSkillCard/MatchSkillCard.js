@@ -1,11 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import qs from "query-string";
 
 import "../MatchSkill.scss";
 
-const MatchSkillCard = ({ name, logo, content, max, min }) => {
+const MatchSkillCard = ({ id, name, logo, content, max, min }) => {
+  const directToDomain = () => {
+    let filter = {
+      id: id,
+      role: name.toLowerCase().replaceAll(" ", "-")
+    };
+    const query = qs.stringify(filter, { skipNull: true });
+    console.log(query);
+
+    window.location.replace(`/career-advice/${query}`);
+  };
+
   return (
-    <div className="match-skill__card">
+    <div className="match-skill__card" onClick={directToDomain}>
       <div className="match-skill__card__poster">
         <img
           src={
