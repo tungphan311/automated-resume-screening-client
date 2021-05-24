@@ -73,7 +73,6 @@ function CandidateJobList({ history }) {
   const { provinces } = useSelector((state) => state.cv);
 
   const mapResponseToState = (data) => {
-    console.log('data', data);
     return data.map(
       ({
         company_name,

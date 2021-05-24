@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Link } from "react-router-dom";
 import JobSearchAdvance from "components/Forms/JobSearchAdvance/JobSearchAdvance";
 import SimJob from "components/SimJob/SimJob";
 
@@ -17,7 +16,9 @@ import { getDiffTime, toastErr, formatProvince } from "utils/index";
 import { useSelector } from "react-redux";
 import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import qs from "query-string";
-import { getFormValues } from "redux-form";
+import historyState from "state/history";
+import { Link, useLocation } from "react-router-dom";
+import JobSearchClick from "components/Forms/JobSearchClick/JobSearchClick";
 
 const DEFAULT = {
   apply: false,
@@ -58,30 +59,25 @@ const CandidateJobDetail = ({ history }) => {
   //   history.push(`/find-jobs?${query}`);
   // };
 
-  const formValues = useSelector((state) =>
-    getFormValues(FORM_KEY_JOB_SEARCH)(state)
-  );
+  const params = useLocation().search;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleClick = async () => {
+    // const job_title = formValues
+    //   ? formValues.job_title || undefined
+    //   : undefined;
+    // const province_id = formValues
+    //   ? formValues.location
+    //     ? formValues.location.value
+    //     : undefined
+    //   : undefined;
 
-    const job_title = formValues
-      ? formValues.job_title || undefined
-      : undefined;
-    const province_id = formValues
-      ? formValues.location
-        ? formValues.location.value
-        : undefined
-      : undefined;
+    // let filter = qs.parse(params);
+    // filter = { ...filter, location: province_id, q: job_title };
+    // const query = qs.stringify(filter, { skipNull: true });
 
-    const filter = {
-      q: job_title || null,
-      location: province_id || null
-    };
+    // history.push({ search: `?${query}` });
 
-    const query = qs.stringify(filter, { skipNull: true });
-
-    history.push(`/find-jobs?${query}`);
+    // historyState.push(`/find-jobs?${query}`);
   };
 
   const {
@@ -143,7 +139,8 @@ const CandidateJobDetail = ({ history }) => {
             className="search-jobs-container search-jobs-widget"
           >
             <div className="container">
-              <JobSearchAdvance onSubmit={handleSubmit} history={history} />
+              <JobSearchClick
+              />
             </div>
           </div>
 

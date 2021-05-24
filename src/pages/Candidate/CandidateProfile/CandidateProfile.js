@@ -263,7 +263,7 @@ function MyProfile() {
         );
       })
       .catch((err) => {
-        toastErr(err);
+        // toastErr(err);
       })
       .finally(() => {
         setLoading(false);
@@ -655,151 +655,151 @@ function MyProfile() {
                     )}
                   </div>
                 </div>
+              </>
+            )}
+            {/* Resume file*/}
+            <div
+              ref={resumeFormRef}
+              className={
+                "my-profile__resume__info profile-section " +
+                (resumeForm && "edit-mode-container")
+              }
+            >
+              <h4 className="profile-title" style={{ fontWeight: "700" }}>
+                Resume
+              </h4>
 
-                {/* Resume file*/}
-                <div
-                  ref={resumeFormRef}
-                  className={
-                    "my-profile__resume__info profile-section " +
-                    (resumeForm && "edit-mode-container")
-                  }
-                >
-                  <h4 className="profile-title" style={{ fontWeight: "700" }}>
-                    Resume
-                  </h4>
+              {/* Resume exist */}
+              {!isEmpty(resume) ? (
+                <>
+                  <div className="my-profile__resume__info__row">
+                    <img
+                      className="cv-item__img"
+                      src="/assets/img/CV-default.png"
+                      alt="Ảnh CV"
+                    />
 
-                  {/* Resume exist */}
-                  {!isEmpty(profile) ? (
-                    <>
-                      <div className="my-profile__resume__info__row">
-                        <img
-                          className="cv-item__img"
-                          src="/assets/img/CV-default.png"
-                          alt="Ảnh CV"
-                        />
-
-                        <div className="my-profile__resume__info__row__left">
-                          <div className="my-profile__resume__info__tag">
-                            Default
-                          </div>
-
-                          <a
-                            href={resume.download_url}
-                            className="my-profile__resume__info__name"
-                          >
-                            {resume.resume_filename +
-                              "." +
-                              resume.resume_file_extension}
-                            <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
-                          </a>
-                          <div className="my-profile__resume__info__days">
-                            Added 2 days ago
-                          </div>
-                        </div>
+                    <div className="my-profile__resume__info__row__left">
+                      <div className="my-profile__resume__info__tag">
+                        Default
                       </div>
 
-                      {resumeForm && (
-                        <>
-                          <div className="row cv-item__info__bottom ">
-                            <button
-                              type="button"
-                              className="cv-item__info__bottom__btn btn btn-outline-secondary"
-                              onClick={() =>
-                                window.open(resume.store_url, "_blank")
-                              }
-                            >
-                              <EyeOutlined className="cv-item__info__bottom__btn__icon" />
-                              Watch online
-                            </button>
-
-                            <a
-                              href={resume.download_url}
-                              className="cv-item__info__bottom__btn btn btn-sm btn-outline-secondary "
-                            >
-                              <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
-                              Download
-                            </a>
-
-                            <button
-                              type="button"
-                              className="cv-item__info__bottom__btn btn btn-sm  btn-outline-secondary"
-                              // onClick={handleDelete}
-                            >
-                              <DeleteOutlined className="cv-item__info__bottom__btn__icon" />
-                              Delete
-                            </button>
-                          </div>
-
-                          {/* Handle upload resume  */}
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <div className="my-profile__resume__upload-file">
-                      <p className="my-profile__resume__upload-file__note">
-                        Add 1 resume. Accepted file types: Microsoft Word (.doc
-                        or .docx) or Adobe PDF (.pdf)
-                      </p>
-                      <div
-                        className="my-profile__resume__upload-file__box"
-                        onClick={handleSelectFile}
+                      <a
+                        href={resume.download_url}
+                        className="my-profile__resume__info__name"
                       >
-                        <ProfileOutlined
-                          style={{
-                            fontSize: "50px",
-                            color: "#707070"
-                          }}
-                        />
-                        <span className="my-profile__resume__upload-file__box__add">
-                          To add a resume, click here or simply browse for a
-                          file.
-                        </span>
-                        <Button
-                          onClick={handleSelectFile}
-                          icon={<UploadOutlined />}
-                          className="my-profile__resume__upload-file__box__btn"
-                        >
-                          Upload
-                          <input
-                            type="file"
-                            name="CV"
-                            className="d-none"
-                            accept=".doc,.docx,.pdf"
-                            onChange={handleInputChange}
-                            ref={inputRef}
-                          />
-                        </Button>
+                        {resume.resume_filename +
+                          "." +
+                          resume.resume_file_extension}
+                        <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
+                      </a>
+                      <div className="my-profile__resume__info__days">
+                        Added 2 days ago
                       </div>
                     </div>
-                  )}
-
-                  <div className="profile-button-gr">
-                    {!resumeForm ? (
-                      <button
-                        className="profile-button"
-                        onClick={toggleResumeForm}
-                      >
-                        About resume
-                      </button>
-                    ) : (
-                      <button
-                        className="save-btn profile-button"
-                        onClick={() => setResumeForm(false)}
-                      >
-                        Done
-                      </button>
-                    )}
                   </div>
-                  {/* <button
+
+                  {resumeForm && (
+                    <>
+                      <div className="row cv-item__info__bottom ">
+                        <button
+                          type="button"
+                          className="cv-item__info__bottom__btn btn btn-outline-secondary"
+                          onClick={() =>
+                            window.open(resume.store_url, "_blank")
+                          }
+                        >
+                          <EyeOutlined className="cv-item__info__bottom__btn__icon" />
+                          Watch online
+                        </button>
+
+                        <a
+                          href={resume.download_url}
+                          className="cv-item__info__bottom__btn btn btn-sm btn-outline-secondary "
+                        >
+                          <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
+                          Download
+                        </a>
+
+                        <button
+                          type="button"
+                          className="cv-item__info__bottom__btn btn btn-sm  btn-outline-secondary"
+                          // onClick={handleDelete}
+                        >
+                          <DeleteOutlined className="cv-item__info__bottom__btn__icon" />
+                          Delete
+                        </button>
+                      </div>
+
+                      {/* Handle upload resume  */}
+                    </>
+                  )}
+                </>
+              ) : (
+                <div className="my-profile__resume__upload-file">
+                  <p className="my-profile__resume__upload-file__note">
+                    Add 1 resume. Accepted file types: Microsoft Word (.doc or
+                    .docx) or Adobe PDF (.pdf)
+                  </p>
+                  <div
+                    className="my-profile__resume__upload-file__box"
+                    onClick={handleSelectFile}
+                  >
+                    <ProfileOutlined
+                      style={{
+                        fontSize: "50px",
+                        color: "#707070"
+                      }}
+                    />
+                    <span className="my-profile__resume__upload-file__box__add">
+                      To add a resume, click here or simply browse for a file.
+                    </span>
+                    <Button
+                      onClick={handleSelectFile}
+                      icon={<UploadOutlined />}
+                      className="my-profile__resume__upload-file__box__btn"
+                    >
+                      Upload
+                      <input
+                        type="file"
+                        name="CV"
+                        className="d-none"
+                        accept=".doc,.docx,.pdf"
+                        onChange={handleInputChange}
+                        ref={inputRef}
+                      />
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {!isEmpty(resume) && (
+                <div className="profile-button-gr">
+                  {!resumeForm ? (
+                    <button
+                      className="profile-button"
+                      onClick={toggleResumeForm}
+                    >
+                      About resume
+                    </button>
+                  ) : (
+                    <button
+                      className="save-btn profile-button"
+                      onClick={() => setResumeForm(false)}
+                    >
+                      Done
+                    </button>
+                  )}
+                </div>
+              )}
+              {/* <button
                     className="profile-button"
                     style={{ marginTop: "32px" }}
                     onClick={() => window.open(resume.store_url, "_blank")}
                   >
                     View online
                   </button> */}
-                </div>
-              </>
-            )}
+            </div>
           </div>
           <div className="col-sm-4">
             <div className="my-profile__resume__strength">
@@ -828,124 +828,6 @@ function MyProfile() {
           </div>
         </div>
       </div>
-
-      {/* <div className="row">
-        <div className="col-sm-8">
-          {resumes ? (
-            <div className="row">
-              <div className="col-sm">
-                <Card
-                  title="CV của bạn"
-                  extra={
-                    <Button
-                      onClick={handleSelectFile}
-                      icon={<UploadOutlined />}
-                    >
-                      Tải lên 1 CV
-                      <input
-                        type="file"
-                        name="CV"
-                        className="d-none"
-                        accept=".doc,.docx,.pdf"
-                        onChange={handleInputChange}
-                        ref={inputRef}
-                      />
-                    </Button>
-                  }
-                >
-                  {resumes.map(
-                    (
-                      { resume_filename, store_url, id, edit, download_url },
-                      index
-                    ) => (
-                      <ProfileCVItem
-                        key={index}
-                        image="/assets/img/CV-default.png"
-                        name={resume_filename}
-                        date={edit}
-                        url={store_url}
-                        download_url={download_url}
-                        id={id}
-                      />
-                    )
-                  )}
-                </Card>
-              </div>
-            </div>
-          ) : (
-            <div className="row">
-              <div className="col-sm">
-                <Card title="Tải lên CV của bạn">
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <Button
-                        onClick={handleSelectFile}
-                        icon={<UploadOutlined />}
-                      >
-                        Tải lên 1 CV
-                      </Button>
-                      <input
-                        type="file"
-                        name="CV"
-                        className="d-none"
-                        accept=".doc,.docx,.pdf"
-                        onChange={handleInputChange}
-                        ref={inputRef}
-                      />
-                    </div>
-                    <div className="col-sm-6"></div>
-                  </div>
-                </Card>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="col-sm-4">
-          <div className="profile__wrapper__info">
-            <div className="profile__wrapper__info__general">
-              <div className="profile__wrapper__info__general__avatar">
-                <img
-                  src="https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
-                  alt="logo"
-                />
-               
-              </div>
-              <div className="profile__wrapper__info__general__detail">
-                <p>Chào bạn</p>
-                <p className="profile__wrapper__info__general__detail__name">
-                  {profile.fullName}
-                </p>
-                <p className="profile__wrapper__info__general__detail__note">
-                  Tải khoản ứng viên
-                </p>
-              </div>
-            </div>
-
-            <div className="profile__wrapper__info__personal">
-
-              <p>
-                <strong>Email: </strong>
-                {profile.email}
-              </p>
-
-              <p>
-                <strong>Giới tính: </strong>
-                {profile.dateOfBirth ? "Nam" : "Nữ"}
-              </p>
-
-              <p>
-                <strong>Ngày sinh: </strong>
-                {profile.dateOfBirth}
-              </p>
-
-              <p>
-                <strong>SĐT: </strong> {profile.phone}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }

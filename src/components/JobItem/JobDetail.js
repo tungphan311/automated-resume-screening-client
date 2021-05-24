@@ -42,6 +42,7 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
             ...res.data.data.post,
             saved: res.data.data.saved_date
           });
+          console.log('save', res.data.data.saved_date)
         })
         .catch((err) => {
           toastErr(err);
@@ -67,8 +68,10 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
     company_name,
     company_logo,
     company_background,
-    saved_date
+    saved_date,
+    saved
   } = job;
+  // console.log("saved_date", job && );
 
   return (
     <>
@@ -96,7 +99,8 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
                 id,
                 token,
                 provinces,
-                provinceTotal
+                provinceTotal,
+                saved
               }}
             />
             <div id="vjs-content">
@@ -202,9 +206,11 @@ const Header = ({
   id,
   token,
   provinces,
-  provinceTotal
+  provinceTotal,
+  saved
 }) => {
-  const [save, setSave] = useState(saved_date ? true : false);
+  console.log('header save', saved)
+  const [save, setSave] = useState(saved ? true : false);
   const [loading, setLoading] = useState(false);
 
   const handleSaveJP = async () => {
