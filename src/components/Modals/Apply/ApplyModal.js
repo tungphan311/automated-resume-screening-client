@@ -5,6 +5,7 @@ import { candidateGetResumes } from "services/candidateServices";
 import { useDispatch } from "react-redux";
 import { candidateApplyAction } from "state/actions/hrJobAction";
 import Loading from "components/Loading/Loading";
+import { toast } from "utils/index";
 
 function ApplyModal({
   visible,
@@ -39,6 +40,7 @@ function ApplyModal({
       .then(() => {
         onCancel();
       })
+      .catch(() => toast({ type: "error", message: "Please select a resume to apply" }))
       .finally(() => {
         setLoading(false);
       });

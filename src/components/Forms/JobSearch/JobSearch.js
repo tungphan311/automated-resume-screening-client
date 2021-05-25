@@ -52,7 +52,7 @@ function JobSearch() {
                 type="text"
                 value={job_title}
                 onChange={(e) => setJobTile(e.target.value)}
-                placeholder="Tên công việc bạn muốn ứng tuyển"
+                placeholder="Please choose your role you want to apply"
                 className="form-control form-control-lg rounded-bottom-0 rounded-md-right-0 border-left-0 border-top-0"
               />
             </div>
@@ -61,7 +61,7 @@ function JobSearch() {
                 options={options}
                 value={location}
                 onChange={(value) => setLocation(value)}
-                placeholder="Địa điểm làm việc"
+                placeholder="Location"
                 menuPosition="fixed"
                 isClearable={true}
                 className="form-control form-control-lg rounded-0 border-left-0 border-right-0 border-top-0 align-item-center"

@@ -11,9 +11,9 @@ function CandidateReviewCV() {
   const [progress, setProgress] = useState(0);
 
   const STEPS = [
-    { step: 1, label: "Học vấn" },
-    { step: 2, label: "Kinh nghiệm" },
-    { step: 3, label: "Kỹ năng" }
+    { step: 1, label: "Education" },
+    { step: 2, label: "Experience" },
+    { step: 3, label: "Skills" }
   ];
 
   const handleChangeStep = (step) => {
@@ -57,7 +57,7 @@ function CandidateReviewCV() {
 
   return (
     <div
-      style={{ maxWidth: "600px", margin: "35px auto 0", paddingBottom: 60 }}
+      style={{ maxWidth: "800px", margin: "35px auto 0", paddingBottom: 60 }}
     >
       <ProgressBar
         steps={STEPS}

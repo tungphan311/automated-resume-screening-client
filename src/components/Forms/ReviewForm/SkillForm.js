@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input } from "antd";
-import { PlusOutlined, DeleteFilled } from "@ant-design/icons";
+import { PlusOutlined, DeleteFilled, CloseOutlined } from "@ant-design/icons";
 import ContentEditable from "react-contenteditable";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { updateCVAction } from "state/actions/index";
@@ -98,7 +98,10 @@ function SkillForm({ curStep, handleChangeStep }) {
                   </Button>
                 </div>
               </div>
-              <div style={{ marginTop: "20px" }}>
+              <div
+                className="skill-form__container"
+                style={{ marginTop: "20px" }}
+              >
                 {skills.map(({ key, value }) => (
                   <Skill skill={value} key={key} id={key} onDelete={onDelete} />
                 ))}
@@ -108,11 +111,12 @@ function SkillForm({ curStep, handleChangeStep }) {
         </div>
       </div>
       <div>
-        <Button type="primary" onClick={handleSubmit}>
+        <Button className="form-complete" onClick={handleSubmit}>
           Hoàn tất
         </Button>
         {curStep > 1 && (
           <Button
+            className="form-cancel"
             style={{ margin: "0 8px" }}
             onClick={() => handleChangeStep(curStep - 1)}
           >
@@ -126,25 +130,25 @@ function SkillForm({ curStep, handleChangeStep }) {
 
 export default SkillForm;
 
-const Skill = ({ id, skill, onChange, onDelete }) => {
+const Skill = ({ id, skill, onDelete }) => {
   return (
-    <div>
-      <div className="hr-wizard"></div>
-      <div className="saved-item saved-item-new container-fluid">
+    <div className="chip-skill__item">
+      <div className="container-fluid">
         <div className="row">
-          <div className="clearfix col-xs-12">
-            <div className="float-right edit-option">
-              <button className="buttonAsLink delete-button">
-                <DeleteFilled onClick={() => onDelete(id)} />
-              </button>
-            </div>
-            <div className="skill-editable">
-              <ContentEditable
-                className="content-editable"
-                html={skill} // innerHTML of the editable div
-                disabled={false} // use true to disable edition
+          <div className="skill-editable">
+            <ContentEditable
+              className="content-editable chip-skill__item__content"
+              html={skill} // innerHTML of the editable div
+              disabled={true} // use true to disable edition
+            />
+          </div>
+          <div className="float-right chip-skill__item__delete">
+            <button className=" delete-button">
+              <CloseOutlined
+                className="chip-skill__item__delete__icon"
+                onClick={() => onDelete(id)}
               />
-            </div>
+            </button>
           </div>
         </div>
       </div>

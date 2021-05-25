@@ -251,7 +251,7 @@ function CandidateJobList({ history }) {
       <div id="search-jobs-wrapper">
         <div
           id="search-jobs"
-          className="search-jobs-container search-jobs-widget"
+          className="search-jobs-container search-jobs-widget search-jobs-widget-blue"
         >
           <div className="container">
             <JobSearchAdvance onSubmit={handleSubmit} history={history} />

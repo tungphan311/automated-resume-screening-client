@@ -7,18 +7,19 @@ import { useParams } from "react-router-dom";
 import "./JobDetail.scss";
 import ApplyModal from "components/Modals/Apply/ApplyModal";
 import LoginModal from "components/Modals/LoginModal/LoginModal";
+import { HeartOutlined, HeartFilled, LoadingOutlined } from "@ant-design/icons";
 
 import { useDispatch } from "react-redux";
 import ContentLoader from "react-content-loader";
-import { getJobDetail } from "services/jobServices";
 import { candidateJobSimilarAction } from "state/actions/candidateJobAction";
 import { getDiffTime, toastErr, formatProvince } from "utils/index";
 import { useSelector } from "react-redux";
 import { FORM_KEY_JOB_SEARCH } from "state/reducers/formReducer";
 import qs from "query-string";
-import historyState from "state/history";
+import { format_date, toast } from "utils/index";
 import { Link, useLocation } from "react-router-dom";
 import JobSearchClick from "components/Forms/JobSearchClick/JobSearchClick";
+import { getJobDetail, saveJob } from "services/jobServices";
 
 const DEFAULT = {
   apply: false,
@@ -31,6 +32,8 @@ const CandidateJobDetail = ({ history }) => {
   const [loading, setLoading] = useState(false);
   const [job, setJob] = useState({});
   const [showModal, toggleShowModal] = useState(DEFAULT);
+  const [loadingSave, setLoadingSave] = useState();
+
   const provinceTotal = useSelector((state) => state.cv.provinces);
   const { token } = useSelector((state) => state.auth.candidate);
   const simJob = useSelector(
@@ -46,39 +49,7 @@ const CandidateJobDetail = ({ history }) => {
   };
   const onCancel = () => toggleShowModal(DEFAULT);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   const filter = {
-  //     q: job_title || null,
-  //     location: location ? location.value : null
-  //   };
-
-  //   const query = qs.stringify(filter, { skipNull: true });
-
-  //   history.push(`/find-jobs?${query}`);
-  // };
-
   const params = useLocation().search;
-
-  const handleClick = async () => {
-    // const job_title = formValues
-    //   ? formValues.job_title || undefined
-    //   : undefined;
-    // const province_id = formValues
-    //   ? formValues.location
-    //     ? formValues.location.value
-    //     : undefined
-    //   : undefined;
-
-    // let filter = qs.parse(params);
-    // filter = { ...filter, location: province_id, q: job_title };
-    // const query = qs.stringify(filter, { skipNull: true });
-
-    // history.push({ search: `?${query}` });
-
-    // historyState.push(`/find-jobs?${query}`);
-  };
 
   const {
     job_title,
@@ -94,8 +65,28 @@ const CandidateJobDetail = ({ history }) => {
     company_logo,
     company_background,
     posted_in,
-    saved_date
+    saved
   } = job;
+  console.log(saved);
+  const [save, setSave] = useState();
+
+  const handleSaveJP = async () => {
+    if (!token) {
+      toast({ type: "info", message: "Please login to save job" });
+    } else {
+      setLoadingSave(true);
+
+      setSave(!save);
+      const status = save ? 0 : 1;
+
+      await saveJob(id, status, token)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => toastErr(err))
+        .finally(() => setLoadingSave(false));
+    }
+  };
 
   const getProvince = () => {
     return (
@@ -103,6 +94,7 @@ const CandidateJobDetail = ({ history }) => {
       provinces.map((p) => formatProvince(provinceTotal, p)).join(", ")
     );
   };
+  
   useEffect(() => {
     setLoading(true);
 
@@ -110,9 +102,10 @@ const CandidateJobDetail = ({ history }) => {
       await getJobDetail(id, token)
         .then(async (res) => {
           setJob({
-            ...res.data.data.post
-            // saved: res.data.data.saved_date
+            ...res.data.data.post,
+            saved: res.data.data.saved_date
           });
+          setSave(res.data.data.saved_date ? true : false);
         })
         .catch((err) => {
           toastErr(err);
@@ -136,11 +129,10 @@ const CandidateJobDetail = ({ history }) => {
         <div className="detail-page">
           <div
             id="search-jobs"
-            className="search-jobs-container search-jobs-widget"
+            className="search-jobs-container search-jobs-widget detail-page__search"
           >
             <div className="container">
-              <JobSearchClick
-              />
+              <JobSearchClick />
             </div>
           </div>
 
@@ -176,11 +168,36 @@ const CandidateJobDetail = ({ history }) => {
                   </div>
                   <div className="box">
                     <a onClick={toggleModal}>Apply Now</a>
-                    <div>
-                      <button className="icon">
-                        <i className="far fa-heart"></i>
+                    <span>
+                      <button
+                        className="state-picker-button"
+                        onClick={handleSaveJP}
+                      >
+                        <span>
+                          {loadingSave ? (
+                            <LoadingOutlined
+                              style={{ fontSize: "18px", fontWeight: "700" }}
+                            />
+                          ) : !save ? (
+                            <>
+                              <HeartOutlined
+                                style={{ fontSize: "18px", fontWeight: "700" }}
+                                className=""
+                              />
+                              {/* Save Job */}
+                            </>
+                          ) : (
+                            <>
+                              <HeartFilled
+                                style={{ fontSize: "18px", fontWeight: "700" }}
+                                className=""
+                              />
+                              {/* Saved Job */}
+                            </>
+                          )}
+                        </span>
                       </button>
-                    </div>
+                    </span>
                   </div>
                 </div>
                 {/* </div> */}

@@ -46,7 +46,7 @@ function JobSearchClick() {
               type="text"
               value={job_title}
               onChange={(e) => setJobTile(e.target.value)}
-              placeholder="Tên công việc bạn muốn ứng tuyển"
+              placeholder="Enter job title, role, keywords,..."
               className="form-control "
             />
           </div>
@@ -55,7 +55,7 @@ function JobSearchClick() {
               options={options}
               value={location}
               onChange={(value) => setLocation(value)}
-              placeholder="Địa điểm làm việc"
+              placeholder="Enter location..."
               menuPosition="fixed"
               isClearable={true}
               className=""

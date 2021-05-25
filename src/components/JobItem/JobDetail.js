@@ -209,7 +209,7 @@ const Header = ({
   provinceTotal,
   saved
 }) => {
-  console.log('header save', saved)
+
   const [save, setSave] = useState(saved ? true : false);
   const [loading, setLoading] = useState(false);
 

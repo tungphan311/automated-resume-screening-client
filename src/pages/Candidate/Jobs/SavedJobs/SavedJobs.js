@@ -39,7 +39,8 @@ function CandidateSavedJobs() {
           deadline,
           salary,
           provinces,
-          job_title
+          job_title,
+          description
         }
       }) => {
         const province_names = provinces.map((id) => {
@@ -56,7 +57,8 @@ function CandidateSavedJobs() {
           deadline,
           province: province_names.join(", "),
           company_logo,
-          job_id
+          job_id,
+          description
         };
       }
     );
@@ -97,13 +99,13 @@ function CandidateSavedJobs() {
   };
 
   return (
-    <div className="container" id="saved-jobs">
+    <div className="container saved-jobs">
       {total ? (
         <div>
-          <div className="box box--white" id="box-result">
+          <div className="" id="box-result">
             <div className="search-meta">
-              <h1 className="text-primary bold">
-                {`Saved ${total} jobs`}
+              <h1 className="saved-jobs__title">
+                {`Saved ${total} ${total > 1 ? "jobs" : "job"}`}
               </h1>
             </div>
           </div>
@@ -158,10 +160,18 @@ const Job = ({
   show,
   job_id,
   token,
-  handleUnsaved
+  handleUnsaved,
+  description
 }) => (
   <div className="result-job-hover">
-    <div className="row job" style={lastChild ? { borderBottom: 0 } : {}}>
+    <div
+      className="row job"
+      style={{
+        borderBottom: lastChild && 0,
+        minHeight: "230px",
+        padding: "20px 0"
+      }}
+    >
       <div className="hidden-xs col-sm-2 col-avatar">
         <Link
           to="#"
@@ -174,15 +184,33 @@ const Job = ({
       <div className="col-sm-8">
         <h4 className="job-title">
           <Link to="#">
-            <span className="bold transform-job-title">{job_title}</span>
+            <span
+              className="bold transform-job-title"
+              style={{ color: "#2765cf" }}
+            >
+              {job_title}
+            </span>
           </Link>
         </h4>
-        <div>Đã lưu: {formatDateTime(created_on)}</div>
         <div className="row-company name text_ellipsis">
           <Link to="#" target="_blank">
             {company_name}
           </Link>
         </div>
+        <div>Saved job: {formatDateTime(created_on)}</div>
+        <Tooltip placement="top" title={province}>
+          <div
+            className="address text_ellipsis"
+            style={{ marginTop: "10px", color: "rgba(28,28,28,.63)"}}
+          >
+            {province}
+          </div>
+        </Tooltip>
+        <div
+          className="summary show-less-des"
+          style={{ color: "#666" }}
+          dangerouslySetInnerHTML={{ __html: description }}
+        ></div>
         <div className="row text-dark-gray" id="row-result-info-job">
           <div className="salary col-sm-4 col-xs-6">
             <DollarCircleOutlined
@@ -196,28 +224,20 @@ const Job = ({
             />
             {formatDateTime(deadline)}
           </div>
-          <Tooltip placement="top" title={province}>
-            <div className="address col-sm-4 col-xs-12 text_ellipsis">
-              <i
-                className="fas fa-map-marker mr-5"
-                style={{ fontSize: 16, color: "#2557a7" }}
-              ></i>
-              {province}
-            </div>
-          </Tooltip>
         </div>
       </div>
       <div className="col-sm-2 job-button-group">
-        <button className="view-apply-button blue-button" onClick={toggleModal}>
+        <button className="view-apply-button saved-job__apply" onClick={toggleModal}>
           Apply now
         </button>
         <div className="box-save-job">
           <button
-            className="btn-unsave unsave text-red"
+            className="btn-unsave unsave"
+            style={{color: "#2765CF"}}
             onClick={() => handleUnsaved(job_id)}
           >
             <i className="fa fa-trash mr-5"></i>
-            Bỏ lưu
+            Remove job
           </button>
         </div>
       </div>

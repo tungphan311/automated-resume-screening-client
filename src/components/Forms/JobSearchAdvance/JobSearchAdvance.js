@@ -39,7 +39,7 @@ function JobSearchAdvance({ handleSubmit }) {
           />
         </div>
         <div className="col-sm-2">
-          <button type="submit" className="btn btn-primary btn-full-width" style={{fontWeight: 700}}>
+          <button type="submit" className="btn job-search-ad__btn btn-full-width" style={{fontWeight: 700}}>
             <SearchOutlined style={{ marginRight: "10px" }} />
             Find Jobs
           </button>
