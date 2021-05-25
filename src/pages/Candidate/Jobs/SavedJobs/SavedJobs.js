@@ -9,6 +9,7 @@ import { formatDateTime } from "utils";
 import ApplyModal from "components/Modals/Apply/ApplyModal";
 import LoadingContent from "components/Loading/LoadingContent";
 import { toast, toastErr } from "utils/index";
+import Loading from "components/Loading/Loading";
 
 function CandidateSavedJobs() {
   const [jobs, setJobs] = useState([]);
@@ -102,9 +103,12 @@ function CandidateSavedJobs() {
     <div className="container saved-jobs">
       {total ? (
         <div>
-          <div className="" id="box-result">
+          <div className="box box--white saved-jobs__title">
             <div className="search-meta">
-              <h1 className="saved-jobs__title">
+              <h1
+                className="text-primary bold"
+                style={{ fontSize: 21, marginBottom: 0 }}
+              >
                 {`Saved ${total} ${total > 1 ? "jobs" : "job"}`}
               </h1>
             </div>
@@ -113,7 +117,7 @@ function CandidateSavedJobs() {
       ) : null}
 
       <div className="row">
-        <LoadingContent loading={loading} />
+        <Loading loading={loading} />
         <div className="col-md-12">
           <div className="box box--white" id="box-jobs">
             <div className="job-list search-result">
@@ -161,96 +165,106 @@ const Job = ({
   job_id,
   token,
   handleUnsaved,
-  description
+  description,
+  id
 }) => (
-  <div className="result-job-hover">
-    <div
-      className="row job"
-      style={{
-        borderBottom: lastChild && 0,
-        minHeight: "230px",
-        padding: "20px 0"
-      }}
-    >
-      <div className="hidden-xs col-sm-2 col-avatar">
-        <Link
-          to="#"
-          className="company-logo"
-          style={{ margin: "12px auto 0px" }}
-        >
-          <img src={company_logo} alt="Company avatar" />
-        </Link>
-      </div>
-      <div className="col-sm-8">
-        <h4 className="job-title">
-          <Link to="#">
-            <span
-              className="bold transform-job-title"
-              style={{ color: "#2765cf" }}
+  <Link to={`/job-detail/${id}`}>
+    <div className="result-job-hover">
+      <div
+        className="row job"
+        style={{
+          borderBottom: lastChild && 0,
+          minHeight: "230px",
+          padding: "20px 0"
+        }}
+      >
+        <div className="hidden-xs col-sm-2 col-avatar">
+          <Link
+            to="#"
+            className="company-logo"
+            style={{ margin: "12px auto 0px" }}
+          >
+            <img src={company_logo} alt="Company avatar" />
+          </Link>
+        </div>
+        <div className="col-sm-8">
+          <h4 className="job-title">
+            <Link to="#">
+              <span
+                className="bold transform-job-title"
+                style={{ color: "#2765cf" }}
+              >
+                {job_title}
+              </span>
+            </Link>
+          </h4>
+          <div className="row-company name text_ellipsis">
+            <Link to="#" target="_blank">
+              {company_name}
+            </Link>
+          </div>
+          <div>Saved job: {formatDateTime(created_on)}</div>
+          <Tooltip placement="top" title={province}>
+            <div
+              className="address text_ellipsis"
+              style={{ marginTop: "10px", color: "rgba(28,28,28,.63)" }}
             >
-              {job_title}
-            </span>
-          </Link>
-        </h4>
-        <div className="row-company name text_ellipsis">
-          <Link to="#" target="_blank">
-            {company_name}
-          </Link>
-        </div>
-        <div>Saved job: {formatDateTime(created_on)}</div>
-        <Tooltip placement="top" title={province}>
+              <i
+                className="fas fa-map-marker-alt mr-5"
+                style={{ fontSize: 16, color: "#2557a7" }}
+              ></i>
+              {province}
+            </div>
+          </Tooltip>
           <div
-            className="address text_ellipsis"
-            style={{ marginTop: "10px", color: "rgba(28,28,28,.63)"}}
-          >
-            {province}
-          </div>
-        </Tooltip>
-        <div
-          className="summary show-less-des"
-          style={{ color: "#666" }}
-          dangerouslySetInnerHTML={{ __html: description }}
-        ></div>
-        <div className="row text-dark-gray" id="row-result-info-job">
-          <div className="salary col-sm-4 col-xs-6">
-            <DollarCircleOutlined
-              style={{ fontSize: 16, marginRight: 5, color: "#2557a7" }}
-            />
-            {salary}
-          </div>
-          <div className="deadline col-sm-4 col-xs-6">
-            <ClockCircleOutlined
-              style={{ fontSize: 16, marginRight: 5, color: "#2557a7" }}
-            />
-            {formatDateTime(deadline)}
+            className="summary show-less-des"
+            style={{ color: "#666" }}
+            dangerouslySetInnerHTML={{ __html: description }}
+          ></div>
+          <div className="row text-dark-gray" id="row-result-info-job">
+            <div className="salary col-sm-4 col-xs-6">
+              <DollarCircleOutlined
+                style={{ fontSize: 16, marginRight: 5, color: "#2557a7" }}
+              />
+              {salary}
+            </div>
+            <div className="deadline col-sm-4 col-xs-6">
+              <ClockCircleOutlined
+                style={{ fontSize: 16, marginRight: 5, color: "#2557a7" }}
+              />
+              {formatDateTime(deadline)}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="col-sm-2 job-button-group">
-        <button className="view-apply-button saved-job__apply" onClick={toggleModal}>
-          Apply now
-        </button>
-        <div className="box-save-job">
+        <div className="col-sm-2 job-button-group">
           <button
-            className="btn-unsave unsave"
-            style={{color: "#2765CF"}}
-            onClick={() => handleUnsaved(job_id)}
+            className="view-apply-button saved-job__apply"
+            onClick={toggleModal}
           >
-            <i className="fa fa-trash mr-5"></i>
-            Remove job
+            Apply now
           </button>
+          <div className="box-save-job">
+            <button
+              className="btn-unsave unsave"
+              style={{ color: "#2765CF" }}
+              onClick={() => handleUnsaved(job_id)}
+            >
+              <i className="fa fa-trash mr-5"></i>
+              Remove job
+            </button>
+          </div>
         </div>
       </div>
+      <ApplyModal
+        visible={show}
+        onCancel={toggleModal}
+        company_name={company_name}
+        job_title={job_title}
+        token={token}
+        jp_id={job_id}
+      />
     </div>
-    <ApplyModal
-      visible={show}
-      onCancel={toggleModal}
-      company_name={company_name}
-      job_title={job_title}
-      token={token}
-      jp_id={job_id}
-    />
-  </div>
+  </Link>
 );
 
 const EmptyJob = () => (

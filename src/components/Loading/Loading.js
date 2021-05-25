@@ -6,7 +6,7 @@ function Loading({ loading }) {
       <lottie-player
         src="https://assets7.lottiefiles.com/packages/lf20_h59xofz0.json"
         mode="bounce"
-        background="rgba(0, 0, 0, 0)"
+        background="rgb(255,255,255)"
         speed="0.9"
         style={{ width: "250px", height: "250px" }}
         loop

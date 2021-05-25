@@ -7,6 +7,7 @@ import { getApplyJobs } from "services/jobServices";
 import { formatDateTime, toastErr } from "utils/index";
 import { Tooltip, Pagination } from "antd";
 import LoadingContent from "components/Loading/LoadingContent";
+import Loading from "components/Loading/Loading";
 
 function CandidateAppliedJobs() {
   const [jobs, setJobs] = useState([]);
@@ -32,7 +33,8 @@ function CandidateAppliedJobs() {
           salary,
           deadline,
           provinces,
-          company_logo
+          company_logo,
+          description
         }
       }) => {
         const province_names = provinces.map((id) => {
@@ -48,7 +50,8 @@ function CandidateAppliedJobs() {
           salary,
           deadline: formatDateTime(deadline),
           province: province_names.join(", "),
-          company_logo
+          company_logo,
+          description
         };
       }
     );
@@ -78,7 +81,7 @@ function CandidateAppliedJobs() {
   return (
     <div className="container" style={{ marginTop: 20 }}>
       <div className="row">
-        <LoadingContent loading={loading} />
+        <Loading loading={loading} />
         <div style={{ width: "100%" }}>
           {!jobs.length ? (
             <Empty />
@@ -90,7 +93,7 @@ function CandidateAppliedJobs() {
                     className="text-primary bold"
                     style={{ fontSize: 21, marginBottom: 0 }}
                   >
-                    Danh sách {total} việc làm đã ứng tuyển
+                    {`Applied ${total} ${total > 1 ? "jobs" : "job"}`}
                   </h1>
                 </div>
               </div>
@@ -132,46 +135,46 @@ const Job = ({
   deadline,
   province,
   company_logo,
-  lastChild
+  lastChild,
+  description,
+  id
 }) => (
-  <div className="result-job-hover">
-    <div className="row job" style={lastChild ? { borderBottom: 0 } : {}}>
-      <div className="hidden-xs col-sm-2 col-avatar">
-        <Link
-          to="#"
-          className="company-logo"
-          style={{ margin: "12px auto 0px" }}
-        >
-          <img src={company_logo} alt="Company avatar" />
-        </Link>
-      </div>
-      <div className="col-sm-10">
-        <h4 className="job-title">
-          <Link to="#">
-            <span className="bold transform-job-title">{job_title}</span>
-          </Link>
-        </h4>
-        <div>Ứng tuyển: {created_on}</div>
-        <div className="row-company name text_ellipsis">
-          <Link to="#" target="_blank">
-            {company_name}
+  <Link
+    to={`/job-detail/${id}`}
+  >
+    <div className="result-job-hover">
+      <div className="row job" style={lastChild ? { borderBottom: 0 } : {}}>
+        <div className="hidden-xs col-sm-2 col-avatar">
+          <Link
+            to="#"
+            className="company-logo"
+            style={{ margin: "12px auto 0px" }}
+          >
+            <img src={company_logo} alt="Company avatar" />
           </Link>
         </div>
-        <div className="row text-dark-gray" id="row-result-info-job">
-          <div className="salary col-sm-4 col-xs-6">
-            <DollarCircleOutlined
-              style={{ fontSize: 16, marginRight: 5, color: "#2557a7" }}
-            />
-            {salary}
+        <div className="col-sm-10">
+          <h4 className="job-title">
+            <Link to="#">
+              <span
+                style={{ color: "#2765cf" }}
+                className="bold transform-job-title"
+              >
+                {job_title}
+              </span>
+            </Link>
+          </h4>
+          <div className="row-company name text_ellipsis">
+            <Link to="#" target="_blank">
+              {company_name}
+            </Link>
           </div>
-          <div className="deadline col-sm-4 col-xs-6">
-            <ClockCircleOutlined
-              style={{ fontSize: 16, marginRight: 5, color: "#2557a7" }}
-            />
-            {deadline}
-          </div>
+          <div>Applied on: {created_on}</div>
           <Tooltip placement="top" title={province}>
-            <div className="address col-sm-4 col-xs-12 text_ellipsis">
+            <div
+              className="address text_ellipsis"
+              style={{ marginTop: "10px", color: "rgba(28,28,28,.63)" }}
+            >
               <i
                 className="fas fa-map-marker-alt mr-5"
                 style={{ fontSize: 16, color: "#2557a7" }}
@@ -179,10 +182,29 @@ const Job = ({
               {province}
             </div>
           </Tooltip>
+          <div
+            className="summary show-less-des"
+            style={{ color: "#666" }}
+            dangerouslySetInnerHTML={{ __html: description }}
+          ></div>
+          <div className="row text-dark-gray" id="row-result-info-job">
+            <div className="salary col-sm-4 col-xs-6">
+              <DollarCircleOutlined
+                style={{ fontSize: 16, marginRight: 5, color: "#2557a7" }}
+              />
+              {salary}
+            </div>
+            <div className="deadline col-sm-4 col-xs-6">
+              <ClockCircleOutlined
+                style={{ fontSize: 16, marginRight: 5, color: "#2557a7" }}
+              />
+              {deadline}
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </Link>
 );
 
 const Empty = () => (
