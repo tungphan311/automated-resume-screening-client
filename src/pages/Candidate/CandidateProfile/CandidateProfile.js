@@ -25,6 +25,7 @@ import ContentEditable from "react-contenteditable";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import { getIndexArray } from "utils/index";
 import AddSkillSuggest from "components/AddSkillSuggest/AddSkillSuggest";
+import AddSoftSkillSuggest from "components/AddSoftSkillSuggest/AddSoftSkillSuggest";
 
 import { getCandidateProfile } from "services/candidateProfileServices";
 import { candidateProfileAction } from "state/actions/profileAction";
@@ -67,6 +68,7 @@ function MyProfile() {
   const eduFormRef = useRef();
   const exFormRef = useRef();
   const skillFormRef = useRef();
+  const softSkillFormRef = useRef();
   const resumeFormRef = useRef();
 
   const token = useSelector((state) => state.auth.candidate.token);
@@ -79,6 +81,7 @@ function MyProfile() {
   const [eduForm, setEduForm] = useState(false);
   const [exForm, setExForm] = useState(false);
   const [skillForm, setSkillForm] = useState(false);
+  const [softSkillForm, setSoftSkillForm] = useState(false);
   const [resumeForm, setResumeForm] = useState(false);
   const [profileForm, setProfileForm] = useState(false);
 
@@ -87,6 +90,12 @@ function MyProfile() {
   const [value, setValue] = useState("");
   const [skills, setSkills] = useState();
   const [defaultSkills, setDefaultSkills] = useState();
+
+  //Handle chip soft skills
+  const [isSoftAdd, setIsSoftAdd] = useState(false);
+  const [softValue, setSoftValue] = useState("");
+  const [softSkills, setSoftSkills] = useState();
+  const [defaultSoftSkills, setDefaultSoftSkills] = useState();
 
   const { RangePicker } = DatePicker;
 
@@ -140,6 +149,11 @@ function MyProfile() {
     skillFormRef.current.scrollIntoView();
   };
 
+  const toggleSoftSkillForm = () => {
+    setSoftSkillForm(true);
+    softSkillFormRef.current.scrollIntoView();
+  };
+
   const toggleResumeForm = () => {
     setResumeForm(true);
     resumeFormRef.current.scrollIntoView();
@@ -173,7 +187,6 @@ function MyProfile() {
   };
 
   const getNewSkill = (value) => {
-    console.log("new skill", value);
     setValue(value);
     setIsAdd(false);
   };
@@ -189,6 +202,31 @@ function MyProfile() {
   const onCancelSkills = () => {
     setSkillForm(false);
     setSkills(defaultSkills);
+  };
+
+  // Soft skills hanlde actions
+  const onSoftDelete = (key) => {
+    const newSkills =
+      softSkills && softSkills?.length && softSkills?.filter((ele) => ele.key !== key);
+    setSoftSkills(newSkills);
+  };
+
+  const getNewSoftSkill = (softValue) => {
+    setSoftValue(softValue);
+    setIsSoftAdd(false);
+  };
+
+  const onAddSoftSkill = () => {
+    const key = softSkills && softSkills?.length && softSkills[softSkills?.length - 1].key + 1;
+    const newSkills = [...softSkills, { key, value: softValue }];
+    setSoftSkills(newSkills);
+    setSoftValue("");
+    setIsSoftAdd(true);
+  };
+
+  const onCancelSoftSkills = () => {
+    setSoftSkillForm(false);
+    setSoftSkills(defaultSoftSkills);
   };
 
   // Hanlde upload file
@@ -208,8 +246,6 @@ function MyProfile() {
       formData.append("file", file);
 
       dispatch(uploadCVAction(formData));
-
-      // await uploadFile(formData);
     }
   };
 
@@ -223,6 +259,7 @@ function MyProfile() {
   const handleSubmit = () => {
     setLoading(true);
     const values = skills.map((ele) => ele.value);
+    const softValues = softSkills.map((ele) => ele.value);
 
     dispatch(
       updateCVProfileAction({
@@ -230,6 +267,7 @@ function MyProfile() {
         education: resume.educations,
         experience: resume.experiences,
         values,
+        softValues,
         monthEx: resume.months_of_experience
       })
     )
@@ -240,6 +278,7 @@ function MyProfile() {
           resume.months_of_experience !== resumeDefault.months_of_experience) &&
           setExForm(false);
         values.length !== defaultSkills.length && setSkillForm(false);
+        softValues.length !== defaultSoftSkills.length && setSoftSkillForm(false);
       })
       .catch(() => {
         setLoading(false);
@@ -261,6 +300,9 @@ function MyProfile() {
         setDefaultSkills(
           getIndexArray(res.data.data.resumes[0].technical_skills)
         );
+        setSoftSkills(getIndexArray(res.data.data.resumes[0].soft_skills?.split("|")))
+        setDefaultSoftSkills(getIndexArray(res.data.data.resumes[0].soft_skills?.split("|")))
+
       })
       .catch((err) => {
         // toastErr(err);
@@ -572,13 +614,12 @@ function MyProfile() {
                   </div>
                 </div>
 
-                {/* Skills  */}
+                {/* Skills */}
                 <div
                   className={
                     "my-profile__resume__skills " +
                     (skillForm && "edit-mode-container")
-                  }
-                >
+                  }>
                   <h4
                     className="profile-title"
                     style={{ fontWeight: "700", marginBottom: "32px" }}
@@ -655,8 +696,92 @@ function MyProfile() {
                     )}
                   </div>
                 </div>
+
+                <div
+                  className={
+                    "my-profile__resume__skills " +
+                    (softSkillForm && "edit-mode-container")
+                  }
+                >
+                  <h4
+                    className="profile-title"
+                    style={{ fontWeight: "700", marginBottom: "32px" }}
+                  >
+                    Soft Skills
+                  </h4>
+                  <div className="chip" style={{ marginTop: "20px" }}>
+                    {softSkills &&
+                      softSkills.length &&
+                      softSkills.map(({ key, value }) => (
+                        <Skill
+                          skill={value}
+                          key={key}
+                          id={key}
+                          onDelete={onSoftDelete}
+                          isAction={softSkillForm}
+                        />
+                      ))}
+                  </div>
+
+                  {softSkillForm && (
+                    <div className="my-profile__resume__skills__add__sub">
+                      Click add to add more soft skills help employers find you
+                    </div>
+                  )}
+                  <div
+                    className="inline-skill-container is-compact my-profile__resume__skills__add"
+                    style={{
+                      marginRight: "40px",
+                      display: softSkillForm && "flex"
+                    }}
+                  >
+                    <div className="inline-skill-input">
+                      <div className="TextInput-wrapper">
+                        <AddSoftSkillSuggest
+                          handleAddSoft={getNewSoftSkill}
+                          isAddSoft={isSoftAdd}
+                          isCorner={true}
+                        />
+                      </div>
+                    </div>
+                    <div className="inline-skill-button">
+                      <Button
+                        className="my-profile__resume__skills__add__btn"
+                        type="primary"
+                        size="large"
+                        disabled={!softValue}
+                        icon={<PlusOutlined />}
+                        onClick={onAddSoftSkill}
+                      >
+                        Add skill
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Button  */}
+                  <div className="profile-button-gr">
+                    <button
+                      ref={softSkillFormRef}
+                      className={
+                        softSkillForm ? "save-btn profile-button" : "profile-button"
+                      }
+                      onClick={!softSkillForm ? toggleSoftSkillForm : handleSubmit}
+                    >
+                      {!softSkillForm ? "Add skills" : "Save"}
+                    </button>
+                    {softSkillForm && (
+                      <button
+                        className="profile-button-cancel"
+                        onClick={onCancelSoftSkills}
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+                </div>
               </>
             )}
+
             {/* Resume file*/}
             <div
               ref={resumeFormRef}
@@ -755,7 +880,7 @@ function MyProfile() {
                       To add a resume, click here or simply browse for a file.
                     </span>
                     <Button
-                      onClick={handleSelectFile}
+                      // onClick={handleSelectFile}
                       icon={<UploadOutlined />}
                       className="my-profile__resume__upload-file__box__btn"
                     >

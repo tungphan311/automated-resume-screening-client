@@ -9,6 +9,8 @@ import { getJobDetail, saveJob } from "services/jobServices";
 import { format_date, toast, toastErr, formatProvince } from "utils/index";
 import LoginModal from "components/Modals/LoginModal/LoginModal";
 import { useSelector } from "react-redux";
+import MissingSkillItem from "./MissingSkillItem";
+import { Link } from "react-router-dom";
 
 const DEFAULT = {
   apply: false,
@@ -16,8 +18,6 @@ const DEFAULT = {
 };
 
 function JobDetail({ id, top, onChangeSelect, bottom }) {
-  const size = useWindowSize();
-  const padding = (size.width - 1140) / 2;
   const [showModal, toggleShowModal] = useState(DEFAULT);
   const [job, setJob] = useState({});
   const [loading, setLoading] = useState(false);
@@ -40,9 +40,12 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
         .then((res) => {
           setJob({
             ...res.data.data.post,
+            candSoftSkill: res.data.data.cand_soft_skills?.split("|") || null,
+            candTechSkills:
+              res.data.data.cand_technical_skills?.split("|") || null,
             saved: res.data.data.saved_date
           });
-          console.log('save', res.data.data.saved_date)
+          console.log("save", res.data.data.saved_date);
         })
         .catch((err) => {
           toastErr(err);
@@ -69,9 +72,25 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
     company_logo,
     company_background,
     saved_date,
-    saved
+    saved,
+    general_skills,
+    soft_skills,
+    candSoftSkill,
+    candTechSkills
   } = job;
-  // console.log("saved_date", job && );
+
+  const diffTechSkills =
+    general_skills &&
+    candTechSkills?.length &&
+    general_skills
+      ?.split("|")
+      .filter((value) => !candTechSkills?.includes(value));
+
+  const diffSoftSkills =
+    soft_skills &&
+    candSoftSkill?.length &&
+    soft_skills?.split("|").filter((value) => !candSoftSkill?.includes(value));
+  console.log("filter", diffSoftSkills);
 
   return (
     <>
@@ -79,9 +98,7 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
         id="vjs-container"
         tabIndex="-1"
         style={{
-          left: `${padding + 441}px`,
-          top: `${top > -230 ? top : -230}px`,
-          bottom
+          left: `450px`
         }}
       >
         {!loading ? (
@@ -117,19 +134,21 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
                     </div>
                     <div className="job-detail-section-item">
                       <div className="job-detail-section-itemKey text-bold">
-                        {"Slary: "}
+                        Salary:
                       </div>
                       <span>{salary}</span>
                     </div>
                     <div className="job-detail-section-item">
                       <div className="job-detail-section-itemKey text-bold">
-                        {"Hình thức làm việc: "}
+                        {/* {"Hình thức làm việc: "} */}
+                        Work type:
                       </div>
                       <span>{contract_type}</span>
                     </div>
                     <div className="job-detail-section-item">
                       <div className="job-detail-section-itemKey text-bold">
-                        {"Số lượng cần tuyển: "}
+                        {/* {"Số lượng cần tuyển: "} */}
+                        Amount:
                       </div>
                       <span>
                         {amount === 0
@@ -138,6 +157,57 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
                       </span>
                     </div>
                   </div>
+
+                  <div>
+                    {(diffTechSkills?.length || diffSoftSkills?.length) && (
+                      <div style={{ marginTop: "25px" }}>
+                        <h2 className="jobSectionHeader">
+                          <b style={{ fontSize: "1.125rem" }}>
+                            Resume insights
+                          </b>
+                        </h2>
+                        <p className="detail-page__miss-sub">
+                          Here's how your resume aligns with the job description
+                        </p>
+
+                        {diffTechSkills?.length && (
+                          <MissingSkillItem
+                            title=" Your resume might be missing some technical skills"
+                            skills={
+                              diffTechSkills.length > 10
+                                ? diffTechSkills?.slice(0, 10)
+                                : diffTechSkills
+                            }
+                          />
+                        )}
+                        {diffSoftSkills?.length && (
+                          <MissingSkillItem
+                            title="Your resume might be missing some soft skills"
+                            skills={
+                              diffSoftSkills.length > 10
+                                ? diffSoftSkills?.slice(0, 10)
+                                : diffSoftSkills
+                            }
+                          />
+                        )}
+
+                        <div className="detail-page__resume">
+                          <span className="detail-page__resume__title">
+                            Make sure your resume is up to date
+                          </span>
+                          <span className="detail-page__resume__sub-title">
+                            Changes may take some time to be reflected in the
+                            above message.
+                          </span>
+
+                          <button className="detail-page__resume__button">
+                            <Link to="/profile">Update Resume</Link>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
                   <div id="jobDescriptionTitle">Full Job Description</div>
                   <div id="jobDescriptionText">
                     <p>
@@ -166,7 +236,6 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
                 </div>
               </div>
             </div>
-            <div className="vjs-content-padding-bottom"></div>
           </>
         ) : (
           <Loading />
@@ -209,7 +278,6 @@ const Header = ({
   provinceTotal,
   saved
 }) => {
-
   const [save, setSave] = useState(saved ? true : false);
   const [loading, setLoading] = useState(false);
 
@@ -233,11 +301,11 @@ const Header = ({
   return (
     <div id="vjs-header" className="vjs-header-no-shadow">
       <div id="vjs-image-wrapper">
-        <img
+        {/* <img
           src={company_background || "/assets/img/company-default-bg.jpg"}
           alt="company background"
           className="vjs-header-background"
-        />
+        /> */}
         <img
           src={company_logo || "/assets/img/company-default-logo.png"}
           alt="company logo"

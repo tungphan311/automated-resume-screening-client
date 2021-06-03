@@ -45,6 +45,7 @@ export function* updateResumeSaga(action) {
       educations: education,
       experiences: experience,
       skills: values.join("|"),
+      // softskills: softValues.join("|"),
       months_of_experience
     };
 
@@ -67,6 +68,7 @@ export function* updateCVProfileSaga(action) {
     const {
       resumeId,
       values,
+      softValues,
       education,
       experience,
       monthEx
@@ -79,6 +81,7 @@ export function* updateCVProfileSaga(action) {
       educations: education,
       experiences: experience,
       skills: values.join("|"),
+      softskills: softValues.join("|"),
       months_of_experience: monthEx,
     };
 

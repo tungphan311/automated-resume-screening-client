@@ -98,26 +98,7 @@ function CandidateJobList({ history }) {
     );
   };
 
-  const isBottom = (el) =>
-    el.getBoundingClientRect().bottom <= window.innerHeight;
-
   useEffect(() => {
-    function getScroll() {
-      const scrollY = window.scrollY;
-      setTop(top - scrollY);
-
-      const el = document.getElementById("content");
-
-      if (isBottom(el)) {
-        const footer = document.getElementById("footer");
-        setBottom(
-          document.body.clientHeight - footer.getBoundingClientRect().top
-        );
-      } else {
-        setBottom(-1);
-      }
-    }
-
     const searchHistory = JSON.parse(localStorage.getItem("search-history"));
     setSearchHistory(searchHistory);
 
@@ -201,9 +182,6 @@ function CandidateJobList({ history }) {
 
     fetchJobs();
 
-    window.addEventListener("scroll", getScroll);
-
-    return () => window.removeEventListener("scroll", getScroll);
   }, [params]);
 
   const handleSubmit = async () => {
@@ -292,11 +270,6 @@ function CandidateJobList({ history }) {
           </div>
         </div>
         <div
-          ref={(el) => {
-            if (!el) return;
-
-            setTop(el.getBoundingClientRect().y);
-          }}
         >
           <div className="container">
             <table id="searchContent" className="serpContainerMinHeight">

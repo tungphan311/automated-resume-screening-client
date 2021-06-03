@@ -28,7 +28,6 @@ function NavBar() {
   const [info, setInfo] = useState(false);
   const [clickItem, setClickItem] = useState(null);
 
-  // const recruiter = pathname.startsWith("/recruiter");
 
   //Handle logout
   const logOut = () => {
@@ -56,6 +55,15 @@ function NavBar() {
 
   useEffect(() => {
     accessToken && dispatch(candidateProfileAction(accessToken));
+
+    const { pathname } = window.location;
+
+     pathname.startsWith("/find-jobs") && setClickItem(0);
+     pathname.startsWith("/profile") && setClickItem(1);
+     pathname.startsWith("/career-advice") && setClickItem(2);
+     pathname.startsWith("") && setClickItem(null);
+
+
   }, [profile.fullName]);
 
   return (

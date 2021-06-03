@@ -40,7 +40,8 @@ function ExperienceForm({ curStep, handleChangeStep, hideBtn = false }) {
               }}
             >
               <div className="heading-margin sg-heading3 title">
-                Kinh nghiệm thực tế
+                {/* Kinh nghiệm thực tế */}
+                Experience
               </div>
 
               <div>
@@ -73,7 +74,8 @@ function ExperienceForm({ curStep, handleChangeStep, hideBtn = false }) {
           className={"form-complete " + (hideBtn && "hide-btn")}
           onClick={handleSubmit}
         >
-          Tới trang sau
+          {/* Tới trang sau */}
+          Next
         </Button>
         {curStep > 1 && (
           <Button
@@ -81,7 +83,8 @@ function ExperienceForm({ curStep, handleChangeStep, hideBtn = false }) {
             style={{ margin: "0 8px" }}
             onClick={() => handleChangeStep(curStep - 1)}
           >
-            Quay lại
+            {/* Quay lại */}
+            Previous step
           </Button>
         )}
       </div>

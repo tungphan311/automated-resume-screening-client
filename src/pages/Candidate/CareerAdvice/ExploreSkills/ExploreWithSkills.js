@@ -90,10 +90,48 @@ const ExploreWithSkills = ({ profile }) => {
       });
   };
 
-  const sortData = (data) =>{
-  let res = data.sort(function(a, b){return b.matchedSkills.length - a.matchedSkills.length});
+  const sortData = (data) => {
+    let res = data.sort(function (a, b) {
+      return b.matchedSkills.length - a.matchedSkills.length;
+    });
 
-    return res
+    return res;
+  };
+
+  const getGood = (data) => {
+    const filteredArray =
+    data?.filter((item) => {
+      const listMain = item.mainSkills.map((item) => item.name);
+      let filter = item?.matchedSkills.filter((value) =>
+        listMain.includes(value)
+      );
+      console.log("filter", filter);
+      let ratio = filter.length / item.mainSkills.length;
+      console.log(ratio);
+      if (ratio > 0.7) {
+        return item;
+      }
+    });
+
+    return filteredArray
+  }
+
+  const getEnjoy = (data) => {
+    const filteredArray =
+    data?.filter((item) => {
+      const listMain = item.mainSkills.map((item) => item.name);
+      let filter = item?.matchedSkills.filter((value) =>
+        listMain.includes(value)
+      );
+      console.log("filter", filter);
+      let ratio = filter.length / item.mainSkills.length;
+      console.log(ratio);
+      if (ratio > 0.5) {
+        return item;
+      }
+    });
+
+    return filteredArray
   }
 
   useEffect(() => {
@@ -213,7 +251,39 @@ const ExploreWithSkills = ({ profile }) => {
                       <MyLoader />
                     ) : (
                       exploreSkillsData.length &&
-                      sortData(exploreSkillsData).map(
+                      sortData(exploreSkillsData)
+                        .slice(0, 5)
+                        .map(
+                          (
+                            {
+                              domain,
+                              matchedSkills,
+                              salary,
+                              totalCount,
+                              mainSkills
+                            },
+                            index
+                          ) => (
+                            <MatchSkill
+                              key={index}
+                              domain={domain}
+                              matchedSkills={matchedSkills}
+                              salary={salary}
+                              totalCount={totalCount}
+                              mainSkills={mainSkills}
+                            />
+                          )
+                        )
+                    )}
+                  </Tab>
+                  <Tab eventKey="2" title="What you're good at">
+                    {loadContent ? (
+                      <MyLoader />
+                    ) : (
+                      exploreSkillsData.length &&
+                      getGood(
+                        exploreSkillsData
+                      ).map(
                         (
                           {
                             domain,
@@ -236,11 +306,35 @@ const ExploreWithSkills = ({ profile }) => {
                       )
                     )}
                   </Tab>
-                  <Tab eventKey="2" title="What you're good at">
-                    <MatchSkill />
-                  </Tab>
                   <Tab eventKey="3" title="What you enjoy">
-                    <MatchSkill />
+                  {loadContent ? (
+                      <MyLoader />
+                    ) : (
+                      exploreSkillsData.length &&
+                      getEnjoy(
+                        exploreSkillsData
+                      ).map(
+                        (
+                          {
+                            domain,
+                            matchedSkills,
+                            salary,
+                            totalCount,
+                            mainSkills
+                          },
+                          index
+                        ) => (
+                          <MatchSkill
+                            key={index}
+                            domain={domain}
+                            matchedSkills={matchedSkills}
+                            salary={salary}
+                            totalCount={totalCount}
+                            mainSkills={mainSkills}
+                          />
+                        )
+                      )
+                    )}
                   </Tab>
                 </Tabs>
               </div>

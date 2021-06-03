@@ -19,12 +19,15 @@ function ConfirmModal({ visible, onCancel }) {
           Review
         </button>
         <div className="message-Xfb-4">
+          {/* <h2>We prefilled your editable online resume</h2> */}
           <div className="review-cv__icon">
             <img src="/assets/svg/ChecklistVariant.svg" alt="checklist" />
           </div>
           <ul>
-            <li>Kiểm tra một vài lỗi mà chúng tôi có thể tạo ra</li>
-            <li>Tinh chỉnh lại CV của bạn</li>
+            {/* <li>Kiểm tra một vài lỗi mà chúng tôi có thể tạo ra</li>
+            <li>Tinh chỉnh lại CV của bạn</li> */}
+            <li>Check for mistakes we might have made</li>
+            <li>Refine using personalized tips</li>
           </ul>
         </div>
       </div>

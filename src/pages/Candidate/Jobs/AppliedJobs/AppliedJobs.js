@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { getApplyJobs } from "services/jobServices";
 import { formatDateTime, toastErr } from "utils/index";
 import { Tooltip, Pagination } from "antd";
-import LoadingContent from "components/Loading/LoadingContent";
 import Loading from "components/Loading/Loading";
 
 function CandidateAppliedJobs() {
