@@ -37,7 +37,7 @@ function Dropdown({ title, options, value, onChange, select = false }) {
       {value === undefined ? (
         <>
           <button className="dd-button" onClick={openDropdown}>
-            <span>
+            <span style={{fontSize:'14px'}}>
               {title}
               <span>
                 <CaretDownOutlined

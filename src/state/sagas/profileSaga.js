@@ -24,7 +24,7 @@ export function* getCandidateProfileSaga({ payload }) {
 
     yield put({ type: GET_CANDIDATE_PROFILE_SUCCESS, response });
   } catch (err) {
-    yield toastErr(err);
+    // yield toastErr(err);
   }
 }
 

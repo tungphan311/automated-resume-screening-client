@@ -1,7 +1,7 @@
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.css";
 // import firebase from "firebase";
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
@@ -12,6 +12,7 @@ import store from "state/store";
 import "styles/index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import "./i18next";
 
 // let firebaseConfig = {
 //   apiKey: "AIzaSyB4gngEoIkWnnqCyc7i6xu-v_fj_G6U1Ts",
@@ -31,11 +32,13 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router history={history}>
-        <App>
-          <Switch>
-            <Route path="/" component={Routes} />
-          </Switch>
-        </App>
+        <Suspense fallback=" ">
+          <App>
+            <Switch>
+              <Route path="/" component={Routes} />
+            </Switch>
+          </App>
+        </Suspense>
       </Router>
     </Provider>
   </React.StrictMode>,

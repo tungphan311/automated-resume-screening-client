@@ -79,11 +79,12 @@ function BasicForm({ curStep, handleChangeStep }) {
         </div>
       </div>
       <div>
-        <Button type="primary" onClick={handleSubmit}>
+        <Button className="form-complete" onClick={handleSubmit}>
           Tới trang sau
         </Button>
         {curStep > 1 && (
           <Button
+            className="form-cancel"
             style={{ margin: "0 8px" }}
             onClick={() => handleChangeStep(curStep - 1)}
           >

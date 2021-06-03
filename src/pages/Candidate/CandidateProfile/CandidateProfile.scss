@@ -418,6 +418,11 @@
 
     &__delete {
       color: #7a7e85;
+
+      &__icon{
+        font-size: 12px;
+      }
+
       :hover {
         color: #085ff7;
       }

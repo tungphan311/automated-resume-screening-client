@@ -32,3 +32,13 @@
   font-weight: 700;
   line-height: 35px;
 }
+
+.show-less-des {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}

@@ -73,7 +73,6 @@ function CandidateJobList({ history }) {
   const { provinces } = useSelector((state) => state.cv);
 
   const mapResponseToState = (data) => {
-    console.log('data', data);
     return data.map(
       ({
         company_name,
@@ -99,26 +98,7 @@ function CandidateJobList({ history }) {
     );
   };
 
-  const isBottom = (el) =>
-    el.getBoundingClientRect().bottom <= window.innerHeight;
-
   useEffect(() => {
-    function getScroll() {
-      const scrollY = window.scrollY;
-      setTop(top - scrollY);
-
-      const el = document.getElementById("content");
-
-      if (isBottom(el)) {
-        const footer = document.getElementById("footer");
-        setBottom(
-          document.body.clientHeight - footer.getBoundingClientRect().top
-        );
-      } else {
-        setBottom(-1);
-      }
-    }
-
     const searchHistory = JSON.parse(localStorage.getItem("search-history"));
     setSearchHistory(searchHistory);
 
@@ -202,9 +182,6 @@ function CandidateJobList({ history }) {
 
     fetchJobs();
 
-    window.addEventListener("scroll", getScroll);
-
-    return () => window.removeEventListener("scroll", getScroll);
   }, [params]);
 
   const handleSubmit = async () => {
@@ -252,7 +229,7 @@ function CandidateJobList({ history }) {
       <div id="search-jobs-wrapper">
         <div
           id="search-jobs"
-          className="search-jobs-container search-jobs-widget"
+          className="search-jobs-container search-jobs-widget search-jobs-widget-blue"
         >
           <div className="container">
             <JobSearchAdvance onSubmit={handleSubmit} history={history} />
@@ -293,11 +270,6 @@ function CandidateJobList({ history }) {
           </div>
         </div>
         <div
-          ref={(el) => {
-            if (!el) return;
-
-            setTop(el.getBoundingClientRect().y);
-          }}
         >
           <div className="container">
             <table id="searchContent" className="serpContainerMinHeight">

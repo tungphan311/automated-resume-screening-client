@@ -25,6 +25,7 @@ import ContentEditable from "react-contenteditable";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import { getIndexArray } from "utils/index";
 import AddSkillSuggest from "components/AddSkillSuggest/AddSkillSuggest";
+import AddSoftSkillSuggest from "components/AddSoftSkillSuggest/AddSoftSkillSuggest";
 
 import { getCandidateProfile } from "services/candidateProfileServices";
 import { candidateProfileAction } from "state/actions/profileAction";
@@ -67,6 +68,7 @@ function MyProfile() {
   const eduFormRef = useRef();
   const exFormRef = useRef();
   const skillFormRef = useRef();
+  const softSkillFormRef = useRef();
   const resumeFormRef = useRef();
 
   const token = useSelector((state) => state.auth.candidate.token);
@@ -79,6 +81,7 @@ function MyProfile() {
   const [eduForm, setEduForm] = useState(false);
   const [exForm, setExForm] = useState(false);
   const [skillForm, setSkillForm] = useState(false);
+  const [softSkillForm, setSoftSkillForm] = useState(false);
   const [resumeForm, setResumeForm] = useState(false);
   const [profileForm, setProfileForm] = useState(false);
 
@@ -87,6 +90,12 @@ function MyProfile() {
   const [value, setValue] = useState("");
   const [skills, setSkills] = useState();
   const [defaultSkills, setDefaultSkills] = useState();
+
+  //Handle chip soft skills
+  const [isSoftAdd, setIsSoftAdd] = useState(false);
+  const [softValue, setSoftValue] = useState("");
+  const [softSkills, setSoftSkills] = useState();
+  const [defaultSoftSkills, setDefaultSoftSkills] = useState();
 
   const { RangePicker } = DatePicker;
 
@@ -140,6 +149,11 @@ function MyProfile() {
     skillFormRef.current.scrollIntoView();
   };
 
+  const toggleSoftSkillForm = () => {
+    setSoftSkillForm(true);
+    softSkillFormRef.current.scrollIntoView();
+  };
+
   const toggleResumeForm = () => {
     setResumeForm(true);
     resumeFormRef.current.scrollIntoView();
@@ -173,7 +187,6 @@ function MyProfile() {
   };
 
   const getNewSkill = (value) => {
-    console.log("new skill", value);
     setValue(value);
     setIsAdd(false);
   };
@@ -189,6 +202,31 @@ function MyProfile() {
   const onCancelSkills = () => {
     setSkillForm(false);
     setSkills(defaultSkills);
+  };
+
+  // Soft skills hanlde actions
+  const onSoftDelete = (key) => {
+    const newSkills =
+      softSkills && softSkills?.length && softSkills?.filter((ele) => ele.key !== key);
+    setSoftSkills(newSkills);
+  };
+
+  const getNewSoftSkill = (softValue) => {
+    setSoftValue(softValue);
+    setIsSoftAdd(false);
+  };
+
+  const onAddSoftSkill = () => {
+    const key = softSkills && softSkills?.length && softSkills[softSkills?.length - 1].key + 1;
+    const newSkills = [...softSkills, { key, value: softValue }];
+    setSoftSkills(newSkills);
+    setSoftValue("");
+    setIsSoftAdd(true);
+  };
+
+  const onCancelSoftSkills = () => {
+    setSoftSkillForm(false);
+    setSoftSkills(defaultSoftSkills);
   };
 
   // Hanlde upload file
@@ -208,8 +246,6 @@ function MyProfile() {
       formData.append("file", file);
 
       dispatch(uploadCVAction(formData));
-
-      // await uploadFile(formData);
     }
   };
 
@@ -223,6 +259,7 @@ function MyProfile() {
   const handleSubmit = () => {
     setLoading(true);
     const values = skills.map((ele) => ele.value);
+    const softValues = softSkills.map((ele) => ele.value);
 
     dispatch(
       updateCVProfileAction({
@@ -230,6 +267,7 @@ function MyProfile() {
         education: resume.educations,
         experience: resume.experiences,
         values,
+        softValues,
         monthEx: resume.months_of_experience
       })
     )
@@ -240,6 +278,7 @@ function MyProfile() {
           resume.months_of_experience !== resumeDefault.months_of_experience) &&
           setExForm(false);
         values.length !== defaultSkills.length && setSkillForm(false);
+        softValues.length !== defaultSoftSkills.length && setSoftSkillForm(false);
       })
       .catch(() => {
         setLoading(false);
@@ -261,9 +300,12 @@ function MyProfile() {
         setDefaultSkills(
           getIndexArray(res.data.data.resumes[0].technical_skills)
         );
+        setSoftSkills(getIndexArray(res.data.data.resumes[0].soft_skills?.split("|")))
+        setDefaultSoftSkills(getIndexArray(res.data.data.resumes[0].soft_skills?.split("|")))
+
       })
       .catch((err) => {
-        toastErr(err);
+        // toastErr(err);
       })
       .finally(() => {
         setLoading(false);
@@ -273,11 +315,10 @@ function MyProfile() {
   useEffect(() => {
     if (token) {
       fetchProfile();
-      dispatch(candidateProfileAction(token));
 
       dispatch({ type: GET_JOB_DOMAIN });
     }
-  }, [profile.name]);
+  }, []);
 
   // useEffect(() => {
   //   dispatch(candidateProfileAction(token));
@@ -398,31 +439,7 @@ function MyProfile() {
                       size="large"
                     />
                   </Form.Item>
-                  {/* Provinces  */}
-                  {/* <h4 className="my-profile__candidate__edit__title__live">
-                    Lives in
-                  </h4>
-                  <div
-                    className="explore-look__input my-profile__candidate__edit__select"
-                    style={{}}
-                  >
-                    <div className="dropdown pr-10" style={{ zIndex: 5 }}>
-                      <Select
-                        value={province}
-                        onChange={(value) => setProvince(value)}
-                        options={provinceOptions}
-                        menuPosition="fixed"
-                        isClearable={true}
-                      />
-                    </div>
-                  </div> */}
 
-                  {/* Button Login  */}
-                  {/* <button
-                    htmlType="submit"
-                    className="candidate-login__container__left__form__btn"
-                  > */}
-                  {/* {isLoading && <div className="dashed-loading"></div>} */}
                   <div className="profile-button-gr">
                     <button
                       className="save-btn profile-button"
@@ -451,15 +468,12 @@ function MyProfile() {
               Create a new resume from your FASTJOB Profile
             </h4>
             <div className="my-profile__resume__upload__left__btn-gr row">
-              <button className="my-profile__resume__upload__left__btn-gr__start">
-                Get started
-              </button>
-              <span
-                className="my-profile__resume__upload__left__btn-gr__or"
+              <button
+                className="my-profile__resume__upload__left__btn-gr__start"
                 onClick={() => resumeFormRef.current.scrollIntoView()}
               >
-                Or, upload your resume
-              </span>
+                Upload your resume
+              </button>
             </div>
           </div>
 
@@ -600,13 +614,12 @@ function MyProfile() {
                   </div>
                 </div>
 
-                {/* Skills  */}
+                {/* Skills */}
                 <div
                   className={
                     "my-profile__resume__skills " +
                     (skillForm && "edit-mode-container")
-                  }
-                >
+                  }>
                   <h4
                     className="profile-title"
                     style={{ fontWeight: "700", marginBottom: "32px" }}
@@ -684,150 +697,234 @@ function MyProfile() {
                   </div>
                 </div>
 
-                {/* Resume file*/}
                 <div
-                  ref={resumeFormRef}
                   className={
-                    "my-profile__resume__info profile-section " +
-                    (resumeForm && "edit-mode-container")
+                    "my-profile__resume__skills " +
+                    (softSkillForm && "edit-mode-container")
                   }
                 >
-                  <h4 className="profile-title" style={{ fontWeight: "700" }}>
-                    Resume
+                  <h4
+                    className="profile-title"
+                    style={{ fontWeight: "700", marginBottom: "32px" }}
+                  >
+                    Soft Skills
                   </h4>
-
-                  {/* Resume exist */}
-                  {!isEmpty(profile) ? (
-                    <>
-                      <div className="my-profile__resume__info__row">
-                        <img
-                          className="cv-item__img"
-                          src="/assets/img/CV-default.png"
-                          alt="Ảnh CV"
+                  <div className="chip" style={{ marginTop: "20px" }}>
+                    {softSkills &&
+                      softSkills.length &&
+                      softSkills.map(({ key, value }) => (
+                        <Skill
+                          skill={value}
+                          key={key}
+                          id={key}
+                          onDelete={onSoftDelete}
+                          isAction={softSkillForm}
                         />
+                      ))}
+                  </div>
 
-                        <div className="my-profile__resume__info__row__left">
-                          <div className="my-profile__resume__info__tag">
-                            Default
-                          </div>
-
-                          <a
-                            href={resume.download_url}
-                            className="my-profile__resume__info__name"
-                          >
-                            {resume.resume_filename +
-                              "." +
-                              resume.resume_file_extension}
-                            <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
-                          </a>
-                          <div className="my-profile__resume__info__days">
-                            Added 2 days ago
-                          </div>
-                        </div>
-                      </div>
-
-                      {resumeForm && (
-                        <>
-                          <div className="row cv-item__info__bottom ">
-                            <button
-                              type="button"
-                              className="cv-item__info__bottom__btn btn btn-outline-secondary"
-                              onClick={() =>
-                                window.open(resume.store_url, "_blank")
-                              }
-                            >
-                              <EyeOutlined className="cv-item__info__bottom__btn__icon" />
-                              Watch online
-                            </button>
-
-                            <a
-                              href={resume.download_url}
-                              className="cv-item__info__bottom__btn btn btn-sm btn-outline-secondary "
-                            >
-                              <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
-                              Download
-                            </a>
-
-                            <button
-                              type="button"
-                              className="cv-item__info__bottom__btn btn btn-sm  btn-outline-secondary"
-                              // onClick={handleDelete}
-                            >
-                              <DeleteOutlined className="cv-item__info__bottom__btn__icon" />
-                              Delete
-                            </button>
-                          </div>
-
-                          {/* Handle upload resume  */}
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <div className="my-profile__resume__upload-file">
-                      <p className="my-profile__resume__upload-file__note">
-                        Add 1 resume. Accepted file types: Microsoft Word (.doc
-                        or .docx) or Adobe PDF (.pdf)
-                      </p>
-                      <div
-                        className="my-profile__resume__upload-file__box"
-                        onClick={handleSelectFile}
-                      >
-                        <ProfileOutlined
-                          style={{
-                            fontSize: "50px",
-                            color: "#707070"
-                          }}
-                        />
-                        <span className="my-profile__resume__upload-file__box__add">
-                          To add a resume, click here or simply browse for a
-                          file.
-                        </span>
-                        <Button
-                          onClick={handleSelectFile}
-                          icon={<UploadOutlined />}
-                          className="my-profile__resume__upload-file__box__btn"
-                        >
-                          Upload
-                          <input
-                            type="file"
-                            name="CV"
-                            className="d-none"
-                            accept=".doc,.docx,.pdf"
-                            onChange={handleInputChange}
-                            ref={inputRef}
-                          />
-                        </Button>
-                      </div>
+                  {softSkillForm && (
+                    <div className="my-profile__resume__skills__add__sub">
+                      Click add to add more soft skills help employers find you
                     </div>
                   )}
+                  <div
+                    className="inline-skill-container is-compact my-profile__resume__skills__add"
+                    style={{
+                      marginRight: "40px",
+                      display: softSkillForm && "flex"
+                    }}
+                  >
+                    <div className="inline-skill-input">
+                      <div className="TextInput-wrapper">
+                        <AddSoftSkillSuggest
+                          handleAddSoft={getNewSoftSkill}
+                          isAddSoft={isSoftAdd}
+                          isCorner={true}
+                        />
+                      </div>
+                    </div>
+                    <div className="inline-skill-button">
+                      <Button
+                        className="my-profile__resume__skills__add__btn"
+                        type="primary"
+                        size="large"
+                        disabled={!softValue}
+                        icon={<PlusOutlined />}
+                        onClick={onAddSoftSkill}
+                      >
+                        Add skill
+                      </Button>
+                    </div>
+                  </div>
 
+                  {/* Button  */}
                   <div className="profile-button-gr">
-                    {!resumeForm ? (
+                    <button
+                      ref={softSkillFormRef}
+                      className={
+                        softSkillForm ? "save-btn profile-button" : "profile-button"
+                      }
+                      onClick={!softSkillForm ? toggleSoftSkillForm : handleSubmit}
+                    >
+                      {!softSkillForm ? "Add skills" : "Save"}
+                    </button>
+                    {softSkillForm && (
                       <button
-                        className="profile-button"
-                        onClick={toggleResumeForm}
+                        className="profile-button-cancel"
+                        onClick={onCancelSoftSkills}
                       >
-                        Manage resume
-                      </button>
-                    ) : (
-                      <button
-                        className="save-btn profile-button"
-                        onClick={() => setResumeForm(false)}
-                      >
-                        Done
+                        Cancel
                       </button>
                     )}
                   </div>
-                  {/* <button
+                </div>
+              </>
+            )}
+
+            {/* Resume file*/}
+            <div
+              ref={resumeFormRef}
+              className={
+                "my-profile__resume__info profile-section " +
+                (resumeForm && "edit-mode-container")
+              }
+            >
+              <h4 className="profile-title" style={{ fontWeight: "700" }}>
+                Resume
+              </h4>
+
+              {/* Resume exist */}
+              {!isEmpty(resume) ? (
+                <>
+                  <div className="my-profile__resume__info__row">
+                    <img
+                      className="cv-item__img"
+                      src="/assets/img/CV-default.png"
+                      alt="Ảnh CV"
+                    />
+
+                    <div className="my-profile__resume__info__row__left">
+                      <div className="my-profile__resume__info__tag">
+                        Default
+                      </div>
+
+                      <a
+                        href={resume.download_url}
+                        className="my-profile__resume__info__name"
+                      >
+                        {resume.resume_filename +
+                          "." +
+                          resume.resume_file_extension}
+                        <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
+                      </a>
+                      <div className="my-profile__resume__info__days">
+                        Added 2 days ago
+                      </div>
+                    </div>
+                  </div>
+
+                  {resumeForm && (
+                    <>
+                      <div className="row cv-item__info__bottom ">
+                        <button
+                          type="button"
+                          className="cv-item__info__bottom__btn btn btn-outline-secondary"
+                          onClick={() =>
+                            window.open(resume.store_url, "_blank")
+                          }
+                        >
+                          <EyeOutlined className="cv-item__info__bottom__btn__icon" />
+                          Watch online
+                        </button>
+
+                        <a
+                          href={resume.download_url}
+                          className="cv-item__info__bottom__btn btn btn-sm btn-outline-secondary "
+                        >
+                          <DownloadOutlined className="cv-item__info__bottom__btn__icon" />
+                          Download
+                        </a>
+
+                        <button
+                          type="button"
+                          className="cv-item__info__bottom__btn btn btn-sm  btn-outline-secondary"
+                          // onClick={handleDelete}
+                        >
+                          <DeleteOutlined className="cv-item__info__bottom__btn__icon" />
+                          Delete
+                        </button>
+                      </div>
+
+                      {/* Handle upload resume  */}
+                    </>
+                  )}
+                </>
+              ) : (
+                <div className="my-profile__resume__upload-file">
+                  <p className="my-profile__resume__upload-file__note">
+                    Add 1 resume. Accepted file types: Microsoft Word (.doc or
+                    .docx) or Adobe PDF (.pdf)
+                  </p>
+                  <div
+                    className="my-profile__resume__upload-file__box"
+                    onClick={handleSelectFile}
+                  >
+                    <ProfileOutlined
+                      style={{
+                        fontSize: "50px",
+                        color: "#707070"
+                      }}
+                    />
+                    <span className="my-profile__resume__upload-file__box__add">
+                      To add a resume, click here or simply browse for a file.
+                    </span>
+                    <Button
+                      // onClick={handleSelectFile}
+                      icon={<UploadOutlined />}
+                      className="my-profile__resume__upload-file__box__btn"
+                    >
+                      Upload
+                      <input
+                        type="file"
+                        name="CV"
+                        className="d-none"
+                        accept=".doc,.docx,.pdf"
+                        onChange={handleInputChange}
+                        ref={inputRef}
+                      />
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {!isEmpty(resume) && (
+                <div className="profile-button-gr">
+                  {!resumeForm ? (
+                    <button
+                      className="profile-button"
+                      onClick={toggleResumeForm}
+                    >
+                      About resume
+                    </button>
+                  ) : (
+                    <button
+                      className="save-btn profile-button"
+                      onClick={() => setResumeForm(false)}
+                    >
+                      Done
+                    </button>
+                  )}
+                </div>
+              )}
+              {/* <button
                     className="profile-button"
                     style={{ marginTop: "32px" }}
                     onClick={() => window.open(resume.store_url, "_blank")}
                   >
                     View online
                   </button> */}
-                </div>
-              </>
-            )}
+            </div>
           </div>
           <div className="col-sm-4">
             <div className="my-profile__resume__strength">
@@ -856,124 +953,6 @@ function MyProfile() {
           </div>
         </div>
       </div>
-
-      {/* <div className="row">
-        <div className="col-sm-8">
-          {resumes ? (
-            <div className="row">
-              <div className="col-sm">
-                <Card
-                  title="CV của bạn"
-                  extra={
-                    <Button
-                      onClick={handleSelectFile}
-                      icon={<UploadOutlined />}
-                    >
-                      Tải lên 1 CV
-                      <input
-                        type="file"
-                        name="CV"
-                        className="d-none"
-                        accept=".doc,.docx,.pdf"
-                        onChange={handleInputChange}
-                        ref={inputRef}
-                      />
-                    </Button>
-                  }
-                >
-                  {resumes.map(
-                    (
-                      { resume_filename, store_url, id, edit, download_url },
-                      index
-                    ) => (
-                      <ProfileCVItem
-                        key={index}
-                        image="/assets/img/CV-default.png"
-                        name={resume_filename}
-                        date={edit}
-                        url={store_url}
-                        download_url={download_url}
-                        id={id}
-                      />
-                    )
-                  )}
-                </Card>
-              </div>
-            </div>
-          ) : (
-            <div className="row">
-              <div className="col-sm">
-                <Card title="Tải lên CV của bạn">
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <Button
-                        onClick={handleSelectFile}
-                        icon={<UploadOutlined />}
-                      >
-                        Tải lên 1 CV
-                      </Button>
-                      <input
-                        type="file"
-                        name="CV"
-                        className="d-none"
-                        accept=".doc,.docx,.pdf"
-                        onChange={handleInputChange}
-                        ref={inputRef}
-                      />
-                    </div>
-                    <div className="col-sm-6"></div>
-                  </div>
-                </Card>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="col-sm-4">
-          <div className="profile__wrapper__info">
-            <div className="profile__wrapper__info__general">
-              <div className="profile__wrapper__info__general__avatar">
-                <img
-                  src="https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
-                  alt="logo"
-                />
-               
-              </div>
-              <div className="profile__wrapper__info__general__detail">
-                <p>Chào bạn</p>
-                <p className="profile__wrapper__info__general__detail__name">
-                  {profile.fullName}
-                </p>
-                <p className="profile__wrapper__info__general__detail__note">
-                  Tải khoản ứng viên
-                </p>
-              </div>
-            </div>
-
-            <div className="profile__wrapper__info__personal">
-
-              <p>
-                <strong>Email: </strong>
-                {profile.email}
-              </p>
-
-              <p>
-                <strong>Giới tính: </strong>
-                {profile.dateOfBirth ? "Nam" : "Nữ"}
-              </p>
-
-              <p>
-                <strong>Ngày sinh: </strong>
-                {profile.dateOfBirth}
-              </p>
-
-              <p>
-                <strong>SĐT: </strong> {profile.phone}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }
@@ -995,7 +974,10 @@ const Skill = ({ id, skill, onDelete, isAction }) => {
           <div className="float-right chip-skill__item__delete">
             {isAction && (
               <button className=" delete-button">
-                <CloseOutlined onClick={() => onDelete(id)} />
+                <CloseOutlined
+                  className="chip-skill__item__delete__icon"
+                  onClick={() => onDelete(id)}
+                />
               </button>
             )}
           </div>

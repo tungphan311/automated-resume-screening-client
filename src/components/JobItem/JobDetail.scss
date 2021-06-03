@@ -4,12 +4,14 @@
   flex: 0 1 684px;
   width: 684px;
   box-shadow: none;
-  border: 0.0625rem solid #d4d2d0 !important;
   border-radius: 0.5rem;
-  margin: 1rem 0 1.5rem -0.5rem;
-  position: fixed;
+  margin: 1rem 0 0 -0.5rem;
   transition: opacity 150ms ease-in-out;
   z-index: 1;
+
+  position: absolute;
+  top: 12px;
+  height: calc(100% - 125px);
 
   #vjs-header {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
@@ -17,8 +19,10 @@
     border-radius: 0.5rem 0.5rem 0 0;
     background-color: #fff;
     height: auto;
-    position: relative;
-    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    padding: 30px 24px;
+    border: 0.0625rem solid #d4d2d0 !important;
 
     #apply-button-container {
       margin-top: 0;
@@ -39,7 +43,7 @@
     }
 
     #vjs-image-wrapper {
-      padding-bottom: 1.875rem;
+      padding-bottom: 0.2rem;
       margin: -16px -24px 0;
       position: relative;
 
@@ -51,16 +55,18 @@
       }
 
       .vjs-header-logo {
+        background-color: white;
         position: absolute;
         margin: 0;
-        width: 3.75rem;
-        height: 3.75rem;
+        width: 4.75rem;
+        height: 4.75rem;
         object-fit: contain;
-        left: 1rem;
         bottom: -5%;
         border: 0.125rem solid #fff;
         border-radius: 0.5rem;
-        box-shadow: 0 0.0625rem 0.25rem 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 1px 0.0625rem 0.5rem 3px rgba(0, 0, 0, 0.1);
+        right: 50px;
+        top: 50px;
       }
     }
   }
@@ -161,12 +167,17 @@
 }
 
 #vjs-content {
-  overflow-x: auto;
   padding: 20px 20px 10px;
+  position: sticky;
+  top: 400px;
   overflow-y: auto;
+  max-height: 730px;
+  top: 0;
+  z-index: -1;
   background-color: #fff;
   color: #2d2d2d !important;
   height: 100%;
+  border: 0.0625rem solid #d4d2d0 !important;
 
   #jobDescriptionTitle {
     margin: 16px 0;

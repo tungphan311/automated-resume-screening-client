@@ -40,14 +40,14 @@ function EducationForm({ curStep, handleChangeStep, hideBtn = false }) {
       </div>
       <div>
         <Button
-          className={hideBtn && "hide-btn"}
-          type="primary"
+          className={"form-complete " + (hideBtn && "hide-btn")}
           onClick={handleSubmit}
         >
           Tới trang sau
         </Button>
         {curStep > 1 && (
           <Button
+            className="form-cancel"
             style={{ margin: "0 8px" }}
             onClick={() => handleChangeStep(curStep - 1)}
           >

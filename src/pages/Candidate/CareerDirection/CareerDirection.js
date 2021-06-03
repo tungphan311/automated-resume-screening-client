@@ -86,13 +86,19 @@ const CareerDirection = () => {
                   {!isEmpty(skillData) &&
                     skillData.domain_matched &&
                     skillData.domain_matched.length &&
-                    skillData.domain_matched.map((item, index) => (
-                      <div
-                        className={
-                          skillData.domain_matched.length < 3 &&
-                          "career-direction__list__item"
-                        }
-                      >
+                    skillData.domain_matched.map((item, index) =>
+                      skillData.domain_matched.length < 3 ? (
+                        <div className="career-direction__list__item">
+                          <MatchSkillCard
+                            key={index}
+                            name={item.domain.name}
+                            logo={item.domain.logo}
+                            content={item.domain.content}
+                            min={item.salary.min}
+                            max={item.salary.max}
+                          />
+                        </div>
+                      ) : (
                         <MatchSkillCard
                           key={index}
                           name={item.domain.name}
@@ -101,8 +107,8 @@ const CareerDirection = () => {
                           min={item.salary.min}
                           max={item.salary.max}
                         />
-                      </div>
-                    ))}
+                      )
+                    )}
                   {/* <MatchSkillCard  className="career-direction__list__item" /> */}
                   {/* <MatchSkillCard className="career-direction__list__item"/> */}
                 </div>

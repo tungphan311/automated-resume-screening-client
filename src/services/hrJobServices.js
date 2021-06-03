@@ -24,6 +24,8 @@ export const getJobDomain = async () => await API.get("/job-domains");
 
 export const getJobSkill = async () => await API.get("/skill?isMainSkill=false");
 
+export const getSoftSkill = async () => await API.get("/skill/softskills");
+
 export const hrGetJobs = async (
   {
     page = 1,

@@ -88,11 +88,11 @@ export const formatSearchHistory = (title, provinces, provinceId) => {
     result += title;
 
     if (provinceId) {
-      result += " - " + province && province.province_name;
+      result += " - " + province && province?.province_name;
     }
   } else {
     if (provinceId) {
-      result += province && province.province_name;
+      result += province && province?.province_name;
     }
   }
 

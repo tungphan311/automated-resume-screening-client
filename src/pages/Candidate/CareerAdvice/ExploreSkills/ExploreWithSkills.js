@@ -77,14 +77,6 @@ const ExploreWithSkills = ({ profile }) => {
     setIsAdd(true);
   };
 
-  const submitSearchSkill = (value) => {
-    const win = window.open(
-      `/career-advice/skill=${value.replace(" ", "-")}`,
-      "_blank"
-    );
-    win && win.focus();
-  };
-
   const handleMatch = () => {
     let skillsList = skills.map((item) => item.value);
     setLoading(true);
@@ -97,6 +89,50 @@ const ExploreWithSkills = ({ profile }) => {
         // setIsLoading(false);
       });
   };
+
+  const sortData = (data) => {
+    let res = data.sort(function (a, b) {
+      return b.matchedSkills.length - a.matchedSkills.length;
+    });
+
+    return res;
+  };
+
+  const getGood = (data) => {
+    const filteredArray =
+    data?.filter((item) => {
+      const listMain = item.mainSkills.map((item) => item.name);
+      let filter = item?.matchedSkills.filter((value) =>
+        listMain.includes(value)
+      );
+      console.log("filter", filter);
+      let ratio = filter.length / item.mainSkills.length;
+      console.log(ratio);
+      if (ratio > 0.7) {
+        return item;
+      }
+    });
+
+    return filteredArray
+  }
+
+  const getEnjoy = (data) => {
+    const filteredArray =
+    data?.filter((item) => {
+      const listMain = item.mainSkills.map((item) => item.name);
+      let filter = item?.matchedSkills.filter((value) =>
+        listMain.includes(value)
+      );
+      console.log("filter", filter);
+      let ratio = filter.length / item.mainSkills.length;
+      console.log(ratio);
+      if (ratio > 0.5) {
+        return item;
+      }
+    });
+
+    return filteredArray
+  }
 
   useEffect(() => {
     history.push("/career-advice");
@@ -169,12 +205,7 @@ const ExploreWithSkills = ({ profile }) => {
             <div className="chip" style={{ marginTop: "20px" }}>
               {skills.length &&
                 skills.map(({ key, value }) => (
-                  <Skill
-                    skill={value}
-                    key={key}
-                    id={key}
-                    onDelete={onDelete}
-                  />
+                  <Skill skill={value} key={key} id={key} onDelete={onDelete} />
                 ))}
             </div>
 
@@ -220,7 +251,39 @@ const ExploreWithSkills = ({ profile }) => {
                       <MyLoader />
                     ) : (
                       exploreSkillsData.length &&
-                      exploreSkillsData.map(
+                      sortData(exploreSkillsData)
+                        .slice(0, 5)
+                        .map(
+                          (
+                            {
+                              domain,
+                              matchedSkills,
+                              salary,
+                              totalCount,
+                              mainSkills
+                            },
+                            index
+                          ) => (
+                            <MatchSkill
+                              key={index}
+                              domain={domain}
+                              matchedSkills={matchedSkills}
+                              salary={salary}
+                              totalCount={totalCount}
+                              mainSkills={mainSkills}
+                            />
+                          )
+                        )
+                    )}
+                  </Tab>
+                  <Tab eventKey="2" title="What you're good at">
+                    {loadContent ? (
+                      <MyLoader />
+                    ) : (
+                      exploreSkillsData.length &&
+                      getGood(
+                        exploreSkillsData
+                      ).map(
                         (
                           {
                             domain,
@@ -243,11 +306,35 @@ const ExploreWithSkills = ({ profile }) => {
                       )
                     )}
                   </Tab>
-                  <Tab eventKey="2" title="What you're good at">
-                    <MatchSkill />
-                  </Tab>
                   <Tab eventKey="3" title="What you enjoy">
-                    <MatchSkill />
+                  {loadContent ? (
+                      <MyLoader />
+                    ) : (
+                      exploreSkillsData.length &&
+                      getEnjoy(
+                        exploreSkillsData
+                      ).map(
+                        (
+                          {
+                            domain,
+                            matchedSkills,
+                            salary,
+                            totalCount,
+                            mainSkills
+                          },
+                          index
+                        ) => (
+                          <MatchSkill
+                            key={index}
+                            domain={domain}
+                            matchedSkills={matchedSkills}
+                            salary={salary}
+                            totalCount={totalCount}
+                            mainSkills={mainSkills}
+                          />
+                        )
+                      )
+                    )}
                   </Tab>
                 </Tabs>
               </div>
@@ -262,7 +349,6 @@ const ExploreWithSkills = ({ profile }) => {
 export default ExploreWithSkills;
 
 const Skill = ({ id, skill, onChange, onDelete }) => {
-
   return (
     <div className="chip__item">
       <div className="container-fluid">
@@ -275,8 +361,11 @@ const Skill = ({ id, skill, onChange, onDelete }) => {
             />
           </div>
           <div className="float-right chip__item__delete">
-            <button className=" delete-button">
-              <CloseOutlined onClick={() => onDelete(id)} />
+            <button className="delete-button">
+              <CloseOutlined
+                className="chip__item__delete__icon"
+                onClick={() => onDelete(id)}
+              />
             </button>
           </div>
         </div>

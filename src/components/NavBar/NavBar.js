@@ -9,7 +9,7 @@ import {
   LikeTwoTone
 } from "@ant-design/icons";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -17,14 +17,17 @@ import { logoutUserAction } from "state/actions/authenticationActions";
 import history from "state/history";
 import { checkCookie, setCookie } from "utils/cookies";
 import "./NavBar.scss";
+import { candidateProfileAction } from "state/actions/profileAction";
+import isEmpty from "lodash/isEmpty";
 
 function NavBar() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.candidate.token);
+  const profile = useSelector((state) => state.profile.candidateProfile);
+
   const [info, setInfo] = useState(false);
   const [clickItem, setClickItem] = useState(null);
 
-  // const recruiter = pathname.startsWith("/recruiter");
 
   //Handle logout
   const logOut = () => {
@@ -40,6 +43,28 @@ function NavBar() {
     console.log("i", i);
     setClickItem(i);
   };
+
+  const getTheLastWord = () => {
+    if (!isEmpty(profile.fullName)) {
+      let n = profile.fullName.lastIndexOf(" ");
+      var res = profile.fullName.substring(n);
+    }
+    console.log(res)
+    return res
+  };
+
+  useEffect(() => {
+    accessToken && dispatch(candidateProfileAction(accessToken));
+
+    const { pathname } = window.location;
+
+     pathname.startsWith("/find-jobs") && setClickItem(0);
+     pathname.startsWith("/profile") && setClickItem(1);
+     pathname.startsWith("/career-advice") && setClickItem(2);
+     pathname.startsWith("") && setClickItem(null);
+
+
+  }, [profile.fullName]);
 
   return (
     <div
@@ -59,7 +84,7 @@ function NavBar() {
         })}
         {checkCookie("candidate_token") ? (
           <div className="header__navbar__info" onClick={toggleInfo}>
-            <span className="header__navbar__info__name">Name</span>
+            <span className="header__navbar__info__name"><b>{getTheLastWord()}</b></span>
             {info ? (
               <UpOutlined className="header__navbar__info__icon" />
             ) : (
@@ -67,29 +92,25 @@ function NavBar() {
             )}
             {info && (
               <div className="header__navbar__info__group">
-                <div className="header__navbar__info__group__item">
+                <Link to="/profile" className="header__navbar__info__group__item">
                   <span>Profile</span>
                   <SmileTwoTone />
-                </div>
+                </Link>
 
-                <div className="header__navbar__info__group__item">
+                <Link to="/saved-jobs" className="header__navbar__info__group__item">
                   <span>Saved Jobs</span>
                   <HeartTwoTone twoToneColor="#eb2f96" />
-                </div>
+                </Link>
 
-                <div className="header__navbar__info__group__item">
+                <Link to="/applied-jobs" className="header__navbar__info__group__item">
                   <span>Applied Jobs</span>
                   <CheckCircleTwoTone twoToneColor="#52c41a" />
-                </div>
+                </Link>
 
-                <div className="header__navbar__info__group__item">
+                <Link className="header__navbar__info__group__item">
                   <span>Recommend Jobs</span>
                   <LikeTwoTone twoToneColor="#81B677" />
-                </div>
-
-                <div className="header__navbar__info__group__item">
-                  <span>Setting</span>
-                </div>
+                </Link>
 
                 <div
                   className="header__navbar__info__group__item"
