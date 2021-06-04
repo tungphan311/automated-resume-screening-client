@@ -22,14 +22,16 @@ const MissingSkillItem = ({ title, skills }) => {
   };
 
   return (
-    <div className="missing-skill">
+    <div className="missing-skill"
+    style={{paddingBottom: '0'}}>
       <div
         className="row"
         style={{
           alignItems: "center",
           marginLeft: "0",
           marginRight: "0",
-          border: "none"
+          border: "none",
+          marginBottom: "0"
         }}
       >
         <img
@@ -40,16 +42,8 @@ const MissingSkillItem = ({ title, skills }) => {
         <span style={{ fontSize: ".875rem", fontWeight: "600" }}>
           {title} ({skills?.length})
         </span>
-      </div>
 
-      <div className="missing-skill__items">
-        {toggle &&
-          showMore?.map((item, index) => {
-            return <MissItem key={index} name={item} />;
-          })}
-      </div>
-
-      <div className="missing-skill__show" style={{ marginTop: !toggle ? "0" : "8px"}}>
+        <div className="missing-skill__show" style={{ marginTop:"0", marginLeft: "10px"}}>
         {!toggle ? (
           <span className="missing-skill__show__text" onClick={showMoreItem}>
             +show more
@@ -63,6 +57,14 @@ const MissingSkillItem = ({ title, skills }) => {
           </span>
         )}
       </div>
+      </div>
+
+      <div className="missing-skill__items" style={{paddingBottom: '10px'}}>
+        {toggle &&
+          showMore?.map((item, index) => {
+            return <MissItem key={index} name={item} />;
+          })}
+      </div>
     </div>
   );
 };
@@ -70,7 +72,7 @@ const MissingSkillItem = ({ title, skills }) => {
 export default MissingSkillItem;
 
 const MissItem = ({ name }) => (
-  <div className="missing-skill__items__item">
+  <div className="missing-skill__items__item" style={{marginTop: '0.5rem'}}>
     <QuestionOutlined
       style={{ color: "#844b17", fontSize: "18px", marginRight: "10px" }}
     />

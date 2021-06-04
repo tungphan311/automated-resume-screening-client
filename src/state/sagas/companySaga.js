@@ -25,7 +25,7 @@ export function* updateHRSaga(action) {
 
     yield put({ type: UPDATE_TOKEN, payload: newToken });
 
-    yield setCookie("recruiter_token", newToken, 1);
+    yield setCookie("recruiter_token", newToken, 5);
 
     yield history.push("/recruiter/jobs");
 
@@ -48,7 +48,7 @@ export function* addCompanySaga(action) {
 
     yield put({ type: UPDATE_TOKEN, key: "recruiter", token: newToken });
 
-    yield setCookie("recruiter_token", newToken, 1);
+    yield setCookie("recruiter_token", newToken, 5);
 
     yield history.push("/recruiter/jobs");
 

@@ -95,7 +95,7 @@ export function* loginCandidatePromiseSaga(action) {
       identity: { email }
     } = jwt_decode(access_token);
 
-    yield setCookie("candidate_token", access_token, 1);
+    yield setCookie("candidate_token", access_token, 5);
     yield put({
       type: LOGIN_USER_SUCCESS,
       key: "candidate",
@@ -122,7 +122,7 @@ export function* loginHrPromiseSaga(action) {
       identity: { email }
     } = jwt_decode(access_token);
 
-    yield setCookie("recruiter_token", access_token, 1);
+    yield setCookie("recruiter_token", access_token, 5);
     yield put({
       type: LOGIN_USER_SUCCESS,
       key: "recruiter",

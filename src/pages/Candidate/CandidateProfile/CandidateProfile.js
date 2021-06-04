@@ -59,9 +59,6 @@ const validateMessages = {
 function MyProfile() {
   const dispatch = useDispatch();
 
-  // state
-  const [loading, setLoading] = useState(false);
-
   // ref
   const inputRef = useRef();
 
@@ -73,7 +70,9 @@ function MyProfile() {
 
   const token = useSelector((state) => state.auth.candidate.token);
   const profile = useSelector((state) => state.profile.candidateProfile);
-  // const provinces = useSelector((state) => state.cv.provinces);
+
+  // state
+  const [loading, setLoading] = useState(false);
 
   const [resume, setResume] = useState();
   const [resumeDefault, setResumeDefault] = useState();
@@ -207,7 +206,9 @@ function MyProfile() {
   // Soft skills hanlde actions
   const onSoftDelete = (key) => {
     const newSkills =
-      softSkills && softSkills?.length && softSkills?.filter((ele) => ele.key !== key);
+      softSkills &&
+      softSkills?.length &&
+      softSkills?.filter((ele) => ele.key !== key);
     setSoftSkills(newSkills);
   };
 
@@ -217,7 +218,10 @@ function MyProfile() {
   };
 
   const onAddSoftSkill = () => {
-    const key = softSkills && softSkills?.length && softSkills[softSkills?.length - 1].key + 1;
+    const key =
+      softSkills &&
+      softSkills?.length &&
+      softSkills[softSkills?.length - 1].key + 1;
     const newSkills = [...softSkills, { key, value: softValue }];
     setSoftSkills(newSkills);
     setSoftValue("");
@@ -278,7 +282,8 @@ function MyProfile() {
           resume.months_of_experience !== resumeDefault.months_of_experience) &&
           setExForm(false);
         values.length !== defaultSkills.length && setSkillForm(false);
-        softValues.length !== defaultSoftSkills.length && setSoftSkillForm(false);
+        softValues.length !== defaultSoftSkills.length &&
+          setSoftSkillForm(false);
       })
       .catch(() => {
         setLoading(false);
@@ -300,9 +305,12 @@ function MyProfile() {
         setDefaultSkills(
           getIndexArray(res.data.data.resumes[0].technical_skills)
         );
-        setSoftSkills(getIndexArray(res.data.data.resumes[0].soft_skills?.split("|")))
-        setDefaultSoftSkills(getIndexArray(res.data.data.resumes[0].soft_skills?.split("|")))
-
+        setSoftSkills(
+          getIndexArray(res.data.data.resumes[0].soft_skills?.split("|"))
+        );
+        setDefaultSoftSkills(
+          getIndexArray(res.data.data.resumes[0].soft_skills?.split("|"))
+        );
       })
       .catch((err) => {
         // toastErr(err);
@@ -315,8 +323,7 @@ function MyProfile() {
   useEffect(() => {
     if (token) {
       fetchProfile();
-
-      dispatch({ type: GET_JOB_DOMAIN });
+      dispatch(candidateProfileAction(token));
     }
   }, []);
 
@@ -507,7 +514,7 @@ function MyProfile() {
                   <div
                     className={
                       eduForm
-                        ? "wizard-page-children my-profile__resume__education__content edit-mode"
+                        ? "wizard-page-children my-profile__resume__education__content-edit edit-mode"
                         : "wizard-page-children my-profile__resume__education__content"
                     }
                   >
@@ -619,7 +626,8 @@ function MyProfile() {
                   className={
                     "my-profile__resume__skills " +
                     (skillForm && "edit-mode-container")
-                  }>
+                  }
+                >
                   <h4
                     className="profile-title"
                     style={{ fontWeight: "700", marginBottom: "32px" }}
@@ -763,9 +771,13 @@ function MyProfile() {
                     <button
                       ref={softSkillFormRef}
                       className={
-                        softSkillForm ? "save-btn profile-button" : "profile-button"
+                        softSkillForm
+                          ? "save-btn profile-button"
+                          : "profile-button"
                       }
-                      onClick={!softSkillForm ? toggleSoftSkillForm : handleSubmit}
+                      onClick={
+                        !softSkillForm ? toggleSoftSkillForm : handleSubmit
+                      }
                     >
                       {!softSkillForm ? "Add skills" : "Save"}
                     </button>

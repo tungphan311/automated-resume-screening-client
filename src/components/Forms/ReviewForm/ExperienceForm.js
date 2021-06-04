@@ -29,7 +29,7 @@ function ExperienceForm({ curStep, handleChangeStep, hideBtn = false }) {
   return (
     <>
       <div className="panel panel--light">
-        <div className="panel-body">
+        <div className="panel-body"  style={{paddingTop: "10px", paddingBottom: "40px"}}>
           <div className="rv-content">
             <div
               className="container-fluid custom"
@@ -41,7 +41,7 @@ function ExperienceForm({ curStep, handleChangeStep, hideBtn = false }) {
             >
               <div className="heading-margin sg-heading3 title">
                 {/* Kinh nghiệm thực tế */}
-                Experience
+                Review your experience
               </div>
 
               <div>
