@@ -1,4 +1,3 @@
-import axios from "axios";
+import API from "utils/axios";
 
-export const getProvinces = async () =>
-  axios.get("https://vapi.vnappmob.com/api/province");
+export const getProvinces = async () => await API.get("/province");

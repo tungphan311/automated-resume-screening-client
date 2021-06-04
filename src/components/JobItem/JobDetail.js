@@ -160,7 +160,7 @@ function JobDetail({ id, top, onChangeSelect, bottom }) {
 
                   <div>
                     {(diffTechSkills?.length || diffSoftSkills?.length) && (
-                      <div style={{ marginTop: "25px" }}>
+                      <div style={{ marginTop: "5px" }}>
                         <h2 className="jobSectionHeader">
                           <b style={{ fontSize: "1.125rem" }}>
                             Resume insights

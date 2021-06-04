@@ -41,7 +41,7 @@ export function* initSaga() {
 
     // get provinces from external API
     const result = yield call(getProvinces);
-    yield put({ type: GET_PROVINCES_SUCCESS, provinces: result.data.results });
+    yield put({ type: GET_PROVINCES_SUCCESS, provinces: result.data });
 
     // get all domains
     const result1 = yield call(getJobDomain);

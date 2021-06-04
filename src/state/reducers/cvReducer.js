@@ -9,6 +9,7 @@ const initialState = {
   education: null,
   experience: null,
   skill: null,
+  softSkill: null,
   provinces: []
 };
 
@@ -17,11 +18,12 @@ export default function authReducer(state = initialState, action = {}) {
 
   switch (action.type) {
     case UPLOAD_CV_SUCCESS: {
-      let { educations, experiences, technical_skills, id } = action.response;
+      let { educations, experiences, technical_skills, soft_skills, id } = action.response;
 
       newState.education = educations.replaceAll("\n", "<br/>");
       newState.experience = experiences.replaceAll("\n", "<br/>");
       newState.skill = technical_skills.split("|");
+      newState.softSkill = soft_skills.split("|");
       newState.id = id;
 
       return newState;

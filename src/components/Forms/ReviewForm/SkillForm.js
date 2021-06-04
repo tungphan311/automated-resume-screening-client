@@ -7,12 +7,16 @@ import { updateCVAction } from "state/actions/index";
 import { GET_JOB_DOMAIN } from "state/reducers/jobDomainReducer";
 import Loading from "components/Loading/Loading";
 import AddSkillSuggest from "components/AddSkillSuggest/AddSkillSuggest";
+import AddSoftSkillSuggest from "components/AddSoftSkillSuggest/AddSoftSkillSuggest";
 
 function SkillForm({ curStep, handleChangeStep }) {
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+  const [isSoftAdd, setIsSoftAdd] = useState(false);
 
   const skill = useSelector((state) => state.cv.skill, shallowEqual) || [];
+  const softSkill =
+    useSelector((state) => state.cv.softSkill, shallowEqual) || [];
 
   const dispatch = useDispatch();
   const getIndexArray = (arr) => {
@@ -29,7 +33,10 @@ function SkillForm({ curStep, handleChangeStep }) {
   }, []);
 
   const [skills, setSkills] = useState(getIndexArray(skill));
+  const [softSkills, setSoftSkills] = useState(getIndexArray(softSkill));
+
   const [value, setValue] = useState("");
+  const [softValue, setSoftValue] = useState("");
 
   const onDelete = (key) => {
     const newSkills =
@@ -50,11 +57,38 @@ function SkillForm({ curStep, handleChangeStep }) {
     setIsAdd(false);
   };
 
+  // Soft skills hanlde actions
+  const onSoftDelete = (key) => {
+    const newSkills =
+      softSkills &&
+      softSkills?.length &&
+      softSkills?.filter((ele) => ele.key !== key);
+    setSoftSkills(newSkills);
+  };
+
+  const getNewSoftSkill = (softValue) => {
+    setSoftValue(softValue);
+    setIsSoftAdd(false);
+  };
+
+  const onAddSoftSkill = () => {
+    const key =
+      softSkills &&
+      softSkills?.length &&
+      softSkills[softSkills?.length - 1].key + 1;
+    const newSkills = [...softSkills, { key, value: softValue }];
+    setSoftSkills(newSkills);
+    console.log(newSkills);
+    setSoftValue("");
+    setIsSoftAdd(true);
+  };
+
   const handleSubmit = () => {
     setLoading(true);
-    const values = skills.length && skills.map((ele) => ele.value);
+    const values = skills?.length && skills.map((ele) => ele.value);
+    const softValues = softSkills?.length && softSkills.map((ele) => ele.value);
 
-    dispatch(updateCVAction({ values })).catch(() => {
+    dispatch(updateCVAction({ values, softValues })).catch(() => {
       setLoading(false);
     });
     // dispatch({ type: UPDATE_CV_VALUES, key: "skill", value: values });
@@ -65,11 +99,16 @@ function SkillForm({ curStep, handleChangeStep }) {
     <>
       <Loading loading={loading} />
       <div className="panel panel--light">
-        <div className="panel-body" style={{paddingBottom: '60px'}}>
+        <div
+          className="panel-body"
+          style={{ paddingBottom: "60px", paddingTop: "10px" }}
+        >
           <div className="rv-content">
             <div className="container-fluid">
               {/* <div className="heading-margin sg-heading3 title">Kỹ năng</div> */}
-              <div className="heading-margin sg-heading3 title">Skills</div>
+              <div className="heading-margin sg-heading3 title">
+                Highlight your technical skills
+              </div>
             </div>
             <div
               className="wizard-page-children container-fluid"
@@ -87,16 +126,21 @@ function SkillForm({ curStep, handleChangeStep }) {
               <div className="inline-skill-container is-compact">
                 <div className="inline-skill-input">
                   <div>
-                    <div className="TextInput-labelWrapper" style={{marginTop: '40px'}}>
+                    <div
+                      className="TextInput-labelWrapper"
+                      style={{ marginTop: "40px" }}
+                    >
                       <label className="TextInput-label">Add skill</label>
-                      <p className="TextInput-helpText">ex: Javascript, Kotlin,...</p>
+                      <p className="TextInput-helpText">
+                        ex: Javascript, Kotlin,...
+                      </p>
                     </div>
                     <div className="TextInput-wrapper">
-                    <AddSkillSuggest
-                          handleAdd={getNewSkill}
-                          isAdd={isAdd}
-                          isCorner={true}
-                        />
+                      <AddSkillSuggest
+                        handleAdd={getNewSkill}
+                        isAdd={isAdd}
+                        isCorner={true}
+                      />
                     </div>
                   </div>
                 </div>
@@ -108,7 +152,7 @@ function SkillForm({ curStep, handleChangeStep }) {
                     icon={<PlusOutlined />}
                     onClick={onAddSkill}
                   >
-                    Thêm
+                    Add
                   </Button>
                 </div>
               </div>
@@ -116,7 +160,79 @@ function SkillForm({ curStep, handleChangeStep }) {
           </div>
         </div>
       </div>
-      <div style={{marginTop: '30px'}}>
+
+      <div className="panel panel--light">
+        <div
+          className="panel-body"
+          style={{ paddingBottom: "60px", paddingTop: "20px" }}
+        >
+          <div className="rv-content">
+            <div className="container-fluid">
+              {/* <div className="heading-margin sg-heading3 title">Kỹ năng</div> */}
+              <div className="heading-margin sg-heading3 title">
+                Highlight your soft skills
+              </div>
+            </div>
+            <div
+              className="wizard-page-children container-fluid"
+              spellCheck="false"
+            >
+              <div
+                className="skill-form__container"
+                style={{ marginTop: "20px" }}
+              >
+                {softSkills?.map(({ key, value }) => (
+                  <Skill
+                    skill={value}
+                    key={key}
+                    id={key}
+                    onDelete={onSoftDelete}
+                  />
+                ))}
+              </div>
+
+              <div
+                className="inline-skill-container is-compact"
+                style={{ marginTop: "20px" }}
+              >
+                <div className="inline-skill-input">
+                  <div>
+                    <div
+                      className="TextInput-labelWrapper"
+                      style={{ marginTop: "30px" }}
+                    >
+                      <label className="TextInput-label">Add soft skill</label>
+                      <p className="TextInput-helpText">
+                        ex: Communication, Presentation...
+                      </p>
+                    </div>
+                    <div className="TextInput-wrapper">
+                      <AddSoftSkillSuggest
+                        handleAddSoft={getNewSoftSkill}
+                        isAddSoft={isSoftAdd}
+                        isCorner={true}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="inline-skill-button">
+                  <Button
+                    type="primary"
+                    size="large"
+                    disabled={!softValue}
+                    icon={<PlusOutlined />}
+                    onClick={onAddSoftSkill}
+                  >
+                    Add
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ marginTop: "30px" }}>
         <Button className="form-complete" onClick={handleSubmit}>
           {/* Hoàn tất */}
           Next
